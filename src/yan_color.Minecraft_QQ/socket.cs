@@ -43,8 +43,10 @@ namespace yan_color.Minecraft_QQ
                     }
                     if(MyPlugin.read_text.IndexOf("[群消息]") == 0)
                     {
-                        CQ.SendGroupMessage(MyPlugin.GroupSet1, MyPlugin.read_text);
-                        CQ.SendGroupMessage(MyPlugin.GroupSet2, MyPlugin.read_text);
+                        var sb = new StringBuilder(MyPlugin.read_text);
+                        sb.Replace("[群消息]", string.Empty);
+                        CQ.SendGroupMessage(MyPlugin.GroupSet1, sb.ToString());
+                        CQ.SendGroupMessage(MyPlugin.GroupSet2, sb.ToString());
                     }
                 }
                 MyPlugin.read_text = "";
