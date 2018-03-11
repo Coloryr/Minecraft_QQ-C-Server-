@@ -15,6 +15,7 @@ namespace yan_color.Minecraft_QQ
         public static String ipaddress; //地址
         public static long GroupSet1;    //QQ群号1
         public static long GroupSet2;    //QQ群号2
+        public static long GroupSet3;    //QQ群号3
         public static string confirm = "confirm.xml";
         public static string admin = "admin.xml";
         public static string command = " ";
@@ -66,7 +67,17 @@ namespace yan_color.Minecraft_QQ
                 }
             }
             else { GroupSet2 = 0; }
-            socket.start_socket();           
+            check = LinqXML.read(confirm, "群号3");
+            if (check != "")
+            {
+                GroupSet3 = long.Parse(check);
+                if (GroupSet3 != 0)
+                {
+                    CQ.SendGroupMessage(GroupSet3, "Minecraft_QQ已启动-作者yan_color");
+                }
+            }
+            else { GroupSet3 = 0; }
+            socket.Start_socket();           
         }
 
         /// <summary>
@@ -95,6 +106,17 @@ namespace yan_color.Minecraft_QQ
         public static string RemoveLeft(string s, int len)
         {
             return s.PadLeft(len).Remove(0, len);
+        }
+        public bool IsNatural_Number(string str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                if ((int)str[i] > 127)
+                    return false;
+                else
+                    return true;
+            }
+            return false;
         }
         /// <summary>
         /// Type=2 群消息。
@@ -132,9 +154,9 @@ namespace yan_color.Minecraft_QQ
                     {
                         string a = msg.Replace("绑定：", "");
                         msg = a;
-                        if (a == " "|| a == "")
+                        if (a == " "|| a == "" || IsNatural_Number(a) == false)
                         {
-                            CQ.SendGroupMessage(GroupSet1, CQ.CQCode_At(fromQQ) + "绑定失败，禁止绑定为空");
+                            CQ.SendGroupMessage(GroupSet1, CQ.CQCode_At(fromQQ) + "绑定失败，请检查你的ID");
                         }
                         else
                         {
@@ -222,6 +244,63 @@ namespace yan_color.Minecraft_QQ
                 if (msg.IndexOf("功能菜单") == 0)
                 {
                     CQ.SendGroupMessage(GroupSet2, "输入“绑定：ID”可以绑定你的游戏ID。\r\n输入“在线人数”可以查询服务器在线人数。\r\n输入“服务器状态”可以查询服务器是否在运行。\r\n输入“服务器：【内容】”可以向服务器里发送消息。");
+                }
+            }
+            if (fromGroup == GroupSet3)
+            {
+                string x = msg.Substring(0, 4);
+                if (x == "服务器：" || x == "服务器:")
+                {
+                    string reply = LinqXML.read(confirm, fromQQ.ToString());
+                    if (reply != "")
+                    {
+                        text = reply + ':' + RemoveLeft(msg, 4);
+                        text = "群消息" + text;
+                    }
+                    else
+                    {
+                        CQ.SendGroupMessage(GroupSet3, "检测到你没有绑定服务器ID，发送“绑定：ID”来绑定，如：绑定：yan_color");
+                    }
+                }
+                if (msg.IndexOf("绑定：") == 0)
+                {
+                    if (LinqXML.read(confirm, fromQQ.ToString()) == "")
+                    {
+                        string a = msg.Replace("绑定：", "");
+                        msg = a;
+                        if (a == " " || a == "")
+                        {
+                            CQ.SendGroupMessage(GroupSet3, CQ.CQCode_At(fromQQ) + "绑定失败，禁止绑定为空");
+                        }
+                        else
+                        {
+                            var sb = new StringBuilder(a);
+                            sb.Replace(":", string.Empty);
+                            sb.Replace(" ", string.Empty);
+                            LinqXML.write(confirm, fromQQ.ToString(), sb.ToString());
+                            CQ.SendGroupMessage(GroupSet3, CQ.CQCode_At(fromQQ) + "绑定ID:" + msg.Replace("绑定：", "") + "成功！");
+                        }
+                    }
+                    else
+                    {
+                        CQ.SendGroupMessage(GroupSet3, CQ.CQCode_At(fromQQ) + "你已经绑定过了，想换ID私聊服主去吧");
+                    }
+                }
+                if (msg == "在线人数")
+                {
+                    CQ.SendGroupMessage(GroupSet3, "查询中");
+                    text = "在线人数:";
+                    g = 3;
+                }
+                if (msg == "服务器状态")
+                {
+                    CQ.SendGroupMessage(GroupSet3, "查询中，如果没有回复，则证明服务器未开启");
+                    text = "服务器状态";
+                    g = 3;
+                }
+                if (msg.IndexOf("功能菜单") == 0)
+                {
+                    CQ.SendGroupMessage(GroupSet3, "输入“绑定：ID”可以绑定你的游戏ID。\r\n输入“在线人数”可以查询服务器在线人数。\r\n输入“服务器状态”可以查询服务器是否在运行。\r\n输入“服务器：【内容】”可以向服务器里发送消息。");
                 }
             }
         }

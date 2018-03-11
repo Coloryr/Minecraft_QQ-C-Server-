@@ -101,5 +101,12 @@ namespace yan_color.Minecraft_QQ
             MyPlugin.GroupSet2 = long.Parse(textBox3.Text);
             button4.Text = "设置成功";
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            LinqXML.write(MyPlugin.confirm, "群号3", textBox6.Text);
+            MyPlugin.GroupSet3 = long.Parse(textBox6.Text);
+            button4.Text = "设置成功";
+        }
     }
 }

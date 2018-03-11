@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace yan_color.Minecraft_QQ
 {
@@ -12,7 +11,7 @@ namespace yan_color.Minecraft_QQ
         static Socket serverSocket;
         private static byte[] read = new byte[4096];
         static Thread myThread = new Thread(Read);
-        public static void start_socket()
+        public static void Start_socket()
         {   
             IPAddress ip = IPAddress.Parse(MyPlugin.ipaddress);
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -41,12 +40,24 @@ namespace yan_color.Minecraft_QQ
                         CQ.SendGroupMessage(MyPlugin.GroupSet2, MyPlugin.read_text);
                         MyPlugin.g = 0;
                     }
-                    if(MyPlugin.read_text.IndexOf("[群消息]") == 0)
+                    else if (MyPlugin.g == 3)
+                    {
+                        CQ.SendGroupMessage(MyPlugin.GroupSet3, MyPlugin.read_text);
+                        MyPlugin.g = 0;
+                    }
+                    if (MyPlugin.read_text.IndexOf("[群消息]") == 0)
                     {
                         var sb = new StringBuilder(MyPlugin.read_text);
                         sb.Replace("[群消息]", string.Empty);
                         CQ.SendGroupMessage(MyPlugin.GroupSet1, sb.ToString());
-                        CQ.SendGroupMessage(MyPlugin.GroupSet2, sb.ToString());
+                        if (MyPlugin.GroupSet2 != 0)
+                        {
+                            CQ.SendGroupMessage(MyPlugin.GroupSet2, sb.ToString());
+                        }
+                        if (MyPlugin.GroupSet3 != 0)
+                        {
+                            CQ.SendGroupMessage(MyPlugin.GroupSet3, sb.ToString());
+                        }
                     }
                 }
                 MyPlugin.read_text = "";
