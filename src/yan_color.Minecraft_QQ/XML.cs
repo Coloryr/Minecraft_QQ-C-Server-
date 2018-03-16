@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -20,11 +21,13 @@ namespace yan_color.Minecraft_QQ
             {
                 FileInfo file = new FileInfo(text);
                 file.Delete();
+                XElement contacts = new XElement("config");
+                contacts.Save(Minecraft_QQ.path + text);
             }
             else
             {
-                XElement contacts = new XElement("confirm");
-                contacts.Save(MyPlugin.path + text);
+                XElement contacts = new XElement("config");
+                contacts.Save(Minecraft_QQ.path + text);
             }
         }
         /// <summary>
@@ -35,14 +38,14 @@ namespace yan_color.Minecraft_QQ
         /// <param name="data1">元素名</param>
         public static void setXml(string text, string data, string data1)
         {
-            if (File.Exists(MyPlugin.path + text)==false)
+            if (File.Exists(Minecraft_QQ.path + text)==false)
             { 
             CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
             XElement xe = XElement.Load(text);
             ///查找被替换的元素
-            IEnumerable<XElement> element = from e in xe.Elements("confirm")
+            IEnumerable<XElement> element = from e in xe.Elements("config")
                                             where e.Attribute("int").Value == data
                                             select e;
             ///替换为新元素，并保存
@@ -56,7 +59,7 @@ namespace yan_color.Minecraft_QQ
                 new XElement("data", data1)              ///添加元素Name
                  );
             }
-            xe.Save(MyPlugin.path + text);
+            xe.Save(Minecraft_QQ.path + text);
         }
         /// <summary>
         /// //增加元素到XML文件
@@ -66,7 +69,7 @@ namespace yan_color.Minecraft_QQ
         /// <param name="data1">元素名</param>
         public static void write(string text, string data, string data1)
         {
-            if (File.Exists(MyPlugin.path + text) == false)
+            if (File.Exists(Minecraft_QQ.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
@@ -78,15 +81,15 @@ namespace yan_color.Minecraft_QQ
             else
             {
                 ///导入XML文件
-                XElement xe = XElement.Load(MyPlugin.path + text);
+                XElement xe = XElement.Load(Minecraft_QQ.path + text);
                 ///创建一个新的节点
-                XElement student = new XElement("confirm",
+                XElement student = new XElement("config",
                  new XAttribute("int", data),                    ///添加属性number
              new XElement("data", data1)                     ///添加元素Name
              );
                 ///添加节点到文件中，并保存
                 xe.Add(student);
-                xe.Save(MyPlugin.path + text);
+                xe.Save(Minecraft_QQ.path + text);
             }
         }
         /// <summary>
@@ -97,12 +100,12 @@ namespace yan_color.Minecraft_QQ
         /// <param name="text">元素名</param>
         public static void Remove(string text, string data, string data1)//删除XML文件中的元素
         {
-            if (File.Exists(MyPlugin.path + text) == false)
+            if (File.Exists(Minecraft_QQ.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
-            XElement xe = XElement.Load(MyPlugin.path + text);
+            XElement xe = XElement.Load(Minecraft_QQ.path + text);
             ///查找被删除的元素
             IEnumerable<XElement> element = from e in xe.Elements()
                                             where e.Attribute(data).Value == data1
@@ -112,7 +115,7 @@ namespace yan_color.Minecraft_QQ
             {
                 element.First().Remove();
             }
-            xe.Save(MyPlugin.path + text);
+            xe.Save(Minecraft_QQ.path + text);
         }
         /// <summary>
         /// 查询
@@ -122,21 +125,21 @@ namespace yan_color.Minecraft_QQ
         public static string read(string text, string data)
         {
             string a = "";
-            if (File.Exists(MyPlugin.path + text) == false)
+            if (File.Exists(Minecraft_QQ.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(MyPlugin.path + text);
+                xmlDoc.Load(Minecraft_QQ.path + text);
 
-                XmlNode xnP = xmlDoc.SelectSingleNode("confirm/confirm[@int='" + data + "']/data");
+                XmlNode xnP = xmlDoc.SelectSingleNode("config/config[@int='" + data + "']/data");
                 a = xnP.InnerText;
             }
             catch (Exception ex)
             {
-
+                //MessageBox.Show(ex.ToString());
             }
             return a;
         }

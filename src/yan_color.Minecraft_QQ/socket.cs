@@ -13,9 +13,9 @@ namespace yan_color.Minecraft_QQ
         static Thread myThread = new Thread(Read);
         public static void Start_socket()
         {   
-            IPAddress ip = IPAddress.Parse(MyPlugin.ipaddress);
+            IPAddress ip = IPAddress.Parse(Minecraft_QQ.ipaddress);
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            serverSocket.Bind(new IPEndPoint(ip, MyPlugin.Port));
+            serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
             serverSocket.Listen(10);
             myThread.Start();
         }
@@ -27,45 +27,45 @@ namespace yan_color.Minecraft_QQ
                 Socket myClientSocket = (Socket)clientSocket;
                 int a;
                 a = myClientSocket.Receive(read);
-                MyPlugin.read_text = Encoding.Default.GetString(read, 0, a);
-                if (MyPlugin.read_text != "")
+                Minecraft_QQ.read_text = Encoding.Default.GetString(read, 0, a);
+                if (Minecraft_QQ.read_text != "")
                 {
-                    if (MyPlugin.g == 1)
+                    if (Minecraft_QQ.g == 1)
                     {
-                        CQ.SendGroupMessage(MyPlugin.GroupSet1, MyPlugin.read_text);
-                        MyPlugin.g = 0;
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, Minecraft_QQ.read_text);
+                        Minecraft_QQ.g = 0;
                     }
-                    else if (MyPlugin.g == 2)
+                    else if (Minecraft_QQ.g == 2)
                     {
-                        CQ.SendGroupMessage(MyPlugin.GroupSet2, MyPlugin.read_text);
-                        MyPlugin.g = 0;
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, Minecraft_QQ.read_text);
+                        Minecraft_QQ.g = 0;
                     }
-                    else if (MyPlugin.g == 3)
+                    else if (Minecraft_QQ.g == 3)
                     {
-                        CQ.SendGroupMessage(MyPlugin.GroupSet3, MyPlugin.read_text);
-                        MyPlugin.g = 0;
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, Minecraft_QQ.read_text);
+                        Minecraft_QQ.g = 0;
                     }
-                    if (MyPlugin.read_text.IndexOf("[群消息]") == 0)
+                    if (Minecraft_QQ.read_text.IndexOf("[群消息]") == 0)
                     {
-                        var sb = new StringBuilder(MyPlugin.read_text);
+                        var sb = new StringBuilder(Minecraft_QQ.read_text);
                         sb.Replace("[群消息]", string.Empty);
-                        CQ.SendGroupMessage(MyPlugin.GroupSet1, sb.ToString());
-                        if (MyPlugin.GroupSet2 != 0)
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, sb.ToString());
+                        if (Minecraft_QQ.GroupSet2 != 0)
                         {
-                            CQ.SendGroupMessage(MyPlugin.GroupSet2, sb.ToString());
+                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, sb.ToString());
                         }
-                        if (MyPlugin.GroupSet3 != 0)
+                        if (Minecraft_QQ.GroupSet3 != 0)
                         {
-                            CQ.SendGroupMessage(MyPlugin.GroupSet3, sb.ToString());
+                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, sb.ToString());
                         }
                     }
                 }
-                MyPlugin.read_text = "";
-                if (MyPlugin.text != "")
+                Minecraft_QQ.read_text = "";
+                if (Minecraft_QQ.text != "")
                 {
-                    clientSocket.Send(Encoding.Default.GetBytes(MyPlugin.text));
+                    clientSocket.Send(Encoding.Default.GetBytes(Minecraft_QQ.text));
                 }
-                MyPlugin.text = "";
+                Minecraft_QQ.text = "";
                 myClientSocket.Shutdown(SocketShutdown.Both);
                 myClientSocket.Close();
             }
