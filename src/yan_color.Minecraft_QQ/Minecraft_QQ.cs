@@ -83,8 +83,8 @@ namespace yan_color.Minecraft_QQ
             LinqXML.write(config, "空位", "空位");
             LinqXML.write(admin, "空位", "空位");
             LinqXML.write(player, "空位", "空位");
-            LinqXML.write(message, "事件-群员加入", "欢迎新人" + "%fromQQ%" + "，请把名字改成ID，客户端在群文件");
-            LinqXML.write(message, "事件-群员退出", "%fromQQ%" + "退出了群");
+            LinqXML.write(message, "事件-群员加入", "欢迎新人" + "%player%" + "，请把名字改成ID，客户端在群文件");
+            LinqXML.write(message, "事件-群员退出", "%player%" + "退出了群");
             if (!File.Exists(path + log))
             {
                 File.WriteAllText(path+log, "创建文件"+ Environment.NewLine);
@@ -249,6 +249,10 @@ namespace yan_color.Minecraft_QQ
                     CQ.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                     OpenSettingForm();
                 }
+                    if (LinqXML.read(message, msg) != "")
+                    {
+                        CQ.SendGroupMessage(fromGroup, LinqXML.read(message, msg));
+                    }
             }
         }
 
