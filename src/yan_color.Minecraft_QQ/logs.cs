@@ -7,9 +7,9 @@ namespace yan_color.Minecraft_QQ
     {
         public static void Log_write(string a)
         {
-            DateTime date = new DateTime();
-            String year = String.Format("%tF", date);
-            String time = String.Format("%tT", date);
+            DateTime date = DateTime.Now;
+            String year = date.ToShortDateString().ToString();
+            String time = date.ToLongTimeString().ToString();
             String write = "[" + year + "]" + "[" + time + "]" + a;
             File.AppendAllText(Minecraft_QQ.path+Minecraft_QQ.log, write + Environment.NewLine);
         }
