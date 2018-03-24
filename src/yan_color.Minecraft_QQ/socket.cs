@@ -27,7 +27,14 @@ namespace yan_color.Minecraft_QQ
                 Socket myClientSocket = (Socket)clientSocket;
                 int a;
                 a = myClientSocket.Receive(read);
-                Minecraft_QQ.read_text = Encoding.Default.GetString(read, 0, a);
+                if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+                {
+                    Minecraft_QQ.read_text = Encoding.UTF8.GetString(read, 0, a);
+                }
+                if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+                {
+                    Minecraft_QQ.read_text = Encoding.Default.GetString(read, 0, a);
+                }
                 if (Minecraft_QQ.read_text != "")
                 {
                     if (Minecraft_QQ.g == 1)

@@ -47,6 +47,11 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -208,11 +213,69 @@
             this.label4.Text = "设置QQ机器人的服务器地址和端口";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(14, 240);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(53, 16);
+            this.radioButton1.TabIndex = 19;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "UTF-8";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(84, 240);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(89, 16);
+            this.radioButton2.TabIndex = 20;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "ANSI（GBK）";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(0, 225);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(113, 12);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "设置服务器编码格式";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(0, 260);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "奇葩设定";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(59, 259);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(168, 16);
+            this.checkBox1.TabIndex = 23;
+            this.checkBox1.Text = "始终发送消息到服务器里面";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 236);
+            this.ClientSize = new System.Drawing.Size(262, 281);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.button4);
@@ -265,5 +328,10 @@
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

@@ -37,7 +37,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.2.0.0");
+            this.Version = new Version("1.3.0.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -52,7 +52,11 @@ namespace yan_color.Minecraft_QQ
             if (Directory.Exists(path) == false)
             { Directory.CreateDirectory(path); }
             if (File.Exists(path + config) == false)
-            {LinqXML.write(config, "启用", "true");}
+            {
+                LinqXML.write(config, "编码", "ANSI（GBK）");
+                LinqXML.write(config, "发送消息", "不！");
+
+            }
             if (File.Exists(path + admin) == false)
             { LinqXML.write(admin, "启用", "true"); }
             if (File.Exists(path + player) == false)
@@ -207,18 +211,30 @@ namespace yan_color.Minecraft_QQ
             // 处理群消息。
             if (fromGroup == GroupSet1 || fromGroup == GroupSet2 || fromGroup == GroupSet3)
             {
-                string x = msg.Substring(0, 4);
-                if (x == "服务器：" || x == "服务器:")
+                if (LinqXML.read(config, "发送消息") == "当然！")
                 {
                     string reply = LinqXML.read(player, fromQQ.ToString());
                     if (reply != "")
                     {
-                        text = reply + ':' + RemoveLeft(msg, 4);
+                        text = reply + ':' + msg;
                         text = "群消息" + text;
                     }
-                    else
+                }
+                else
+                {
+                    string x = msg.Substring(0, 4);
+                    if (x == "服务器：" || x == "服务器:")
                     {
-                        CQ.SendGroupMessage(fromGroup, "检测到你没有绑定服务器ID，发送“绑定：ID”来绑定，如：绑定：yan_color");
+                        string reply = LinqXML.read(player, fromQQ.ToString());
+                        if (reply != "")
+                        {
+                            text = reply + ':' + RemoveLeft(msg, 4);
+                            text = "群消息" + text;
+                        }
+                        else
+                        {
+                            CQ.SendGroupMessage(fromGroup, "检测到你没有绑定服务器ID，发送“绑定：ID”来绑定，如：绑定：yan_color");
+                        }
                     }
                 }
                 if (msg.IndexOf("绑定：") == 0)

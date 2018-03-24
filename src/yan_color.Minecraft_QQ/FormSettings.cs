@@ -55,10 +55,26 @@ namespace yan_color.Minecraft_QQ
             textBox3.Text = LinqXML.read(Minecraft_QQ.config, "群号2");
             textBox6.Text = LinqXML.read(Minecraft_QQ.config, "群号3");
 
-            //textBox2.Text = LinqXML.read(Minecraft_QQ.admin, "admin");
             textBox4.Text = LinqXML.read(Minecraft_QQ.config, "IP");
             textBox5.Text = LinqXML.read(Minecraft_QQ.config, "Port");
-
+            if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF8")
+            {
+                radioButton1.Checked = true;
+                radioButton2.Checked = false;
+            }
+            else if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+            {
+                radioButton1.Checked = false;
+                radioButton2.Checked = true;
+            }
+            if (LinqXML.read(Minecraft_QQ.config, "发送消息") == "当然！")
+            {
+                checkBox1.Checked = true;
+            }
+            else if (LinqXML.read(Minecraft_QQ.config, "发送消息") == "不！")
+            {
+                checkBox1.Checked = false;
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -110,6 +126,22 @@ namespace yan_color.Minecraft_QQ
             LinqXML.write(Minecraft_QQ.config, "群号3", textBox6.Text);
             Minecraft_QQ.GroupSet3 = long.Parse(textBox6.Text);
             button4.Text = "设置成功";
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            LinqXML.write(Minecraft_QQ.config, "编码", "UTF-8");
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            LinqXML.write(Minecraft_QQ.config, "编码", "ANSI（GBK）");
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox1.Checked==true) LinqXML.write(Minecraft_QQ.config, "发送消息", "当然！");
+            else LinqXML.write(Minecraft_QQ.config, "发送消息", "不！");
         }
     }
 }

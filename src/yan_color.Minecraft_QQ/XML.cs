@@ -17,9 +17,9 @@ namespace yan_color.Minecraft_QQ
         /// <param name="mode">模式</param>>
         public static void CreateFile(string text, int mode)
         {
-            if (File.Exists(text) && mode == 1) //文件存在就删除
+            if (File.Exists(Minecraft_QQ.path + text) && mode == 1) //文件存在就删除
             {
-                FileInfo file = new FileInfo(text);
+                FileInfo file = new FileInfo(Minecraft_QQ.path + text);
                 file.Delete();
                 XElement contacts = new XElement("config");
                 contacts.Save(Minecraft_QQ.path + text);
@@ -43,7 +43,7 @@ namespace yan_color.Minecraft_QQ
             CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
-            XElement xe = XElement.Load(text);
+            XElement xe = XElement.Load(Minecraft_QQ.path + text);
             ///查找被替换的元素
             IEnumerable<XElement> element = from e in xe.Elements("config")
                                             where e.Attribute("int").Value == data
