@@ -60,17 +60,17 @@ namespace yan_color.Minecraft_QQ
             if (File.Exists(path + Event) == false)
             {
                 LinqXML.write(Event, "启用", "true");
-                LinqXML.write(Event, "事件-群员加入", "欢迎新人" + "%player%" + "，请把名字改成ID，客户端在群文件");
-                LinqXML.write(Event, "事件-群员退出", "%player%" + "退出了群");
-                LinqXML.write(Event, "事件-文件上传", "%player%" + "上传了文件" + "%file%");
-                LinqXML.write(Event, "事件-踢出群员", "%player%" + "感受制裁吧！");
+                LinqXML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
+                LinqXML.write(Event, "事件-群员退出", "%player%退出了群");
+                LinqXML.write(Event, "事件-文件上传", "%player%上传了文件%file%");
+                LinqXML.write(Event, "事件-踢出群员", "%player%感受制裁吧！");
                 LinqXML.write(Event, "在线人数", "%online%");
                 LinqXML.write(Event, "服务器状态", "%server_online%");
             }
             if (File.Exists(path + message) == false)
             {
                 LinqXML.write(message, "启用", "true");
-                LinqXML.write(message, "菜单", "输入“绑定：ID”可以绑定你的游戏ID。\r\n输入“在线人数”可以查询服务器在线人数。\r\n输入“服务器状态”可以查询服务器是否在运行。\r\n输入“服务器：【内容】”可以向服务器里发送消息。");
+                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【绑定：ID】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【服务器：内容】可以向服务器里发送消息。");
             }
             if (LinqXML.read(config, "启用") == "true") message_on = true;
             string check = LinqXML.read(config, "群号1");
