@@ -23,7 +23,6 @@ namespace yan_color.Minecraft_QQ
         public static string message = "message.xml";
         public static string log = path + "logs.log";
         public static string Event = "event.xml";
-        static Boolean message_on=false;
         public static string command = " ";
         public static string text = "";
         public static string read_text = "";
@@ -53,10 +52,11 @@ namespace yan_color.Minecraft_QQ
             { Directory.CreateDirectory(path); }
             if (File.Exists(path + config) == false)
             {
+                LinqXML.write(config, "IP", "127.0.0.1");
+                LinqXML.write(config, "Port", "25555");
                 LinqXML.write(config, "编码", "ANSI（GBK）");
                 LinqXML.write(config, "发送消息", "不！");
-
-            }
+            }             
             if (File.Exists(path + admin) == false)
             { LinqXML.write(admin, "启用", "true"); }
             if (File.Exists(path + player) == false)
@@ -70,13 +70,29 @@ namespace yan_color.Minecraft_QQ
                 LinqXML.write(Event, "事件-踢出群员", "%player%感受制裁吧！");
                 LinqXML.write(Event, "在线人数", "%online%");
                 LinqXML.write(Event, "服务器状态", "%server_online%");
+                LinqXML.write(Event, "绑定文本", "绑定：");
+                LinqXML.write(Event, "发送文本", "服务器：");
+            }
+            if (LinqXML.read(Event, "启用") == "")
+            {
+                LinqXML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
+                LinqXML.write(Event, "事件-群员退出", "%player%退出了群");
+                LinqXML.write(Event, "事件-文件上传", "%player%上传了文件%file%");
+                LinqXML.write(Event, "事件-踢出群员", "%player%感受制裁吧！");
+                LinqXML.write(Event, "在线人数", "%online%");
+                LinqXML.write(Event, "服务器状态", "%server_online%");
+                LinqXML.write(Event, "绑定文本", "绑定：");
+                LinqXML.write(Event, "发送文本", "服务器：");
             }
             if (File.Exists(path + message) == false)
             {
                 LinqXML.write(message, "启用", "true");
-                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【绑定：ID】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【服务器：内容】可以向服务器里发送消息。");
+                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + LinqXML.read(Event,"绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + LinqXML.read(Event,"发送文本") + "内容】可以向服务器里发送消息。");
             }
-            if (LinqXML.read(config, "启用") == "true") message_on = true;
+            if (LinqXML.read(message, "启用") == "")
+            {
+                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + LinqXML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + LinqXML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
+            }
             string check = LinqXML.read(config, "群号1");
             if (check == "") { MessageBox.Show("未设置群号，请设置"); frm.ShowDialog(); }
             else { GroupSet1 = long.Parse(check); }
@@ -137,48 +153,6 @@ namespace yan_color.Minecraft_QQ
         public override void PrivateMessage(int subType, int sendTime, long fromQQ, string msg, int font)
         {
             // 处理私聊消息。
-            string x = msg.Substring(0, 4);
-            if (x == "服务器：" || x == "服务器:")
-            {
-                string reply = LinqXML.read(player, fromQQ.ToString());
-                if (reply != "")
-                {
-                    text = reply + ':' + RemoveLeft(msg, 4);
-                    text = "群消息" + text;
-                }
-                else
-                {
-                    CQ.SendGroupMessage(fromQQ, "检测到你没有绑定服务器ID，发送“绑定：ID”来绑定，如：绑定：yan_color");
-                }
-            }
-            if (msg.IndexOf("绑定：") == 0)
-            {
-                if (LinqXML.read(player, fromQQ.ToString()) == "")
-                {
-                    string a = msg.Replace("绑定：", "");
-                    msg = a;
-                    if (a == " " || a == "" || IsNatural_Number(a) == false)
-                    {
-                        CQ.SendGroupMessage(fromQQ, CQ.CQCode_At(fromQQ) + "绑定失败，请检查你的ID");
-                    }
-                    else
-                    {
-                        var sb = new StringBuilder(a);
-                        sb.Replace(" ", string.Empty);
-                        LinqXML.write(player, fromQQ.ToString(), sb.ToString());
-                        CQ.SendGroupMessage(fromQQ, CQ.CQCode_At(fromQQ) + "绑定ID:" + msg.Replace("绑定", "") + "成功！");
-                    }
-                }
-                else
-                {
-                    CQ.SendGroupMessage(fromQQ, CQ.CQCode_At(fromQQ) + "你已经绑定过了，想换ID私聊服主去吧");
-                }
-            }
-            if (msg.IndexOf("打开菜单") == 0 && LinqXML.read(config, fromQQ.ToString()) != "")
-            {
-                CQ.SendGroupMessage(GroupSet1, "已打开，请前往后台查看");
-                OpenSettingForm();
-            }
         }
         public static string RemoveLeft(string s, int len)
         {
@@ -211,6 +185,10 @@ namespace yan_color.Minecraft_QQ
             // 处理群消息。
             if (fromGroup == GroupSet1 || fromGroup == GroupSet2 || fromGroup == GroupSet3)
             {
+                if (LinqXML.read(message, msg) != "" && LinqXML.read(message, "启用") == "true")
+                {
+                    CQ.SendGroupMessage(fromGroup, LinqXML.read(message, msg));
+                }
                 if (LinqXML.read(config, "发送消息") == "当然！")
                 {
                     string reply = LinqXML.read(player, fromQQ.ToString());
@@ -220,30 +198,27 @@ namespace yan_color.Minecraft_QQ
                         text = "群消息" + text;
                     }
                 }
-                else
+                if (msg.IndexOf(LinqXML.read(Event, "发送文本")) == 0 && LinqXML.read(config, "发送消息") == "不！")
                 {
-                    string x = msg.Substring(0, 4);
-                    if (x == "服务器：" || x == "服务器:")
+                    string reply = LinqXML.read(player, fromQQ.ToString());
+                    reply = reply.Replace(LinqXML.read(Event, "发送文本"), "");
+                    if (reply != "")
                     {
-                        string reply = LinqXML.read(player, fromQQ.ToString());
-                        if (reply != "")
-                        {
-                            text = reply + ':' + RemoveLeft(msg, 4);
-                            text = "群消息" + text;
-                        }
-                        else
-                        {
-                            CQ.SendGroupMessage(fromGroup, "检测到你没有绑定服务器ID，发送“绑定：ID”来绑定，如：绑定：yan_color");
-                        }
+                        text = reply + ':' + msg.Replace(LinqXML.read(Event, "发送文本"), "");
+                        text = "群消息" + text;
+                    }
+                    else
+                    {
+                        CQ.SendGroupMessage(fromGroup, "检测到你没有绑定服务器ID，发送【" + LinqXML.read(Event, "绑定文本") + "ID】来绑定，如：【" + LinqXML.read(Event, "绑定文本") + "yan_color】");
                     }
                 }
-                if (msg.IndexOf("绑定：") == 0)
+
+                if (msg.IndexOf(LinqXML.read(Event, "绑定文本")) == 0)
                 {
                     if (LinqXML.read(player, fromQQ.ToString()) == "")
                     {
-                        string a = msg.Replace("绑定：", "");
-                        msg = a;
-                        if (a == " "|| a == "" || IsNatural_Number(a) == false)
+                        string a = msg.Replace(LinqXML.read(Event, "绑定文本"), "");
+                        if (a == " " || a == "" || IsNatural_Number(a) == false)
                         {
                             CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "绑定失败，请检查你的ID");
                         }
@@ -252,38 +227,34 @@ namespace yan_color.Minecraft_QQ
                             var sb = new StringBuilder(a);
                             sb.Replace(" ", string.Empty);
                             LinqXML.write(player, fromQQ.ToString(), sb.ToString());
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "绑定ID:" + msg.Replace("绑定", "") + "成功！");
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "绑定ID:" + a + "成功！");
                         }
                     }
                     else
                     {
-                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "你已经绑定过了，想换ID私聊服主去吧");
+                        CQ.SendGroupMessage(fromGroup, "你已经绑定ID了，请找腐竹更改");
                     }
                 }
-                if (LinqXML.read(Event,msg)=="%online%")
+                if (LinqXML.read(Event, msg) == "%online%")
                 {
-                    CQ.SendGroupMessage(fromGroup, "查询中");  
+                    CQ.SendGroupMessage(fromGroup, "查询中");
                     if (fromGroup == GroupSet1) g = 1;
                     else if (fromGroup == GroupSet2) g = 2;
                     else if (fromGroup == GroupSet3) g = 3;
                     text = "在线人数:";
                 }
-                if (LinqXML.read(Event,msg) == "%server_online%")
+                if (LinqXML.read(Event, msg) == "%server_online%")
                 {
-                    CQ.SendGroupMessage(fromGroup, "查询中，如果没有回复，则证明服务器未开启");                
+                    CQ.SendGroupMessage(fromGroup, "查询中，如果没有回复，则证明服务器未开启");
                     if (fromGroup == GroupSet1) g = 1;
                     else if (fromGroup == GroupSet2) g = 2;
                     else if (fromGroup == GroupSet3) g = 3;
                     text = "服务器状态";
                 }
-                if (msg.IndexOf("打开菜单") == 0 && LinqXML.read(admin, fromQQ.ToString())!="")
+                if (msg.IndexOf("打开菜单") == 0 && LinqXML.read(admin, fromQQ.ToString()) != "")
                 {
                     CQ.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                     OpenSettingForm();
-                }
-                if (LinqXML.read(message, msg) != "" && message_on==true)
-                {
-                    CQ.SendGroupMessage(fromGroup, LinqXML.read(message, msg));
                 }
             }
         }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Flexlive.CQP.Framework;
-using System.Net;
 
 namespace yan_color.Minecraft_QQ
 {
@@ -11,7 +9,7 @@ namespace yan_color.Minecraft_QQ
         {
             InitializeComponent();
             //加载标题。
-            this.Text = System.Reflection.Assembly.GetAssembly(this.GetType()).GetName().Name + "参数设置";
+            Text = System.Reflection.Assembly.GetAssembly(this.GetType()).GetName().Name + "参数设置";
         }
 
         /// <summary>
@@ -21,7 +19,7 @@ namespace yan_color.Minecraft_QQ
         /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
