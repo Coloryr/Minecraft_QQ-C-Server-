@@ -123,7 +123,7 @@ namespace yan_color.Minecraft_QQ
         {
             LinqXML.write(Minecraft_QQ.config, "群号3", textBox6.Text);
             Minecraft_QQ.GroupSet3 = long.Parse(textBox6.Text);
-            button4.Text = "设置成功";
+            button5.Text = "设置成功";
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

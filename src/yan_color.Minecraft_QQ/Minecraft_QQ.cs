@@ -36,7 +36,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.3.0.0");
+            this.Version = new Version("1.3.1.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -52,18 +52,29 @@ namespace yan_color.Minecraft_QQ
             { Directory.CreateDirectory(path); }
             if (File.Exists(path + config) == false)
             {
+                LinqXML.write(config, "更新？", "false");
                 LinqXML.write(config, "IP", "127.0.0.1");
                 LinqXML.write(config, "Port", "25555");
                 LinqXML.write(config, "编码", "ANSI（GBK）");
                 LinqXML.write(config, "发送消息", "不！");
-            }             
+                LinqXML.write(config, "发送文本", "%player%:%message%");
+            }
+            if (LinqXML.read(config, "更新？") != "false")
+            {
+                LinqXML.write(config, "更新？", "false");
+                LinqXML.write(config, "IP", "127.0.0.1");
+                LinqXML.write(config, "Port", "25555");
+                LinqXML.write(config, "编码", "ANSI（GBK）");
+                LinqXML.write(config, "发送消息", "不！");
+                LinqXML.write(config, "发送文本", "%player%:%message%");
+            }
             if (File.Exists(path + admin) == false)
             { LinqXML.write(admin, "启用", "true"); }
             if (File.Exists(path + player) == false)
             { LinqXML.write(player, "启用", "true"); }
             if (File.Exists(path + Event) == false)
             {
-                LinqXML.write(Event, "启用", "true");
+                LinqXML.write(Event, "更新", "false");
                 LinqXML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
                 LinqXML.write(Event, "事件-群员退出", "%player%退出了群");
                 LinqXML.write(Event, "事件-文件上传", "%player%上传了文件%file%");
@@ -73,7 +84,7 @@ namespace yan_color.Minecraft_QQ
                 LinqXML.write(Event, "绑定文本", "绑定：");
                 LinqXML.write(Event, "发送文本", "服务器：");
             }
-            if (LinqXML.read(Event, "启用") == "")
+            if (LinqXML.read(Event, "更新") == "false")
             {
                 LinqXML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
                 LinqXML.write(Event, "事件-群员退出", "%player%退出了群");
@@ -111,7 +122,7 @@ namespace yan_color.Minecraft_QQ
                 GroupSet2 = long.Parse(check);
                 if (GroupSet2 != 0)
                 {
-                    CQ.SendGroupMessage(GroupSet2, "[Minecraft_QQ]已启动");
+                    //CQ.SendGroupMessage(GroupSet2, "[Minecraft_QQ]已启动");
                 }
             }
             else { GroupSet2 = 0; }
@@ -121,7 +132,7 @@ namespace yan_color.Minecraft_QQ
                 GroupSet3 = long.Parse(check);
                 if (GroupSet3 != 0)
                 {
-                    CQ.SendGroupMessage(GroupSet3, "[Minecraft_QQ]已启动");
+                    //CQ.SendGroupMessage(GroupSet3, "[Minecraft_QQ]已启动");
                 }
             }
             else { GroupSet3 = 0; }
@@ -194,17 +205,24 @@ namespace yan_color.Minecraft_QQ
                     string reply = LinqXML.read(player, fromQQ.ToString());
                     if (reply != "")
                     {
-                        text = reply + ':' + msg;
-                        text = "群消息" + text;
+                        string a;
+                        a = LinqXML.read(config, "发送文本");
+                        a = a.Replace("%player%", reply);
+                        a = a.Replace("%message%", msg); 
+                        text = "群消息" + a;
                     }
                 }
-                if (msg.IndexOf(LinqXML.read(Event, "发送文本")) == 0 && LinqXML.read(config, "发送消息") == "不！")
+                else if (msg.IndexOf(LinqXML.read(Event, "发送文本")) == 0 && LinqXML.read(config, "发送消息") == "不！")
                 {
                     string reply = LinqXML.read(player, fromQQ.ToString());
                     reply = reply.Replace(LinqXML.read(Event, "发送文本"), "");
                     if (reply != "")
                     {
-                        text = reply + ':' + msg.Replace(LinqXML.read(Event, "发送文本"), "");
+                        string a;
+                        a = LinqXML.read(config, "发送文本");                    
+                        a = a.Replace("%player%", reply);
+                        a = a.Replace("%message%", msg.Replace(LinqXML.read(Event, "发送文本"), ""));
+                        text = "群消息" + a;
                         text = "群消息" + text;
                     }
                     else
@@ -241,7 +259,7 @@ namespace yan_color.Minecraft_QQ
                     if (fromGroup == GroupSet1) g = 1;
                     else if (fromGroup == GroupSet2) g = 2;
                     else if (fromGroup == GroupSet3) g = 3;
-                    text = "在线人数:";
+                    text = "在线人数";
                 }
                 if (LinqXML.read(Event, msg) == "%server_online%")
                 {
