@@ -223,7 +223,6 @@ namespace yan_color.Minecraft_QQ
                         a = a.Replace("%player%", reply);
                         a = a.Replace("%message%", msg.Replace(LinqXML.read(Event, "发送文本"), ""));
                         text = "群消息" + a;
-                        text = "群消息" + text;
                     }
                     else
                     {
