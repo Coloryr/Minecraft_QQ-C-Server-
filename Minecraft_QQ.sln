@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Minecraft_QQ", "Minecraft_QQ", "{0CB0267E-7447-497F-ABB7-DB45CF5A4EF4}"
+	ProjectSection(SolutionItems) = preProject
+		src\yan_color.Minecraft_QQ\Properties\AssemblyInfo.cs = src\yan_color.Minecraft_QQ\Properties\AssemblyInfo.cs
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ", "src\yan_color.Minecraft_QQ\yan_color.Minecraft_QQ.csproj", "{5D0BDC2D-DA77-4B06-A29C-2476C5BAA113}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yan_color.Minecraft_QQ", "src\yan_color.Minecraft_QQ\yan_color.Minecraft_QQ.csproj", "{5D0BDC2D-DA77-4B06-A29C-2476C5BAA113}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
