@@ -70,7 +70,14 @@ namespace yan_color.Minecraft_QQ
                 Minecraft_QQ.read_text = "";
                 if (Minecraft_QQ.text != "")
                 {
-                    clientSocket.Send(Encoding.Default.GetBytes(Minecraft_QQ.text));
+                    if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+                    {
+                        clientSocket.Send(Encoding.UTF8.GetBytes(Minecraft_QQ.text));
+                    }
+                    if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+                    {
+                        clientSocket.Send(Encoding.Default.GetBytes(Minecraft_QQ.text));
+                    }
                 }
                 Minecraft_QQ.text = "";
                 myClientSocket.Shutdown(SocketShutdown.Both);

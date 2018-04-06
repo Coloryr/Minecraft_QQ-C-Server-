@@ -19,6 +19,22 @@ namespace yan_color.Minecraft_QQ
         /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
+            int tmp;
+            LinqXML.write(Minecraft_QQ.config, "群号1", textBox1.Text);
+            Minecraft_QQ.GroupSet1 = long.Parse(textBox1.Text);
+            LinqXML.write(Minecraft_QQ.config, "群号2", textBox3.Text);
+            Minecraft_QQ.GroupSet2 = long.Parse(textBox3.Text);
+            LinqXML.write(Minecraft_QQ.config, "IP", textBox4.Text);
+            LinqXML.write(Minecraft_QQ.config, "Port", textBox5.Text);
+            LinqXML.write(Minecraft_QQ.config, "群号3", textBox6.Text);
+            Minecraft_QQ.GroupSet3 = long.Parse(textBox6.Text);
+            if (!int.TryParse(textBox5.Text, out tmp))
+            {
+                MessageBox.Show("请输入端口数字");
+                return;
+            }
+            Minecraft_QQ.Port = int.Parse(textBox5.Text);
+            Minecraft_QQ.ipaddress = textBox4.Text;
             Close();
         }
 
