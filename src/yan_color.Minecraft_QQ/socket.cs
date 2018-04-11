@@ -1,8 +1,11 @@
 ﻿using Flexlive.CQP.Framework;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace yan_color.Minecraft_QQ
 {
@@ -25,63 +28,75 @@ namespace yan_color.Minecraft_QQ
             {
                 Socket clientSocket = serverSocket.Accept();
                 Socket myClientSocket = (Socket)clientSocket;
-                int a;
-                a = myClientSocket.Receive(read);
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
-                {
-                    Minecraft_QQ.read_text = Encoding.UTF8.GetString(read, 0, a);
-                }
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
-                {
-                    Minecraft_QQ.read_text = Encoding.Default.GetString(read, 0, a);
-                }
-                if (Minecraft_QQ.read_text != "")
-                {
-                    if (Minecraft_QQ.g == 1)
-                    {
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, Minecraft_QQ.read_text);
-                        Minecraft_QQ.g = 0;
-                    }
-                    else if (Minecraft_QQ.g == 2)
-                    {
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, Minecraft_QQ.read_text);
-                        Minecraft_QQ.g = 0;
-                    }
-                    else if (Minecraft_QQ.g == 3)
-                    {
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, Minecraft_QQ.read_text);
-                        Minecraft_QQ.g = 0;
-                    }
-                    if (Minecraft_QQ.read_text.IndexOf("[群消息]") == 0)
-                    {
-                        var sb = new StringBuilder(Minecraft_QQ.read_text);
-                        sb.Replace("[群消息]", string.Empty);
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, sb.ToString());
-                        if (Minecraft_QQ.GroupSet2 != 0)
-                        {
-                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, sb.ToString());
-                        }
-                        if (Minecraft_QQ.GroupSet3 != 0)
-                        {
-                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, sb.ToString());
-                        }
-                    }
-                }
-                Minecraft_QQ.read_text = "";
-                if (Minecraft_QQ.text != "")
-                {
+                try
+                {                              
+                    int a;
+                    a = myClientSocket.Receive(read);
                     if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
                     {
-                        clientSocket.Send(Encoding.UTF8.GetBytes(Minecraft_QQ.text));
+                        Minecraft_QQ.read_text = Encoding.UTF8.GetString(read, 0, a);
                     }
                     if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
                     {
-                        clientSocket.Send(Encoding.Default.GetBytes(Minecraft_QQ.text));
+                        Minecraft_QQ.read_text = Encoding.Default.GetString(read, 0, a);
                     }
+                    if (Minecraft_QQ.read_text != "")
+                    {
+                        if (Minecraft_QQ.g == 1)
+                        {
+                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, Minecraft_QQ.read_text);
+                            Minecraft_QQ.g = 0;
+                        }
+                        else if (Minecraft_QQ.g == 2)
+                        {
+                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, Minecraft_QQ.read_text);
+                            Minecraft_QQ.g = 0;
+                        }
+                        else if (Minecraft_QQ.g == 3)
+                        {
+                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, Minecraft_QQ.read_text);
+                            Minecraft_QQ.g = 0;
+                        }
+                        if (Minecraft_QQ.read_text.IndexOf("[群消息]") == 0)
+                        {
+                            var sb = new StringBuilder(Minecraft_QQ.read_text);
+                            sb.Replace("[群消息]", string.Empty);
+                            string x = sb.ToString();
+                            string z = Minecraft_QQ.get_string(x, "(", ")");
+                            if (LinqXML.read(Minecraft_QQ.mute, z) != "true")
+                            {
+                                x = x.Replace("(" + z + ")", "");
+                                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, x);
+                                if (Minecraft_QQ.GroupSet2 != 0)
+                                {
+                                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, x);
+                                }
+                                if (Minecraft_QQ.GroupSet3 != 0)
+                                {
+                                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, x);
+                                }
+                            }
+                        }
+                    }
+                    Minecraft_QQ.read_text = "";
+                    if (Minecraft_QQ.text != "")
+                    {
+                        if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+                        {
+                            clientSocket.Send(Encoding.UTF8.GetBytes(Minecraft_QQ.text));
+                        }
+                        if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+                        {
+                            clientSocket.Send(Encoding.Default.GetBytes(Minecraft_QQ.text));
+                        }
+                    }
+                    Minecraft_QQ.text = "";
+                    myClientSocket.Shutdown(SocketShutdown.Both);
+                    myClientSocket.Close();
                 }
-                Minecraft_QQ.text = "";
-                myClientSocket.Shutdown(SocketShutdown.Both);
-                myClientSocket.Close();
+                catch (Exception ex)
+                {
+                }
             }
         }
         public static void stop_socket()
