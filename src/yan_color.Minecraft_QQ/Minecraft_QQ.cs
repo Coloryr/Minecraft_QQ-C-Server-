@@ -25,7 +25,6 @@ namespace yan_color.Minecraft_QQ
         public static string Event = "event.xml";
         public static string mute = "mute.xml";
         public static string command = " ";
-        public static string text = "";
         public static string read_text = "";
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase+"Minecraft_QQ/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
         public static Boolean server = true;
@@ -38,7 +37,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.4.3.0");
+            this.Version = new Version("1.5.0.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -255,7 +254,7 @@ namespace yan_color.Minecraft_QQ
                                 a = LinqXML.read(config, "发送文本");
                                 a = a.Replace("%player%", play);
                                 a = a.Replace("%message%", msg);
-                                text = "群消息" + a;
+                                socket.Send("群消息" + a, socket.MCserver);
                             }
                         }
                     }
@@ -264,21 +263,28 @@ namespace yan_color.Minecraft_QQ
                 {
                     if (server == true)
                     {
-                        string play = LinqXML.read(player, fromQQ.ToString());
-                        if (play != "")
+                        if (socket.ready == true)
                         {
-                            if (LinqXML.read(mute, play) != "true")
+                            string play = LinqXML.read(player, fromQQ.ToString());
+                            if (play != "")
                             {
-                                string a;
-                                a = LinqXML.read(config, "发送文本");
-                                a = a.Replace("%player%", play);
-                                a = a.Replace("%message%", msg.Replace(LinqXML.read(Event, "发送文本"), ""));
-                                text = "群消息" + a;
+                                if (LinqXML.read(mute, play) != "true")
+                                {
+                                    string a;
+                                    a = LinqXML.read(config, "发送文本");
+                                    a = a.Replace("%player%", play);
+                                    a = a.Replace("%message%", msg.Replace(LinqXML.read(Event, "发送文本"), ""));
+                                    socket.Send("群消息" + a, socket.MCserver);
+                                }
+                            }
+                            else
+                            {
+                                CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送【" + LinqXML.read(Event, "绑定文本") + "ID】来绑定，如：【" + LinqXML.read(Event, "绑定文本") + "yan_color】");
                             }
                         }
                         else
                         {
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送【" + LinqXML.read(Event, "绑定文本") + "ID】来绑定，如：【" + LinqXML.read(Event, "绑定文本") + "yan_color】");
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法发送");
                         }
                     }
                     else
@@ -290,10 +296,17 @@ namespace yan_color.Minecraft_QQ
                 {
                     if (server == true)
                     {
-                        if (fromGroup == GroupSet1) g = 1;
-                        else if (fromGroup == GroupSet2) g = 2;
-                        else if (fromGroup == GroupSet3) g = 3;
-                        text = "在线人数";
+                        if (socket.ready == true)
+                        {
+                            if (fromGroup == GroupSet1) g = 1;
+                            else if (fromGroup == GroupSet2) g = 2;
+                            else if (fromGroup == GroupSet3) g = 3;
+                            socket.Send("在线人数", socket.MCserver);
+                        }
+                        else
+                        {
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法查询");
+                        }
                     }
                     else
                     {
@@ -304,11 +317,18 @@ namespace yan_color.Minecraft_QQ
                 {
                     if (server == true)
                     {
-                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "查询中，如果没有回复，则证明服务器未开启");
-                        if (fromGroup == GroupSet1) g = 1;
-                        else if (fromGroup == GroupSet2) g = 2;
-                        else if (fromGroup == GroupSet3) g = 3;
-                        text = "服务器状态";
+                        if (socket.ready == true)
+                        {
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "查询中，如果没有回复，则证明服务器未开启");
+                            if (fromGroup == GroupSet1) g = 1;
+                            else if (fromGroup == GroupSet2) g = 2;
+                            else if (fromGroup == GroupSet3) g = 3;
+                            socket.Send("服务器状态", socket.MCserver);
+                        }
+                        else
+                        {
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法查询");
+                        }
                     }
                     else
                     {
