@@ -37,7 +37,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.5.0.0");
+            this.Version = new Version("1.5.1.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -292,7 +292,7 @@ namespace yan_color.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + LinqXML.read(Event, "服务器维护文本"));
                     }
                 }
-                else if (LinqXML.read(Event, msg) == "%online%")
+                if (LinqXML.read(Event, msg) == "%online%")
                 {
                     if (server == true)
                     {
@@ -313,7 +313,7 @@ namespace yan_color.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + LinqXML.read(Event, "服务器维护文本"));
                     }
                 }
-                else if (LinqXML.read(Event, msg) == "%server_online%")
+                if (LinqXML.read(Event, msg) == "%server_online%")
                 {
                     if (server == true)
                     {
