@@ -20,6 +20,8 @@ namespace yan_color.Minecraft_QQ
         private static byte[] read = new byte[4096];
         public static Boolean start;
         public static Boolean ready = false;
+        static Thread thread1 = new Thread(listenClientConnect);
+        static Thread thread2;
         public static void Start_socket()
         {
             try
@@ -30,13 +32,16 @@ namespace yan_color.Minecraft_QQ
                 serverSocket.Listen(10);
                 start = true;
                 ready = false;
-                new Thread(listenClientConnect).Start(serverSocket);
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]已启动");
+                thread1.Start(serverSocket);
+                
             }
             catch (Exception exception)
             {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请检查后重试");
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请看后台错误");
                 start = false;
                 ready = false;
+                MessageBox.Show(exception.Message);
             }
         }
         private static void listenClientConnect(object obj)
@@ -47,8 +52,18 @@ namespace yan_color.Minecraft_QQ
                 Socket clientScoket = socket.Accept();
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
                 ready = true;
-                new Thread(receiveData).Start(clientScoket);   // 在新的线程中接收客户端信息
-
+                if (thread2 == null)
+                {
+                    thread2 = new Thread(receiveData);
+                    thread2.Start(clientScoket);
+                }
+                else
+                {
+                    thread2.Abort();
+                    thread2 = null;
+                    thread2 = new Thread(receiveData);
+                    thread2.Start(clientScoket);                     // 在新的线程中接收客户端信息
+                }
                 Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
                 if (!start) return;
             }
@@ -74,7 +89,6 @@ namespace yan_color.Minecraft_QQ
                 }
 
             }
-
             return data;
         }
 
@@ -109,7 +123,7 @@ namespace yan_color.Minecraft_QQ
                     MCserver = null;
                     return;
                 }
-
+             
                 if (!start) return;
                 Thread.Sleep(200);      // 延时0.2秒后再接收客户端发送的消息
             }

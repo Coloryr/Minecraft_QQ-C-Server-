@@ -37,7 +37,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.5.1.0");
+            this.Version = new Version("1.5.2.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -141,27 +141,17 @@ namespace yan_color.Minecraft_QQ
             if (check == "")
             { MessageBox.Show("未设置端口，请设置"); frm.ShowDialog(); }
             else { Port = int.Parse(LinqXML.read(config, "Port")); }
-            CQ.SendGroupMessage(GroupSet1, "[Minecraft_QQ]已启动");
+            
             check = LinqXML.read(config, "群号2");
             if (check != "")
-            {
                 GroupSet2 = long.Parse(check);
-                if (GroupSet2 != 0)
-                {
-                    //CQ.SendGroupMessage(GroupSet2, "[Minecraft_QQ]已启动");
-                }
-            }
-            else { GroupSet2 = 0; }
+            else
+                GroupSet2 = 0; 
             check = LinqXML.read(config, "群号3");
             if (check != "")
-            {
                 GroupSet3 = long.Parse(check);
-                if (GroupSet3 != 0)
-                {
-                    //CQ.SendGroupMessage(GroupSet3, "[Minecraft_QQ]已启动");
-                }
-            }
-            else { GroupSet3 = 0; }
+            else
+                GroupSet3 = 0;
             if (!File.Exists(path + log))
             {
                 File.WriteAllText(path+log, "正在尝试创建文件"+ Environment.NewLine);
