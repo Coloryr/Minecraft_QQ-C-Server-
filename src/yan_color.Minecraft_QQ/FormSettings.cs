@@ -99,6 +99,14 @@ namespace yan_color.Minecraft_QQ
                 checkBox2.Checked = true;
                 checkBox2.Text = "服务器维护模式：开";
             }
+            if (LinqXML.read(Minecraft_QQ.config, "群2发送消息") == "开")
+                checkBox4.Checked = true;
+            else
+                checkBox4.Checked = false;
+            if (LinqXML.read(Minecraft_QQ.config, "群3发送消息") == "开")
+                checkBox5.Checked = true;
+            else
+                checkBox5.Checked = false;
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -181,6 +189,34 @@ namespace yan_color.Minecraft_QQ
                 LinqXML.write(Minecraft_QQ.config, "维护模式", "关");
                 Minecraft_QQ.server = false;
                 checkBox2.Text = "服务器维护模式：关";
+            }
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked == true)
+            {
+                LinqXML.write(Minecraft_QQ.config, "群2发送消息", "开");
+                Minecraft_QQ.Group2_on = true;
+            }
+            else
+            {
+                LinqXML.write(Minecraft_QQ.config, "群2发送消息", "关");
+                Minecraft_QQ.Group2_on = false;
+            }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox5.Checked == true)
+            {
+                LinqXML.write(Minecraft_QQ.config, "群3发送消息", "开");
+                Minecraft_QQ.Group3_on = true;
+            }
+            else
+            {
+                LinqXML.write(Minecraft_QQ.config, "群3发送消息", "关");
+                Minecraft_QQ.Group3_on = false;
             }
         }
     }

@@ -12,11 +12,13 @@ namespace yan_color.Minecraft_QQ
     public class Minecraft_QQ : CQAppAbstract
     {
         public static int Port;         //端口  
-        public static int g;
         public static String ipaddress; //地址
+
+        public static int Group;
         public static long GroupSet1;    //QQ群号1
         public static long GroupSet2;    //QQ群号2
         public static long GroupSet3;    //QQ群号3
+
         public static string config = "config.xml";
         public static string player = "player.xml";
         public static string admin = "admin.xml";
@@ -24,10 +26,13 @@ namespace yan_color.Minecraft_QQ
         public static string log = path + "logs.log";
         public static string Event = "event.xml";
         public static string mute = "mute.xml";
-        public static string command = " ";
-        public static string read_text = "";
+
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase+"Minecraft_QQ/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
+
         public static Boolean server = true;
+        public static Boolean Group2_on = false;
+        public static Boolean Group3_on = false;
+
         /// <summary>
         /// 应用初始化，用来初始化应用的基本信息。
         /// </summary>
@@ -37,7 +42,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.5.2.0");
+            this.Version = new Version("1.6.0.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -48,6 +53,13 @@ namespace yan_color.Minecraft_QQ
         public override void Startup()
         {
             //完成插件线程、全局变量等自身运行所必须的初始化工作。
+            read_config();
+
+            socket.Start_socket();           
+        }
+
+        public static void read_config()
+        {
             FormSettings frm = new FormSettings();
             if (Directory.Exists(path) == false)
             { Directory.CreateDirectory(path); }
@@ -65,7 +77,7 @@ namespace yan_color.Minecraft_QQ
             if (LinqXML.read(config, "更新？") != "false")
             {
                 LinqXML.write(config, "更新？", "false");
-                if (LinqXML.read(config, "IP" )== "") LinqXML.write(config, "IP", "127.0.0.1");
+                if (LinqXML.read(config, "IP") == "") LinqXML.write(config, "IP", "127.0.0.1");
                 if (LinqXML.read(config, "Port") == "") LinqXML.write(config, "Port", "25555");
                 if (LinqXML.read(config, "编码") == "") LinqXML.write(config, "编码", "ANSI（GBK）");
                 if (LinqXML.read(config, "发送消息") == "") LinqXML.write(config, "发送消息", "不！");
@@ -99,6 +111,7 @@ namespace yan_color.Minecraft_QQ
                 LinqXML.write(Event, "修改玩家ID", "修改：");
                 LinqXML.write(Event, "维护文本", "服务器维护");
                 LinqXML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
+                LinqXML.write(Event, "机器人功能-重读配置文件", "重读文件");
             }
             if (LinqXML.read(Event, "更新？") != "false")
             {
@@ -118,12 +131,13 @@ namespace yan_color.Minecraft_QQ
                 if (LinqXML.read(Event, "修改玩家ID") == "") LinqXML.write(Event, "修改玩家ID", "修改：");
                 if (LinqXML.read(Event, "维护文本") == "") LinqXML.write(Event, "维护文本", "服务器维护");
                 if (LinqXML.read(Event, "服务器维护文本") == "") LinqXML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
+                if (LinqXML.read(Event, "机器人功能-重读配置文件") == "") LinqXML.write(Event, "机器人功能-重读配置文件", "重读文件");
             }
 
             if (File.Exists(path + message) == false)
             {
                 LinqXML.write(message, "启用", "true");
-                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + LinqXML.read(Event,"绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + LinqXML.read(Event,"发送文本") + "内容】可以向服务器里发送消息。");
+                LinqXML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + LinqXML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + LinqXML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
             }
             if (LinqXML.read(message, "启用") == "")
             {
@@ -141,25 +155,34 @@ namespace yan_color.Minecraft_QQ
             if (check == "")
             { MessageBox.Show("未设置端口，请设置"); frm.ShowDialog(); }
             else { Port = int.Parse(LinqXML.read(config, "Port")); }
-            
+
+            CQ.SendGroupMessage(GroupSet1, "[Minecraft_QQ]正在启动");
+
             check = LinqXML.read(config, "群号2");
             if (check != "")
                 GroupSet2 = long.Parse(check);
             else
-                GroupSet2 = 0; 
+                GroupSet2 = 0;
             check = LinqXML.read(config, "群号3");
             if (check != "")
                 GroupSet3 = long.Parse(check);
             else
                 GroupSet3 = 0;
+
             if (!File.Exists(path + log))
             {
-                File.WriteAllText(path+log, "正在尝试创建文件"+ Environment.NewLine);
+                File.WriteAllText(path + log, "正在尝试创建文件" + Environment.NewLine);
             }
+
             if (LinqXML.read(config, "维护模式") == "关") server = true;
             else server = false;
-            socket.Start_socket();           
+
+            if (LinqXML.read(config, "群2发送消息") == "开") Group2_on = true;
+            else Group2_on = false;
+            if (LinqXML.read(config, "群3发送消息") == "开") Group3_on = true;
+            else Group3_on = false;
         }
+
         public static string get_string(string a, string b, string c = null)
         {
             int x = a.IndexOf(b) + 1;
@@ -230,29 +253,36 @@ namespace yan_color.Minecraft_QQ
                 if (LinqXML.read(message, msg) != "" && LinqXML.read(message, "启用") == "true")
                 {
                     CQ.SendGroupMessage(fromGroup, LinqXML.read(message, msg));
-                }
-                if (LinqXML.read(config, "发送消息") == "当然！")
+                }                
+                else if (LinqXML.read(config, "发送消息") == "当然！")
                 {
-                    if (server == true)
+                    if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
+                            CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
+                    else if (server == true)
                     {
-                        string play = LinqXML.read(player, fromQQ.ToString());
-                        if (play != "")
-                        {
-                            if (LinqXML.read(mute, play) != "true")
+                        if(socket.ready == true)
+                        { 
+                            string play = LinqXML.read(player, fromQQ.ToString());
+                            if (play != "")
                             {
-                                string a;
-                                a = LinqXML.read(config, "发送文本");
-                                a = a.Replace("%player%", play);
-                                a = a.Replace("%message%", msg);
-                                socket.Send("群消息" + a, socket.MCserver);
+                                if (LinqXML.read(mute, play) != "true")
+                                {
+                                    string a;
+                                    a = LinqXML.read(config, "发送文本");
+                                    a = a.Replace("%player%", play);
+                                    a = a.Replace("%message%", msg);
+                                    socket.Send("群消息" + a, socket.MCserver);
+                                }
                             }
                         }
                     }
                 }
                 else if (msg.IndexOf(LinqXML.read(Event, "发送文本")) == 0 && LinqXML.read(config, "发送消息") == "不！")
                 {
-                    if (server == true)
-                    {
+                    if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
+                            CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
+                    else if (server == true)
+                    {                       
                         if (socket.ready == true)
                         {
                             string play = LinqXML.read(player, fromQQ.ToString());
@@ -274,7 +304,7 @@ namespace yan_color.Minecraft_QQ
                         }
                         else
                         {
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法发送");
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "发送失败，请稍后尝试");
                         }
                     }
                     else
@@ -288,14 +318,14 @@ namespace yan_color.Minecraft_QQ
                     {
                         if (socket.ready == true)
                         {
-                            if (fromGroup == GroupSet1) g = 1;
-                            else if (fromGroup == GroupSet2) g = 2;
-                            else if (fromGroup == GroupSet3) g = 3;
+                            if (fromGroup == GroupSet1) Group = 1;
+                            else if (fromGroup == GroupSet2) Group = 2;
+                            else if (fromGroup == GroupSet3) Group = 3;
                             socket.Send("在线人数", socket.MCserver);
                         }
                         else
                         {
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法查询");
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "发送失败，请稍后尝试");
                         }
                     }
                     else
@@ -310,14 +340,14 @@ namespace yan_color.Minecraft_QQ
                         if (socket.ready == true)
                         {
                             CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "查询中，如果没有回复，则证明服务器未开启");
-                            if (fromGroup == GroupSet1) g = 1;
-                            else if (fromGroup == GroupSet2) g = 2;
-                            else if (fromGroup == GroupSet3) g = 3;
+                            if (fromGroup == GroupSet1) Group = 1;
+                            else if (fromGroup == GroupSet2) Group = 2;
+                            else if (fromGroup == GroupSet3) Group = 3;
                             socket.Send("服务器状态", socket.MCserver);
                         }
                         else
                         {
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "服务器未连接，无法查询");
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "发送失败，请稍后尝试");
                         }
                     }
                     else
@@ -397,6 +427,12 @@ namespace yan_color.Minecraft_QQ
                 {
                     CQ.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                     OpenSettingForm();
+                }
+                if (msg == LinqXML.read(Event, "机器人功能-重读配置文件") && LinqXML.read(admin, fromQQ.ToString()) != "")
+                {
+                    CQ.SendGroupMessage(fromGroup, "开始重读配置文件");
+                    read_config();
+                    CQ.SendGroupMessage(fromGroup, "重读完成");
                 }
             }
         }
