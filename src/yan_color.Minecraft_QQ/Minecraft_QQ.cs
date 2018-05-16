@@ -42,7 +42,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.6.0.0");
+            this.Version = new Version("1.6.1.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -112,6 +112,7 @@ namespace yan_color.Minecraft_QQ
                 LinqXML.write(Event, "维护文本", "服务器维护");
                 LinqXML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 LinqXML.write(Event, "机器人功能-重读配置文件", "重读文件");
+                LinqXML.write(Event, "机器人功能-内存回收", "内存回收");
             }
             if (LinqXML.read(Event, "更新？") != "false")
             {
@@ -132,6 +133,7 @@ namespace yan_color.Minecraft_QQ
                 if (LinqXML.read(Event, "维护文本") == "") LinqXML.write(Event, "维护文本", "服务器维护");
                 if (LinqXML.read(Event, "服务器维护文本") == "") LinqXML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 if (LinqXML.read(Event, "机器人功能-重读配置文件") == "") LinqXML.write(Event, "机器人功能-重读配置文件", "重读文件");
+                if (LinqXML.read(Event, "机器人功能-内存回收") == "") LinqXML.write(Event, "机器人功能-内存回收", "内存回收");
             }
 
             if (File.Exists(path + message) == false)
@@ -380,14 +382,32 @@ namespace yan_color.Minecraft_QQ
                 if (msg.IndexOf(LinqXML.read(Event, "禁言文本")) == 0 && LinqXML.read(admin, fromQQ.ToString()) != "")
                 {
                     string a = msg.Replace(LinqXML.read(Event, "禁言文本"), "");
-                    LinqXML.write(mute, a,"true");
-                    CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已禁言：[" + a + "]");
+                    a = get_string(a, "=", "]");
+                    string b = LinqXML.read(player, a);
+                    if (b == "")
+                    {
+                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "该玩家未绑定ID");
+                    }
+                    else
+                    {
+                        LinqXML.write(mute, b, "true");
+                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已禁言：[" + b + "]");
+                    }
                 }
                 if (msg.IndexOf(LinqXML.read(Event, "解禁文本")) == 0 && LinqXML.read(admin, fromQQ.ToString()) != "")
                 {
                     string a = msg.Replace(LinqXML.read(Event, "解禁文本"), "");
-                    LinqXML.write(mute, a, "false");
-                    CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已解禁：[" + a + "]");
+                    a = get_string(a, "=", "]");
+                    string b = LinqXML.read(player, a);
+                    if (b == "")
+                    {
+                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "该玩家未绑定ID");
+                    }
+                    else
+                    {
+                        LinqXML.write(mute, b, "false");
+                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已解禁：[" + b + "]");
+                    }
                 }
                 if (msg.IndexOf(LinqXML.read(Event, "查询玩家ID")) == 0 && LinqXML.read(admin, fromQQ.ToString()) != "")
                 {
@@ -433,6 +453,16 @@ namespace yan_color.Minecraft_QQ
                     CQ.SendGroupMessage(fromGroup, "开始重读配置文件");
                     read_config();
                     CQ.SendGroupMessage(fromGroup, "重读完成");
+                }
+                if (msg == LinqXML.read(Event, "机器人功能-内存回收") && LinqXML.read(admin, fromQQ.ToString()) != "")
+                {
+                    try
+                    {
+                        GC.Collect();
+                        CQ.SendGroupMessage(fromGroup, "内存回收完毕");
+                    }
+                    catch (Exception exception)
+                    { }
                 }
             }
         }

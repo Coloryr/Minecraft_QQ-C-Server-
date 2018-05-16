@@ -55,6 +55,7 @@ namespace yan_color.Minecraft_QQ
                 ready = true;
                 if (thread2 == null)
                 {
+                    GC.Collect();
                     thread2 = new Thread(receiveData);
                     thread2.Start(clientScoket);
                 }
@@ -62,6 +63,7 @@ namespace yan_color.Minecraft_QQ
                 {
                     thread2.Abort();
                     thread2 = null;
+                    GC.Collect();
                     thread2 = new Thread(receiveData);
                     thread2.Start(clientScoket);                     // 在新的线程中接收客户端信息
                 }
