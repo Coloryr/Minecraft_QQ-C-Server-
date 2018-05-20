@@ -71,7 +71,7 @@ namespace yan_color.Minecraft_QQ
 
             textBox4.Text = LinqXML.read(Minecraft_QQ.config, "IP");
             textBox5.Text = LinqXML.read(Minecraft_QQ.config, "Port");
-            if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF8")
+            if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
             {
                 radioButton1.Checked = true;
                 radioButton2.Checked = false;

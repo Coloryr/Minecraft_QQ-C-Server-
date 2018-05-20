@@ -42,7 +42,7 @@ namespace yan_color.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.6.1.0");
+            this.Version = new Version("1.6.2.0");
             this.Author = "yan_color";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -221,10 +221,12 @@ namespace yan_color.Minecraft_QQ
         {
             // 处理私聊消息。
         }
+
         public static string RemoveLeft(string s, int len)
         {
             return s.PadLeft(len).Remove(0, len);
         }
+        
         public bool IsNatural_Number(string str)
         {
             for (int i = 0; i < str.Length; i++)
@@ -236,6 +238,18 @@ namespace yan_color.Minecraft_QQ
             }
             return false;
         }
+
+        public static string remove_pic(string a)
+        {
+            for (; a.IndexOf("[CQ:image") != -1;)
+            {
+                string b = get_string(a, "[", "]");
+                a = a.Replace(b, "");
+                a = a.Replace("[]", "");
+            }
+            return a;
+        }
+
         /// <summary>
         /// Type=2 群消息。
         /// </summary>
@@ -269,10 +283,13 @@ namespace yan_color.Minecraft_QQ
                             {
                                 if (LinqXML.read(mute, play) != "true")
                                 {
+
                                     string a;
                                     a = LinqXML.read(config, "发送文本");
                                     a = a.Replace("%player%", play);
-                                    a = a.Replace("%message%", msg);
+                                    if (remove_pic(msg) == "")
+                                        return;
+                                    a = a.Replace("%message%", remove_pic(msg));
                                     socket.Send("群消息" + a, socket.MCserver);
                                 }
                             }
@@ -292,10 +309,13 @@ namespace yan_color.Minecraft_QQ
                             {
                                 if (LinqXML.read(mute, play) != "true")
                                 {
-                                    string a;
+                                    string a,b;
                                     a = LinqXML.read(config, "发送文本");
                                     a = a.Replace("%player%", play);
-                                    a = a.Replace("%message%", msg.Replace(LinqXML.read(Event, "发送文本"), ""));
+                                    b = msg.Replace(LinqXML.read(Event, "发送文本"), "");
+                                    if (remove_pic(b) == "")
+                                        return;
+                                    a = a.Replace("%message%", remove_pic(b));
                                     socket.Send("群消息" + a, socket.MCserver);
                                 }
                             }
