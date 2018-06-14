@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace yan_color.Minecraft_QQ
+namespace Color_yr.Minecraft_QQ
 {
 	public static class Extensions
 	{

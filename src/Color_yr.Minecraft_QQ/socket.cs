@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace yan_color.Minecraft_QQ
+namespace Color_yr.Minecraft_QQ
 {
     public class socket
     {
@@ -26,13 +26,14 @@ namespace yan_color.Minecraft_QQ
         {
             try
             {
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动端口");
                 IPAddress ip = IPAddress.Parse(Minecraft_QQ.ipaddress);
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
                 serverSocket.Listen(10);
                 start = true;
                 ready = false;
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]已启动");
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动");
                 thread1 = new Thread(listenClientConnect);
                 thread1.Start(serverSocket);
                 
@@ -82,11 +83,11 @@ namespace yan_color.Minecraft_QQ
                 bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+                if (XML.read(config_read.config, "编码") == "UTF-8")
                 {
                     data = Encoding.UTF8.GetString(bytes, 0, receiveNumber);
                 }
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+                if (XML.read(config_read.config, "编码") == "ANSI（GBK）")
                 {
                     data = Encoding.Default.GetString(bytes, 0, receiveNumber);
                 }
@@ -157,11 +158,11 @@ namespace yan_color.Minecraft_QQ
             if (socket != null && data != null && !data.Equals(""))
             {
                 byte[] bytes = null;
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+                if (XML.read(config_read.config, "编码") == "UTF-8")
                 {
                     bytes = Encoding.UTF8.GetBytes(data);
                 }
-                if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+                if (XML.read(config_read.config, "编码") == "ANSI（GBK）")
                 {
                     bytes = Encoding.Default.GetBytes(data);
                 }
@@ -176,7 +177,7 @@ namespace yan_color.Minecraft_QQ
                 sb.Replace("[群消息]", string.Empty);
                 string x = sb.ToString();
                 string z = Minecraft_QQ.get_string(x, "(", ")");
-                if (LinqXML.read(Minecraft_QQ.mute, z) != "true")
+                if (XML.read(config_read.mute, z) != "true")
                 {
                     x = x.Replace("(" + z + ")", "");
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, x);

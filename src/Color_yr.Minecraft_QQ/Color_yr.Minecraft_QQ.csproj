@@ -7,9 +7,9 @@
     <ProjectGuid>{5D0BDC2D-DA77-4B06-A29C-2476C5BAA113}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>yan_color.Minecraft_QQ</RootNamespace>
+    <RootNamespace>Color_yr.Minecraft_QQ</RootNamespace>
     <AssemblyName>Minecraft_QQ</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -43,6 +43,10 @@
     <Reference Include="Flexlive.CQP.Framework">
       <HintPath>..\..\Libs\Flexlive.CQP.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\Libs\MySql.Data.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -53,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="config.cs" />
     <Compile Include="logs.cs" />
+    <Compile Include="Mysql.cs" />
     <Compile Include="socket.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FormSettings.cs">
@@ -70,6 +76,9 @@
     <EmbeddedResource Include="FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

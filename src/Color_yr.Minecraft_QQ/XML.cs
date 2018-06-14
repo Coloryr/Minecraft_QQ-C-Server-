@@ -6,9 +6,9 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace yan_color.Minecraft_QQ
+namespace Color_yr.Minecraft_QQ
 {
-    public partial class LinqXML
+    public partial class XML
     {
         /// <summary>
         /// 使用linq 建立xml
@@ -17,17 +17,17 @@ namespace yan_color.Minecraft_QQ
         /// <param name="mode">模式</param>>
         public static void CreateFile(string text, int mode)
         {
-            if (File.Exists(Minecraft_QQ.path + text) && mode == 1) //文件存在就删除
+            if (File.Exists(config_read.path + text) && mode == 1) //文件存在就删除
             {
-                FileInfo file = new FileInfo(Minecraft_QQ.path + text);
+                FileInfo file = new FileInfo(config_read.path + text);
                 file.Delete();
                 XElement contacts = new XElement("config");
-                contacts.Save(Minecraft_QQ.path + text);
+                contacts.Save(config_read.path + text);
             }
             else
             {
                 XElement contacts = new XElement("config");
-                contacts.Save(Minecraft_QQ.path + text);
+                contacts.Save(config_read.path + text);
             }
         }
         /// <summary>
@@ -38,12 +38,12 @@ namespace yan_color.Minecraft_QQ
         /// <param name="data1">元素名</param>
         public static void setXml(string text, string data, string data1)
         {
-            if (File.Exists(Minecraft_QQ.path + text)==false)
+            if (File.Exists(config_read.path + text)==false)
             { 
             CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
-            XElement xe = XElement.Load(Minecraft_QQ.path + text);
+            XElement xe = XElement.Load(config_read.path + text);
             ///查找被替换的元素
             IEnumerable<XElement> element = from e in xe.Elements("config")
                                             where e.Attribute("int").Value == data
@@ -59,7 +59,7 @@ namespace yan_color.Minecraft_QQ
                 new XElement("data", data1)              ///添加元素Name
                  );
             }
-            xe.Save(Minecraft_QQ.path + text);
+            xe.Save(config_read.path + text);
         }
         /// <summary>
         /// //增加元素到XML文件
@@ -69,7 +69,7 @@ namespace yan_color.Minecraft_QQ
         /// <param name="data1">元素名</param>
         public static void write(string text, string data, string data1)
         {
-            if (File.Exists(Minecraft_QQ.path + text) == false)
+            if (File.Exists(config_read.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
@@ -81,7 +81,7 @@ namespace yan_color.Minecraft_QQ
             else
             {
                 ///导入XML文件
-                XElement xe = XElement.Load(Minecraft_QQ.path + text);
+                XElement xe = XElement.Load(config_read.path + text);
                 ///创建一个新的节点
                 XElement student = new XElement("config",
                  new XAttribute("int", data),                    ///添加属性number
@@ -89,7 +89,7 @@ namespace yan_color.Minecraft_QQ
              );
                 ///添加节点到文件中，并保存
                 xe.Add(student);
-                xe.Save(Minecraft_QQ.path + text);
+                xe.Save(config_read.path + text);
             }
         }
         /// <summary>
@@ -100,12 +100,12 @@ namespace yan_color.Minecraft_QQ
         /// <param name="text">元素名</param>
         public static void Remove(string text, string data, string data1)//删除XML文件中的元素
         {
-            if (File.Exists(Minecraft_QQ.path + text) == false)
+            if (File.Exists(config_read.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
-            XElement xe = XElement.Load(Minecraft_QQ.path + text);
+            XElement xe = XElement.Load(config_read.path + text);
             ///查找被删除的元素
             IEnumerable<XElement> element = from e in xe.Elements()
                                             where e.Attribute(data).Value == data1
@@ -115,7 +115,7 @@ namespace yan_color.Minecraft_QQ
             {
                 element.First().Remove();
             }
-            xe.Save(Minecraft_QQ.path + text);
+            xe.Save(config_read.path + text);
         }
         /// <summary>
         /// 查询
@@ -125,17 +125,18 @@ namespace yan_color.Minecraft_QQ
         public static string read(string text, string data)
         {
             string a = "";
-            if (File.Exists(Minecraft_QQ.path + text) == false)
+            if (File.Exists(config_read.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(Minecraft_QQ.path + text);
+                xmlDoc.Load(config_read.path + text);
 
                 XmlNode xnP = xmlDoc.SelectSingleNode("config/config[@int='" + data + "']/data");
                 a = xnP.InnerText;
+                if (a == "") a = null;
             }
             catch (Exception ex)
             {

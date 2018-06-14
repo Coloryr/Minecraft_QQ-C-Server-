@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace yan_color.Minecraft_QQ
+namespace Color_yr.Minecraft_QQ
 {
     public partial class FormSettings : Form
     {
@@ -20,13 +20,13 @@ namespace yan_color.Minecraft_QQ
         private void btnExit_Click(object sender, EventArgs e)
         {
             int tmp;
-            LinqXML.write(Minecraft_QQ.config, "群号1", textBox1.Text);
+            XML.write(config_read.config, "群号1", textBox1.Text);
             Minecraft_QQ.GroupSet1 = long.Parse(textBox1.Text);
-            LinqXML.write(Minecraft_QQ.config, "群号2", textBox3.Text);
+            XML.write(config_read.config, "群号2", textBox3.Text);
             Minecraft_QQ.GroupSet2 = long.Parse(textBox3.Text);
-            LinqXML.write(Minecraft_QQ.config, "IP", textBox4.Text);
-            LinqXML.write(Minecraft_QQ.config, "Port", textBox5.Text);
-            LinqXML.write(Minecraft_QQ.config, "群号3", textBox6.Text);
+            XML.write(config_read.config, "IP", textBox4.Text);
+            XML.write(config_read.config, "Port", textBox5.Text);
+            XML.write(config_read.config, "群号3", textBox6.Text);
             Minecraft_QQ.GroupSet3 = long.Parse(textBox6.Text);
             if (!int.TryParse(textBox5.Text, out tmp))
             {
@@ -52,58 +52,71 @@ namespace yan_color.Minecraft_QQ
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.config, "群号1", textBox1.Text);
+            XML.write(config_read.config, "群号1", textBox1.Text);
             Minecraft_QQ.GroupSet1 = long.Parse(textBox1.Text);
             button1.Text = "设置成功";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.admin, textBox2.Text, "admin");
+            XML.write(config_read.admin, textBox2.Text, "admin");
             button2.Text = "添加成功";
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            textBox1.Text = LinqXML.read(Minecraft_QQ.config, "群号1");
-            textBox3.Text = LinqXML.read(Minecraft_QQ.config, "群号2");
-            textBox6.Text = LinqXML.read(Minecraft_QQ.config, "群号3");
+            textBox1.Text = XML.read(config_read.config, "群号1");
+            textBox3.Text = XML.read(config_read.config, "群号2");
+            textBox6.Text = XML.read(config_read.config, "群号3");
 
-            textBox4.Text = LinqXML.read(Minecraft_QQ.config, "IP");
-            textBox5.Text = LinqXML.read(Minecraft_QQ.config, "Port");
-            if (LinqXML.read(Minecraft_QQ.config, "编码") == "UTF-8")
+            textBox4.Text = XML.read(config_read.config, "IP");
+            textBox5.Text = XML.read(config_read.config, "Port");
+
+            textBox11.Text = XML.read(config_read.admin, "发送给的人");
+
+            textBox7.Text = XML.read(config_read.config, "Mysql地址");
+            textBox8.Text = XML.read(config_read.config, "Mysql端口");
+            textBox9.Text = XML.read(config_read.config, "Mysql账户");
+            textBox10.Text = XML.read(config_read.config, "Mysql密码");
+
+            if(Minecraft_QQ.Mysql_mode==true)
+            {
+                checkBox3.Checked = true;
+            }
+
+            if (XML.read(config_read.config, "编码") == "UTF-8")
             {
                 radioButton1.Checked = true;
                 radioButton2.Checked = false;
             }
-            else if (LinqXML.read(Minecraft_QQ.config, "编码") == "ANSI（GBK）")
+            else if (XML.read(config_read.config, "编码") == "ANSI（GBK）")
             {
                 radioButton1.Checked = false;
                 radioButton2.Checked = true;
             }
-            if (LinqXML.read(Minecraft_QQ.config, "发送消息") == "当然！")
+            if (XML.read(config_read.config, "发送消息") == "当然！")
             {
                 checkBox1.Checked = true;
             }
-            else if (LinqXML.read(Minecraft_QQ.config, "发送消息") == "不！")
+            else if (XML.read(config_read.config, "发送消息") == "不！")
             {
                 checkBox1.Checked = false;
             }
-            if (LinqXML.read(Minecraft_QQ.config, "维护模式") == "关")
+            if (XML.read(config_read.config, "维护模式") == "关")
             {
                 checkBox2.Checked = false;
                 checkBox2.Text = "服务器维护模式：关";
             }
-            else if (LinqXML.read(Minecraft_QQ.config, "维护模式") == "开")
+            else if (XML.read(config_read.config, "维护模式") == "开")
             {
                 checkBox2.Checked = true;
                 checkBox2.Text = "服务器维护模式：开";
             }
-            if (LinqXML.read(Minecraft_QQ.config, "群2发送消息") == "开")
+            if (XML.read(config_read.config, "群2发送消息") == "开")
                 checkBox4.Checked = true;
             else
                 checkBox4.Checked = false;
-            if (LinqXML.read(Minecraft_QQ.config, "群3发送消息") == "开")
+            if (XML.read(config_read.config, "群3发送消息") == "开")
                 checkBox5.Checked = true;
             else
                 checkBox5.Checked = false;
@@ -122,8 +135,8 @@ namespace yan_color.Minecraft_QQ
         private void button_Click(object sender, EventArgs e)
         {
             int tmp;
-            LinqXML.write(Minecraft_QQ.config, "IP", textBox4.Text);
-            LinqXML.write(Minecraft_QQ.config, "Port", textBox5.Text);
+            XML.write(config_read.config, "IP", textBox4.Text);
+            XML.write(config_read.config, "Port", textBox5.Text);
             if (!int.TryParse(textBox5.Text, out tmp))
             {
                 MessageBox.Show("请正确输入数字");
@@ -148,45 +161,45 @@ namespace yan_color.Minecraft_QQ
 
         private void button4_Click(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.config, "群号2", textBox3.Text);
+            XML.write(config_read.config, "群号2", textBox3.Text);
             Minecraft_QQ.GroupSet2 = long.Parse(textBox3.Text);
             button4.Text = "设置成功";
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.config, "群号3", textBox6.Text);
+            XML.write(config_read.config, "群号3", textBox6.Text);
             Minecraft_QQ.GroupSet3 = long.Parse(textBox6.Text);
             button5.Text = "设置成功";
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.config, "编码", "UTF-8");
+            XML.write(config_read.config, "编码", "UTF-8");
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            LinqXML.write(Minecraft_QQ.config, "编码", "ANSI（GBK）");
+            XML.write(config_read.config, "编码", "ANSI（GBK）");
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox1.Checked==true) LinqXML.write(Minecraft_QQ.config, "发送消息", "当然！");
-            else LinqXML.write(Minecraft_QQ.config, "发送消息", "不！");
+            if(checkBox1.Checked==true) XML.write(config_read.config, "发送消息", "当然！");
+            else XML.write(config_read.config, "发送消息", "不！");
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox2.Checked == true)
             {
-                LinqXML.write(Minecraft_QQ.config, "维护模式", "开");
+                XML.write(config_read.config, "维护模式", "开");
                 Minecraft_QQ.server = true;
                 checkBox2.Text = "服务器维护模式：开";
             }
             else
             {
-                LinqXML.write(Minecraft_QQ.config, "维护模式", "关");
+                XML.write(config_read.config, "维护模式", "关");
                 Minecraft_QQ.server = false;
                 checkBox2.Text = "服务器维护模式：关";
             }
@@ -196,12 +209,12 @@ namespace yan_color.Minecraft_QQ
         {
             if (checkBox4.Checked == true)
             {
-                LinqXML.write(Minecraft_QQ.config, "群2发送消息", "开");
+                XML.write(config_read.config, "群2发送消息", "开");
                 Minecraft_QQ.Group2_on = true;
             }
             else
             {
-                LinqXML.write(Minecraft_QQ.config, "群2发送消息", "关");
+                XML.write(config_read.config, "群2发送消息", "关");
                 Minecraft_QQ.Group2_on = false;
             }
         }
@@ -210,14 +223,55 @@ namespace yan_color.Minecraft_QQ
         {
             if (checkBox5.Checked == true)
             {
-                LinqXML.write(Minecraft_QQ.config, "群3发送消息", "开");
+                XML.write(config_read.config, "群3发送消息", "开");
                 Minecraft_QQ.Group3_on = true;
             }
             else
             {
-                LinqXML.write(Minecraft_QQ.config, "群3发送消息", "关");
+                XML.write(config_read.config, "群3发送消息", "关");
                 Minecraft_QQ.Group3_on = false;
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            XML.write(config_read.config, "Mysql地址", textBox7.Text);
+            XML.write(config_read.config, "Mysql端口", textBox8.Text);
+            XML.write(config_read.config, "Mysql账户", textBox9.Text);
+            XML.write(config_read.config, "Mysql密码", textBox10.Text);
+            if (Mysql.mysql_start() == true)
+            {
+                button6.Text = "Mysql已设置";
+                Minecraft_QQ.Mysql_mode = true;
+                checkBox3.Checked = true;
+                XML.write(config_read.config, "Mysql启用", "开");
+            }
+            else
+            {
+                button6.Text = "Mysql错误";
+                Minecraft_QQ.Mysql_mode = false;
+                checkBox3.Checked = false;
+                XML.write(config_read.config, "Mysql启用", "关");
+            }
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox3.Checked == true)
+            {
+                XML.write(config_read.config, "Mysql启用", "开");
+                Minecraft_QQ.Mysql_mode = true;
+            }
+            if (checkBox3.Checked == false)
+            {
+                XML.write(config_read.config, "Mysql启用", "关");
+                Minecraft_QQ.Mysql_mode = false;
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            XML.write(config_read.admin, "发送给的人", textBox11.Text);
         }
     }
 }
