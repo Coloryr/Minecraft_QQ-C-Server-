@@ -22,6 +22,7 @@ namespace Color_yr.Minecraft_QQ
         public static Boolean ready = false;
         static Thread thread1 = null;
         static Thread thread2 = null;
+
         public static void Start_socket()
         {
             try
@@ -30,13 +31,13 @@ namespace Color_yr.Minecraft_QQ
                 IPAddress ip = IPAddress.Parse(Minecraft_QQ.ipaddress);
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
-                serverSocket.Listen(10);
+                serverSocket.Listen(5);
+                
+                thread1 = new Thread(listenClientConnect);
+                thread1.Start(serverSocket);
                 start = true;
                 ready = false;
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动");
-                thread1 = new Thread(listenClientConnect);
-                thread1.Start(serverSocket);
-                
             }
             catch (Exception exception)
             {
@@ -52,22 +53,19 @@ namespace Color_yr.Minecraft_QQ
             while (true)
             {
                 Socket clientScoket = socket.Accept();
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
-                ready = true;
-                if (thread2 == null)
-                {
-                    GC.Collect();
-                    thread2 = new Thread(receiveData);
-                    thread2.Start(clientScoket);
-                }
-                else
+
+                if (thread2 != null)
                 {
                     thread2.Abort();
                     thread2 = null;
-                    GC.Collect();
-                    thread2 = new Thread(receiveData);
-                    thread2.Start(clientScoket);                     // 在新的线程中接收客户端信息
                 }
+                thread2 = new Thread(receiveData);
+                thread2.Start(clientScoket);                     // 在新的线程中接收客户端信息
+
+                GC.Collect();
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
+                ready = true;
+
                 Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
                 if (!start) return;
             }
@@ -121,9 +119,12 @@ namespace Color_yr.Minecraft_QQ
 
                     socket.Shutdown(SocketShutdown.Both);
                     socket.Close();
+                    socket = null;
 
-                    if (clients.ContainsKey(clientIp)) clients.Remove(clientIp);
+                    clients.Clear();
                     MCserver = null;
+                        
+                    GC.Collect();
                     return;
                 }
 
@@ -140,17 +141,23 @@ namespace Color_yr.Minecraft_QQ
             if (clients.ContainsKey(id))
             {
                 Socket socket = clients[id];
-
                 try
                 {
                     Send(socket, info);
                 }
                 catch (Exception ex)
                 {
-                    clients.Remove(id);
+                    clients.Clear();
+                    MCserver = null;
+
+                    GC.Collect();
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开，无法发送");
                     ready = false;
                 }
+            }
+            else
+            {
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
             }
         }
         private static void Send(Socket socket, string data)
@@ -176,7 +183,7 @@ namespace Color_yr.Minecraft_QQ
                 var sb = new StringBuilder(read);
                 sb.Replace("[群消息]", string.Empty);
                 string x = sb.ToString();
-                string z = Minecraft_QQ.get_string(x, "(", ")");
+                string z = use.get_string(x, "(", ")");
                 if (XML.read(config_read.mute, z) != "true")
                 {
                     x = x.Replace("(" + z + ")", "");

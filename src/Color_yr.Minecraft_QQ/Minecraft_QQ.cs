@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.7.0.0");
+            this.Version = new Version("1.7.5.0");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -45,25 +45,9 @@ namespace Color_yr.Minecraft_QQ
         public override void Startup()
         {
             //完成插件线程、全局变量等自身运行所必须的初始化工作。
-            config_read.read_config();
-
-            socket.Start_socket();           
+            config_read.config_thread.Start();
         }
 
-        public static string get_string(string a, string b, string c = null)
-        {
-            int x = a.IndexOf(b) + 1;
-            int y;
-            if (c != null)
-            {
-                y = a.IndexOf(c);
-                return a.Substring(x, y - x);
-            }
-            else
-            {
-                return a.Substring(x);
-            }
-        }
         /// <summary>
         /// 打开设置窗口。
         /// </summary>
@@ -85,8 +69,7 @@ namespace Color_yr.Minecraft_QQ
         public override void PrivateMessage(int subType, int sendTime, long fromQQ, string msg, int font)
         {
             // 处理私聊消息。
-            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + ']' + '[' + CQE.GetQQName(fromQQ) + ']'
-            + ':' + msg);
+            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + ']' +  ':' + msg);
             if (msg.IndexOf(XML.read(config_read.Event, "绑定文本")) == 0)
             {
                 string player_name = null;
@@ -98,10 +81,10 @@ namespace Color_yr.Minecraft_QQ
                 {
                     player_name = XML.read(config_read.player, fromQQ.ToString());
                 }
-                if (player_name == null)
+                if (player_name == null || player_name == "")
                 {
                     string a = msg.Replace(XML.read(config_read.Event, "绑定文本"), "");
-                    if (a == " " || a == "" || IsNatural_Number(a) == false)
+                    if (a == " " || a == "" || use.IsNatural_Number(a) == false)
                     {
                         CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "绑定失败，请检查你的ID");
                     }
@@ -111,11 +94,11 @@ namespace Color_yr.Minecraft_QQ
                         sb.Replace(" ", string.Empty);
                         if (Mysql_mode == true)
                         {
-                            XML.write(config_read.player, fromQQ.ToString(), sb.ToString());
+                            Mysql.mysql_add(Mysql.Mysql_player, fromQQ.ToString(), sb.ToString());
                         }
                         else
                         {
-                            Mysql.mysql_add(Mysql.Mysql_player, fromQQ.ToString(), sb.ToString());
+                            XML.write(config_read.player, fromQQ.ToString(), sb.ToString());
                         }
 
                         CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "绑定ID：" + a + "成功！");
@@ -123,7 +106,7 @@ namespace Color_yr.Minecraft_QQ
                         string qq_admin = XML.read(config_read.admin, "发送给的人");
                         if(qq_admin != null)
                         {
-                            CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQE.GetQQName(fromQQ) + "]绑定了ID：[" + sb.ToString() + "]");
+                            CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQ.GetQQName(fromQQ) + "]绑定了ID：[" + sb.ToString() + "]");
                         }
                     }
                 }
@@ -132,10 +115,10 @@ namespace Color_yr.Minecraft_QQ
                     CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "你已经绑定ID了，请找腐竹更改");
                 }
             }
-            if (msg.IndexOf(XML.read(config_read.Event, "禁言文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg.IndexOf(XML.read(config_read.Event, "禁言文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 string a = msg.Replace(XML.read(config_read.Event, "禁言文本"), "");
-                a = get_string(a, "=", "]");
+                a = use.get_string(a, "=", "]");
                 string b = XML.read(config_read.player, a);
                 if (b == "")
                 {
@@ -147,10 +130,10 @@ namespace Color_yr.Minecraft_QQ
                     CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "已禁言：[" + b + "]");
                 }
             }
-            if (msg.IndexOf(XML.read(config_read.Event, "解禁文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg.IndexOf(XML.read(config_read.Event, "解禁文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 string a = msg.Replace(XML.read(config_read.Event, "解禁文本"), "");
-                a = get_string(a, "=", "]");
+                a = use.get_string(a, "=", "]");
                 string b = XML.read(config_read.player, a);
                 if (b == "")
                 {
@@ -162,10 +145,10 @@ namespace Color_yr.Minecraft_QQ
                     CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "已解禁：[" + b + "]");
                 }
             }
-            if (msg.IndexOf(XML.read(config_read.Event, "查询玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg.IndexOf(XML.read(config_read.Event, "查询玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 string player = msg.Replace(XML.read(config_read.Event, "查询玩家ID"), "");
-                player = get_string(player, "=", "]");
+                player = use.get_string(player, "=", "]");
                 string player_name = null;
                 if (Mysql_mode == true)
                 {
@@ -177,12 +160,12 @@ namespace Color_yr.Minecraft_QQ
                 }
                 CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "玩家ID：" + player_name);
             }
-            if (msg.IndexOf(XML.read(config_read.Event, "修改玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg.IndexOf(XML.read(config_read.Event, "修改玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 string player = msg.Replace(XML.read(config_read.Event, "修改玩家ID"), "");
                 string player_name = player;
-                player = get_string(player, "=", "]");
-                player_name = get_string(player_name, "]");
+                player = use.get_string(player, "=", "]");
+                player_name = use.get_string(player_name, "]");
                 player_name = player_name.Trim();
                 if (Mysql_mode == true)
                 {
@@ -195,7 +178,7 @@ namespace Color_yr.Minecraft_QQ
 
                 CQ.SendPrivateMessage(fromQQ, CQ.CQCode_At(fromQQ) + "已修改玩家[" + player + "]ID为：" + player_name);
             }
-            if (msg == XML.read(config_read.Event, "维护文本") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg == XML.read(config_read.Event, "维护文本") && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 if (XML.read(config_read.config, "维护模式") == "关")
                 {
@@ -212,18 +195,18 @@ namespace Color_yr.Minecraft_QQ
                     return;
                 }
             }
-            if (msg.IndexOf("打开菜单") == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg.IndexOf("打开菜单") == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 CQ.SendPrivateMessage(fromQQ, "已打开，请前往后台查看");
                 OpenSettingForm();
             }
-            if (msg == XML.read(config_read.Event, "机器人功能-重读配置文件") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg == XML.read(config_read.Event, "机器人功能-重读配置文件") && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 CQ.SendPrivateMessage(fromQQ, "开始重读配置文件");
                 config_read.read_config();
                 CQ.SendPrivateMessage(fromQQ, "重读完成");
             }
-            if (msg == XML.read(config_read.Event, "机器人功能-内存回收") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+            if (msg == XML.read(config_read.Event, "机器人功能-内存回收") && XML.read(config_read.admin, fromQQ.ToString()) != null)
             {
                 try
                 {
@@ -233,34 +216,6 @@ namespace Color_yr.Minecraft_QQ
                 catch (Exception exception)
                 { }
             }
-        }
-
-        public static string RemoveLeft(string s, int len)
-        {
-            return s.PadLeft(len).Remove(0, len);
-        }
-        
-        public bool IsNatural_Number(string str)
-        {
-            for (int i = 0; i < str.Length; i++)
-            {
-                if ((int)str[i] > 127)
-                    return false;
-                else
-                    return true;
-            }
-            return false;
-        }
-
-        public static string remove_pic(string a)
-        {
-            for (; a.IndexOf("[CQ:image") != -1;)
-            {
-                string b = get_string(a, "[", "]");
-                a = a.Replace(b, "");
-                a = a.Replace("[]", "");
-            }
-            return a;
         }
 
         /// <summary>
@@ -275,8 +230,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="font">字体。</param>
         public override void GroupMessage(int subType, int sendTime, long fromGroup, long fromQQ, string fromAnonymous, string msg, int font)
         {
-            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + ']' + '[' + CQE.GetQQName(fromQQ) + ']'
-            + ':' + msg);
+            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg);
             // 处理群消息。
             if (fromGroup == GroupSet1 || fromGroup == GroupSet2 || fromGroup == GroupSet3)
             {
@@ -284,33 +238,30 @@ namespace Color_yr.Minecraft_QQ
                 {
                     CQ.SendGroupMessage(fromGroup, XML.read(config_read.message, msg));
                 }                
-                else if (XML.read(config_read.config, "发送消息") == "当然！")
+                if (XML.read(config_read.config, "发送消息") == "当然！")
                 {
-                    if (server == true)
-                    {
-                        if(socket.ready == true)
+                    if (server == true && socket.ready == true && (fromGroup == GroupSet2 && Group2_on == true) || (fromGroup == GroupSet3 && Group3_on == true))
+                    { 
+                        string play = null;
+                        if (Mysql_mode == true)
                         {
-                            string play=null;
-                            if (Mysql_mode == true)
+                            play = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
+                        }
+                        else
+                        {
+                            play = XML.read(config_read.player, fromQQ.ToString());
+                        }
+                        if (play != null)
+                        {
+                            if (XML.read(config_read.mute, play) != "true")
                             {
-                                play = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
-                            }
-                            else
-                            {
-                                play = XML.read(config_read.player, fromQQ.ToString());
-                            }
-                            if (play != "")
-                            {
-                                if (XML.read(config_read.mute, play) != "true")
-                                {
-                                    string a;
-                                    a = XML.read(config_read.config, "发送文本");
-                                    a = a.Replace("%player%", play);
-                                    if (remove_pic(msg) == "")
-                                        return;
-                                    a = a.Replace("%message%", remove_pic(msg));
-                                    socket.Send("群消息" + a, socket.MCserver);
-                                }
+                                string a;
+                                a = XML.read(config_read.config, "发送文本");
+                                a = a.Replace("%player%", play);
+                                if (use.remove_pic(msg) == "")
+                                    return;
+                                a = a.Replace("%message%", use.remove_pic(msg));
+                                socket.Send("群消息" + a, socket.MCserver);
                             }
                         }
                     }
@@ -318,9 +269,9 @@ namespace Color_yr.Minecraft_QQ
                 else if (msg.IndexOf(XML.read(config_read.Event, "发送文本")) == 0 && XML.read(config_read.config, "发送消息") == "不！")
                 {
                     if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
-                            CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
+                        CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
                     else if (server == true)
-                    {                       
+                    {
                         if (socket.ready == true)
                         {
                             string play = null;
@@ -332,17 +283,17 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 play = XML.read(config_read.player, fromQQ.ToString());
                             }
-                            if (play != null)
+                            if (play != null && play!="")
                             {
                                 if (XML.read(config_read.mute, play) != "true")
                                 {
-                                    string a,b;
+                                    string a, b;
                                     a = XML.read(config_read.config, "发送文本");
                                     a = a.Replace("%player%", play);
                                     b = msg.Replace(XML.read(config_read.Event, "发送文本"), "");
-                                    if (remove_pic(b) == "")
+                                    if (use.remove_pic(b) == "")
                                         return;
-                                    a = a.Replace("%message%", remove_pic(b));
+                                    a = a.Replace("%message%", use.remove_pic(b));
                                     socket.Send("群消息" + a, socket.MCserver);
                                 }
                             }
@@ -361,7 +312,7 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + XML.read(config_read.Event, "服务器维护文本"));
                     }
                 }
-                if (XML.read(config_read.Event, msg) == "%online%")
+                if (msg == XML.read(config_read.Event, "在线人数"))
                 {
                     if (server == true)
                     {
@@ -382,7 +333,7 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + XML.read(config_read.Event, "服务器维护文本"));
                     }
                 }
-                if (XML.read(config_read.Event, msg) == "%server_online%")
+                if (msg == XML.read(config_read.Event, "服务器状态"))
                 {
                     if (server == true)
                     {
@@ -403,7 +354,7 @@ namespace Color_yr.Minecraft_QQ
                     {
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + XML.read(config_read.Event, "服务器维护文本"));
                     }
-                }               
+                } 
                 if (msg.IndexOf(XML.read(config_read.Event, "绑定文本")) == 0)
                 {
                     string player_name = null;
@@ -415,10 +366,10 @@ namespace Color_yr.Minecraft_QQ
                     {
                         player_name = XML.read(config_read.player, fromQQ.ToString());
                     }
-                    if (player_name == null)
+                    if (player_name == null || player_name=="")
                     {
                         string a = msg.Replace(XML.read(config_read.Event, "绑定文本"), "");
-                        if (a == " " || a == "" || IsNatural_Number(a) == false)
+                        if (a == " " || a == "" || use.IsNatural_Number(a) == false)
                         {
                             CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "绑定失败，请检查你的ID");
                         }
@@ -426,13 +377,13 @@ namespace Color_yr.Minecraft_QQ
                         {
                             var sb = new StringBuilder(a);
                             sb.Replace(" ", string.Empty);
-                            if (Mysql_mode == false)
+                            if (Mysql_mode == true)
                             {
-                                XML.write(config_read.player, fromQQ.ToString(), sb.ToString());
+                                Mysql.mysql_add(Mysql.Mysql_player, fromQQ.ToString(), sb.ToString());
                             }
                             else
                             {
-                                Mysql.mysql_add(Mysql.Mysql_player, fromQQ.ToString(), sb.ToString());
+                                XML.write(config_read.player, fromQQ.ToString(), sb.ToString());
                             }
                             
                             CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "绑定ID：" + a + "成功！");
@@ -440,7 +391,7 @@ namespace Color_yr.Minecraft_QQ
                             string qq_admin = XML.read(config_read.admin, "发送给的人");
                             if (qq_admin != null)
                             {
-                                CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQE.GetQQName(fromQQ) + "]绑定了ID：[" + sb.ToString() + "]");
+                                CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQ.GetQQName(fromQQ) + "]绑定了ID：[" + sb.ToString() + "]");
                             }
                         }
                     }
@@ -449,10 +400,10 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "你已经绑定ID了，请找腐竹更改");
                     }
                 }
-                if (msg.IndexOf(XML.read(config_read.Event, "禁言文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg.IndexOf(XML.read(config_read.Event, "禁言文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     string a = msg.Replace(XML.read(config_read.Event, "禁言文本"), "");
-                    a = get_string(a, "=", "]");
+                    a = use.get_string(a, "=", "]");
                     string b = XML.read(config_read.player, a);
                     if (b == "")
                     {
@@ -464,10 +415,10 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已禁言：[" + b + "]");
                     }
                 }
-                if (msg.IndexOf(XML.read(config_read.Event, "解禁文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg.IndexOf(XML.read(config_read.Event, "解禁文本")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     string a = msg.Replace(XML.read(config_read.Event, "解禁文本"), "");
-                    a = get_string(a, "=", "]");
+                    a = use.get_string(a, "=", "]");
                     string b = XML.read(config_read.player, a);
                     if (b == "")
                     {
@@ -479,10 +430,10 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已解禁：[" + b + "]");
                     }
                 }
-                if (msg.IndexOf(XML.read(config_read.Event, "查询玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg.IndexOf(XML.read(config_read.Event, "查询玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     string player = msg.Replace(XML.read(config_read.Event, "查询玩家ID"), "");
-                    player = get_string(player, "=", "]");
+                    player = use.get_string(player, "=", "]");
                     string player_name = null;
                     if (Mysql_mode == true)
                     {
@@ -494,12 +445,12 @@ namespace Color_yr.Minecraft_QQ
                     }
                     CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "玩家ID：" + player_name);
                 }
-                if (msg.IndexOf(XML.read(config_read.Event, "修改玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg.IndexOf(XML.read(config_read.Event, "修改玩家ID")) == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {                    
                     string player = msg.Replace(XML.read(config_read.Event, "修改玩家ID"), "");
                     string player_name = player;
-                    player = get_string(player, "=", "]");
-                    player_name = get_string(player_name, "]");
+                    player = use.get_string(player, "=", "]");
+                    player_name = use.get_string(player_name, "]");
                     player_name = player_name.Trim();
                     if (Mysql_mode == true)
                     {
@@ -512,7 +463,7 @@ namespace Color_yr.Minecraft_QQ
                     
                     CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "已修改玩家[" + player + "]ID为：" + player_name);
                 }
-                if (msg == XML.read(config_read.Event, "维护文本") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg == XML.read(config_read.Event, "维护文本") && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     if (XML.read(config_read.config, "维护模式") == "关")
                     {
@@ -529,18 +480,18 @@ namespace Color_yr.Minecraft_QQ
                         return;
                     }
                 }
-                if (msg.IndexOf("打开菜单") == 0 && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg.IndexOf("打开菜单") == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     CQ.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                     OpenSettingForm();
                 }
-                if (msg == XML.read(config_read.Event, "机器人功能-重读配置文件") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg == XML.read(config_read.Event, "机器人功能-重读配置文件") && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     CQ.SendGroupMessage(fromGroup, "开始重读配置文件");
                     config_read.read_config();
                     CQ.SendGroupMessage(fromGroup, "重读完成");
                 }
-                if (msg == XML.read(config_read.Event, "机器人功能-内存回收") && XML.read(config_read.admin, fromQQ.ToString()) != "")
+                if (msg == XML.read(config_read.Event, "机器人功能-内存回收") && XML.read(config_read.admin, fromQQ.ToString()) != null)
                 {
                     try
                     {
@@ -584,7 +535,7 @@ namespace Color_yr.Minecraft_QQ
                 string a = XML.read(config_read.Event,"事件-文件上传");
                 if (a != "")
                 {
-                    a = a.Replace("%player%",CQE.GetQQName(fromQQ));
+                    a = a.Replace("%player%",CQ.GetQQName(fromQQ));
                     a = a.Replace("%file%", file);
                     CQ.SendGroupMessage(fromGroup, a);
                 }
@@ -603,7 +554,7 @@ namespace Color_yr.Minecraft_QQ
             // 处理群事件-管理员变动。
             if (fromGroup == GroupSet1)
             {
-                //CQ.SendGroupMessage(fromGroup, String.Format("[{0}]{2}({1})被{3}管理员权限。", CQ.ProxyType, beingOperateQQ, CQE.GetQQName(beingOperateQQ), subType == 1 ? "取消了" : "设置为"));
+                //CQ.SendGroupMessage(fromGroup, String.Format("[{0}]{2}({1})被{3}管理员权限。", CQ.ProxyType, beingOperateQQ, CQ.GetQQName(beingOperateQQ), subType == 1 ? "取消了" : "设置为"));
             }
         }
 
@@ -625,7 +576,7 @@ namespace Color_yr.Minecraft_QQ
                     String a = XML.read(config_read.Event, "事件-群员退出");
                     if (a != "")
                     {
-                        a = a.Replace("%player%", CQE.GetQQName(beingOperateQQ));
+                        a = a.Replace("%player%", CQ.GetQQName(beingOperateQQ));
                         CQ.SendGroupMessage(fromGroup, a);
                     }
                 }
@@ -634,7 +585,7 @@ namespace Color_yr.Minecraft_QQ
                     String a = XML.read(config_read.Event, "事件-踢出群员");
                     if (a != "")
                     {
-                        a = a.Replace("%player%", CQE.GetQQName(beingOperateQQ));
+                        a = a.Replace("%player%", CQ.GetQQName(beingOperateQQ));
                         CQ.SendGroupMessage(fromGroup, a);
                     }
                 }
@@ -657,7 +608,7 @@ namespace Color_yr.Minecraft_QQ
                 String a =XML.read(config_read.Event,"事件-群员加入");
                 if (a != "")
                 {
-                    a = a.Replace("%player%", CQE.GetQQName(beingOperateQQ));
+                    a = a.Replace("%player%", CQ.GetQQName(beingOperateQQ));
                     CQ.SendGroupMessage(fromGroup, a);
                 }
             }

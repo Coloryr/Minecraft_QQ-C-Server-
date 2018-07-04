@@ -7,9 +7,11 @@
     </StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartAction>Program</StartAction>
-    <StartProgram>Publish\Flexlive.CQP.CSharpProxy.exe</StartProgram>
+    <StartAction>Project</StartAction>
+    <StartProgram>E:\C#%27s src\Minecraft_QQ-C-Server-\Publish\Flexlive.CQP.CSharpProxy.exe</StartProgram>
     <StartWorkingDirectory>
     </StartWorkingDirectory>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <EnableSQLServerDebugging>false</EnableSQLServerDebugging>
   </PropertyGroup>
 </Project>

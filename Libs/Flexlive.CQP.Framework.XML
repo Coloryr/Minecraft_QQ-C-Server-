@@ -6,7 +6,7 @@
     <members>
         <member name="T:Flexlive.CQP.Framework.CQ">
             <summary>
-            封装酷Q提供的基本方法静态类。
+            CQ提供的基本方法静态类。
             </summary>
         </member>
         <member name="F:Flexlive.CQP.Framework.CQ._syncRoot">
@@ -17,6 +17,11 @@
         <member name="F:Flexlive.CQP.Framework.CQ.proxyType">
             <summary>
             酷Q C#代理类型。
+            </summary>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.CQ.ProxyType">
+            <summary>
+            代理类型。
             </summary>
         </member>
         <member name="F:Flexlive.CQP.Framework.CQ._dicCache">
@@ -511,10 +516,32 @@
             </summary>
             <returns>应用目录。</returns>
         </member>
-        <member name="P:Flexlive.CQP.Framework.CQ.ProxyType">
+        <member name="M:Flexlive.CQP.Framework.CQ.GetQQName(System.Int64)">
             <summary>
-            代理类型。
+            取QQ昵称。
             </summary>
+            <param name="qqNumber">QQ号码。</param>
+            <returns>昵称。</returns>
+        </member>
+        <member name="M:Flexlive.CQP.Framework.CQ.GetQQFace(System.Int64)">
+            <summary>
+            取QQ头像。
+            </summary>
+            <param name="qqNumber">QQ号码。</param>
+            <returns>头像。</returns>
+        </member>
+        <member name="M:Flexlive.CQP.Framework.CQ.GetGroupList">
+            <summary>
+            取酷Q登录帐号的所有群列表。
+            </summary>
+            <returns>登录帐号所在的群列表。</returns>
+        </member>
+        <member name="M:Flexlive.CQP.Framework.CQ.GetGroupMemberList(System.Int64)">
+            <summary>
+            取酷指定群的成员列表（只能获取到群号、QQ号、管理权限、昵称等信息。其它信息请通过【取群成员信息】方法逐一获取）。
+            </summary>
+            <param name="groupNumber">群号码。</param>
+            <returns>登录帐号所在的群列表。</returns>
         </member>
         <member name="T:Flexlive.CQP.Framework.CQAPI">
             <summary>
@@ -738,65 +765,6 @@
             CQ应用抽象类，自定义应用请继承此类。
             </summary>
         </member>
-        <member name="T:Flexlive.CQP.Framework.ICQAssembly">
-            <summary>
-            插件程序集属性接口。
-            </summary>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.ICQAssembly.OpenSettingForm">
-            <summary>
-            打开设置窗口。
-            </summary>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.ICQAssembly.AssemblyPath">
-            <summary>
-            程序集路径。
-            </summary>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Name">
-            <summary>
-            获取或设置插件名称。
-            </summary>
-            <value>
-            插件名称字符串。
-            </value>
-            <return>
-            插件名称字符串。
-            </return>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Version">
-            <summary>
-            获取或设置插件版本。
-            </summary>
-            <value>
-            插件版本信息。
-            </value>
-            <return>
-            插件版本信息。
-            </return>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Author">
-            <summary>
-            获取或设置插件作者。
-            </summary>
-            <value>
-            插件作者名称。
-            </value>
-            <return>
-            插件作者名称。
-            </return>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Description">
-            <summary>
-            获取或设置插件说明。
-            </summary>
-            <value>
-            插件说明描述信息。
-            </value>
-            <return>
-            插件说明描述信息。
-            </return>
-        </member>
         <member name="M:Flexlive.CQP.Framework.CQAppAbstract.Initialize">
             <summary>
             应用初始化，用来初始化应用的基本信息。
@@ -908,11 +876,6 @@
             <param name="msg">附言。</param>
             <param name="responseFlag">反馈标识(处理请求用)。</param>
         </member>
-        <member name="M:Flexlive.CQP.Framework.CQAppAbstract.OpenSettingForm">
-            <summary>
-            打开设置窗口。
-            </summary>
-        </member>
         <member name="P:Flexlive.CQP.Framework.CQAppAbstract.Name">
             <summary>
             获取或设置插件名称。
@@ -967,53 +930,10 @@
             是否运行该插件。
             </summary>
         </member>
-        <member name="T:Flexlive.CQP.Framework.CQE">
+        <member name="M:Flexlive.CQP.Framework.CQAppAbstract.OpenSettingForm">
             <summary>
-            封装非酷Q官方提供的方法静态类
-            <para>
-            本类中的方法由Flexlive基于酷Q二次开发后提供，由于受腾讯接口限制稳定无法保证。
-            </para>
-            <para>
-            建议开发能力强者，自行实现。
-            </para>
+            打开设置窗口。
             </summary>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.CQE.GetCookies(System.String)">
-            <summary>
-            获取可以直接被C#使用的登录QQ的CookieCollection对象。
-            </summary>
-            <param name="domain">此 Cookie 与其关联的域。</param>
-            <returns>登录QQ的 <see cref="T:System.Net.CookieCollection"/> 对象。</returns>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.CQE.GetQQName(System.Int64)">
-            <summary>
-            取QQ昵称。
-            </summary>
-            <param name="qqNumber">QQ号码。</param>
-            <returns>昵称。</returns>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.CQE.GetQQFace(System.Int64)">
-            <summary>
-            取QQ头像。
-            </summary>
-            <param name="qqNumber">QQ号码。</param>
-            <returns>头像。</returns>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.CQE.GetGroupList">
-            <summary>
-            取酷Q登录帐号的所有群列表。
-            </summary>
-            <returns>登录帐号所在的群列表。</returns>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.CQE.GetGroupMemberList(System.Int64)">
-            <summary>
-            取酷指定群的成员列表（
-            <para>
-            只能获取到群号、QQ号、管理权限、昵称等信息。其它信息请通过【取群成员信息】方法逐一获取。
-            </para>
-            </summary>
-            <param name="groupNumber">群号码。</param>
-            <returns>登录帐号所在的群列表。</returns>
         </member>
         <member name="T:Flexlive.CQP.Framework.CQGroupInfo">
             <summary>
@@ -1296,14 +1216,32 @@
             声明插件列表对象。
             </summary>
         </member>
+        <member name="P:Flexlive.CQP.Framework.CQAppContainer.Apps">
+            <summary>
+            获取插件列表。
+            </summary>
+            <returns>
+            插件列表。
+            </returns>
+        </member>
         <member name="F:Flexlive.CQP.Framework.CQAppContainer._dicClrApps">
             <summary>
             声明插件列表对象。
             </summary>
         </member>
+        <member name="P:Flexlive.CQP.Framework.CQAppContainer.ClrApps">
+            <summary>
+            CLR加载的插件列表。
+            </summary>
+        </member>
         <member name="F:Flexlive.CQP.Framework.CQAppContainer._dicClrMethods">
             <summary>
             声明插件方法列表对象。
+            </summary>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.CQAppContainer.ClrMethods">
+            <summary>
+            CLR加载的插件方法列表。
             </summary>
         </member>
         <member name="M:Flexlive.CQP.Framework.CQAppContainer.ReloadApps">
@@ -1314,24 +1252,6 @@
         <member name="M:Flexlive.CQP.Framework.CQAppContainer.LoadApps">
             <summary>
             加载插件列表。
-            </summary>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.CQAppContainer.Apps">
-            <summary>
-            获取插件列表。
-            </summary>
-            <returns>
-            插件列表。
-            </returns>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.CQAppContainer.ClrApps">
-            <summary>
-            CLR加载的插件列表。
-            </summary>
-        </member>
-        <member name="P:Flexlive.CQP.Framework.CQAppContainer.ClrMethods">
-            <summary>
-            CLR加载的插件方法列表。
             </summary>
         </member>
         <member name="T:Flexlive.CQP.Framework.CQNativeClrProxy">
@@ -1443,6 +1363,65 @@
         <member name="M:Flexlive.CQP.Framework.CSPluginsConfigManager.SaveConfig">
             <summary>
             存储配置。
+            </summary>
+        </member>
+        <member name="T:Flexlive.CQP.Framework.ICQAssembly">
+            <summary>
+            插件程序集属性接口。
+            </summary>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.ICQAssembly.AssemblyPath">
+            <summary>
+            程序集路径。
+            </summary>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Name">
+            <summary>
+            获取或设置插件名称。
+            </summary>
+            <value>
+            插件名称字符串。
+            </value>
+            <return>
+            插件名称字符串。
+            </return>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Version">
+            <summary>
+            获取或设置插件版本。
+            </summary>
+            <value>
+            插件版本信息。
+            </value>
+            <return>
+            插件版本信息。
+            </return>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Author">
+            <summary>
+            获取或设置插件作者。
+            </summary>
+            <value>
+            插件作者名称。
+            </value>
+            <return>
+            插件作者名称。
+            </return>
+        </member>
+        <member name="P:Flexlive.CQP.Framework.ICQAssembly.Description">
+            <summary>
+            获取或设置插件说明。
+            </summary>
+            <value>
+            插件说明描述信息。
+            </value>
+            <return>
+            插件说明描述信息。
+            </return>
+        </member>
+        <member name="M:Flexlive.CQP.Framework.ICQAssembly.OpenSettingForm">
+            <summary>
+            打开设置窗口。
             </summary>
         </member>
         <member name="T:Flexlive.CQP.Framework.Utils.HttpHelper">
@@ -1781,6 +1760,20 @@
             <param name="section">节点</param>  
             <returns>操作是否成功</returns>  
         </member>
+        <member name="T:Flexlive.CQP.Framework.Utils.StringHelper">
+            <summary>
+            文本操作类。
+            </summary>
+        </member>
+        <member name="M:Flexlive.CQP.Framework.Utils.StringHelper.GetMidStrings(System.String,System.String,System.String)">
+            <summary>
+            通过正则表达式获取源字符串中所有匹配的起始和结束字符串之间的内容。
+            </summary>
+            <param name="sourceString">源字符串。</param>
+            <param name="startString">起始字符串。</param>
+            <param name="endString">结束字符串。</param>
+            <returns>所有匹配的字符串数组，无匹配时返回Null。</returns>
+        </member>
         <member name="T:Flexlive.CQP.Framework.CQLogger">
             <summary>
             日志管理。
@@ -1797,16 +1790,16 @@
             隐藏构造函数。
             </summary>
         </member>
+        <member name="E:Flexlive.CQP.Framework.CQLogger.NewLogWrite">
+            <summary>
+            新日志产生事件。
+            </summary>
+        </member>
         <member name="M:Flexlive.CQP.Framework.CQLogger.AddLog(System.String)">
             <summary>
             添加日志。
             </summary>
             <param name="logMessage">日志消息。</param>
-        </member>
-        <member name="E:Flexlive.CQP.Framework.CQLogger.NewLogWrite">
-            <summary>
-            新日志产生事件。
-            </summary>
         </member>
         <member name="T:Flexlive.CQP.Framework.CQUDPProxy">
             <summary>
@@ -1882,20 +1875,6 @@
             </summary>
             <param name="message"></param>
             <returns></returns>
-        </member>
-        <member name="T:Flexlive.CQP.Framework.Utils.StringHelper">
-            <summary>
-            文本操作类。
-            </summary>
-        </member>
-        <member name="M:Flexlive.CQP.Framework.Utils.StringHelper.GetMidStrings(System.String,System.String,System.String)">
-            <summary>
-            通过正则表达式获取源字符串中所有匹配的起始和结束字符串之间的内容。
-            </summary>
-            <param name="sourceString">源字符串。</param>
-            <param name="startString">起始字符串。</param>
-            <param name="endString">结束字符串。</param>
-            <returns>所有匹配的字符串数组，无匹配时返回Null。</returns>
         </member>
     </members>
 </doc>

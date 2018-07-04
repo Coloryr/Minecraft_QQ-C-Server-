@@ -74,7 +74,7 @@ namespace Color_yr.Minecraft_QQ
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             string a=read(text,data);
-            if (a != "")
+            if (a != null)
             {
                 setXml(text,data,data1);
             }
@@ -124,7 +124,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="data">属性名</param>
         public static string read(string text, string data)
         {
-            string a = "";
+            string a = null;
             if (File.Exists(config_read.path + text) == false)
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
