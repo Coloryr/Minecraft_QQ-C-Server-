@@ -16,5 +16,6 @@ Minecraft服务器与QQ群聊天的插件
 1.7.1.0：修复配置文件读取的bug  
 1.7.2.0：修复发送消息的bug  
 1.7.5.0：修复一个API的问题，需要下载Minecraft_QQ.zip，需要NET4.5.2，需要VC2015！  
+1.7.6.0：修复始终发生消息bug  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)

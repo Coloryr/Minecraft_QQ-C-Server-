@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.7.5.0");
+            this.Version = new Version("1.7.6.0");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -69,7 +69,7 @@ namespace Color_yr.Minecraft_QQ
         public override void PrivateMessage(int subType, int sendTime, long fromQQ, string msg, int font)
         {
             // 处理私聊消息。
-            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + ']' +  ':' + msg);
+            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg);
             if (msg.IndexOf(XML.read(config_read.Event, "绑定文本")) == 0)
             {
                 string player_name = null;
@@ -240,28 +240,31 @@ namespace Color_yr.Minecraft_QQ
                 }                
                 if (XML.read(config_read.config, "发送消息") == "当然！")
                 {
-                    if (server == true && socket.ready == true && (fromGroup == GroupSet2 && Group2_on == true) || (fromGroup == GroupSet3 && Group3_on == true))
-                    { 
-                        string play = null;
-                        if (Mysql_mode == true)
+                    if (server == true && socket.ready == true )
+                    {
+                        if ((fromGroup == GroupSet2 && Group2_on == true) || (fromGroup == GroupSet3 && Group3_on == true) || fromGroup == GroupSet1)
                         {
-                            play = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
-                        }
-                        else
-                        {
-                            play = XML.read(config_read.player, fromQQ.ToString());
-                        }
-                        if (play != null)
-                        {
-                            if (XML.read(config_read.mute, play) != "true")
+                            string play = null;
+                            if (Mysql_mode == true)
                             {
-                                string a;
-                                a = XML.read(config_read.config, "发送文本");
-                                a = a.Replace("%player%", play);
-                                if (use.remove_pic(msg) == "")
-                                    return;
-                                a = a.Replace("%message%", use.remove_pic(msg));
-                                socket.Send("群消息" + a, socket.MCserver);
+                                play = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
+                            }
+                            else
+                            {
+                                play = XML.read(config_read.player, fromQQ.ToString());
+                            }
+                            if (play != null)
+                            {
+                                if (XML.read(config_read.mute, play) != "true")
+                                {
+                                    string a;
+                                    a = XML.read(config_read.config, "发送文本");
+                                    a = a.Replace("%player%", play);
+                                    if (use.remove_pic(msg) == "")
+                                        return;
+                                    a = a.Replace("%message%", use.remove_pic(msg));
+                                    socket.Send("群消息" + a, socket.MCserver);
+                                }
                             }
                         }
                     }
