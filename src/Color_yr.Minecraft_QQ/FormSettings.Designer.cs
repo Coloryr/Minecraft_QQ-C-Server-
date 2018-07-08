@@ -69,6 +69,9 @@
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -223,7 +226,7 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(274, 261);
+            this.radioButton1.Location = new System.Drawing.Point(132, 268);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(53, 16);
             this.radioButton1.TabIndex = 19;
@@ -235,7 +238,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(344, 261);
+            this.radioButton2.Location = new System.Drawing.Point(191, 270);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(89, 16);
             this.radioButton2.TabIndex = 20;
@@ -247,7 +250,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(260, 246);
+            this.label7.Location = new System.Drawing.Point(12, 270);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(113, 12);
             this.label7.TabIndex = 21;
@@ -276,7 +279,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(5, 281);
+            this.checkBox2.Location = new System.Drawing.Point(5, 285);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(132, 16);
             this.checkBox2.TabIndex = 24;
@@ -407,7 +410,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(260, 174);
+            this.label14.Location = new System.Drawing.Point(260, 207);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(197, 60);
             this.label14.TabIndex = 39;
@@ -415,7 +418,7 @@
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(11, 180);
+            this.textBox11.Location = new System.Drawing.Point(12, 174);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(161, 21);
             this.textBox11.TabIndex = 40;
@@ -439,11 +442,40 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(258, 161);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(113, 12);
+            this.label16.TabIndex = 43;
+            this.label16.Text = "设置禁止绑定的ID：";
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(260, 176);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(116, 21);
+            this.textBox12.TabIndex = 44;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(382, 174);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 45;
+            this.button7.Text = "添加";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 325);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.textBox12);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.textBox11);
@@ -541,6 +573,9 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;       
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Button button7;
     }
 }

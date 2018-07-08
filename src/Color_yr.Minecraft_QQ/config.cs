@@ -15,6 +15,7 @@ namespace Color_yr.Minecraft_QQ
         public static string message = "message.xml";
         public static string Event = "event.xml";
         public static string mute = "mute.xml";
+        public static string notid = "notid.xml";
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
 

@@ -85,8 +85,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy  /C /I /R /Y  $(TargetPath) $(TargetDir)CSharpPlugins\
-xcopy  /C /I /R /Y  $(TargetPath) $(SolutionDir)Publish\CSharpPlugins\</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -273,5 +273,21 @@ namespace Color_yr.Minecraft_QQ
         {
             XML.write(config_read.admin, "发送给的人", textBox11.Text);
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (textBox12.Text != null)
+            {
+                if (Minecraft_QQ.Mysql_mode == true)
+                {
+                    Mysql.mysql_add(Mysql.Mysql_notid, textBox12.Text.ToLower(), "notid");
+                }
+                else
+                {
+                    XML.write(config_read.notid, textBox12.Text.ToLower(), "notid");
+                }
+                MessageBox.Show("已添加：" + textBox12.Text);
+            }
+        }
     }
 }
