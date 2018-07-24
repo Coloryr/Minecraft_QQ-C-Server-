@@ -26,7 +26,6 @@ namespace Color_yr.Minecraft_QQ
             FormSettings frm = new FormSettings();
             if (Directory.Exists(path) == false)
             { Directory.CreateDirectory(path); }
-
             if (File.Exists(path + config) == false)
             {
                 XML.write(config, "更新？", "false");
@@ -59,13 +58,19 @@ namespace Color_yr.Minecraft_QQ
             }
 
             if (File.Exists(path + mute) == false)
-            { XML.write(mute, "预留位", "预留位"); }
+            {
+                XML.CreateFile(mute, 0);
+            }
 
             if (File.Exists(path + admin) == false)
-            { XML.write(admin, "发送给的人", null); }
+            {               
+                XML.write(admin, "发送给的人", null);
+            }
 
             if (File.Exists(path + player) == false)
-            { XML.write(player, "预留位", "预留位"); }
+            {
+                XML.CreateFile(player, 0);
+            }
 
             if (File.Exists(path + Event) == false)
             {

@@ -17,9 +17,9 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="mode">模式</param>>
         public static void CreateFile(string text, int mode)
         {
-            if (File.Exists(config_read.path + text) && mode == 1) //文件存在就删除
+            FileInfo file = new FileInfo(config_read.path + text);
+            if (file.Exists && mode == 1) //文件存在就删除
             {
-                FileInfo file = new FileInfo(config_read.path + text);
                 file.Delete();
                 XElement contacts = new XElement("config");
                 contacts.Save(config_read.path + text);
@@ -38,9 +38,9 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="data1">元素名</param>
         public static void setXml(string text, string data, string data1)
         {
-            if (File.Exists(config_read.path + text)==false)
-            { 
-            CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            if (File.Exists(config_read.path + text) == false)
+            {
+                CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             ///导入XML文件
             XElement xe = XElement.Load(config_read.path + text);
@@ -73,23 +73,31 @@ namespace Color_yr.Minecraft_QQ
             {
                 CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
-            string a=read(text,data);
-            if (a != null)
+            try
             {
-                setXml(text,data,data1);
-            }
-            else
-            {
-                ///导入XML文件
-                XElement xe = XElement.Load(config_read.path + text);
-                ///创建一个新的节点
-                XElement student = new XElement("config",
-                 new XAttribute("int", data),                    ///添加属性number
+                string a = read(text, data);
+                if (a != null)
+                {
+                    setXml(text, data, data1);
+                }
+                else
+                {
+                    ///导入XML文件
+                    XElement xe = XElement.Load(config_read.path + text);
+                    ///创建一个新的节点
+                    XElement student = new XElement("config",
+                     new XAttribute("int", data),                    ///添加属性number
              new XElement("data", data1)                     ///添加元素Name
              );
-                ///添加节点到文件中，并保存
-                xe.Add(student);
-                xe.Save(config_read.path + text);
+                    ///添加节点到文件中，并保存
+                    xe.Add(student);
+                    xe.Save(config_read.path + text);
+                }
+            }
+            catch (Exception ex)
+            {
+                CreateFile(text, 0);
+                //sMessageBox.Show(ex.ToString());
             }
         }
         /// <summary>
@@ -140,6 +148,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception ex)
             {
+                //CreateFile(text, 0);
                 //MessageBox.Show(ex.ToString());
             }
             return a;

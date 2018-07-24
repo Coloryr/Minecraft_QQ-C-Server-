@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.7.7.0");
+            this.Version = new Version("1.7.8.0");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -381,7 +381,7 @@ namespace Color_yr.Minecraft_QQ
                             else
                             {
                                 CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送：" + XML.read(config_read.Event, "绑定文本") + "ID来绑定，如：" +
-                                "/n" + XML.read(config_read.Event, "绑定文本") + "Color_yr");
+                                "\n" + XML.read(config_read.Event, "绑定文本") + "Color_yr");
                             }
                         }
                         else

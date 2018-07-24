@@ -7,7 +7,7 @@
     </StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartAction>Project</StartAction>
+    <StartAction>Program</StartAction>
     <StartProgram>E:\C#%27s src\Minecraft_QQ-C-Server-\Publish\Flexlive.CQP.CSharpProxy.exe</StartProgram>
     <StartWorkingDirectory>
     </StartWorkingDirectory>
