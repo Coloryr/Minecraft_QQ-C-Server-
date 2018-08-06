@@ -123,6 +123,7 @@ namespace Color_yr.Minecraft_QQ
             }
             if (XML.read(message, "启用") == null)
             {
+                XML.write(message, "启用", "true");
                 if (XML.read(message, "%服务器菜单") == null) XML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + XML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + XML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
             }
 

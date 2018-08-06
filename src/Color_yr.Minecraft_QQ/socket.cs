@@ -50,24 +50,32 @@ namespace Color_yr.Minecraft_QQ
         private static void listenClientConnect(object obj)
         {
             Socket socket = (Socket)obj;
-            while (true)
+            try
             {
-                Socket clientScoket = socket.Accept();
-
-                if (thread2 != null)
+                while (true)
                 {
-                    thread2.Abort();
-                    thread2 = null;
+                    Socket clientScoket = socket.Accept();
+
+                    if (thread2 != null)
+                    {
+                        thread2.DisableComObjectEagerCleanup();
+                        thread2.Abort();                        
+                        thread2 = null;
+                    }
+                    thread2 = new Thread(receiveData);
+                    thread2.Start(clientScoket);                   // 在新的线程中接收客户端信息
+
+                    GC.Collect();
+                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
+                    ready = true;
+
+                    Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
+                    if (!start) return;
                 }
-                thread2 = new Thread(receiveData);
-                thread2.Start(clientScoket);                     // 在新的线程中接收客户端信息
-
-                GC.Collect();
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
-                ready = true;
-
-                Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
-                if (!start) return;
+            }
+            catch (ThreadAbortException)
+            {
+                return;
             }
         }
         private static string Receive(Socket socket)
@@ -95,45 +103,53 @@ namespace Color_yr.Minecraft_QQ
 
         private static void receiveData(object obj)
         {
-            Socket socket = (Socket)obj;
-
-            string clientIp = socket.RemoteEndPoint.ToString();                 // 获取客户端标识 ip和端口
-            if (!clients.ContainsKey(clientIp)) clients.Add(clientIp, socket);  // 将连接的客户端socket添加到clients中保存
-            else clients[clientIp] = socket;
-            MCserver = clientIp;
-
-            while (true)
+            try
             {
-                try
+                Socket socket = (Socket)obj;
+
+                string clientIp = socket.RemoteEndPoint.ToString();                 // 获取客户端标识 ip和端口
+                if (!clients.ContainsKey(clientIp)) clients.Add(clientIp, socket);  // 将连接的客户端socket添加到clients中保存
+                else clients[clientIp] = socket;
+                MCserver = clientIp;
+
+                while (true)
                 {
-                    string str = Receive(socket);
-                    if (!str.Equals(""))
+                    try
                     {
-                        message(str);
+                        string str = Receive(socket);
+                        if (!str.Equals(""))
+                        {
+                            message(str);
+                        }
                     }
-                }
-                catch (Exception exception)
-                {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开");
-                    ready = false;
+                    catch (Exception)
+                    {
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
+                        ready = false;
 
-                    socket.Shutdown(SocketShutdown.Both);
-                    socket.Close();
-                    socket = null;
+                        socket.Shutdown(SocketShutdown.Both);
+                        socket.Close();
+                        socket = null;
 
-                    clients.Clear();
-                    MCserver = null;
-                        
-                    GC.Collect();
-                    return;
-                }
+                        clients.Clear();
+                        MCserver = null;
 
-                if (!start)
-                {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "线程已关闭");
-                    return;
+                        GC.Collect();
+                        return;
+                    }
+
+                    if (!start)
+                    {
+                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "线程已关闭");
+                        return;
+                    }
+                    Thread.Sleep(100);      // 延时0.1秒后再接收客户端发送的消息
                 }
-                Thread.Sleep(200);      // 延时0.2秒后再接收客户端发送的消息
+            }
+            catch (ThreadAbortException)
+            {
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
+                return;
             }
         }
         public static void Send(string info, string id)
