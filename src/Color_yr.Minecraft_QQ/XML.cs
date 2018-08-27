@@ -96,7 +96,8 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception ex)
             {
-                CreateFile(text, 0);
+                if(MessageBox.Show("配置文件错误","配置文件在读取时发发生了错误，是否要删除原来的配置文件再新生成一个？", MessageBoxButtons.YesNo)== DialogResult.Yes)
+                    CreateFile(text, 0);
                 //sMessageBox.Show(ex.ToString());
             }
         }
