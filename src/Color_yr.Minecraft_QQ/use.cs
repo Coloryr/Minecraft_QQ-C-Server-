@@ -49,5 +49,38 @@ namespace Color_yr.Minecraft_QQ
             }
             return a;
         }
+
+        public static string get_at(string a)
+        {
+            for (; a.IndexOf("[CQ:at,qq=") != -1;)
+            {
+                string b = get_string(a, "=", "]");
+                string c = get_string(a, "[", "]");
+                string d;
+                if (Minecraft_QQ.Mysql_mode == true)
+                {
+                    string e = Mysql.mysql_search(Mysql.Mysql_player, b);
+                    if (e == null)
+                        d = b;
+                    else
+                        d = e;
+                }
+                else
+                {    
+                    string e = XML.read(config_read.player, b);
+                    if (e == null)
+                        d = b;
+                    else
+                        d = e;
+                }
+                a = a.Replace(c, "@" + d + "");
+            }
+            if (a.IndexOf("CQ:at,qq=all") != -1)
+            {
+                a.Replace("CQ:at,qq=all", "@全体人员");
+            }
+            a = a.Replace("[", "").Replace("]", "");
+            return a;
+        }
     }
 }

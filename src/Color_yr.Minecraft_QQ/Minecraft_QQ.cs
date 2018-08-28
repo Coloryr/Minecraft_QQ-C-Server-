@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.7.9.0");
+            this.Version = new Version("1.7.10.0");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -324,13 +324,15 @@ namespace Color_yr.Minecraft_QQ
                                         return;
                                     }
                                 }
-                                string a;
-                                a = XML.read(config_read.config, "发送文本");
-                                a = a.Replace("%player%", play_name);
-                                if (use.remove_pic(msg) == "")
+                                string send;
+                                send = XML.read(config_read.config, "发送文本");
+                                send = send.Replace("%player%", play_name);
+                                msg = use.remove_pic(msg);
+                                if (msg == "")
                                     return;
-                                a = a.Replace("%message%", use.remove_pic(msg));
-                                socket.Send("群消息" + a, socket.MCserver);
+                                msg = use.get_at(msg);
+                                send = send.Replace("%message%", use.remove_pic(msg));
+                                socket.Send("群消息" + send, socket.MCserver);
                             }
                         }
                     }
@@ -368,15 +370,16 @@ namespace Color_yr.Minecraft_QQ
                                         return;
                                     }
                                 }
-                                string a, b;
-                                a = XML.read(config_read.config, "发送文本");
-                                a = a.Replace("%player%", play_name);
-                                b = msg.Replace(XML.read(config_read.Event, "发送文本"), "");
-                                if (use.remove_pic(b) == "")
+                                string send;
+                                send = XML.read(config_read.config, "发送文本");
+                                send = send.Replace("%player%", play_name);
+                                msg = msg.Replace(XML.read(config_read.Event, "发送文本"), "");
+                                msg = use.remove_pic(msg);
+                                if (msg == "")
                                     return;
-                                a = a.Replace("%message%", use.remove_pic(b));
-                                socket.Send("群消息" + a, socket.MCserver);
-
+                                msg = use.get_at(msg);
+                                send = send.Replace("%message%", use.remove_pic(msg));
+                                socket.Send("群消息" + send, socket.MCserver);
                             }
                             else
                             {
