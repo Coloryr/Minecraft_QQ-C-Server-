@@ -121,6 +121,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config, "Mysql账户", "root");
                 XML.write(config, "Mysql密码", "123456");
                 XML.write(config, "Mysql启用", "关");
+                XML.write(config, "检测头", "#");
             }
             if (XML.read(config, "更新？") != "false")
             {
@@ -136,6 +137,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(config, "Mysql账户") == null) XML.write(config, "Mysql账户", "root");
                 if (XML.read(config, "Mysql密码") == null) XML.write(config, "Mysql密码", "123456");
                 if (XML.read(config, "Mysql启用") == null) XML.write(config, "Mysql启用", "关");
+                if (XML.read(config, "检测头") == null) XML.write(config, "检测头", "#");
             }
 
             if (File.Exists(path + mute) == false)
@@ -221,6 +223,7 @@ namespace Color_yr.Minecraft_QQ
             use.Mysql_Port = XML.read(config, "Mysql端口");
             use.Mysql_User = XML.read(config, "Mysql账户");
             use.Mysql_Password = XML.read(config, "Mysql密码");
+            use.head = XML.read(config, "检测头");
             use.event_join_message = XML.read(Event, "事件-群员加入");
             use.event_quit_message = XML.read(Event, "事件-群员退出");
             use.event_kick_message = XML.read(Event, "事件-踢出群员");

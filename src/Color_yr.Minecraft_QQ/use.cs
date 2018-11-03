@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flexlive.CQP.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Color_yr.Minecraft_QQ
         public static string IP;
         public static string Port;
         public static string ANSI;
+        public static string head;
         public static string send;
         public static string send_text;
         public static string fix_mode;
@@ -124,6 +126,95 @@ namespace Color_yr.Minecraft_QQ
                 return false;
             }
             return true;
+        }
+        public static string player_setid(long fromQQ, string msg)
+        {
+            string player = null;
+            if (Minecraft_QQ.Mysql_mode == true)
+            {
+                player = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
+            }
+            else
+            {
+                player = XML.read(config_read.player, fromQQ.ToString());
+            }
+            if (player == null)
+            {
+                string player_name = msg.Replace(use.player_setid_message, "");
+                if (player_name == " " || player_name == "" || use.IsNatural_Number(player_name) == false)
+                {
+                    return "ID无效，请检查";
+                }
+                else
+                {
+                    player_name = player_name.Trim();
+                    if (Minecraft_QQ.Mysql_mode == true)
+                    {
+                        if (Mysql.mysql_search(Mysql.Mysql_notid, player_name.ToLower()) == "notid")
+                        {                           
+                            return "禁止绑定ID：" + player_name;
+                        }
+                        Mysql.mysql_add(Mysql.Mysql_player, fromQQ.ToString(), player_name.ToString());
+                    }
+                    else
+                    {
+                        if (XML.read(config_read.notid, player_name.ToLower()) == "notid")
+                        {
+                            return "禁止绑定ID：" + player_name;
+                        }
+                        XML.write(config_read.player, fromQQ.ToString(), player_name);
+                    }
+
+                    string qq_admin = XML.read(config_read.admin, "发送给的人");
+                    if (qq_admin != null)
+                    {
+                        CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQ.GetQQName(fromQQ) + "]绑定了ID：[" + player_name + "]");
+                    }
+
+                    return "绑定ID：" + player_name + "成功！";
+                }
+            }
+            else
+            {
+                return "你已经绑定ID了，请找腐竹更改";
+            }
+        }
+        public static string player_mute(long fromQQ, string msg)
+        {
+            string player = msg.Replace(mute_message, "");
+            string player_name = null;
+            if (player.IndexOf("[CQ") != -1)
+            {
+                player = get_string(player, "=", "]");
+                if (Minecraft_QQ.Mysql_mode == true)
+                {
+                    player_name = Mysql.mysql_search(Mysql.Mysql_player, player);
+                }
+                else
+                {
+                    player_name = XML.read(config_read.player, player);
+                }
+            }
+            else
+            {
+                player_name = player;
+            }
+            if (player_name == null)
+            {
+                return "ID无效";
+            }
+            else
+            {
+                if (Minecraft_QQ.Mysql_mode == true)
+                {
+                    Mysql.mysql_add(Mysql.Mysql_mute, player_name.ToLower(), "true");
+                }
+                else
+                {
+                    XML.write(config_read.mute, player_name.ToLower(), "true");
+                }
+                return "已禁言：[" + player_name + "]";
+            }
         }
     }
 }
