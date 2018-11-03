@@ -3,11 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
     class use
     {
+        public static string group1;
+        public static string group2;
+        public static string group3;
+        public static string IP;
+        public static string Port;
+        public static string ANSI;
+        public static string send;
+        public static string send_text;
+        public static string fix_mode;
+        public static string group2_mode;
+        public static string group3_mode;
+        public static string Mysql_mode;
+        public static string Mysql_IP = "127.0.0.1";
+        public static string Mysql_Port = "3306";
+        public static string Mysql_User = "root";
+        public static string Mysql_Password = "123456";
+        public static string event_join_message;
+        public static string event_quit_message;
+        public static string event_kick_message;
+        public static string online_players_message;
+        public static string online_servers_message;
+        public static string player_setid_message;
+        public static string send_message;
+        public static string mute_message;
+        public static string unmute_message;
+        public static string check_id_message;
+        public static string rename_id_message;
+        public static string fix_message;
+        public static string fix_send_message;
+        public static string reload_message;
+        public static string gc_message;
+
         public static string get_string(string a, string b, string c = null)
         {
             int x = a.IndexOf(b) + 1;
@@ -81,6 +114,16 @@ namespace Color_yr.Minecraft_QQ
             }
             a = a.Replace("[", "").Replace("]", "");
             return a;
+        }
+        public static bool isok(KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\b')//这是允许输入退格键
+                return true;
+            else if ((e.KeyChar < '0') || (e.KeyChar > '9'))//这是允许输入0-9数字
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
@@ -7,11 +8,6 @@ namespace Color_yr.Minecraft_QQ
     class Mysql
     {
         private static MySqlConnection conn;
-
-        public static string Mysql_IP = "127.0.0.1";
-        public static string Mysql_Port = "3306";
-        public static string Mysql_User = "root";
-        public static string Mysql_Password = "123456";
 
         public static string Mysql_player = "minecraft_qq_player";
         public static string Mysql_notid = "minecraft_qq_notid";
@@ -21,13 +17,8 @@ namespace Color_yr.Minecraft_QQ
         static string ConnectString = null;
 
         public static bool mysql_start()
-        {            
-            Mysql_IP = XML.read(config_read.config, "Mysql地址");
-            Mysql_Port = XML.read(config_read.config, "Mysql端口");
-            Mysql_User = XML.read(config_read.config, "Mysql账户");
-            Mysql_Password = XML.read(config_read.config, "Mysql密码");
-
-            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;", Mysql_IP, Mysql_Port, Mysql_User, Mysql_Password);
+        {
+            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;", use.Mysql_IP, use.Mysql_Port, use.Mysql_User, use.Mysql_Password);
             conn = new MySqlConnection(ConnectString);
 
             if (mysql_add_table(Mysql_player) == false) return false;
@@ -57,8 +48,8 @@ namespace Color_yr.Minecraft_QQ
                     default:
                         MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
                         break;
-                        return false;
                 }
+                return false;
             }
             conn.Close();
             return true;
@@ -73,6 +64,9 @@ namespace Color_yr.Minecraft_QQ
             {
                 try
                 {
+                    byte[] srcBytes = Encoding.Default.GetBytes(name);
+                    byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
+                    name = Encoding.UTF8.GetString(bytes);
                     conn.Open();
                     MySqlCommand command = conn.CreateCommand();
                     string str = "INSERT INTO {0}(qq,name)VALUES('{1}','{2}')";
@@ -133,6 +127,9 @@ namespace Color_yr.Minecraft_QQ
         {
             try
             {
+                byte[] srcBytes = Encoding.Default.GetBytes(name);
+                byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
+                name = Encoding.UTF8.GetString(bytes);
                 conn.Open();
                 MySqlCommand command = conn.CreateCommand();
                 string str = "UPDATE {0} SET name='{1}' WHERE qq='{2}'";
