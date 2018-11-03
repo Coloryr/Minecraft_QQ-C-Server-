@@ -1,4 +1,4 @@
-# Minecraft_QQ-C#-Server-
+﻿# Minecraft_QQ-C#-Server-
 Minecraft_QQ 酷Q server端
 
 Minecraft服务器与QQ群聊天的插件  
@@ -20,5 +20,6 @@ Minecraft服务器与QQ群聊天的插件
 1.7.7.0：增加禁止绑定ID列表  
 1.7.8.0：修复配置文件的一个错误  
 1.7.10.0：进行一些修改  
+1.8.0.0：修改UI，修改配置文件读取方式，需要用指令重载，增加检测头，详见WIKI  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)

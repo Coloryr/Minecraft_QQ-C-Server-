@@ -16,9 +16,16 @@ namespace Color_yr.Minecraft_QQ
 
         static string ConnectString = null;
 
+        public static string GBK_UTF8(string msg)
+        {
+            byte[] srcBytes = Encoding.Default.GetBytes(msg);
+            byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
         public static bool mysql_start()
         {
-            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;", use.Mysql_IP, use.Mysql_Port, use.Mysql_User, use.Mysql_Password);
+            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;", use.Mysql_IP, use.Mysql_Port, use.Mysql_User, use.Mysql_Password);
             conn = new MySqlConnection(ConnectString);
 
             if (mysql_add_table(Mysql_player) == false) return false;
@@ -64,13 +71,10 @@ namespace Color_yr.Minecraft_QQ
             {
                 try
                 {
-                    byte[] srcBytes = Encoding.Default.GetBytes(name);
-                    byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
-                    name = Encoding.UTF8.GetString(bytes);
                     conn.Open();
                     MySqlCommand command = conn.CreateCommand();
                     string str = "INSERT INTO {0}(qq,name)VALUES('{1}','{2}')";
-                    command.CommandText = string.Format(str, table_name, qq, name);
+                    command.CommandText = string.Format(str, table_name, qq, GBK_UTF8(name));
                     command.ExecuteNonQuery();
                     command = null;
                 }
@@ -127,13 +131,10 @@ namespace Color_yr.Minecraft_QQ
         {
             try
             {
-                byte[] srcBytes = Encoding.Default.GetBytes(name);
-                byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
-                name = Encoding.UTF8.GetString(bytes);
                 conn.Open();
                 MySqlCommand command = conn.CreateCommand();
                 string str = "UPDATE {0} SET name='{1}' WHERE qq='{2}'";
-                command.CommandText = string.Format(str, table_name, name, qq);
+                command.CommandText = string.Format(str, table_name, GBK_UTF8(name), qq);
                 command.ExecuteNonQuery();
                 command = null;
             }

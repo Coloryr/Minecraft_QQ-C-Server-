@@ -214,7 +214,7 @@ namespace Color_yr.Minecraft_QQ
             use.group3 = XML.read(config, "群号3");
             use.ANSI = XML.read(config, "编码");
             use.send = XML.read(config, "发送消息");
-            use.send_message = XML.read(config, "发送文本");
+            use.send_text = XML.read(config, "发送文本");
             use.fix_mode = XML.read(config, "维护模式");
             use.group2_mode = XML.read(config, "群2发送消息");
             use.group3_mode = XML.read(config, "群3发送消息");
