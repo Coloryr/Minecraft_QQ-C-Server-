@@ -158,7 +158,8 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + Event) == false)
             {
                 XML.write(Event, "更新？", "false");
-                XML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
+                XML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【" 
+                    + XML.read(config, "检测头") + "服务器菜单】获取更多帮助。");
                 XML.write(Event, "事件-群员退出", "%player%退出了群");
                 XML.write(Event, "事件-踢出群员", "%player%感受制裁吧！");
                 XML.write(Event, "在线人数", "在线人数");
@@ -177,7 +178,8 @@ namespace Color_yr.Minecraft_QQ
             if (XML.read(Event, "更新？") != "false")
             {
                 XML.write(Event, "更新？", "false");
-                if (XML.read(Event, "事件-群员加入") == null) XML.write(Event, "事件-群员加入", "欢迎新人%player%，输入【%服务器菜单】获取更多帮助。");
+                if (XML.read(Event, "事件-群员加入") == null) XML.write(Event, "事件-群员加入",
+                    "欢迎新人%player%，输入【" + XML.read(config, "检测头") + "服务器菜单】获取更多帮助。");
                 if (XML.read(Event, "事件-群员退出") == null) XML.write(Event, "事件-群员退出", "%player%退出了群");
                 if (XML.read(Event, "事件-踢出群员") == null) XML.write(Event, "事件-踢出群员", "%player%感受制裁吧！");
                 if (XML.read(Event, "在线人数") == null) XML.write(Event, "在线人数", "在线人数");
@@ -197,12 +199,19 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + message) == false)
             {
                 XML.write(message, "启用", "true");
-                XML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + XML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + XML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
+                XML.write(message, "服务器菜单", "服务器查询菜单：\r\n【" + XML.read(Event, "绑定文本")
+                    + "】可以绑定你的游戏ID。\r\n【" + XML.read(config, "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
+                    + XML.read(config, "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
+                    + XML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
             }
             if (XML.read(message, "更新？") == null)
             {
                 XML.write(message, "更新？", "false");
-                if (XML.read(message, "%服务器菜单") == null) XML.write(message, "%服务器菜单", "服务器查询菜单：\r\n【" + XML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【在线人数】可以查询服务器在线人数。\r\n【服务器状态】可以查询服务器是否在运行。\r\n【" + XML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
+                if (XML.read(message, "服务器菜单") == null) XML.write(message, "服务器菜单",
+                    "服务器查询菜单：\r\n【" + XML.read(Event, "绑定文本") + "】可以绑定你的游戏ID。\r\n【"
+                    + XML.read(config, "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
+                    + XML.read(config, "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
+                    + XML.read(config, "检测头") + XML.read(Event, "发送文本") + "内容】可以向服务器里发送消息。");
             }
         }
         public static void reload()
