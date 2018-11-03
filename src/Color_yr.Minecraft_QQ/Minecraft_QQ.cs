@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.8.0.0");
+            this.Version = new Version("1.8.0.1");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  

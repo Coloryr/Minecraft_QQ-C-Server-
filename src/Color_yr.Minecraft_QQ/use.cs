@@ -210,22 +210,37 @@ namespace Color_yr.Minecraft_QQ
         public static string player_checkid(long fromQQ, string msg)
         {
             msg = msg.Replace(check_id_message, "");
-            MessageBox.Show(msg);
             string player;
-            if (msg.IndexOf("[CQ:at,qq=") == -1)
-                player = fromQQ.ToString();
-            else
+            bool is_me;
+            if (msg.IndexOf("[CQ:at,qq=") != -1)
+            {
                 player = get_string(msg, "=", "]");
-            MessageBox.Show(player);
+                is_me = false;
+            }
+            else
+            {
+                player = fromQQ.ToString();
+                is_me = true;
+            }
             string player_name = null;
             if (Minecraft_QQ.Mysql_mode == true)
-                player_name = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
+                player_name = Mysql.mysql_search(Mysql.Mysql_player, player);
             else
-                player_name = XML.read(player, fromQQ.ToString());
+                player_name = XML.read(player, player);
             if (player_name == null)
-                return "玩家ID：无";
+            {
+                if (is_me == true)
+                    return "你没有绑定ID";
+                else
+                    return "玩家" + player + "没有绑定ID";
+            }
             else
-                return "玩家ID：" + player_name;
+            {
+                if (is_me == true)
+                    return "你绑定的ID为：" + player_name;
+                else
+                    return "玩家" + player + "绑定的ID为：" + player_name;
+            }
         }
         public static string player_rename(long fromQQ, string msg)
         {
