@@ -178,10 +178,8 @@ namespace Color_yr.Minecraft_QQ
                 a = xnP.InnerText;
                 if (a == "") a = null;
             }
-            catch (Exception e)
-            {
-                logs.Log_write("[ERROR][Config]读文件错误，请检查" + e.Message);
-            }
+            catch (Exception)
+            { }
             return a;
         }
     }
