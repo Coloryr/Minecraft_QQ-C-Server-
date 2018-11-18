@@ -53,7 +53,7 @@ namespace Color_yr.Minecraft_QQ
                         cmd.ExecuteNonQuery();
                         break;
                     default:
-                        MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
+                        logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                         break;
                 }
                 return false;
@@ -80,7 +80,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 catch (MySqlException ex)
                 {
-                    MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
+                    logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                 }
                 conn.Close();
             }
@@ -104,7 +104,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
+                logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
             return name;
@@ -122,7 +122,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
+                logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
         }
@@ -140,7 +140,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("错误ID：" + ex.Number + "\n" + ex.Message);
+                logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
         }

@@ -28,6 +28,7 @@ namespace Color_yr.Minecraft_QQ
             try
             {
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动端口");
+                logs.Log_write("[INFO][Socket]正在启动端口");
                 IPAddress ip = IPAddress.Parse(Minecraft_QQ.ipaddress);
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
@@ -38,13 +39,14 @@ namespace Color_yr.Minecraft_QQ
                 start = true;
                 ready = false;
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动");
+                logs.Log_write("[INFO][Socket]端口已启动");
             }
             catch (Exception exception)
             {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请看后台错误");
+                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请看日志");
+                logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
                 ready = false;
-                MessageBox.Show(exception.Message);
             }
         }
         private static void listenClientConnect(object obj)
@@ -67,6 +69,7 @@ namespace Color_yr.Minecraft_QQ
 
                     GC.Collect();
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
+                    logs.Log_write("[INFO][Socket]服务器已连接");
                     ready = true;
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
@@ -125,6 +128,7 @@ namespace Color_yr.Minecraft_QQ
                     catch (Exception)
                     {
                         CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
+                        logs.Log_write("[INFO][Socket]连接已断开-连接丢失");
                         ready = false;
 
                         socket.Shutdown(SocketShutdown.Both);
@@ -149,6 +153,7 @@ namespace Color_yr.Minecraft_QQ
             catch (ThreadAbortException)
             {
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
+                logs.Log_write("[INFO][Socket]连接已断开-主动断开");
                 return;
             }
         }
@@ -161,7 +166,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     Send(socket, info);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     clients.Clear();
                     MCserver = null;

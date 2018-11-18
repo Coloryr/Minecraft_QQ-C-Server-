@@ -84,15 +84,18 @@ namespace Color_yr.Minecraft_QQ
             if (use.Mysql_mode == "开")
             {
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在链接Mysql");
+                logs.Log_write("[INFO][Mysql]正在链接Mysql");
                 if (Mysql.mysql_start() == true)
                 {
                     Minecraft_QQ.Mysql_mode = true;
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql已连接");
+                    logs.Log_write("[INFO][Mysql]Mysql已连接");
                 }
                 else
                 {
                     Minecraft_QQ.Mysql_mode = false;
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql错误，请检查");
+                    logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
                 }             
             }
             else
@@ -216,6 +219,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public static void reload()
         {
+            logs.Log_write("[INFO][Config]读取配置文件中");
             use.IP = XML.read(config, "IP");
             use.Port = XML.read(config, "Port");
             use.group1 = XML.read(config, "群号1");

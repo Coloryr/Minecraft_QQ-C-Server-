@@ -78,7 +78,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 string b = get_string(a, "[", "]");
                 a = a.Replace(b, "");
-                a = a.Replace("[]", "");
+                a = a.Replace("[]", "{图片}");
             }
             return a;
         }
@@ -267,6 +267,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config_read.config, "维护模式", "开");
                 fix_mode = "开";
                 Minecraft_QQ.server = false;
+                logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
             else
@@ -274,6 +275,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config_read.config, "维护模式", "关");
                 fix_mode = "关";
                 Minecraft_QQ.server = true;
+                logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";
             }
         }
