@@ -129,7 +129,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception e)
             {
-                logs.Log_write("[ERROR][Config]写文件错误，请检查" + e.Message);
+                logs.Log_write("[ERROR][Config]写文件错误，请检查" + e.Message + "|写的内容：" + data);
             }
         }
         /// <summary>
@@ -178,8 +178,10 @@ namespace Color_yr.Minecraft_QQ
                 a = xnP.InnerText;
                 if (a == "") a = null;
             }
-            catch (Exception)
-            { }
+            catch (Exception e)
+            {
+                logs.Log_write("[ERROR][Config]读文件错误，请检查" + e.Message + "|读取的内容：" + data);
+            }
             return a;
         }
     }
