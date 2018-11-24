@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.8.0.2");
+            this.Version = new Version("1.8.0.3");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -69,7 +69,8 @@ namespace Color_yr.Minecraft_QQ
         public override void PrivateMessage(int subType, int sendTime, long fromQQ, string msg, int font)
         {
             // 处理私聊消息。
-            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg);
+            string msg_copy = use.CQ_code(msg);
+            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg_copy);
             if (msg.IndexOf(use.head) == 0)
             {
                 msg = msg.Replace(use.head, "");
@@ -122,7 +123,8 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="font">字体。</param>
         public override void GroupMessage(int subType, int sendTime, long fromGroup, long fromQQ, string fromAnonymous, string msg, int font)
         {
-            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg);
+            string msg_copy = use.CQ_code(msg);
+            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + CQ.GetQQName(fromQQ) + "]:" + msg_copy);
             // 处理群消息。
             if (fromGroup == GroupSet1 || fromGroup == GroupSet2 || fromGroup == GroupSet3)
             {                
@@ -152,12 +154,13 @@ namespace Color_yr.Minecraft_QQ
                                 string send;
                                 send = use.send_text;
                                 send = send.Replace("%player%", play_name);
-                                string msg_copy = msg;
-                                msg_copy = use.remove_pic(msg_copy);
-                                if (msg_copy != "")
+                                string msg_copy1 = msg;
+                                msg_copy1 = use.remove_pic(msg_copy1);
+                                if (msg_copy1 != "")
                                 {
-                                    msg_copy = use.get_at(msg_copy);
-                                    send = send.Replace("%message%", use.remove_pic(msg_copy));
+                                    msg_copy1 = use.get_at(msg_copy1);
+                                    msg_copy1 = use.CQ_code(msg_copy1);
+                                    send = send.Replace("%message%", use.remove_pic(msg_copy1));
                                     socket.Send("群消息" + send, socket.MCserver);
                                 }
                             }
@@ -195,13 +198,14 @@ namespace Color_yr.Minecraft_QQ
                                 string send;
                                 send = use.send_text;
                                 send = send.Replace("%player%", play_name);
-                                string msg_copy = msg;
-                                msg_copy = msg_copy.Replace(use.send_text, "");
-                                msg_copy = use.remove_pic(msg);
+                                string msg_copy1 = msg;
+                                msg_copy1 = msg_copy1.Replace(use.send_text, "");
+                                msg_copy1 = use.remove_pic(msg);
                                 if (msg != "")
                                 {
-                                    msg_copy = use.get_at(msg_copy);
-                                    send = send.Replace("%message%", use.remove_pic(msg_copy));
+                                    msg_copy1 = use.get_at(msg_copy1);
+                                    msg_copy1 = use.CQ_code(msg_copy1);
+                                    send = send.Replace("%message%", use.remove_pic(msg_copy1));
                                     socket.Send("群消息" + send, socket.MCserver);
                                 }
                             }

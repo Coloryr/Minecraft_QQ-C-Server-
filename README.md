@@ -23,5 +23,6 @@ Minecraft服务器与QQ群聊天的插件
 1.8.0.0：修改UI，修改配置文件读取方式，需要用指令重载，增加检测头，详见WIKI  
 1.8.0.1：修复一些bug  
 1.8.0.2：增加log内容  
+1.8.0.3：对CQ码进行转译  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)

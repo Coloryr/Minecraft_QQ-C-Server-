@@ -208,6 +208,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(config_read.mute, z) != "true")
                 {
                     x = x.Replace("(" + z + ")", "");
+                    x = use.code_CQ(x);
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, x);
                     if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on==true)
                     {

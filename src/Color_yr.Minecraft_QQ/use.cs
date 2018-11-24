@@ -78,7 +78,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 string b = get_string(a, "[", "]");
                 a = a.Replace(b, "");
-                a = a.Replace("[]", "{图片}");
+                a = a.Replace("[]", "&#91;图片&#93;");
             }
             return a;
         }
@@ -111,6 +111,34 @@ namespace Color_yr.Minecraft_QQ
             if (a.IndexOf("CQ:at,qq=all") != -1)
                 a.Replace("CQ:at,qq=all", "@全体人员");
             a = a.Replace("[", "").Replace("]", "");
+            return a;
+        }
+        public static string CQ_code(string a)
+        {
+            for (; a.IndexOf("&#91;") != -1;)
+            {
+                a = a.Replace("&#91;", "[");
+            }
+            for (; a.IndexOf("&#93;") != -1;)
+            {
+                a = a.Replace("&#93;", "]");
+            }
+            return a;
+        }
+        public static string code_CQ(string a)
+        {
+            for (; a.IndexOf("[") != -1;)
+            {
+                a = a.Replace("[", "&#91;");
+            }
+            for (; a.IndexOf("]") != -1;)
+            {
+                a = a.Replace("]", "&#93;");
+            }
+            for (; a.IndexOf(",") != -1;)
+            {
+                a = a.Replace(",", "&#44;");
+            }
             return a;
         }
 
