@@ -174,6 +174,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(Event, "查询玩家ID", "查询：");
                 XML.write(Event, "修改玩家ID", "修改：");
                 XML.write(Event, "维护文本", "服务器维护");
+                XML.write(Event, "打开菜单", "打开菜单");
                 XML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 XML.write(Event, "机器人功能-重读配置文件", "重读文件");
                 XML.write(Event, "机器人功能-内存回收", "内存回收");
@@ -194,6 +195,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(Event, "查询玩家ID") == null) XML.write(Event, "查询玩家ID", "查询：");
                 if (XML.read(Event, "修改玩家ID") == null) XML.write(Event, "修改玩家ID", "修改：");
                 if (XML.read(Event, "维护文本") == null) XML.write(Event, "维护文本", "服务器维护");
+                if (XML.read(Event, "打开菜单") == null) XML.write(Event, "打开菜单", "打开菜单");
                 if (XML.read(Event, "服务器维护文本") == null) XML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 if (XML.read(Event, "机器人功能-重读配置文件") == null) XML.write(Event, "机器人功能-重读配置文件", "重读文件");
                 if (XML.read(Event, "机器人功能-内存回收") == null) XML.write(Event, "机器人功能-内存回收", "内存回收");
@@ -252,6 +254,7 @@ namespace Color_yr.Minecraft_QQ
             use.fix_send_message = XML.read(Event, "服务器维护文本");
             use.reload_message = XML.read(Event, "机器人功能-重读配置文件");
             use.gc_message = XML.read(Event, "机器人功能-内存回收");
+            use.menu_message = XML.read(Event, "打开菜单");
         }
     }
 }

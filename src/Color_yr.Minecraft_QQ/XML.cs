@@ -180,7 +180,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception e)
             {
-                logs.Log_write("[ERROR][Config]读文件错误，请检查" + e.Message + "|读取的内容：" + data);
+                logs.Log_write("[WARN][Config]读取不到" + text + "下的" + data + "数据");
             }
             return a;
         }

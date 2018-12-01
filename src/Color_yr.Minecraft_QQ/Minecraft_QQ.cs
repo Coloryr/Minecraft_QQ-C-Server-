@@ -251,7 +251,7 @@ namespace Color_yr.Minecraft_QQ
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + use.player_rename(fromQQ, msg));
                     if (msg == use.fix_message && XML.read(config_read.admin, fromQQ.ToString()) != null)
                         CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + use.fix_mode_change());
-                    if (msg.IndexOf("打开菜单") == 0 && XML.read(config_read.admin, fromQQ.ToString()) != null)
+                    if (msg == use.mute_message && XML.read(config_read.admin, fromQQ.ToString()) != null)
                     {
                         CQ.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                         OpenSettingForm();
