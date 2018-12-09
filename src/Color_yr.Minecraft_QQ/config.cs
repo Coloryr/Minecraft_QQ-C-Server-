@@ -1,6 +1,5 @@
 ﻿using Flexlive.CQP.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -178,6 +177,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 XML.write(Event, "机器人功能-重读配置文件", "重读文件");
                 XML.write(Event, "机器人功能-内存回收", "内存回收");
+                XML.write(Event, "未知指令", "未知指令");
             }
             if (XML.read(Event, "更新？") != "false")
             {
@@ -199,6 +199,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(Event, "服务器维护文本") == null) XML.write(Event, "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 if (XML.read(Event, "机器人功能-重读配置文件") == null) XML.write(Event, "机器人功能-重读配置文件", "重读文件");
                 if (XML.read(Event, "机器人功能-内存回收") == null) XML.write(Event, "机器人功能-内存回收", "内存回收");
+                if (XML.read(Event, "未知指令") == null) XML.write(Event, "未知指令", "未知指令");
             }
 
             if (File.Exists(path + message) == false)
@@ -242,19 +243,20 @@ namespace Color_yr.Minecraft_QQ
             use.event_join_message = XML.read(Event, "事件-群员加入");
             use.event_quit_message = XML.read(Event, "事件-群员退出");
             use.event_kick_message = XML.read(Event, "事件-踢出群员");
-            use.online_players_message = XML.read(Event, "在线人数");
-            use.online_servers_message = XML.read(Event, "服务器状态");
-            use.player_setid_message = XML.read(Event, "绑定文本");
-            use.send_message = XML.read(Event, "发送文本");
-            use.mute_message = XML.read(Event, "禁言文本");
-            use.unmute_message = XML.read(Event, "解禁文本");
-            use.check_id_message = XML.read(Event, "查询玩家ID");
-            use.rename_id_message = XML.read(Event, "修改玩家ID");
-            use.fix_message = XML.read(Event, "维护文本");
+            use.online_players_message = XML.read(Event, "在线人数").ToLower();
+            use.online_servers_message = XML.read(Event, "服务器状态").ToLower();
+            use.player_setid_message = XML.read(Event, "绑定文本").ToLower();
+            use.send_message = XML.read(Event, "发送文本").ToLower();
+            use.mute_message = XML.read(Event, "禁言文本").ToLower();
+            use.unmute_message = XML.read(Event, "解禁文本").ToLower();
+            use.check_id_message = XML.read(Event, "查询玩家ID").ToLower();
+            use.rename_id_message = XML.read(Event, "修改玩家ID").ToLower();
+            use.fix_message = XML.read(Event, "维护文本").ToLower();
             use.fix_send_message = XML.read(Event, "服务器维护文本");
-            use.reload_message = XML.read(Event, "机器人功能-重读配置文件");
-            use.gc_message = XML.read(Event, "机器人功能-内存回收");
-            use.menu_message = XML.read(Event, "打开菜单");
+            use.reload_message = XML.read(Event, "机器人功能-重读配置文件").ToLower();
+            use.gc_message = XML.read(Event, "机器人功能-内存回收").ToLower();
+            use.menu_message = XML.read(Event, "打开菜单").ToLower();
+            use.unknow_message = XML.read(Event, "未知指令");
         }
     }
 }

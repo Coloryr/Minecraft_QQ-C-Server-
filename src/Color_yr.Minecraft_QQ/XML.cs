@@ -178,7 +178,7 @@ namespace Color_yr.Minecraft_QQ
                 a = xnP.InnerText;
                 if (a == "") a = null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 logs.Log_write("[WARN][Config]读取不到" + text + "下的" + data + "数据");
             }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,7 +44,10 @@ namespace Color_yr.Minecraft_QQ
         public static string reload_message;
         public static string gc_message;
         public static string menu_message;
+        public static string unknow_message;
 
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
         public static string RemoveColorCodes(string text)
         {
             if (!text.Contains("§"))
@@ -381,6 +385,25 @@ namespace Color_yr.Minecraft_QQ
                 return fix_send_message;
             }
             return null;
+        }
+
+        public static bool GC_now()
+        {
+            try
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                logs.Log_write("[ERROR]" + e.ToString());
+                return false;
+            }
         }
     }
 }
