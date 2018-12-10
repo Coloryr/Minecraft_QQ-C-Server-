@@ -223,6 +223,10 @@ namespace Color_yr.Minecraft_QQ
         public static void reload()
         {
             logs.Log_write("[INFO][Config]读取配置文件中");
+            if (XML.read(message, "启用") == "true")
+                use.message_enable = true;
+            else
+                use.message_enable = false;
             use.IP = XML.read(config, "IP");
             use.Port = XML.read(config, "Port");
             use.group1 = XML.read(config, "群号1");

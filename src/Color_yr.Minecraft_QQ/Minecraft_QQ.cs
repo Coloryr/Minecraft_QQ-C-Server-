@@ -32,7 +32,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.8.0.4");
+            this.Version = new Version("1.8.0.5");
             this.Author = "Color_yr";
             this.Description = "Minecraft服务器与QQ群互联";
                  
@@ -104,7 +104,7 @@ namespace Color_yr.Minecraft_QQ
                     else
                         CQ.SendPrivateMessage(fromQQ, "内存清理失败-请看日志");
                 }
-                else
+                else if(use.unknow_message != "" && use.unknow_message != null)
                     CQ.SendGroupMessage(fromQQ, use.unknow_message);
             }
         }
@@ -220,13 +220,8 @@ namespace Color_yr.Minecraft_QQ
                 }
                 if (msg_low.IndexOf(use.head) == 0)
                 {
-                    msg_low = msg_low.Replace(use.head, "");
-                    if (XML.read(config_read.message, msg_low) != null && XML.read(config_read.message, "启用") == "true")
-                    {
-                        CQ.SendGroupMessage(fromGroup, XML.read(config_read.message, msg_low));
-                        return;
-                    }
-                    else if(msg_low == use.online_players_message)
+                    msg_low = msg_low.Replace(use.head, "");                    
+                    if(msg_low == use.online_players_message)
                     {
                         string test = use.online(fromGroup);
                         if (test != null)
@@ -268,7 +263,12 @@ namespace Color_yr.Minecraft_QQ
                         else
                             CQ.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                     }
-                    else
+                    else if (XML.read(config_read.message, msg_low) != null && use.message_enable == true)
+                    {
+                        CQ.SendGroupMessage(fromGroup, XML.read(config_read.message, msg_low));
+                        return;
+                    }
+                    else if (use.unknow_message != "" && use.unknow_message != null)
                         CQ.SendGroupMessage(fromGroup, use.unknow_message);
                 }
             }

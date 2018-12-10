@@ -46,6 +46,8 @@ namespace Color_yr.Minecraft_QQ
         public static string menu_message;
         public static string unknow_message;
 
+        public static bool message_enable;
+
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
         public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
         public static string RemoveColorCodes(string text)
