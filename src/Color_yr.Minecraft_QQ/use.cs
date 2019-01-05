@@ -190,6 +190,8 @@ namespace Color_yr.Minecraft_QQ
         public static string player_setid(long fromQQ, string msg)
         {
             string player = null;
+            if (msg.IndexOf(head) == 0)
+                msg = msg.Replace(head, null);
             if (Minecraft_QQ.Mysql_mode == true)
                 player = Mysql.mysql_search(Mysql.Mysql_player, fromQQ.ToString());
             else
@@ -226,6 +228,8 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string player_mute(long fromQQ, string msg)
         {
+            if (msg.IndexOf(head) == 0)
+                msg = msg.Replace(head, null);
             msg = msg.Replace(mute_message, "");
             string player = get_string(msg, "=", "]");
             string player_name = null;
@@ -249,6 +253,8 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string player_unmute(long fromQQ, string msg)
         {
+            if (msg.IndexOf(head) == 0)
+                msg = msg.Replace(head, null);
             msg = msg.Replace(unmute_message, "");
             string player = get_string(msg, "=", "]");
             string player_name = null;
@@ -274,6 +280,8 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string player_checkid(long fromQQ, string msg)
         {
+            if (msg.IndexOf(head) == 0)
+                msg = msg.Replace(head, null);
             msg = msg.Replace(check_id_message, "");
             string player;
             bool is_me;
@@ -309,6 +317,8 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string player_rename(long fromQQ, string msg)
         {
+            if (msg.IndexOf(head) == 0)
+                msg = msg.Replace(head, null);
             msg = msg.Replace(rename_id_message, "");
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {

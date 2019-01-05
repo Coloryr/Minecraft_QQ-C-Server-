@@ -26,5 +26,6 @@ Minecraft服务器与QQ群聊天的插件
 1.8.0.3：对CQ码进行转译  
 1.8.0.4：强制性小写指令，修改了一些bug，event.xml有更新  
 1.8.0.5：进行一些改动  
+1.8.0.6：删除检测头  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)
