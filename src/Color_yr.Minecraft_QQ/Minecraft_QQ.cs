@@ -157,6 +157,7 @@ namespace Color_yr.Minecraft_QQ
                                 msg_copy1 = use.remove_pic(msg_copy1);
                                 if (msg_copy1 != "")
                                 {
+                                    msg_copy1 = use.RemoveColorCodes(msg_copy1);
                                     msg_copy1 = use.get_at(msg_copy1);
                                     msg_copy1 = use.CQ_code(msg_copy1);
                                     send = send.Replace("%message%", use.remove_pic(msg_copy1));
@@ -202,6 +203,7 @@ namespace Color_yr.Minecraft_QQ
                                 msg_copy1 = use.remove_pic(msg);
                                 if (msg != "")
                                 {
+                                    msg_copy1 = use.RemoveColorCodes(msg_copy1);
                                     msg_copy1 = use.get_at(msg_copy1);
                                     msg_copy1 = use.CQ_code(msg_copy1);
                                     send = send.Replace("%message%", use.remove_pic(msg_copy1));

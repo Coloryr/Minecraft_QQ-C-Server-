@@ -47,6 +47,7 @@ namespace Color_yr.Minecraft_QQ
         public static string unknow_message;
 
         public static bool message_enable;
+        public static bool not_color_code;
 
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
         public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
@@ -76,6 +77,7 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("§e", string.Empty);
             sb.Replace("§f", string.Empty);
             sb.Replace("§r", string.Empty);
+            sb.Replace("§k", string.Empty);
 
             return sb.ToString();
         }
@@ -247,6 +249,7 @@ namespace Color_yr.Minecraft_QQ
                 if (Minecraft_QQ.Mysql_mode == true)
                     Mysql.mysql_add(Mysql.Mysql_mute, player_name.ToLower(), "true");
                 else
+                { 
                     XML.write(config_read.mute, player_name.ToLower(), "true");
                 return "已禁言：[" + player_name + "]";
             }

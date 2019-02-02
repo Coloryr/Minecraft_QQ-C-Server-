@@ -15,7 +15,7 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         /// <param name="text">文件</param>
         /// <param name="mode">模式</param>>
-        public static void CreateFile(string text, int mode)
+        public void CreateFile(string text, int mode)
         {
             FileInfo file = new FileInfo(config_read.path + text);
             if (file.Exists && mode == 1) //文件存在就删除
@@ -36,7 +36,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="text">文件名</param>
         /// <param name="data">属性名</param>
         /// <param name="data1">元素名</param>
-        public static void setXml(string text, string data, string data1)
+        public void setXml(string text, string data, string data1)
         {
             if (File.Exists(config_read.path + text) == false)
             {
@@ -67,7 +67,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="text">文件名</param>
         /// <param name="data">属性名</param>
         /// <param name="data1">元素名</param>
-        public static void write(string text, string data, string data1)
+        public void write(string text, string data, string data1)
         {
             if (File.Exists(config_read.path + text) == false)
             {
@@ -104,7 +104,7 @@ namespace Color_yr.Minecraft_QQ
             }
         }
 
-        private static void rewrite(string text, string data, string data1)
+        private void rewrite(string text, string data, string data1)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="text">文件名</param>
         /// <param name="text">属性名</param>
         /// <param name="text">元素名</param>
-        public static void Remove(string text, string data, string data1)//删除XML文件中的元素
+        public void Remove(string text, string data, string data1)//删除XML文件中的元素
         {
             if (File.Exists(config_read.path + text) == false)
             {
@@ -167,7 +167,8 @@ namespace Color_yr.Minecraft_QQ
             string a = null;
             if (File.Exists(config_read.path + text) == false)
             {
-                CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
+                XML xml = new XML();
+                xml.CreateFile(text, 0);//创建该文件，如果路径文件夹不存在，则报错。
             }
             try
             {
