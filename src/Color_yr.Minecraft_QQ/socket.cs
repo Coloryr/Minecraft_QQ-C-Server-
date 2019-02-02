@@ -1,12 +1,10 @@
 ﻿using Flexlive.CQP.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -16,14 +14,14 @@ namespace Color_yr.Minecraft_QQ
         public static string MCserver = null;
         public Print print;                     // 运行时的信息输出方法
         public delegate void Print(string info);
-        static Socket serverSocket;
+        private static Socket serverSocket;
         private static byte[] read = new byte[4096];
-        public static Boolean start;
-        public static Boolean ready = false;
-        static Thread thread1 = null;
-        static Thread thread2 = null;
+        public static bool start;
+        public static bool ready = false;
+        private static Thread server_thread;
+        private static Thread read_thread;
 
-        public static void Start_socket()
+        public void Start_socket()
         {
             try
             {
@@ -33,9 +31,9 @@ namespace Color_yr.Minecraft_QQ
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
                 serverSocket.Listen(5);
-                
-                thread1 = new Thread(listenClientConnect);
-                thread1.Start(serverSocket);
+
+                server_thread = new Thread(listenClientConnect);
+                server_thread.Start(serverSocket);
                 start = true;
                 ready = false;
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动");
@@ -58,14 +56,14 @@ namespace Color_yr.Minecraft_QQ
                 {
                     Socket clientScoket = socket.Accept();
 
-                    if (thread2 != null)
+                    if (read_thread != null)
                     {
-                        thread2.DisableComObjectEagerCleanup();
-                        thread2.Abort();                        
-                        thread2 = null;
+                        read_thread.Abort();
+                        read_thread.DisableComObjectEagerCleanup();
+                        read_thread = null;
                     }
-                    thread2 = new Thread(receiveData);
-                    thread2.Start(clientScoket);                   // 在新的线程中接收客户端信息
+                    read_thread = new Thread(receiveData);
+                    read_thread.Start(clientScoket);                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
@@ -194,7 +192,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     bytes = Encoding.Default.GetBytes(data);
                 }
-                socket.Send(bytes); 
+                socket.Send(bytes);
             }
         }
         private static void message(string read)
@@ -210,11 +208,11 @@ namespace Color_yr.Minecraft_QQ
                     x = x.Replace("(" + z + ")", "");
                     x = use.code_CQ(x);
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, x);
-                    if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on==true)
+                    if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
                     {
                         CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, x);
                     }
-                    if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on==true)
+                    if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
                     {
                         CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, x);
                     }

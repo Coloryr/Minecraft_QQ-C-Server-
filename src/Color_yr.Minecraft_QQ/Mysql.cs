@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
-    class Mysql
+    class Mysql_user
     {
         private static MySqlConnection conn;
 
@@ -14,7 +14,7 @@ namespace Color_yr.Minecraft_QQ
         public static string Mysql_mute = "minecraft_qq_mute";
         //qq字段qq的值，name字段name的值
 
-        static string ConnectString = null;
+        private static string ConnectString = null;
 
         public static string GBK_UTF8(string msg)
         {
@@ -23,9 +23,10 @@ namespace Color_yr.Minecraft_QQ
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public static bool mysql_start()
+        public bool mysql_start()
         {
-            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;", use.Mysql_IP, use.Mysql_Port, use.Mysql_User, use.Mysql_Password);
+            ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;",
+                config_read.Mysql_IP, config_read.Mysql_Port, config_read.Mysql_User, config_read.Mysql_Password);
             conn = new MySqlConnection(ConnectString);
 
             if (mysql_add_table(Mysql_player) == false) return false;
@@ -33,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
             if (mysql_add_table(Mysql_mute) == false) return false;
             return true;
         }
-        public static bool mysql_add_table(string table_name)
+        public bool mysql_add_table(string table_name)
         {
             try
             {
@@ -61,7 +62,7 @@ namespace Color_yr.Minecraft_QQ
             conn.Close();
             return true;
         }
-        public static void mysql_add(string table_name, string qq, string name)
+        public void mysql_add(string table_name, string qq, string name)
         {
             if (mysql_search(table_name, qq) != null)
             {
@@ -93,7 +94,7 @@ namespace Color_yr.Minecraft_QQ
                 conn.Open();
                 string command = string.Format("SELECT * FROM {0} where qq='{1}'", table_name, qq);
                 MySqlCommand mycmd = new MySqlCommand(command, conn);
-                MySqlDataReader reader = mycmd.ExecuteReader();              
+                MySqlDataReader reader = mycmd.ExecuteReader();
                 while (reader.Read())
                 {
                     name = reader.GetString(1);
@@ -110,8 +111,8 @@ namespace Color_yr.Minecraft_QQ
             return name;
         }
 
-        public static void mysql_remove(string table_name, string qq)
-        {           
+        public void mysql_remove(string table_name, string qq)
+        {
             try
             {
                 conn.Open();
@@ -126,8 +127,8 @@ namespace Color_yr.Minecraft_QQ
             }
             conn.Close();
         }
-        
-        public static void mysql_replace(string table_name, string qq, string name)
+
+        public void mysql_replace(string table_name, string qq, string name)
         {
             try
             {
