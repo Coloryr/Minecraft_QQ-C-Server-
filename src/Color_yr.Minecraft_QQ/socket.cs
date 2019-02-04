@@ -202,7 +202,7 @@ namespace Color_yr.Minecraft_QQ
                 sb.Replace("[群消息]", string.Empty);
                 string x = sb.ToString();
                 string z = use.get_string(x, "(", ")");
-                if (XML.read(config_read.mute, z) != "true")
+                if (use.check_mute(z) == false)
                 {
                     x = x.Replace("(" + z + ")", "");
                     x = use.code_CQ(x);

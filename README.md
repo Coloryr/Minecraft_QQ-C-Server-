@@ -28,5 +28,6 @@ Minecraft服务器与QQ群聊天的插件
 1.8.0.5：进行一些改动  
 1.8.0.6：删除检测头  
 1.8.0.7：修改大部分代码，增加删除颜色代码，需要更新config.xml  
+1.8.0.8：修改窗体，修复bug  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)

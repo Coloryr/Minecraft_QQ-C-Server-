@@ -192,10 +192,10 @@ namespace Color_yr.Minecraft_QQ
                                                 msg_copy = use.RemoveColorCodes(msg_copy);
                                             msg_copy = use.get_at(msg_copy);
                                             msg_copy = use.CQ_code(msg_copy);
-                                            use.RemoveLeft(msg_copy, config_read.send_message.Length);
+                                            int temp = config_read.send_message.Length + config_read.head.Length; 
+                                            msg_copy = msg_copy.Substring(temp - 1 ,msg_copy.Length - temp + 1);
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
                                             socket.Send("群消息" + send, socket.MCserver);
-                                            CQ.SendGroupMessage(GroupSet1, "[Minecraft_QQ]已发送" + send);
                                         }
                                     }
                                     else

@@ -71,10 +71,6 @@ namespace Color_yr.Minecraft_QQ
             else
                 return a.Substring(x);
         }
-        public static string RemoveLeft(string s, int len)
-        {
-            return s.PadLeft(len).Remove(0, len);
-        }
 
         public static bool IsNumber(string str)
         {
