@@ -157,7 +157,7 @@ namespace Color_yr.Minecraft_QQ
                             }
                         }
                     }
-                }             
+                }
                 if (msg_low.IndexOf(config_read.head) == 0)
                 {
                     msg_low = msg_low.Replace(config_read.head, "");
@@ -192,8 +192,8 @@ namespace Color_yr.Minecraft_QQ
                                                 msg_copy = use.RemoveColorCodes(msg_copy);
                                             msg_copy = use.get_at(msg_copy);
                                             msg_copy = use.CQ_code(msg_copy);
-                                            int temp = config_read.send_message.Length + config_read.head.Length; 
-                                            msg_copy = msg_copy.Substring(temp - 1 ,msg_copy.Length - temp + 1);
+                                            int temp = config_read.send_message.Length + config_read.head.Length;
+                                            msg_copy = msg_copy.Substring(temp - 1, msg_copy.Length - temp + 1);
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
                                             socket.Send("群消息" + send, socket.MCserver);
                                         }
@@ -256,15 +256,8 @@ namespace Color_yr.Minecraft_QQ
                         else
                             CQ.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                     }
-
-                    else if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？")
-                    {
-                        string message = XML.read(config_read.message, msg_low);
-                        if (message != null)
-                        {
-                            CQ.SendGroupMessage(fromGroup, message);
-                        }
-                    }
+                    else if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？" || XML.read(config_read.message, msg_low) != null)
+                        CQ.SendGroupMessage(fromGroup, XML.read(config_read.message, msg_low));
                     else if (config_read.unknow_message != "" && config_read.unknow_message != null)
                         CQ.SendGroupMessage(fromGroup, config_read.unknow_message);
                 }
