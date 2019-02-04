@@ -37,6 +37,24 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("§f", string.Empty);
             sb.Replace("§r", string.Empty);
             sb.Replace("§k", string.Empty);
+            sb.Replace("&0", string.Empty);
+            sb.Replace("&1", string.Empty);
+            sb.Replace("&2", string.Empty);
+            sb.Replace("&3", string.Empty);
+            sb.Replace("&4", string.Empty);
+            sb.Replace("&5", string.Empty);
+            sb.Replace("&6", string.Empty);
+            sb.Replace("&7", string.Empty);
+            sb.Replace("&8", string.Empty);
+            sb.Replace("&9", string.Empty);
+            sb.Replace("&a", string.Empty);
+            sb.Replace("&b", string.Empty);
+            sb.Replace("&c", string.Empty);
+            sb.Replace("&d", string.Empty);
+            sb.Replace("&e", string.Empty);
+            sb.Replace("&f", string.Empty);
+            sb.Replace("&r", string.Empty);
+            sb.Replace("&k", string.Empty);
 
             return sb.ToString();
         }
@@ -58,7 +76,7 @@ namespace Color_yr.Minecraft_QQ
             return s.PadLeft(len).Remove(0, len);
         }
 
-        public static bool IsNatural_Number(string str)
+        public static bool IsNumber(string str)
         {
             for (int i = 0; i < str.Length; i++)
             {
@@ -140,13 +158,19 @@ namespace Color_yr.Minecraft_QQ
             return a;
         }
 
-        public static bool isok(KeyPressEventArgs e)
+        public static bool key_ok(KeyEventArgs e)
         {
-            if (e.KeyChar == '\b')//这是允许输入退格键
+            if (e.Control == true)          //按下了ctrl
+            {
+                if (e.KeyData == Keys.V || e.KeyData == Keys.C)
+                    return true;
+            }
+            else if (e.KeyCode == Keys.Back)//这是允许输入退格键
                 return true;
-            else if ((e.KeyChar < '0') || (e.KeyChar > '9'))//这是允许输入0-9数字
-                return false;
-            return true;
+            if (e.KeyData == Keys.D0 || e.KeyData == Keys.D1 || e.KeyData == Keys.D2 || e.KeyData == Keys.D3 || e.KeyData == Keys.D4 ||
+                e.KeyData == Keys.D5 || e.KeyData == Keys.D6 || e.KeyData == Keys.D7 || e.KeyData == Keys.D8 || e.KeyData == Keys.D9)
+                return true;
+            return false;
         }
 
         public static bool check_mute(string player)
@@ -154,7 +178,7 @@ namespace Color_yr.Minecraft_QQ
             if (Minecraft_QQ.Mysql_mode == true)
                 if (Mysql_user.mysql_search(Mysql_user.Mysql_mute, player.ToLower()) == "true")
                     return true;
-            else
+            else if(Minecraft_QQ.Mysql_mode == false)
                 if (XML.read(config_read.mute, player.ToLower()) == "true")
                     return true;
             return false;
@@ -172,7 +196,7 @@ namespace Color_yr.Minecraft_QQ
             if (player == null)
             {
                 string player_name = msg.Replace(config_read.player_setid_message, "");
-                if (player_name == " " || player_name == "" || use.IsNatural_Number(player_name) == false)
+                if (player_name == " " || player_name == "")
                     return "ID无效，请检查";
                 else
                 {

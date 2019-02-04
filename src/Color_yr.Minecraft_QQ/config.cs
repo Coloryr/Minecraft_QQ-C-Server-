@@ -11,7 +11,6 @@ namespace Color_yr.Minecraft_QQ
         public static string group1;
         public static string group2;
         public static string group3;
-        public static string IP;
         public static string Port;
         public static string ANSI;
         public static string head;       
@@ -61,34 +60,25 @@ namespace Color_yr.Minecraft_QQ
         public static void start()
         {
             config_read read = new config_read();
-            FormSettings frm = new FormSettings();
+            setform frm = new setform();
             read.read_config();
             read.reload();
 
-            if (group1 == null)
+            if (group1 == null || Port == null)
             {
-                MessageBox.Show("未设置群号1，请设置");
+                MessageBox.Show("参数错误，请设置");
                 frm.ShowDialog();
+                read.read_config();
+                read.reload();
             }
             else
+            {
                 Minecraft_QQ.GroupSet1 = long.Parse(group1);
-            Minecraft_QQ.ipaddress = IP;
-            if (Minecraft_QQ.ipaddress == null)
-            {
-                MessageBox.Show("未设置IP，请设置");
-                frm.ShowDialog();
-            }
-            else
-                Minecraft_QQ.ipaddress = IP;
-            if (Port == null)
-            {
-                MessageBox.Show("未设置端口，请设置");
-                frm.ShowDialog();
-            }
-            else
                 Minecraft_QQ.Port = int.Parse(Port);
+            }
 
             CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动");
+            CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]设置的端口" + Minecraft_QQ.Port);
 
             if (group2 != null)
                 Minecraft_QQ.GroupSet2 = long.Parse(group2);
@@ -154,7 +144,6 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + config) == false)
             {
                 xml.write(config, "更新？", "false");
-                xml.write(config, "IP", "127.0.0.1");
                 xml.write(config, "Port", "25555");
                 xml.write(config, "编码", "ANSI（GBK）");
                 xml.write(config, "发送消息", "不！");
@@ -171,7 +160,6 @@ namespace Color_yr.Minecraft_QQ
             else if (XML.read(config, "更新？") != "false")
             {
                 xml.write(config, "更新？", "false");
-                if (XML.read(config, "IP") == null) xml.write(config, "IP", "127.0.0.1");
                 if (XML.read(config, "Port") == null) xml.write(config, "Port", "25555");
                 if (XML.read(config, "编码") == null) xml.write(config, "编码", "ANSI（GBK）");
                 if (XML.read(config, "发送消息") == null) xml.write(config, "发送消息", "不！");
@@ -271,7 +259,6 @@ namespace Color_yr.Minecraft_QQ
                 message_enable = true;
             else
                 message_enable = false;
-            IP = XML.read(config, "IP");
             Port = XML.read(config, "Port");
             group1 = XML.read(config, "群号1");
             group2 = XML.read(config, "群号2");

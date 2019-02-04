@@ -65,11 +65,11 @@
     <Compile Include="logs.cs" />
     <Compile Include="Mysql.cs" />
     <Compile Include="socket.cs" />
-    <Compile Include="FormSettings.cs">
+    <Compile Include="setform.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSettings.Designer.cs">
-      <DependentUpon>FormSettings.cs</DependentUpon>
+    <Compile Include="setform.Designer.cs">
+      <DependentUpon>setform.cs</DependentUpon>
     </Compile>
     <Compile Include="Minecraft_QQ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,8 +77,8 @@
     <Compile Include="XML.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormSettings.resx">
-      <DependentUpon>FormSettings.cs</DependentUpon>
+    <EmbeddedResource Include="setform.resx">
+      <DependentUpon>setform.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

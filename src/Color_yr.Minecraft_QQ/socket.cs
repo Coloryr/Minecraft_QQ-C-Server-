@@ -27,9 +27,8 @@ namespace Color_yr.Minecraft_QQ
             {
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动端口");
                 logs.Log_write("[INFO][Socket]正在启动端口");
-                IPAddress ip = IPAddress.Parse(Minecraft_QQ.ipaddress);
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Port));
+                serverSocket.Bind(new IPEndPoint(IPAddress.Any, Minecraft_QQ.Port));
                 serverSocket.Listen(5);
 
                 server_thread = new Thread(listenClientConnect);
@@ -192,7 +191,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     bytes = Encoding.Default.GetBytes(data);
                 }
-                socket.Send(bytes);
+                socket.Send(bytes);                
             }
         }
         private static void message(string read)

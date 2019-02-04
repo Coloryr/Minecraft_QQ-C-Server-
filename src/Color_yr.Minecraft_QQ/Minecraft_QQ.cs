@@ -1,5 +1,6 @@
 ﻿using Flexlive.CQP.Framework;
 using System;
+using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -9,7 +10,6 @@ namespace Color_yr.Minecraft_QQ
     public class Minecraft_QQ : CQAppAbstract
     {
         public static int Port;         //端口  
-        public static string ipaddress; //地址
 
         public static int Group;
         public static long GroupSet1;    //QQ群号1
@@ -30,10 +30,10 @@ namespace Color_yr.Minecraft_QQ
             // 此方法用来初始化插件名称、版本、作者、描述等信息，
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
-            this.Name = "Minecraft_QQ";
-            this.Version = new Version("1.8.0.7");
-            this.Author = "Color_yr";
-            this.Description = "Minecraft服务器与QQ群互联";
+            Name = "Minecraft_QQ";
+            Version = new Version("1.8.0.8");
+            Author = "Color_yr";
+            Description = "Minecraft服务器与QQ群互联";
 
         }
         /// <summary>
@@ -51,7 +51,7 @@ namespace Color_yr.Minecraft_QQ
         public override void OpenSettingForm()
         {
             // 打开设置窗口的相关代码。
-            FormSettings frm = new FormSettings();
+            setform frm = new setform();
             frm.ShowDialog();
         }
 
@@ -139,48 +139,11 @@ namespace Color_yr.Minecraft_QQ
                             else
                                 play_name = XML.read(config_read.player, fromQQ.ToString());
                             if (play_name != null && use.check_mute(play_name) == false)
-                            {                                
-                                string send;
-                                string msg_copy = msg;
-                                send = config_read.send_text;
-                                send = send.Replace("%player%", play_name);
-                                msg_copy = use.remove_pic(msg_copy);
-                                if (msg_copy != "")
-                                {
-                                    if (config_read.color_code == false)
-                                        msg_copy = use.RemoveColorCodes(msg_copy);
-                                    msg_copy = use.get_at(msg_copy);
-                                    msg_copy = use.CQ_code(msg_copy);
-                                    send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                    socket.Send("群消息" + send, socket.MCserver);
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (msg_low.IndexOf(config_read.send_message) == 0 && config_read.allways_send == false)
-                {
-                    if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
-                    {
-                        CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
-                        return;
-                    }
-                    else if (server == true)
-                    {
-                        if (socket.ready == true)
-                        {
-                            string play_name = null;
-                            if (Mysql_mode == true)
-                                play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
-                            else
-                                play_name = XML.read(config_read.player, fromQQ.ToString());
-                            if (play_name != null && use.check_mute(play_name) == false)
                             {
                                 string send;
                                 string msg_copy = msg;
                                 send = config_read.send_text;
                                 send = send.Replace("%player%", play_name);
-                                msg_copy = msg_copy.Replace(config_read.send_text, "");
                                 msg_copy = use.remove_pic(msg_copy);
                                 if (msg_copy != "")
                                 {
@@ -188,25 +151,69 @@ namespace Color_yr.Minecraft_QQ
                                         msg_copy = use.RemoveColorCodes(msg_copy);
                                     msg_copy = use.get_at(msg_copy);
                                     msg_copy = use.CQ_code(msg_copy);
-                                    msg_copy = msg_copy.Substring(config_read.send_message.Length, msg_copy.Length);
                                     send = send.Replace("%message%", use.remove_pic(msg_copy));
                                     socket.Send("群消息" + send, socket.MCserver);
                                 }
                             }
-                            else
-                                CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送：" + config_read.player_setid_message + " [ID]来绑定，如：" +
-                                "\n" + config_read.player_setid_message + " Color_yr");
                         }
-                        else
-                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                     }
-                    else
-                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + config_read.fix_send_message);
-                }
+                }             
                 if (msg_low.IndexOf(config_read.head) == 0)
                 {
                     msg_low = msg_low.Replace(config_read.head, "");
-                    if (msg_low == config_read.online_players_message)
+                    if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
+                    {
+                        if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
+                        {
+                            CQ.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
+                        }
+                        else if (server == true)
+                        {
+                            if (socket.ready == true)
+                            {
+                                try
+                                {
+                                    string play_name = null;
+                                    if (Mysql_mode == true)
+                                        play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
+                                    else
+                                        play_name = XML.read(config_read.player, fromQQ.ToString());
+                                    if (play_name != null && use.check_mute(play_name) == false)
+                                    {
+                                        string send;
+                                        string msg_copy = msg;
+                                        send = config_read.send_text;
+                                        send = send.Replace("%player%", play_name);
+                                        msg_copy = msg_copy.Replace(config_read.send_text, "");
+                                        msg_copy = use.remove_pic(msg_copy);
+                                        if (msg_copy != "")
+                                        {
+                                            if (config_read.color_code == false)
+                                                msg_copy = use.RemoveColorCodes(msg_copy);
+                                            msg_copy = use.get_at(msg_copy);
+                                            msg_copy = use.CQ_code(msg_copy);
+                                            use.RemoveLeft(msg_copy, config_read.send_message.Length);
+                                            send = send.Replace("%message%", use.remove_pic(msg_copy));
+                                            socket.Send("群消息" + send, socket.MCserver);
+                                            CQ.SendGroupMessage(GroupSet1, "[Minecraft_QQ]已发送" + send);
+                                        }
+                                    }
+                                    else
+                                        CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送：" + config_read.player_setid_message + " [ID]来绑定，如：" +
+                                        "\n" + config_read.player_setid_message + " Color_yr");
+                                }
+                                catch (InvalidCastException e)
+                                {
+                                    logs.Log_write(e.Message);
+                                }
+                            }
+                            else
+                                CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
+                        }
+                        else
+                            CQ.SendGroupMessage(fromGroup, CQ.CQCode_At(fromQQ) + config_read.fix_send_message);
+                    }
+                    else if (msg_low == config_read.online_players_message)
                     {
                         string test = use.online(fromGroup);
                         if (test != null)
@@ -249,16 +256,17 @@ namespace Color_yr.Minecraft_QQ
                         else
                             CQ.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                     }
+
+                    else if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？")
+                    {
+                        string message = XML.read(config_read.message, msg_low);
+                        if (message != null)
+                        {
+                            CQ.SendGroupMessage(fromGroup, message);
+                        }
+                    }
                     else if (config_read.unknow_message != "" && config_read.unknow_message != null)
                         CQ.SendGroupMessage(fromGroup, config_read.unknow_message);
-                }
-                if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？")
-                {
-                    string message = XML.read(config_read.message, msg);
-                    if (message != null)
-                    {
-                        CQ.SendGroupMessage(fromGroup, message);
-                    }
                 }
             }
         }
