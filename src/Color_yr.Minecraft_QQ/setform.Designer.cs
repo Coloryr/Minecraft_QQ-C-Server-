@@ -68,6 +68,9 @@
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -153,7 +156,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(14, 188);
+            this.checkBox1.Location = new System.Drawing.Point(14, 215);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(132, 16);
             this.checkBox1.TabIndex = 24;
@@ -164,29 +167,29 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(14, 210);
+            this.checkBox2.Location = new System.Drawing.Point(14, 237);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(102, 16);
+            this.checkBox2.Size = new System.Drawing.Size(66, 16);
             this.checkBox2.TabIndex = 26;
-            this.checkBox2.Text = "2群服务器对话";
+            this.checkBox2.Text = "2群对话";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(14, 231);
+            this.checkBox3.Location = new System.Drawing.Point(94, 237);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(102, 16);
+            this.checkBox3.Size = new System.Drawing.Size(66, 16);
             this.checkBox3.TabIndex = 27;
-            this.checkBox3.Text = "3群服务器对话";
+            this.checkBox3.Text = "3群对话";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(14, 253);
+            this.checkBox4.Location = new System.Drawing.Point(14, 259);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(168, 16);
             this.checkBox4.TabIndex = 23;
@@ -235,7 +238,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 151);
+            this.label5.Location = new System.Drawing.Point(12, 178);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(113, 12);
             this.label5.TabIndex = 21;
@@ -316,7 +319,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 272);
+            this.label14.Location = new System.Drawing.Point(21, 278);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(203, 24);
             this.label14.TabIndex = 39;
@@ -325,7 +328,7 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(14, 167);
+            this.radioButton1.Location = new System.Drawing.Point(14, 194);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(53, 16);
             this.radioButton1.TabIndex = 19;
@@ -337,7 +340,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(71, 167);
+            this.radioButton2.Location = new System.Drawing.Point(71, 194);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(89, 16);
             this.radioButton2.TabIndex = 20;
@@ -435,11 +438,43 @@
             this.textBox12.TabIndex = 58;
             this.textBox12.Text = "123456";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(46, 152);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.ReadOnly = true;
+            this.textBox4.Size = new System.Drawing.Size(91, 21);
+            this.textBox4.TabIndex = 62;
+            this.textBox4.Text = "127.0.0.1";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 154);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 12);
+            this.label3.TabIndex = 61;
+            this.label3.Text = "地址";
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(144, 157);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(60, 16);
+            this.checkBox6.TabIndex = 63;
+            this.checkBox6.Text = "绑定IP";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            this.checkBox6.CheckedChanged += new System.EventHandler(this.CheckBox6_CheckedChanged);
+            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 302);
+            this.ClientSize = new System.Drawing.Size(377, 306);
+            this.Controls.Add(this.checkBox6);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -537,5 +572,8 @@
 
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox checkBox6;
     }
 }

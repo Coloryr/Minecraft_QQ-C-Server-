@@ -14,11 +14,7 @@ namespace Color_yr.Minecraft_QQ
         public static string Port;
         public static string ANSI;
         public static string head;       
-        public static string send_text;
-        public static string Mysql_IP = "127.0.0.1";
-        public static string Mysql_Port = "3306";
-        public static string Mysql_User = "root";
-        public static string Mysql_Password = "123456";
+        public static string send_text;      
         public static string event_join_message;
         public static string event_quit_message;
         public static string event_kick_message;
@@ -61,10 +57,12 @@ namespace Color_yr.Minecraft_QQ
         {
             config_read read = new config_read();
             setform frm = new setform();
+
+            CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动中");
+
             read.read_config();
             read.reload();
-
-            if (group1 == null || Port == null)
+            if (group1 == null || Port == null || (socket.setip == null && socket.useip == true))
             {
                 MessageBox.Show("参数错误，请设置");
                 frm.ShowDialog();
@@ -74,11 +72,8 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 Minecraft_QQ.GroupSet1 = long.Parse(group1);
-                Minecraft_QQ.Port = int.Parse(Port);
+                socket.Port = int.Parse(Port);
             }
-
-            CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动");
-            CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]设置的端口" + Minecraft_QQ.Port);
 
             if (group2 != null)
                 Minecraft_QQ.GroupSet2 = long.Parse(group2);
@@ -111,7 +106,6 @@ namespace Color_yr.Minecraft_QQ
 
             if (Mysql_mode == true)
             {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在链接Mysql");
                 logs.Log_write("[INFO][Mysql]正在链接Mysql");
                 Mysql_user sql = new Mysql_user();
                 if (sql.mysql_start() == true)
@@ -131,8 +125,8 @@ namespace Color_yr.Minecraft_QQ
             {
                 Minecraft_QQ.Mysql_mode = false;
             }
-            socket socket = new socket();
-            socket.Start_socket();
+            socket socket_start = new socket();
+            socket_start.Start_socket();
         }
 
         public void read_config()
@@ -144,7 +138,9 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + config) == false)
             {
                 xml.write(config, "更新？", "false");
+                xml.write(config, "IP", "127.0.0.1");
                 xml.write(config, "Port", "25555");
+                xml.write(config, "绑定IP", "关");
                 xml.write(config, "编码", "ANSI（GBK）");
                 xml.write(config, "发送消息", "不！");
                 xml.write(config, "发送文本", "%player%:%message%");
@@ -160,7 +156,9 @@ namespace Color_yr.Minecraft_QQ
             else if (XML.read(config, "更新？") != "false")
             {
                 xml.write(config, "更新？", "false");
+                if (XML.read(config, "IP") == null) xml.write(config, "IP", "127.0.0.1");
                 if (XML.read(config, "Port") == null) xml.write(config, "Port", "25555");
+                if (XML.read(config, "绑定IP") == null) xml.write(config, "绑定IP", "关");
                 if (XML.read(config, "编码") == null) xml.write(config, "编码", "ANSI（GBK）");
                 if (XML.read(config, "发送消息") == null) xml.write(config, "发送消息", "不！");
                 if (XML.read(config, "发送文本") == null) xml.write(config, "发送文本", "%player%:%message%");
@@ -260,6 +258,11 @@ namespace Color_yr.Minecraft_QQ
             else
                 message_enable = false;
             Port = XML.read(config, "Port");
+            socket.setip = XML.read(config, "IP");
+            if (XML.read(config, "绑定IP") == "开")
+                socket.useip = true;
+            else
+                socket.useip = false;
             group1 = XML.read(config, "群号1");
             group2 = XML.read(config, "群号2");
             group3 = XML.read(config, "群号3");
@@ -285,10 +288,10 @@ namespace Color_yr.Minecraft_QQ
                 Mysql_mode = true;
             else
                 Mysql_mode = false;
-            Mysql_IP = XML.read(config, "Mysql地址");
-            Mysql_Port = XML.read(config, "Mysql端口");
-            Mysql_User = XML.read(config, "Mysql账户");
-            Mysql_Password = XML.read(config, "Mysql密码");
+            Mysql_user.Mysql_IP = XML.read(config, "Mysql地址");
+            Mysql_user.Mysql_Port = XML.read(config, "Mysql端口");
+            Mysql_user.Mysql_User = XML.read(config, "Mysql账户");
+            Mysql_user.Mysql_Password = XML.read(config, "Mysql密码");
             head = XML.read(config, "检测头");
             event_join_message = XML.read(Event, "事件-群员加入");
             event_quit_message = XML.read(Event, "事件-群员退出");

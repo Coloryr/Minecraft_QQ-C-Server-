@@ -9,8 +9,6 @@ namespace Color_yr.Minecraft_QQ
     /// </summary>
     public class Minecraft_QQ : CQAppAbstract
     {
-        public static int Port;         //端口  
-
         public static int Group;
         public static long GroupSet1;    //QQ群号1
         public static long GroupSet2;    //QQ群号2
@@ -31,7 +29,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             Name = "Minecraft_QQ";
-            Version = new Version("1.8.0.8");
+            Version = new Version("1.8.0.9");
             Author = "Color_yr";
             Description = "Minecraft服务器与QQ群互联";
 

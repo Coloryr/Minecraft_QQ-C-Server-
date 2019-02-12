@@ -17,7 +17,8 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (textBox5.Text == "" || textBox1.Text == "" || textBox5.Text == null || textBox1.Text == null)
+            if (textBox5.Text == "" || textBox1.Text == "" || textBox5.Text == null || textBox1.Text == null
+                || (checkBox6.Checked == true && textBox4.Text == null))
             {
                 MessageBox.Show("请输入所需的参数");
                 return;
@@ -37,7 +38,9 @@ namespace Color_yr.Minecraft_QQ
             xml.write(config_read.config, "群号3", textBox3.Text);
             Minecraft_QQ.GroupSet3 = long.Parse(textBox3.Text);
             
-            Minecraft_QQ.Port = int.Parse(textBox5.Text);
+            socket.Port = int.Parse(textBox5.Text);
+            config_read.Port = textBox5.Text;
+            socket.setip = textBox4.Text;
             Close();
         }
 
@@ -49,6 +52,7 @@ namespace Color_yr.Minecraft_QQ
             textBox3.Text = config_read.group3;
 
             textBox5.Text = XML.read(config_read.config, "Port");
+            textBox4.Text = XML.read(config_read.config, "IP");
             textBox7.Text = XML.read(config_read.admin, "发送给的人");
 
             temp = XML.read(config_read.config, "Mysql地址");
@@ -100,6 +104,16 @@ namespace Color_yr.Minecraft_QQ
                 checkBox5.Checked = true;
             else
                 checkBox5.Checked = false;
+            if (socket.useip == true)
+            {
+                checkBox6.Checked = true;
+                textBox4.ReadOnly = false;
+            }
+            else
+            {
+                checkBox6.Checked = false;
+                textBox4.ReadOnly = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -153,8 +167,10 @@ namespace Color_yr.Minecraft_QQ
             }
             XML xml = new XML();
             xml.write(config_read.config, "Port", textBox5.Text);
+            xml.write(config_read.config, "IP", textBox4.Text);
             config_read.Port = textBox5.Text;
-            int.TryParse(textBox5.Text, out Minecraft_QQ.Port);
+            socket.setip = textBox4.Text;
+            int.TryParse(textBox5.Text, out socket.Port);
             button4.Text = "已设置";
         }
 
@@ -215,13 +231,13 @@ namespace Color_yr.Minecraft_QQ
             }
             XML xml = new XML();
             xml.write(config_read.config, "Mysql地址", textBox9.Text);
-            config_read.Mysql_IP = textBox9.Text;
+            Mysql_user.Mysql_IP = textBox9.Text;
             xml.write(config_read.config, "Mysql端口", textBox10.Text);
-            config_read.Mysql_Port = textBox10.Text;
+            Mysql_user.Mysql_Port = textBox10.Text;
             xml.write(config_read.config, "Mysql账户", textBox11.Text);
-            config_read.Mysql_User = textBox11.Text;
+            Mysql_user.Mysql_User = textBox11.Text;
             xml.write(config_read.config, "Mysql密码", textBox12.Text);
-            config_read.Mysql_Password = textBox12.Text;
+            Mysql_user.Mysql_Password = textBox12.Text;
             Mysql_user sql = new Mysql_user();
             if (sql.mysql_start() == true)
             {
@@ -322,7 +338,6 @@ namespace Color_yr.Minecraft_QQ
                 config_read.allways_send = false;
             }
         }
-
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
             XML xml = new XML();
@@ -339,10 +354,27 @@ namespace Color_yr.Minecraft_QQ
                 config_read.Mysql_mode = false;
             }
         }
+        private void CheckBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            XML xml = new XML();
+            if (checkBox6.Checked == true)
+            {
+                xml.write(config_read.config, "绑定IP", "开");
+                socket.useip = true;
+                textBox4.ReadOnly = false;
+            }
+            if (checkBox6.Checked == false)
+            {
+                xml.write(config_read.config, "绑定IP", "关");
+                socket.useip = false;
+                textBox4.ReadOnly = true;
+            }
+        }
         private void TextBox_KeyPress(object sender, KeyEventArgs e)
         {
             if (use.key_ok(e) == false)
                 e.Handled = true;
         }
+
     }
 }

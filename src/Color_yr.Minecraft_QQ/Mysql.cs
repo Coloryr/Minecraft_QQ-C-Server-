@@ -4,10 +4,17 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
+
+
 {
     class Mysql_user
     {
         private static MySqlConnection conn;
+
+        public static string Mysql_IP = "127.0.0.1";
+        public static string Mysql_Port = "3306";
+        public static string Mysql_User = "root";
+        public static string Mysql_Password = "123456";
 
         public static string Mysql_player = "minecraft_qq_player";
         public static string Mysql_notid = "minecraft_qq_notid";
@@ -26,7 +33,7 @@ namespace Color_yr.Minecraft_QQ
         public bool mysql_start()
         {
             ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;",
-                config_read.Mysql_IP, config_read.Mysql_Port, config_read.Mysql_User, config_read.Mysql_Password);
+                Mysql_IP, Mysql_Port, Mysql_User, Mysql_Password);
             conn = new MySqlConnection(ConnectString);
 
             if (mysql_add_table(Mysql_player) == false) return false;

@@ -11,31 +11,51 @@ namespace Color_yr.Minecraft_QQ
     public class socket
     {
         public static Dictionary<string, Socket> clients = new Dictionary<string, Socket>();
-        public static string MCserver = null;
         public Print print;                     // 运行时的信息输出方法
         public delegate void Print(string info);
         private static Socket serverSocket;
         private static byte[] read = new byte[4096];
+
+        public static string MCserver = null;        
+        public static string setip = null;
+
         public static bool start;
         public static bool ready = false;
+        public static bool useip = false;
+
         private static Thread server_thread;
         private static Thread read_thread;
+
+        public static int Port;
 
         public void Start_socket()
         {
             try
             {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]正在启动端口");
                 logs.Log_write("[INFO][Socket]正在启动端口");
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serverSocket.Bind(new IPEndPoint(IPAddress.Any, Minecraft_QQ.Port));
+                if (useip == true)
+                {
+                    IPAddress ip = IPAddress.Parse("127.0.0.1");
+                    serverSocket.Bind(new IPEndPoint(ip, Port));
+                }
+                else
+                {
+                    setip = null;
+                    serverSocket.Bind(new IPEndPoint(IPAddress.Any, Port));
+                }
                 serverSocket.Listen(5);
 
                 server_thread = new Thread(listenClientConnect);
                 server_thread.Start(serverSocket);
                 start = true;
                 ready = false;
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动");
+                if (useip == true)
+                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
+                        "已绑定在：" + setip + ":" + Port);
+                else
+                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
+                        "已绑定在端口：" + Port);
                 logs.Log_write("[INFO][Socket]端口已启动");
             }
             catch (Exception exception)
