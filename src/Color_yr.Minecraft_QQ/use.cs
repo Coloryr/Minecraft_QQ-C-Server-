@@ -37,6 +37,8 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("§f", string.Empty);
             sb.Replace("§r", string.Empty);
             sb.Replace("§k", string.Empty);
+			sb.Replace("§n", string.Empty);
+            sb.Replace("§m", string.Empty);
             sb.Replace("&0", string.Empty);
             sb.Replace("&1", string.Empty);
             sb.Replace("&2", string.Empty);
@@ -55,13 +57,15 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("&f", string.Empty);
             sb.Replace("&r", string.Empty);
             sb.Replace("&k", string.Empty);
+			sb.Replace("&n", string.Empty);
+            sb.Replace("&m", string.Empty);
 
             return sb.ToString();
         }
 
         public static string get_string(string a, string b, string c = null)
         {
-            int x = a.IndexOf(b) + 1;
+            int x = a.IndexOf(b) + b.Length;
             int y;
             if (c != null)
             {
@@ -377,7 +381,7 @@ namespace Color_yr.Minecraft_QQ
                     if (fromGroup == Minecraft_QQ.GroupSet1) Minecraft_QQ.Group = 1;
                     else if (fromGroup == Minecraft_QQ.GroupSet2) Minecraft_QQ.Group = 2;
                     else if (fromGroup == Minecraft_QQ.GroupSet3) Minecraft_QQ.Group = 3;
-                    socket.Send("在线人数", socket.MCserver);
+                    socket.Send("[在线人数]", socket.MCserver);
                 }
                 else
                 {
@@ -399,7 +403,7 @@ namespace Color_yr.Minecraft_QQ
                     if (fromGroup == Minecraft_QQ.GroupSet1) Minecraft_QQ.Group = 1;
                     else if (fromGroup == Minecraft_QQ.GroupSet2) Minecraft_QQ.Group = 2;
                     else if (fromGroup == Minecraft_QQ.GroupSet3) Minecraft_QQ.Group = 3;
-                    socket.Send("服务器状态", socket.MCserver);
+                    socket.Send("[服务器状态]", socket.MCserver);
                 }
                 else
                 {

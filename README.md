@@ -1,8 +1,6 @@
-﻿# Minecraft_QQ-C#-Server-
-Minecraft_QQ 酷Q server端
-
-Minecraft服务器与QQ群聊天的插件  
-更新日志：  
+﻿# Minecraft_QQ 酷Q server端
+# Minecraft服务器与QQ群聊天的插件  
+## 更新日志：  
 1.4.0.0：增加禁言功能，老插件请把event.xml下的[更新？]参数修改为任意值来更新配置文件！请注意做好备份工作！  
 1.4.1.0：增加服务器维护功能，老插件请把event.xml和config.xml下的[更新？]参数修改为任意值来更新配置文件！请注意做好备份工作！  
 1.4.2.1：增加服务器编码支持，无需更新配置文件。  
@@ -30,5 +28,6 @@ Minecraft服务器与QQ群聊天的插件
 1.8.0.7：修改大部分代码，增加删除颜色代码，需要更新config.xml  
 1.8.0.8：修改窗体，修复bug  
 1.8.0.9：增加IP绑定  
+1.8.1.0：增加数据包头，防止粘包（记得更新config.xml）  
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)

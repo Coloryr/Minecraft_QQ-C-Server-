@@ -139,7 +139,7 @@ namespace Color_yr.Minecraft_QQ
                         string str = Receive(socket);
                         if (!str.Equals(""))
                         {
-                            message(str);
+                            message.Message(str);
                         }
                     }
                     catch (Exception)
@@ -202,6 +202,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (socket != null && data != null && !data.Equals(""))
             {
+                data = message.Head + data + message.End;
                 byte[] bytes = null;
                 if (XML.read(config_read.config, "编码") == "UTF-8")
                 {
@@ -212,50 +213,6 @@ namespace Color_yr.Minecraft_QQ
                     bytes = Encoding.Default.GetBytes(data);
                 }
                 socket.Send(bytes);                
-            }
-        }
-        private static void message(string read)
-        {
-            if (read.IndexOf("[群消息]") == 0)
-            {
-                var sb = new StringBuilder(read);
-                sb.Replace("[群消息]", string.Empty);
-                string x = sb.ToString();
-                string z = use.get_string(x, "(", ")");
-                if (use.check_mute(z) == false)
-                {
-                    x = x.Replace("(" + z + ")", "");
-                    x = use.code_CQ(x);
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, x);
-                    if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
-                    {
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, x);
-                    }
-                    if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
-                    {
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, x);
-                    }
-                }
-                Minecraft_QQ.Group = 0;
-                return;
-            }
-            else if (Minecraft_QQ.Group == 1)
-            {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, read);
-                Minecraft_QQ.Group = 0;
-                return;
-            }
-            else if (Minecraft_QQ.Group == 2)
-            {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, read);
-                Minecraft_QQ.Group = 0;
-                return;
-            }
-            else if (Minecraft_QQ.Group == 3)
-            {
-                CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, read);
-                Minecraft_QQ.Group = 0;
-                return;
             }
         }
     }

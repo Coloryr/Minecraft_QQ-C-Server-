@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="config.cs" />
     <Compile Include="logs.cs" />
+    <Compile Include="message.cs" />
     <Compile Include="Mysql.cs" />
     <Compile Include="socket.cs" />
     <Compile Include="setform.cs">

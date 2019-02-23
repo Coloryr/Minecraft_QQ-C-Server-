@@ -152,6 +152,8 @@ namespace Color_yr.Minecraft_QQ
                 xml.write(config, "Mysql启用", "关");
                 xml.write(config, "检测头", "#");
                 xml.write(config, "发送颜色代码", "关");
+                xml.write(config, "数据包头", "[Head]");
+                xml.write(config, "数据包尾", "[End]");
             }
             else if (XML.read(config, "更新？") != "false")
             {
@@ -170,6 +172,8 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(config, "Mysql启用") == null) xml.write(config, "Mysql启用", "关");
                 if (XML.read(config, "检测头") == null) xml.write(config, "检测头", "#");
                 if (XML.read(config, "发送颜色代码") == null) xml.write(config, "发送颜色代码", "关");
+                if (XML.read(config, "数据包头") == null) xml.write(config, "数据包头", "[Head]");
+                if (XML.read(config, "数据包尾") == null) xml.write(config, "数据包尾", "[End]");
             }
 
             if (File.Exists(path + mute) == false)
@@ -293,6 +297,8 @@ namespace Color_yr.Minecraft_QQ
             Mysql_user.Mysql_User = XML.read(config, "Mysql账户");
             Mysql_user.Mysql_Password = XML.read(config, "Mysql密码");
             head = XML.read(config, "检测头");
+            Color_yr.Minecraft_QQ.message.Head = XML.read(config, "数据包头");
+            Color_yr.Minecraft_QQ.message.End = XML.read(config, "数据包尾");
             event_join_message = XML.read(Event, "事件-群员加入");
             event_quit_message = XML.read(Event, "事件-群员退出");
             event_kick_message = XML.read(Event, "事件-踢出群员");

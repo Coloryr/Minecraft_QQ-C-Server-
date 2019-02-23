@@ -29,7 +29,7 @@ namespace Color_yr.Minecraft_QQ
             // 不要在此添加其它初始化代码，插件初始化请写在Startup方法中。
 
             Name = "Minecraft_QQ";
-            Version = new Version("1.8.0.9");
+            Version = new Version("1.8.1.0");
             Author = "Color_yr";
             Description = "Minecraft服务器与QQ群互联";
 
@@ -150,7 +150,7 @@ namespace Color_yr.Minecraft_QQ
                                     msg_copy = use.get_at(msg_copy);
                                     msg_copy = use.CQ_code(msg_copy);
                                     send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                    socket.Send("群消息" + send, socket.MCserver);
+                                    socket.Send("[群消息]" + send, socket.MCserver);
                                 }
                             }
                         }
@@ -193,7 +193,7 @@ namespace Color_yr.Minecraft_QQ
                                             int temp = config_read.send_message.Length + config_read.head.Length;
                                             msg_copy = msg_copy.Substring(temp - 1, msg_copy.Length - temp + 1);
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                            socket.Send("群消息" + send, socket.MCserver);
+                                            socket.Send("[群消息]" + send, socket.MCserver);
                                         }
                                     }
                                     else
