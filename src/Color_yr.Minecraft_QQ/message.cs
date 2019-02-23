@@ -18,7 +18,7 @@ namespace Color_yr.Minecraft_QQ
                 string buff = use.get_string(read, Head, End);
                 if (buff.IndexOf("[群消息]") == 0)
                 {
-                    buff.Replace("[群消息]", string.Empty);
+                    buff = buff.Replace("[群消息]", string.Empty);
                     string z = use.get_string(buff, "(", ")");
                     if (use.check_mute(z) == false)
                     {
