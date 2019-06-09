@@ -32,6 +32,7 @@ namespace Color_yr.Minecraft_QQ
         {
             try
             {
+                logs logs = new logs();
                 logs.Log_write("[INFO][Socket]正在启动端口");
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 if (useip == true)
@@ -60,6 +61,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception exception)
             {
+                logs logs = new logs();
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请看日志");
                 logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
@@ -73,6 +75,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 while (true)
                 {
+                    logs logs = new logs();
                     Socket clientScoket = socket.Accept();
 
                     if (read_thread != null)
@@ -87,6 +90,8 @@ namespace Color_yr.Minecraft_QQ
                     GC.Collect();
                     CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
+                    if (config_read.debug_mode == true)
+                        logs.Log_write(clientScoket.ToString());
                     ready = true;
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
@@ -109,14 +114,10 @@ namespace Color_yr.Minecraft_QQ
                 bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
-                if (XML.read(config_read.config, "编码") == "UTF-8")
-                {
+                if (config_read.ANSI == "UTF-8")
                     data = Encoding.UTF8.GetString(bytes, 0, receiveNumber);
-                }
-                if (XML.read(config_read.config, "编码") == "ANSI（GBK）")
-                {
+                if (config_read.ANSI == "ANSI（GBK）")
                     data = Encoding.Default.GetString(bytes, 0, receiveNumber);
-                }
             }
             return data;
         }
@@ -140,10 +141,16 @@ namespace Color_yr.Minecraft_QQ
                         if (!str.Equals(""))
                         {
                             message.Message(str);
+                            if (config_read.debug_mode == true)
+                            {
+                                logs logs = new logs();
+                                logs.Log_write("收到数据：" + str);
+                            }
                         }
                     }
                     catch (Exception)
                     {
+                        logs logs = new logs();
                         CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失");
                         ready = false;
@@ -169,6 +176,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException)
             {
+                logs logs = new logs();
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开");
                 return;
@@ -194,9 +202,7 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
             else
-            {
                 CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
-            }
         }
         private static void Send(Socket socket, string data)
         {
@@ -204,15 +210,16 @@ namespace Color_yr.Minecraft_QQ
             {
                 data = message.Head + data + message.End;
                 byte[] bytes = null;
-                if (XML.read(config_read.config, "编码") == "UTF-8")
-                {
+                if (config_read.ANSI == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);
-                }
-                if (XML.read(config_read.config, "编码") == "ANSI（GBK）")
-                {
+                if (config_read.ANSI == "ANSI（GBK）")
                     bytes = Encoding.Default.GetBytes(data);
+                socket.Send(bytes);
+                if (config_read.debug_mode == true)
+                {
+                    logs logs = new logs();
+                    logs.Log_write("发送数据：" + data);
                 }
-                socket.Send(bytes);                
             }
         }
     }

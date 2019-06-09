@@ -7,12 +7,12 @@ namespace Color_yr.Minecraft_QQ
     {
         public static string log = "logs.log";
 
-        public static void Log_write(string a)
+        public void Log_write(string a)
         {
             DateTime date = DateTime.Now;
-            String year = date.ToShortDateString().ToString();
-            String time = date.ToLongTimeString().ToString();
-            String write = "[" + year + "]" + "[" + time + "]" + a;
+            string year = date.ToShortDateString().ToString();
+            string time = date.ToLongTimeString().ToString();
+            string write = "[" + year + "]" + "[" + time + "]" + a;
             File.AppendAllText(config_read.path+log, write + Environment.NewLine);
         }
     }

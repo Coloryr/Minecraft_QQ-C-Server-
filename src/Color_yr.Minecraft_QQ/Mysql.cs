@@ -61,6 +61,7 @@ namespace Color_yr.Minecraft_QQ
                         cmd.ExecuteNonQuery();
                         break;
                     default:
+                        logs logs = new logs();
                         logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                         break;
                 }
@@ -88,6 +89,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 catch (MySqlException ex)
                 {
+                    logs logs = new logs();
                     logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                 }
                 conn.Close();
@@ -112,6 +114,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
+                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
@@ -130,6 +133,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
+                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
@@ -148,6 +152,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
+                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();

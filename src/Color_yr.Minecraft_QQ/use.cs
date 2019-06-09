@@ -8,8 +8,6 @@ namespace Color_yr.Minecraft_QQ
 {
     class use
     {
-        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
-        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
         public static string RemoveColorCodes(string text)
         {
             if (!text.Contains("§"))
@@ -116,7 +114,8 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else
                 {
-                    string e = XML.read(config_read.player, b);
+                    XML XML = new XML();
+                    string e = XML.read(config_read.player, "玩家", b);
                     if (e == null)
                         d = b;
                     else
@@ -178,9 +177,12 @@ namespace Color_yr.Minecraft_QQ
             if (Minecraft_QQ.Mysql_mode == true)
                 if (Mysql_user.mysql_search(Mysql_user.Mysql_mute, player.ToLower()) == "true")
                     return true;
-            else if(Minecraft_QQ.Mysql_mode == false)
-                if (XML.read(config_read.mute, player.ToLower()) == "true")
-                    return true;
+                else if (Minecraft_QQ.Mysql_mode == false)
+                {
+                    XML XML = new XML();
+                    if (XML.read(config_read.player, "禁言", player.ToLower()) == "true")
+                        return true;
+                }
             return false;
         }
 
@@ -192,7 +194,10 @@ namespace Color_yr.Minecraft_QQ
             if (Minecraft_QQ.Mysql_mode == true)
                 player = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
             else
-                player = XML.read(config_read.player, fromQQ.ToString());
+            {
+                XML XML = new XML();
+                player = XML.read(config_read.player,"玩家", fromQQ.ToString());
+            }
             if (player == null)
             {
                 string player_name = msg.Replace(config_read.player_setid_message, "");
@@ -200,6 +205,7 @@ namespace Color_yr.Minecraft_QQ
                     return "ID无效，请检查";
                 else
                 {
+                    XML XML = new XML();
                     player_name = player_name.Trim();
                     if (Minecraft_QQ.Mysql_mode == true)
                     {
@@ -210,13 +216,12 @@ namespace Color_yr.Minecraft_QQ
                     }
                     else
                     {
-                        if (XML.read(config_read.notid, player_name.ToLower()) == "notid")
+                        if (XML.read(config_read.player, "禁止绑定", player_name.ToLower()) == "notid")
                             return "禁止绑定ID：" + player_name;
-                        XML xml = new XML();
-                        xml.write(config_read.player, fromQQ.ToString(), player_name);
+                        XML.write(config_read.player, "禁止绑定", fromQQ.ToString(), player_name);
                     }
 
-                    string qq_admin = XML.read(config_read.admin, "发送给的人");
+                    string qq_admin = XML.read(config_read.player, "管理员","发送给的人");
                     if (qq_admin != null)
                         CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQ.GetQQName(fromQQ) + "]绑定了ID：[" + player_name + "]");
                     return "绑定ID：" + player_name + "成功！";
@@ -236,7 +241,10 @@ namespace Color_yr.Minecraft_QQ
                 if (Minecraft_QQ.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
-                    player_name = XML.read(config_read.player, player);
+                {
+                    XML XML = new XML();
+                    player_name = XML.read(config_read.player, "玩家", player);
+                }
             else
                 player_name = player;
             if (player_name == null)
@@ -251,7 +259,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML xml = new XML();
-                    xml.write(config_read.mute, player_name.ToLower(), "true");
+                    xml.write(config_read.player, "禁言", player_name.ToLower(), "true");
                 }
                 return "已禁言：[" + player_name + "]";
             }
@@ -268,7 +276,10 @@ namespace Color_yr.Minecraft_QQ
                 if (Minecraft_QQ.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
-                    player_name = XML.read(config_read.player, player);
+                {
+                    XML XML = new XML();
+                    player_name = XML.read(config_read.player,"玩家", player);
+                }
             }
             else
                 player_name = player;
@@ -284,7 +295,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML xml = new XML();
-                    xml.write(config_read.mute, player_name.ToLower(), "false");
+                    xml.write(config_read.player,"禁言" ,player_name.ToLower(), "false");
                 }
                 return "已解禁：[" + player_name + "]";
             }
@@ -310,7 +321,10 @@ namespace Color_yr.Minecraft_QQ
             if (Minecraft_QQ.Mysql_mode == true)
                 player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
             else
-                player_name = XML.read(player, player);
+            {
+                XML XML = new XML();
+                player_name = XML.read(config_read.player, "玩家", player);
+            }
             if (player_name == null)
             {
                 if (is_me == true)
@@ -345,7 +359,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML xml = new XML();
-                    xml.write(player, player, player_name);
+                    xml.write(config_read.player, "玩家", player, player_name);
                 }
                 return "已修改玩家[" + player + "]ID为：" + player_name;
             }
@@ -354,10 +368,11 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string fix_mode_change()
         {
-            XML xml = new XML();
-            if (XML.read(config_read.config, "维护模式") == "关")
+            XML XML = new XML();
+            logs logs = new logs();
+            if (XML.read(config_read.config, "核心设置", "维护模式") == "关")
             {
-                xml.write(config_read.config, "维护模式", "开");
+                XML.write(config_read.config, "核心设置", "维护模式", "开");
                 config_read.fix_mode = true;
                 Minecraft_QQ.server = false;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
@@ -365,7 +380,7 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                xml.write(config_read.config, "维护模式", "关");
+                XML.write(config_read.config, "核心设置", "维护模式", "关");
                 config_read.fix_mode = false;
                 Minecraft_QQ.server = true;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
@@ -423,14 +438,11 @@ namespace Color_yr.Minecraft_QQ
             {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                {
-                    SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
-                }
                 return true;
             }
             catch (Exception e)
             {
+                logs logs = new logs();
                 logs.Log_write("[ERROR]" + e.ToString());
                 return false;
             }
