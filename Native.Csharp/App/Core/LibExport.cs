@@ -62,10 +62,10 @@ namespace Native.Csharp.App.Core
 		{
 			// 请勿随意修改
 			//
-			// 当前项目名称: Color_yr.Minecraft_QQ
+			// 当前项目名称: com.color_yr.minecraft_qq
 			// Api版本: 9
 
-			return string.Format ("{0},{1}", 9, "Color_yr.Minecraft_QQ");
+			return string.Format ("{0},{1}", 9, "com.color_yr.minecraft_qq");
 		}
 
 		/// <summary>

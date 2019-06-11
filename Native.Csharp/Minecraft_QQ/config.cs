@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Native.Csharp.App;
 
@@ -42,29 +43,29 @@ namespace Color_yr.Minecraft_QQ
         public static bool Mysql_mode;
         public static bool allways_send;
 
-        public static FileInfo config;
-        public static FileInfo player;
-        public static FileInfo message;
+        public static string config = "config.xml";
+        public static string player = "player.xml";
+        public static string message = "message.xml";
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
 
-        public static Thread config_thread = new Thread(start);
-
         public static void start()
         {
-            config_read read = new config_read();
+            config_read config_read = new config_read();
+            config_read.start_read();
+        }
+        private void start_read()
+        {
             setform frm = new setform();
 
-            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动中");
-
-            read.read_config();
-            read.reload();
-            if (group1 == null || Port == null || (socket.setip == null && socket.useip == true))
+            read_config();
+            reload();
+            if (group1 == "无" || Port == null || (socket.setip == null && socket.useip == true))
             {
                 MessageBox.Show("参数错误，请设置");
                 frm.ShowDialog();
-                read.read_config();
-                read.reload();
+                read_config();
+                reload();
             }
             else
             {
@@ -89,7 +90,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 catch (Exception)
                 {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]日志文件创建失败");
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]日志文件创建失败");
                 }
             }
 
@@ -109,13 +110,13 @@ namespace Color_yr.Minecraft_QQ
                 if (sql.mysql_start() == true)
                 {
                     Minecraft_QQ.Mysql_mode = true;
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql已连接");
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql已连接");
                     logs.Log_write("[INFO][Mysql]Mysql已连接");
                 }
                 else
                 {
                     Minecraft_QQ.Mysql_mode = false;
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql错误，请检查");
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql错误，请检查");
                     logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
                 }
             }
@@ -132,10 +133,6 @@ namespace Color_yr.Minecraft_QQ
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             XML xml = new XML();
-
-            config = new FileInfo(path + "confirm.xml");
-            player = new FileInfo(path + "player.xml");
-            message = new FileInfo(path + "message.xml");
 
             if (File.Exists(path + config) == false)
             {

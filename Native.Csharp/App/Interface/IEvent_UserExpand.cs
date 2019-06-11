@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Native.Csharp.App.Interface
 {
@@ -10,12 +11,12 @@ namespace Native.Csharp.App.Interface
 	/// </summary>
 	public interface IEvent_UserExpand
 	{
-		/// <summary>
-		/// 当在派生类中重写时, 打开控制台窗口
-		/// </summary>
-		/// <param name="sender">事件的触发对象</param>
-		/// <param name="e">事件的附加参数</param>
-		void OpenConsoleWindow (object sender, EventArgs e);
+        /// <summary>
+        /// 当在派生类中重写时, 打开控制台窗口
+        /// </summary>
+        /// <param name="sender">事件的触发对象</param>
+        /// <param name="e">事件的附加参数</param>
+        void OpenConsoleWindow (object sender, EventArgs e);
 
 		/*
 		 *	关于导出方法: 

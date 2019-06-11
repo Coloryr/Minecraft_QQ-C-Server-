@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Native.Csharp</RootNamespace>
-    <AssemblyName>Color_yr.Minecraft_QQ</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AssemblyName>com.color_yr.minecraft_qq</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -18,7 +18,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\酷Q\dev\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
@@ -125,16 +125,51 @@
     <Compile Include="Repair\ModuleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Color_yr.Minecraft_QQ.json">
+    <Reference Include="MySql.Data">
+      <HintPath>Libs\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Minecraft_QQ\config.cs" />
+    <Compile Include="Minecraft_QQ\logs.cs" />
+    <Compile Include="Minecraft_QQ\message.cs" />
+    <Compile Include="Minecraft_QQ\Mysql.cs" />
+    <Compile Include="Minecraft_QQ\socket.cs" />
+    <Compile Include="Minecraft_QQ\setform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minecraft_QQ\setform.Designer.cs">
+      <DependentUpon>setform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Minecraft_QQ\Minecraft_QQ.cs" />
+    <Compile Include="Minecraft_QQ\use.cs" />
+    <Compile Include="Minecraft_QQ\XML.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Minecraft_QQ\setform.resx">
+      <DependentUpon>setform.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Color_yr.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="com.color_yr.minecraft_qq.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Color_yr.Minecraft_QQ\Color_yr.Minecraft_QQ.csproj">
-      <Project>{5d0bdc2d-da77-4b06-a29c-2476c5baa113}</Project>
-      <Name>Color_yr.Minecraft_QQ</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
       <Project>{797eaebc-4d5b-4eef-87f4-a508fda2cb6a}</Project>
       <Name>Native.Csharp.Sdk</Name>

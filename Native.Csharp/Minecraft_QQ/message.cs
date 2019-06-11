@@ -1,9 +1,4 @@
-﻿using Flexlive.CQP.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Native.Csharp.App;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -26,31 +21,31 @@ namespace Color_yr.Minecraft_QQ
                         buff = use.code_CQ(buff);
                         if (config_read.color_code == false)
                             buff = use.RemoveColorCodes(buff);
-                        CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
-                        if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
+                        if(Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
                         {
-                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
+                            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
                         }
                         if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
                         {
-                            CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
+                            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
                         }
                     }
                     Minecraft_QQ.Group = 0;
                 }
                 else if (Minecraft_QQ.Group == 1)
                 {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
                     Minecraft_QQ.Group = 0;
                 }
                 else if (Minecraft_QQ.Group == 2)
                 {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
                     Minecraft_QQ.Group = 0;
                 }
                 else if (Minecraft_QQ.Group == 3)
                 {
-                    CQ.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
                     Minecraft_QQ.Group = 0;
                 }
                 int i = read.IndexOf(End);

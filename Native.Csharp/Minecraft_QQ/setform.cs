@@ -185,7 +185,7 @@ namespace Color_yr.Minecraft_QQ
             if (textBox6.Text != null)
             {
                 XML xml = new XML();
-                xml.write(config_read.player, "管理员",textBox6.Text, "admin");
+                xml.write(config_read.player, "管理员", "admin" + textBox6.Text, "true");
                 button5.Text = "添加成功";
             }          
         }

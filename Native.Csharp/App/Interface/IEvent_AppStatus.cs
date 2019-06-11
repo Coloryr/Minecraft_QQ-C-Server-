@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Native.Csharp.App.Interface
 {
-	/// <summary>
-	/// 酷Q 应用初始化接口
-	/// </summary>
-	public interface IEvent_AppStatus
+    /// <summary>
+    /// 酷Q 应用初始化接口
+    /// </summary>
+    public interface IEvent_AppStatus
 	{
 		/// <summary>
 		/// Type=1001 酷Q启动<para/>

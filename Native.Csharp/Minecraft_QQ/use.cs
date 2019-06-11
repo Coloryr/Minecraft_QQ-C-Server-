@@ -1,6 +1,6 @@
-﻿using Flexlive.CQP.Framework;
+﻿using Native.Csharp.App;
+using Native.Csharp.Sdk.Cqp.Model;
 using System;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -223,7 +223,11 @@ namespace Color_yr.Minecraft_QQ
 
                     string qq_admin = XML.read(config_read.player, "管理员","发送给的人");
                     if (qq_admin != null)
-                        CQ.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + CQ.GetQQName(fromQQ) + "]绑定了ID：[" + player_name + "]");
+                    {
+                        QQ qqInfo;
+                        Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
+                        Common.CqApi.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + qqInfo.Nick + "]绑定了ID：[" + player_name + "]");
+                    }
                     return "绑定ID：" + player_name + "成功！";
                 }
             }

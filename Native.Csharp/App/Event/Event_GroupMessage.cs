@@ -1,62 +1,59 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Native.Csharp.App.Model;
+using Color_yr.Minecraft_QQ;
 using Native.Csharp.App.Interface;
-using Native.Csharp.Sdk.Cqp;
-using Native.Csharp.Sdk.Cqp.Model;
+using Native.Csharp.App.Model;
 
 namespace Native.Csharp.App.Event
 {
-	public class Event_GroupMessage : IEvent_GroupMessage
+    public class Event_GroupMessage : IEvent_GroupMessage
 	{
-		#region --公开方法--
-		/// <summary>
-		/// Type=2 群消息<para/>
-		/// 处理收到的群消息
-		/// </summary>
-		/// <param name="sender">事件的触发对象</param>
-		/// <param name="e">事件的附加参数</param>
-		public void ReceiveGroupMessage (object sender, GroupMessageEventArgs e)
-		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
-			if (e.FromAnonymous != null)    // 如果此属性不为null, 则消息来自于匿名成员
-			{
-				Common.CqApi.SendGroupMessage (e.FromGroup, e.FromAnonymous.CodeName + " 你发送了这样的消息: " + e.Msg);
-				e.Handled = true;
-				return;     // 因为 e.Handled = true 只是起到标识作用, 因此还需要手动返回
-			}
+        #region --公开方法--
+        /// <summary>
+        /// Type=2 群消息<para/>
+        /// 处理收到的群消息
+        /// </summary>
+        /// <param name="sender">事件的触发对象</param>
+        /// <param name="e">事件的附加参数</param>
+        public void ReceiveGroupMessage(object sender, GroupMessageEventArgs e)
+        {
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
+            if (e.FromAnonymous == null)    // 如果此属性不为null, 则消息来自于匿名成员
+            {
+                //Common.CqApi.SendGroupMessage (e.FromGroup, e.FromAnonymous.CodeName + " 你发送了这样的消息: " + e.Msg);
+                _ = Minecraft_QQ.GroupMessageAsync(e.FromGroup, e.FromQQ, e.Msg);
+                e.Handled = true;
+                return;     // 因为 e.Handled = true 只是起到标识作用, 因此还需要手动返回
+            }
 
-			// 于2019年02月26日, 默认注释此行代码.
-			// Common.CqApi.SendGroupMessage (e.FromGroup, Common.CqApi.CqCode_At (e.FromQQ) + "你发送了这样的消息: " + e.Msg);
+            // 于2019年02月26日, 默认注释此行代码.
+            // Common.CqApi.SendGroupMessage (e.FromGroup, Common.CqApi.CqCode_At (e.FromQQ) + "你发送了这样的消息: " + e.Msg);
 
-			e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
-		}
+            e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+        }
 
-		/// <summary>
-		/// Type=21 群私聊<para/>
-		/// 处理收到的群私聊消息
-		/// </summary>
-		/// <param name="sender">事件的触发对象</param>
-		/// <param name="e">事件的附加参数</param>
-		public void ReceiveGroupPrivateMessage (object sender, PrivateMessageEventArgs e)
-		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+        /// <summary>
+        /// Type=21 群私聊<para/>
+        /// 处理收到的群私聊消息
+        /// </summary>
+        /// <param name="sender">事件的触发对象</param>
+        /// <param name="e">事件的附加参数</param>
+        public void ReceiveGroupPrivateMessage(object sender, PrivateMessageEventArgs e)
+        {
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
+            _ = Minecraft_QQ.PrivateMessageAsync(e.FromQQ, e.Msg);
 
 
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
-		}
+            e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+        }
 
-		/// <summary>
-		/// Type=11 群文件上传事件<para/>
-		/// 处理收到的群文件上传结果
-		/// </summary>
-		/// <param name="sender">事件的触发对象</param>
-		/// <param name="e">事件的附加参数</param>
-		public void ReceiveGroupFileUpload (object sender, FileUploadMessageEventArgs e)
+        /// <summary>
+        /// Type=11 群文件上传事件<para/>
+        /// 处理收到的群文件上传结果
+        /// </summary>
+        /// <param name="sender">事件的触发对象</param>
+        /// <param name="e">事件的附加参数</param>
+        public void ReceiveGroupFileUpload (object sender, FileUploadMessageEventArgs e)
 		{
 			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
 			// 这里处理消息
@@ -75,12 +72,12 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveGroupManageIncrease (object sender, GroupManageAlterEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
 
+            Minecraft_QQ.GroupMemberIncrease(e.FromQQ,e.BeingOperateQQ);
 
-
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>
@@ -91,12 +88,12 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveGroupManageDecrease (object sender, GroupManageAlterEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
 
 
 
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>
@@ -139,12 +136,12 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveGroupMemberLeave (object sender, GroupMemberAlterEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
+            // 这里处理消息
 
+            Minecraft_QQ.GroupMemberDecrease(1, e.FromGroup, e.BeingOperateQQ);
 
-
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>
@@ -155,12 +152,12 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveGroupMemberRemove (object sender, GroupMemberAlterEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
+            // 这里处理消息
 
+            Minecraft_QQ.GroupMemberDecrease(2, e.FromGroup, e.BeingOperateQQ);
 
-
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>

@@ -13,12 +13,12 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         /// <param name="file">文件</param>
         /// <param name="mode">模式</param>>
-        public void CreateFile(FileInfo file, int mode)
+        public void CreateFile(string file, int mode)
         {
-            if (file.Exists && mode == 1) //文件存在就删除
-                file.Delete();
+            if (File.Exists(config_read.path + file) && mode == 1) //文件存在就删除
+                File.Delete(config_read.path + file);
             XElement contacts = new XElement("config");
-            contacts.Save(file.DirectoryName);
+            contacts.Save(config_read.path + file);
         }
         /// <summary>
         /// //修改XML文件中的元素
@@ -27,12 +27,12 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public void setXml(FileInfo file, string type, string attribute, string data)
+        public void setXml(string file, string type, string attribute, string data)
         {
-            if (file.Exists == false)
+            if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(file.DirectoryName);
+            xmldoc.Load(config_read.path + file);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config/" + type).ChildNodes;//获取bookstore节点的所有子节点
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
@@ -43,7 +43,7 @@ namespace Color_yr.Minecraft_QQ
                     break;//找到退出来就可以了
                 }
             }
-            xmldoc.Save(file.DirectoryName);//保存。
+            xmldoc.Save(config_read.path + file);//保存。
         }
         /// <summary>
         /// //增加元素到XML文件
@@ -52,9 +52,9 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public void write(FileInfo file, string type, string attribute, string data)
+        public void write(string file, string type, string attribute, string data)
         {
-            if (file.Exists == false)
+            if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
@@ -65,7 +65,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     ///导入XML文件
                     XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(file.DirectoryName);
+                    xmldoc.Load(config_read.path + file);
 
                     XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
                     if (node == null)
@@ -78,7 +78,7 @@ namespace Color_yr.Minecraft_QQ
                     node.AppendChild(xesub1);
 
                     xmldoc.DocumentElement.AppendChild(node);
-                    xmldoc.Save(file.DirectoryName);
+                    xmldoc.Save(config_read.path + file);
                 }
             }
             catch (Exception)
@@ -98,15 +98,15 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="fine">文件名</param>
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
-        public string read(FileInfo file, string type, string attribute)
+        public string read(string file, string type, string attribute)
         {
             string temp = null;
-            if (file.Exists == false)
+            if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(file.DirectoryName);
+                xmlDoc.Load(config_read.path + file);
 
                 XmlNode xnP = xmlDoc.SelectSingleNode("config/" + type + "/" + attribute);
                 temp = xnP.InnerText;
