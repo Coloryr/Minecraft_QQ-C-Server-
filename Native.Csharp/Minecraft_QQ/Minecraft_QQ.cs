@@ -21,13 +21,26 @@ namespace Color_yr.Minecraft_QQ
         public static bool set_name = true;
         public static bool Mysql_mode = false;
 
-        public static async Task OpenSettingForm()
+        public static async Task PrivateMessageAsync(long fromQQ, string msg)
         {
-            setform frm = new setform();
             await Task.Factory.StartNew(() =>
             {
-                frm.ShowDialog();
-            }); 
+                PrivateMessage(fromQQ, msg);
+            });
+        }
+
+        public static async Task GroupMessageAsync(long fromGroup, long fromQQ, string msg)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                GroupMessage(fromGroup, fromQQ, msg);
+            });
+        }
+
+        public static void OpenSettingForm()
+        {
+            setform frm = new setform();
+            frm.ShowDialog();
         }
 
         /// <summary>
@@ -35,7 +48,7 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         /// <param name="fromQQ">来源QQ。</param>
         /// <param name="msg">消息内容。</param>
-        public static async Task PrivateMessageAsync(long fromQQ, string msg)
+        private static void PrivateMessage(long fromQQ, string msg)
         {
             // 处理私聊消息。
             string msg_copy = use.CQ_code(msg);
@@ -50,22 +63,22 @@ namespace Color_yr.Minecraft_QQ
                 msg_low = msg_low.Replace(config_read.head, "");
                 if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_setid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_mute(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_unmute(fromQQ, msg));
                 else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_checkid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_rename(fromQQ, msg));
-                else if (msg_low == config_read.fix_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.fix_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.fix_mode_change());
-                else if (msg_low == config_read.menu_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.menu_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     Common.CqApi.SendPrivateMessage(fromQQ, "已打开，请前往后台查看");
-                    await OpenSettingForm();
+                    OpenSettingForm();
                 }
-                else if (msg_low == config_read.reload_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.reload_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     config_read read = new config_read();
                     Common.CqApi.SendPrivateMessage(fromQQ, "开始重读配置文件");
@@ -73,7 +86,7 @@ namespace Color_yr.Minecraft_QQ
                     read.reload();
                     Common.CqApi.SendPrivateMessage(fromQQ, "重读完成");
                 }
-                else if (msg_low == config_read.gc_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.gc_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     if (use.GC_now() == true)
                         Common.CqApi.SendPrivateMessage(fromQQ, "已清理内存");
@@ -91,7 +104,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="fromGroup">来源群号。</param>
         /// <param name="fromQQ">来源QQ。</param>
         /// <param name="msg">消息内容。</param>
-        public static async Task GroupMessageAsync(long fromGroup, long fromQQ, string msg)
+        private static void GroupMessage(long fromGroup, long fromQQ, string msg)
         {
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
@@ -114,7 +127,7 @@ namespace Color_yr.Minecraft_QQ
                             else
                             {
                                 XML XML = new XML();
-                                play_name = XML.read(config_read.player,"玩家", fromQQ.ToString());
+                                play_name = XML.read(config_read.player, "玩家", fromQQ.ToString());
                             }
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
@@ -158,7 +171,7 @@ namespace Color_yr.Minecraft_QQ
                                         play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                                     else
                                     {
-                                        play_name = XML.read(config_read.player,"玩家", fromQQ.ToString());
+                                        play_name = XML.read(config_read.player, "玩家", fromQQ.ToString());
                                     }
                                     if (play_name != null && use.check_mute(play_name) == false)
                                     {
@@ -207,38 +220,38 @@ namespace Color_yr.Minecraft_QQ
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
                     }
-                    
+
                     else if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
-                    else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player,"管理员", fromQQ.ToString()) != null)
+                    else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player, "管理员", fromQQ.ToString()) != null)
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(fromQQ, msg));
-                    else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(fromQQ, msg));
                     else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
-                    else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(fromQQ, msg));
-                    else if (msg_low == config_read.fix_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.fix_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
-                    else if (msg_low == config_read.menu_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.menu_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
-                        await OpenSettingForm();
+                        OpenSettingForm();
                     }
-                    else if (msg_low == config_read.reload_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.reload_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read read = new config_read();
                         read.read_config();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                     }
-                    else if (msg_low == config_read.gc_message && XML.read(config_read.player,"管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.gc_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         if (use.GC_now() == true)
                             Common.CqApi.SendGroupMessage(fromGroup, "已清理内存");
                         else
                             Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
-                    }           
+                    }
                     else if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？" || message != null)
                         Common.CqApi.SendGroupMessage(fromGroup, message);
                     else if (config_read.unknow_message != "" && config_read.unknow_message != null)

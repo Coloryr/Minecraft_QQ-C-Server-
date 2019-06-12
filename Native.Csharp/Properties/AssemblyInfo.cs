@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Native.Csharp.Sdk")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Minecraft_QQ")]
+[assembly: AssemblyDescription("Minecraft服务器与QQ群互联")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Native.Csharp.Sdk")]
-[assembly: AssemblyCopyright("Copyright © Jie2GG 2018 . GitHub: https://github.com/Jie2GG/Native")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Copyright © Color_yr 2019 . GitHub: https://github.com/Coloryr/Minecraft_QQ-C-Server-")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion ("3.0.7.0607")]
-[assembly: AssemblyFileVersion ("3.0.7.0607")]
+[assembly: AssemblyVersion ("2.0.0")]
+[assembly: AssemblyFileVersion ("2.0.0")]
