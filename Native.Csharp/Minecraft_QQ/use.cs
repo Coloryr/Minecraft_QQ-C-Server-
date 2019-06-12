@@ -35,7 +35,7 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("§f", string.Empty);
             sb.Replace("§r", string.Empty);
             sb.Replace("§k", string.Empty);
-			sb.Replace("§n", string.Empty);
+            sb.Replace("§n", string.Empty);
             sb.Replace("§m", string.Empty);
             sb.Replace("&0", string.Empty);
             sb.Replace("&1", string.Empty);
@@ -55,7 +55,7 @@ namespace Color_yr.Minecraft_QQ
             sb.Replace("&f", string.Empty);
             sb.Replace("&r", string.Empty);
             sb.Replace("&k", string.Empty);
-			sb.Replace("&n", string.Empty);
+            sb.Replace("&n", string.Empty);
             sb.Replace("&m", string.Empty);
 
             return sb.ToString();
@@ -196,7 +196,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 XML XML = new XML();
-                player = XML.read(config_read.player,"玩家", fromQQ.ToString());
+                player = XML.read(config_read.player, "玩家", fromQQ.ToString());
             }
             if (player == null)
             {
@@ -221,7 +221,7 @@ namespace Color_yr.Minecraft_QQ
                         XML.write(config_read.player, "禁止绑定", fromQQ.ToString(), player_name);
                     }
 
-                    string qq_admin = XML.read(config_read.player, "管理员","发送给的人");
+                    string qq_admin = XML.read(config_read.player, "管理员", "发送给的人");
                     if (qq_admin != null)
                     {
                         QQ qqInfo;
@@ -282,7 +282,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML XML = new XML();
-                    player_name = XML.read(config_read.player,"玩家", player);
+                    player_name = XML.read(config_read.player, "玩家", player);
                 }
             }
             else
@@ -299,7 +299,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML xml = new XML();
-                    xml.write(config_read.player,"禁言" ,player_name.ToLower(), "false");
+                    xml.write(config_read.player, "禁言", player_name.ToLower(), "false");
                 }
                 return "已解禁：[" + player_name + "]";
             }
@@ -459,35 +459,45 @@ namespace Color_yr.Minecraft_QQ
         public bool commder_check(long fromGroup, string msg, long fromQQ)
         {
             XML XML = new XML();
+            if (XML.read_memory(config_read.commder_m, "核心配置", "启用") != "是")
+                return false;
             string a;
-            int i = 1;
+            int i = 0;
             while (true)
             {
-                a = XML.read(config_read.commder, "指令" + i.ToString(), "触发");
-                if (a != null)
+                i++;
+                a = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "触发");
+                if (a == msg)
                 {
-                    if (a == msg)
+                    if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家可用") == "是" && socket.ready == true)
                     {
-                        if (XML.read(config_read.commder, "指令" + i.ToString(), "玩家可用") == "是")
+                        if (socket.ready == false)
                         {
-                            messagelist messagelist = new messagelist();
-                            messagelist.group = fromGroup.ToString();
-                            messagelist.message = XML.read(config_read.commder, "指令" + i.ToString(), "指令");
-                            messagelist.is_commder = true;
-                            messagelist.player = fromQQ.ToString(); ;
-                            socket.Send(messagelist, socket.MCserver);
+                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
+                            return false;
                         }
-                        else if (XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                        messagelist messagelist = new messagelist();
+                        messagelist.group = fromGroup.ToString();
+                        messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                        messagelist.is_commder = true;
+                        messagelist.player = fromQQ.ToString();
+                        socket.Send(messagelist, socket.MCserver);
+                        return true;
+                    }
+                    else if (XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true" && socket.ready == true)
+                    {
+                        if (socket.ready == false)
                         {
-                            messagelist messagelist = new messagelist();
-                            messagelist.group = fromGroup.ToString();
-                            messagelist.message = XML.read(config_read.commder, "指令" + i.ToString(), "指令");
-                            messagelist.is_commder = true;
-                            messagelist.player = fromQQ.ToString(); ;
-                            socket.Send(messagelist, socket.MCserver);
+                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
+                            return false;
                         }
-                        else 
-
+                        messagelist messagelist = new messagelist();
+                        messagelist.group = fromGroup.ToString();
+                        messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                        messagelist.is_commder = true;
+                        messagelist.player = fromQQ.ToString();
+                        socket.Send(messagelist, socket.MCserver);
+                        return true;
                     }
                 }
                 else

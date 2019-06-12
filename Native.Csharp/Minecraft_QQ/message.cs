@@ -24,8 +24,9 @@ namespace Color_yr.Minecraft_QQ
             {
                 JObject data = (JObject)jsonData["commder"];
                 messagelist.group = data["group"].ToString();
+                messagelist.message = data["message"].ToString();
                 messagelist.player = data["player"].ToString();
-                messagelist.is_commder = false;
+                messagelist.is_commder = true;
             }
             return messagelist;
         }
@@ -38,33 +39,20 @@ namespace Color_yr.Minecraft_QQ
                 string buff = use.get_string(read, Head, End);
                 buff = use.RemoveColorCodes(buff);
                 messagelist messagelist = Message_re(buff);
-                if (messagelist.is_commder == false)
+                if (messagelist.is_commder == false && messagelist.group == "group")
                 {
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, messagelist.message);
                     if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
-                    {
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
-                    }
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, messagelist.message);
                     if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
-                    {
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
-                    }
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, messagelist.message);
                 }
-                else if (Minecraft_QQ.Group == 1)
-                {
+                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet1.ToString())
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
-                    Minecraft_QQ.Group = 0;
-                }
-                else if (Minecraft_QQ.Group == 2)
-                {
+                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet1.ToString())
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
-                    Minecraft_QQ.Group = 0;
-                }
-                else if (Minecraft_QQ.Group == 3)
-                {
+                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet3.ToString())
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
-                    Minecraft_QQ.Group = 0;
-                }
                 int i = read.IndexOf(End);
                 read = read.Substring(i + End.Length);
             }

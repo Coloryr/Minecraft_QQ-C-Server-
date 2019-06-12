@@ -20,7 +20,7 @@ namespace Native.Csharp.App.Event
             if (e.FromAnonymous == null)    // 如果此属性不为null, 则消息来自于匿名成员
             {
                 //Common.CqApi.SendGroupMessage (e.FromGroup, e.FromAnonymous.CodeName + " 你发送了这样的消息: " + e.Msg);
-                _ = Minecraft_QQ.GroupMessageAsync(e.FromGroup, e.FromQQ, e.Msg);
+                Minecraft_QQ.GroupMessage(e.FromGroup, e.FromQQ, e.Msg);
                 e.Handled = true;
                 return;     // 因为 e.Handled = true 只是起到标识作用, 因此还需要手动返回
             }
@@ -41,7 +41,7 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
-            _ = Minecraft_QQ.PrivateMessageAsync(e.FromQQ, e.Msg);
+            Minecraft_QQ.PrivateMessage(e.FromQQ, e.Msg);
 
 
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法

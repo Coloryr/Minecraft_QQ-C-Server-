@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -117,9 +118,21 @@ namespace Color_yr.Minecraft_QQ
             return temp;
         }
 
-        public string read_memory(string)
+        public string read_memory(string file, string type, string attribute)
         {
-            MemoryMappedViewAccessor
+            string temp = null;
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(file);
+
+                XmlNode xnP = xmlDoc.SelectSingleNode("config/" + type + "/" + attribute);
+                temp = xnP.InnerText;
+                if (temp == "") temp = null;
+            }
+            catch (Exception)
+            { }
+            return temp;
         }
     }
 }

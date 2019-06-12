@@ -47,9 +47,9 @@ namespace Color_yr.Minecraft_QQ
         public static string message = "message.xml";
         public static string commder = "commder.xml";
 
-        public static MemoryMappedFile player_m;
-        public static MemoryMappedFile message_m;
-        public static MemoryMappedFile commder_m;
+        public static string player_m;
+        public static string message_m;
+        public static string commder_m;
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
 
@@ -279,18 +279,19 @@ namespace Color_yr.Minecraft_QQ
                     xml.write(config, "事件", "踢出群员", "%player%感受制裁吧！");
             }
 
+            string a;
             if (File.Exists(path + player) == false)
             {
                 xml.CreateFile(player, 0);
             }
             else
             {
-                FileInfo file = new FileInfo(path + player);
-                player_m = MemoryMappedFile.CreateOrOpen("player", file.Length);  // 创建指定大小的内存文件，会在应用程序退出时自动释放
-                MemoryMappedViewAccessor accessor1 = memory.CreateViewAccessor();           // 访问内存文件对象
-
-                accessor1.Write(11, data);  // 在指定位置写入int值
-                accessor1.Dispose();        // 
+                StreamReader sr = new StreamReader(path + player, System.Text.Encoding.Default);
+                a = sr.ReadToEnd().TrimStart();
+                if (!string.IsNullOrEmpty(a))
+                    player_m = a;
+                else
+                    player_m = null;
             }
 
             if (File.Exists(path + message) == false)
@@ -302,6 +303,15 @@ namespace Color_yr.Minecraft_QQ
                     + xml.read(config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
                     + xml.read(config, "检测", "绑定文本") + "ID，来绑定ID）");
             }
+            else
+            {
+                StreamReader sr = new StreamReader(path + message, System.Text.Encoding.Default);
+                a = sr.ReadToEnd().TrimStart();
+                if (!string.IsNullOrEmpty(a))
+                    message_m = a;
+                else
+                    message_m = null;
+            }
 
             if (File.Exists(path + commder) == false)
             {
@@ -309,6 +319,15 @@ namespace Color_yr.Minecraft_QQ
                 xml.write(commder, "指令1", "指令", "qq help");
                 xml.write(commder, "指令1", "触发", "插件帮助");
                 xml.write(commder, "指令1", "玩家可用", "是");
+            }
+            else
+            {
+                StreamReader sr = new StreamReader(path + commder, System.Text.Encoding.Default);
+                a = sr.ReadToEnd().TrimStart();
+                if (!string.IsNullOrEmpty(a))
+                    commder_m = a;
+                else
+                    commder_m = null;
             }
         }
         public void reload()
