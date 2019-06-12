@@ -23,6 +23,7 @@ namespace Color_yr.Minecraft_QQ
                 MessageBox.Show("请输入所需的参数");
                 return;
             }
+            use use = new use();
             if (use.IsNumber(textBox1.Text) == false || use.IsNumber(textBox2.Text) == false || use.IsNumber(textBox3.Text) == false ||
                 use.IsNumber(textBox5.Text) == false || use.IsNumber(textBox6.Text) == false || use.IsNumber(textBox7.Text) == false)
             {
@@ -119,6 +120,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button1_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox1.Text) == false)
             {
                 button1.Text = "设置失败";
@@ -133,6 +135,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button2_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox2.Text) == false)
             {
                 button2.Text = "设置失败";
@@ -147,6 +150,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button3_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox3.Text) == false)
             {
                 button3.Text = "设置失败";
@@ -161,6 +165,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button4_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox5.Text) == false)
             {
                 button4.Text = "设置失败";
@@ -177,6 +182,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button5_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox6.Text) == false)
             {
                 button5.Text = "设置失败";
@@ -192,6 +198,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button6_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox7.Text) == false)
             {
                 button6.Text = "设置失败";
@@ -225,6 +232,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void button8_Click(object sender, EventArgs e)
         {
+            use use = new use();
             if (use.IsNumber(textBox10.Text) == false)
             {
                 button8.Text = "设置失败";
@@ -373,6 +381,7 @@ namespace Color_yr.Minecraft_QQ
         }
         private void TextBox_KeyPress(object sender, KeyEventArgs e)
         {
+            use use = new use();
             if (use.key_ok(e) == false)
                 e.Handled = true;
         }

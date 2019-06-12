@@ -116,5 +116,10 @@ namespace Color_yr.Minecraft_QQ
             { }
             return temp;
         }
+
+        public string read_memory(string)
+        {
+            MemoryMappedViewAccessor
+        }
     }
 }

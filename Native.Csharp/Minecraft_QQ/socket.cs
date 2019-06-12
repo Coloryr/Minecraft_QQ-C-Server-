@@ -1,4 +1,5 @@
 ﻿using Native.Csharp.App;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -182,14 +183,19 @@ namespace Color_yr.Minecraft_QQ
                 return;
             }
         }
-        public static void Send(string info, string id)
+        public static void Send(messagelist info, string id)
         {
             if (clients.ContainsKey(id))
             {
                 Socket socket = clients[id];
                 try
                 {
-                    Send(socket, info);
+                    JObject jsonData = new JObject(
+                        new JProperty("group", info.group),
+                        new JProperty("message", info.message),
+                        new JProperty("player", info.player),
+                        new JProperty("is_commder", info.is_commder));
+                    Send_data(socket, jsonData.ToString());
                 }
                 catch (Exception)
                 {
@@ -204,7 +210,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
         }
-        private static void Send(Socket socket, string data)
+        private static void Send_data(Socket socket, string data)
         {
             if (socket != null && data != null && !data.Equals(""))
             {

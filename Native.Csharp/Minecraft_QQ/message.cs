@@ -1,4 +1,5 @@
 ﻿using Native.Csharp.App;
+using Newtonsoft.Json.Linq;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -6,32 +7,48 @@ namespace Color_yr.Minecraft_QQ
     {
         public static string Head;
         public static string End;
+
+        public static messagelist Message_re(string read)
+        {
+            messagelist messagelist = new messagelist();
+            JObject jsonData = JObject.Parse(read);
+            if (jsonData.ContainsKey("message"))
+            {
+                JObject data = (JObject)jsonData["message"];
+                messagelist.group = data["group"].ToString();
+                messagelist.message = data["message"].ToString();
+                messagelist.player = data["player"].ToString();
+                messagelist.is_commder = false;
+            }
+            else if (jsonData.ContainsKey("commder"))
+            {
+                JObject data = (JObject)jsonData["commder"];
+                messagelist.group = data["group"].ToString();
+                messagelist.player = data["player"].ToString();
+                messagelist.is_commder = false;
+            }
+            return messagelist;
+        }
+
         public static void Message(string read)
         {
             while (read.IndexOf(Head) == 0 && read.IndexOf(End) != -1)
             {
+                use use = new use();
                 string buff = use.get_string(read, Head, End);
-                if (buff.IndexOf("[群消息]") == 0)
+                buff = use.RemoveColorCodes(buff);
+                messagelist messagelist = Message_re(buff);
+                if (messagelist.is_commder == false)
                 {
-                    buff = buff.Replace("[群消息]", string.Empty);
-                    string z = use.get_string(buff, "(", ")");
-                    if (use.check_mute(z) == false)
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
+                    if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
                     {
-                        buff = buff.Replace("(" + z + ")", "");
-                        buff = use.code_CQ(buff);
-                        if (config_read.color_code == false)
-                            buff = use.RemoveColorCodes(buff);
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
-                        if(Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
-                        {
-                            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
-                        }
-                        if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
-                        {
-                            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
-                        }
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
                     }
-                    Minecraft_QQ.Group = 0;
+                    if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
+                    {
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
+                    }
                 }
                 else if (Minecraft_QQ.Group == 1)
                 {

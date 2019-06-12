@@ -10,7 +10,6 @@ namespace Color_yr.Minecraft_QQ
     /// </summary>
     public class Minecraft_QQ
     {
-        public static int Group;
         public static long GroupSet1;    //QQ群号1
         public static long GroupSet2;    //QQ群号2
         public static long GroupSet3;    //QQ群号3
@@ -51,6 +50,7 @@ namespace Color_yr.Minecraft_QQ
         private static void PrivateMessage(long fromQQ, string msg)
         {
             // 处理私聊消息。
+            use use = new use();
             string msg_copy = use.CQ_code(msg);
             string msg_low = msg.ToLower();
             logs logs = new logs();
@@ -106,6 +106,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="msg">消息内容。</param>
         private static void GroupMessage(long fromGroup, long fromQQ, string msg)
         {
+            use use = new use();
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
             logs logs = new logs();
@@ -252,6 +253,7 @@ namespace Color_yr.Minecraft_QQ
                         else
                             Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                     }
+                    else if (use.commder_check(fromGroup, message, fromQQ) == true) return;
                     else if (config_read.message_enable == true && msg_low != "启用" && msg_low != "更新？" || message != null)
                         Common.CqApi.SendGroupMessage(fromGroup, message);
                     else if (config_read.unknow_message != "" && config_read.unknow_message != null)

@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ
 {
     class use
     {
-        public static string RemoveColorCodes(string text)
+        public string RemoveColorCodes(string text)
         {
             if (!text.Contains("§"))
 
@@ -61,7 +61,7 @@ namespace Color_yr.Minecraft_QQ
             return sb.ToString();
         }
 
-        public static string get_string(string a, string b, string c = null)
+        public string get_string(string a, string b, string c = null)
         {
             int x = a.IndexOf(b) + b.Length;
             int y;
@@ -74,7 +74,7 @@ namespace Color_yr.Minecraft_QQ
                 return a.Substring(x);
         }
 
-        public static bool IsNumber(string str)
+        public bool IsNumber(string str)
         {
             for (int i = 0; i < str.Length; i++)
             {
@@ -86,7 +86,7 @@ namespace Color_yr.Minecraft_QQ
             return false;
         }
 
-        public static string remove_pic(string a)
+        public string remove_pic(string a)
         {
             for (; a.IndexOf("[CQ:image") != -1;)
             {
@@ -97,7 +97,7 @@ namespace Color_yr.Minecraft_QQ
             return a;
         }
 
-        public static string get_at(string a)
+        public string get_at(string a)
         {
             for (; a.IndexOf("[CQ:at,qq=") != -1;)
             {
@@ -128,7 +128,7 @@ namespace Color_yr.Minecraft_QQ
             a = a.Replace("[", "").Replace("]", "");
             return a;
         }
-        public static string CQ_code(string a)
+        public string CQ_code(string a)
         {
             for (; a.IndexOf("&#91;") != -1;)
             {
@@ -140,7 +140,7 @@ namespace Color_yr.Minecraft_QQ
             }
             return a;
         }
-        public static string code_CQ(string a)
+        public string code_CQ(string a)
         {
             for (; a.IndexOf("[") != -1;)
             {
@@ -157,7 +157,7 @@ namespace Color_yr.Minecraft_QQ
             return a;
         }
 
-        public static bool key_ok(KeyEventArgs e)
+        public bool key_ok(KeyEventArgs e)
         {
             if (e.Control == true)          //按下了ctrl
             {
@@ -186,7 +186,7 @@ namespace Color_yr.Minecraft_QQ
             return false;
         }
 
-        public static string player_setid(long fromQQ, string msg)
+        public string player_setid(long fromQQ, string msg)
         {
             string player = null;
             if (msg.IndexOf(config_read.head) == 0)
@@ -234,7 +234,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 return "你已经绑定ID了，请找腐竹更改";
         }
-        public static string player_mute(long fromQQ, string msg)
+        public string player_mute(long fromQQ, string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -268,7 +268,7 @@ namespace Color_yr.Minecraft_QQ
                 return "已禁言：[" + player_name + "]";
             }
         }
-        public static string player_unmute(long fromQQ, string msg)
+        public string player_unmute(long fromQQ, string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -304,7 +304,7 @@ namespace Color_yr.Minecraft_QQ
                 return "已解禁：[" + player_name + "]";
             }
         }
-        public static string player_checkid(long fromQQ, string msg)
+        public string player_checkid(long fromQQ, string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -344,7 +344,7 @@ namespace Color_yr.Minecraft_QQ
                     return "玩家" + player + "绑定的ID为：" + player_name;
             }
         }
-        public static string player_rename(long fromQQ, string msg)
+        public string player_rename(long fromQQ, string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -370,7 +370,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 return "玩家错误，请检查";
         }
-        public static string fix_mode_change()
+        public string fix_mode_change()
         {
             XML XML = new XML();
             logs logs = new logs();
@@ -391,16 +391,18 @@ namespace Color_yr.Minecraft_QQ
                 return "服务器维护模式已关闭";
             }
         }
-        public static string online(long fromGroup)
+        public string online(long fromGroup)
         {
             if (Minecraft_QQ.server == true)
             {
                 if (socket.ready == true)
                 {
-                    if (fromGroup == Minecraft_QQ.GroupSet1) Minecraft_QQ.Group = 1;
-                    else if (fromGroup == Minecraft_QQ.GroupSet2) Minecraft_QQ.Group = 2;
-                    else if (fromGroup == Minecraft_QQ.GroupSet3) Minecraft_QQ.Group = 3;
-                    socket.Send("[在线人数]", socket.MCserver);
+                    messagelist messagelist = new messagelist();
+                    messagelist.group = fromGroup.ToString();
+                    messagelist.message = "在线人数";
+                    messagelist.is_commder = false;
+                    messagelist.player = null;
+                    socket.Send(messagelist, socket.MCserver);
                 }
                 else
                 {
@@ -413,16 +415,18 @@ namespace Color_yr.Minecraft_QQ
             }
             return null;
         }
-        public static string server(long fromGroup)
+        public string server(long fromGroup)
         {
             if (Minecraft_QQ.server == true)
             {
                 if (socket.ready == true)
                 {
-                    if (fromGroup == Minecraft_QQ.GroupSet1) Minecraft_QQ.Group = 1;
-                    else if (fromGroup == Minecraft_QQ.GroupSet2) Minecraft_QQ.Group = 2;
-                    else if (fromGroup == Minecraft_QQ.GroupSet3) Minecraft_QQ.Group = 3;
-                    socket.Send("[服务器状态]", socket.MCserver);
+                    messagelist messagelist = new messagelist();
+                    messagelist.group = fromGroup.ToString();
+                    messagelist.message = "服务器状态";
+                    messagelist.is_commder = false;
+                    messagelist.player = null;
+                    socket.Send(messagelist, socket.MCserver);
                 }
                 else
                 {
@@ -436,7 +440,7 @@ namespace Color_yr.Minecraft_QQ
             return null;
         }
 
-        public static bool GC_now()
+        public bool GC_now()
         {
             try
             {
@@ -449,6 +453,45 @@ namespace Color_yr.Minecraft_QQ
                 logs logs = new logs();
                 logs.Log_write("[ERROR]" + e.ToString());
                 return false;
+            }
+        }
+
+        public bool commder_check(long fromGroup, string msg, long fromQQ)
+        {
+            XML XML = new XML();
+            string a;
+            int i = 1;
+            while (true)
+            {
+                a = XML.read(config_read.commder, "指令" + i.ToString(), "触发");
+                if (a != null)
+                {
+                    if (a == msg)
+                    {
+                        if (XML.read(config_read.commder, "指令" + i.ToString(), "玩家可用") == "是")
+                        {
+                            messagelist messagelist = new messagelist();
+                            messagelist.group = fromGroup.ToString();
+                            messagelist.message = XML.read(config_read.commder, "指令" + i.ToString(), "指令");
+                            messagelist.is_commder = true;
+                            messagelist.player = fromQQ.ToString(); ;
+                            socket.Send(messagelist, socket.MCserver);
+                        }
+                        else if (XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                        {
+                            messagelist messagelist = new messagelist();
+                            messagelist.group = fromGroup.ToString();
+                            messagelist.message = XML.read(config_read.commder, "指令" + i.ToString(), "指令");
+                            messagelist.is_commder = true;
+                            messagelist.player = fromQQ.ToString(); ;
+                            socket.Send(messagelist, socket.MCserver);
+                        }
+                        else 
+
+                    }
+                }
+                else
+                    return false;
             }
         }
     }

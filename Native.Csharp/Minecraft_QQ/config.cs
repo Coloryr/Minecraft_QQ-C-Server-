@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Native.Csharp.App;
+using System;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using System.IO.MemoryMappedFiles;
 using System.Windows.Forms;
-using Native.Csharp.App;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -46,6 +45,11 @@ namespace Color_yr.Minecraft_QQ
         public static string config = "config.xml";
         public static string player = "player.xml";
         public static string message = "message.xml";
+        public static string commder = "commder.xml";
+
+        public static MemoryMappedFile player_m;
+        public static MemoryMappedFile message_m;
+        public static MemoryMappedFile commder_m;
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
 
@@ -279,6 +283,15 @@ namespace Color_yr.Minecraft_QQ
             {
                 xml.CreateFile(player, 0);
             }
+            else
+            {
+                FileInfo file = new FileInfo(path + player);
+                player_m = MemoryMappedFile.CreateOrOpen("player", file.Length);  // 创建指定大小的内存文件，会在应用程序退出时自动释放
+                MemoryMappedViewAccessor accessor1 = memory.CreateViewAccessor();           // 访问内存文件对象
+
+                accessor1.Write(11, data);  // 在指定位置写入int值
+                accessor1.Dispose();        // 
+            }
 
             if (File.Exists(path + message) == false)
             {
@@ -288,6 +301,14 @@ namespace Color_yr.Minecraft_QQ
                     + xml.read(config, "检测", "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
                     + xml.read(config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
                     + xml.read(config, "检测", "绑定文本") + "ID，来绑定ID）");
+            }
+
+            if (File.Exists(path + commder) == false)
+            {
+                xml.write(commder, "核心配置", "启用", "是");
+                xml.write(commder, "指令1", "指令", "qq help");
+                xml.write(commder, "指令1", "触发", "插件帮助");
+                xml.write(commder, "指令1", "玩家可用", "是");
             }
         }
         public void reload()
