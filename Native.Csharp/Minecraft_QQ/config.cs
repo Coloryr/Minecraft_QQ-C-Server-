@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
@@ -286,7 +287,7 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                StreamReader sr = new StreamReader(path + player, System.Text.Encoding.Default);
+                StreamReader sr = new StreamReader(path + player, Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
                 if (!string.IsNullOrEmpty(a))
                     player_m = a;

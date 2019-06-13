@@ -112,7 +112,7 @@ namespace Color_yr.Minecraft_QQ
                             else
                             {
                                 XML XML = new XML();
-                                play_name = XML.read(config_read.player, "玩家", fromQQ.ToString());
+                                play_name = XML.read_memory(config_read.player_m, "玩家", fromQQ.ToString());
                             }
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
