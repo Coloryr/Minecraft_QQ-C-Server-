@@ -1,7 +1,6 @@
 ﻿using Native.Csharp.App;
 using System;
 using System.IO;
-using System.IO.MemoryMappedFiles;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,8 +13,8 @@ namespace Color_yr.Minecraft_QQ
         public static string group3;
         public static string Port;
         public static string ANSI;
-        public static string head;       
-        public static string send_text;      
+        public static string head;
+        public static string send_text;
         public static string event_join_message;
         public static string event_quit_message;
         public static string event_kick_message;
@@ -297,8 +296,8 @@ namespace Color_yr.Minecraft_QQ
 
             if (File.Exists(path + message) == false)
             {
-                xml.write(message, "核心配置","启用", "是");
-                xml.write(message, "自动回复消息","服务器菜单", "服务器查询菜单：\r\n【" + xml.read(config, "检测", "绑定文本")
+                xml.write(message, "核心配置", "启用", "是");
+                xml.write(message, "自动回复消息", "服务器菜单", "服务器查询菜单：\r\n【" + xml.read(config, "检测", "绑定文本")
                     + "】可以绑定你的游戏ID。\r\n【" + xml.read(config, "检测", "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
                     + xml.read(config, "检测", "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
                     + xml.read(config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
@@ -410,7 +409,7 @@ namespace Color_yr.Minecraft_QQ
 
             event_join_message = xml.read(config, "事件", "群员加入");
             event_quit_message = xml.read(config, "事件", "群员退出");
-            event_kick_message = xml.read(config, "事件", "踢出群员");            
+            event_kick_message = xml.read(config, "事件", "踢出群员");
         }
     }
 }

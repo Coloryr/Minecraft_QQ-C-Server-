@@ -1,7 +1,6 @@
 ﻿using Native.Csharp.App;
 using Native.Csharp.Sdk.Cqp.Model;
 using System;
-using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -254,7 +253,7 @@ namespace Color_yr.Minecraft_QQ
                             Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                         return;
                     }
-                    
+
                     if (use.commder_check(fromGroup, msg_low, fromQQ) == true) return;
 
                     string message = XML.read_memory(config_read.message_m, "自动回复消息", msg_low);
@@ -272,7 +271,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="subType">子类型，1/群员离开 2/群员被踢 3/自己(即登录号)被踢。</param>
         /// <param name="fromGroup">来源群。</param>
         /// <param name="beingOperateQQ">被操作QQ。</param>
-        public static void GroupMemberDecrease(int subType,  long fromGroup, long beingOperateQQ)
+        public static void GroupMemberDecrease(int subType, long fromGroup, long beingOperateQQ)
         {
             // 处理群事件-群成员减少。
             if (fromGroup == GroupSet1)
@@ -326,5 +325,4 @@ namespace Color_yr.Minecraft_QQ
             }
         }
     }
-
 }

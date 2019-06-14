@@ -649,4 +649,4 @@ namespace System.Data.SQLite
 #endif
         }
     }
-}
+

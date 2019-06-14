@@ -1,7 +1,6 @@
 ﻿using Native.Csharp.App;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,13 +10,12 @@ namespace Color_yr.Minecraft_QQ
 {
     public class socket
     {
-        
         public Print print;                     // 运行时的信息输出方法
         public delegate void Print(string info);
 
         private static Socket serverSocket;
         public static Socket client;
-     
+
         public static string setip = null;
 
         public static bool start;
@@ -76,7 +74,7 @@ namespace Color_yr.Minecraft_QQ
             try
             {
                 while (true)
-                {                 
+                {
                     client = socket.Accept();
 
                     if (read_thread != null)
@@ -122,7 +120,6 @@ namespace Color_yr.Minecraft_QQ
             }
             return data;
         }
-
         private static void receiveData()
         {
             try
@@ -177,7 +174,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public static void Send(messagelist info)
         {
-            if (client!=null)
+            if (client != null)
             {
                 try
                 {
@@ -220,7 +217,6 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
         }
-
         public static void socket_stop()
         {
             if (client != null)
@@ -234,8 +230,8 @@ namespace Color_yr.Minecraft_QQ
                 serverSocket.Close();
                 serverSocket = null;
             }
-            if(server_thread!=null)
-            { 
+            if (server_thread != null)
+            {
                 server_thread.Abort();
                 server_thread = null;
             }

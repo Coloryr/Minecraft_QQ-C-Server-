@@ -1,11 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
-
-
 {
     class Mysql_user
     {
@@ -73,9 +70,7 @@ namespace Color_yr.Minecraft_QQ
         public void mysql_add(string table_name, string qq, string name)
         {
             if (mysql_search(table_name, qq) != null)
-            {
                 mysql_replace(table_name, qq, name);
-            }
             else
             {
                 try
@@ -105,9 +100,7 @@ namespace Color_yr.Minecraft_QQ
                 MySqlCommand mycmd = new MySqlCommand(command, conn);
                 MySqlDataReader reader = mycmd.ExecuteReader();
                 while (reader.Read())
-                {
                     name = reader.GetString(1);
-                }
                 mycmd = null;
                 command = null;
                 reader.Close();

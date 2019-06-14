@@ -12,10 +12,7 @@ namespace Color_yr.Minecraft_QQ
         public string RemoveColorCodes(string text)
         {
             if (!text.Contains("§"))
-
-            {
                 return text;
-            }
 
             var sb = new StringBuilder(text);
             sb.Replace("§0", string.Empty);
@@ -132,41 +129,29 @@ namespace Color_yr.Minecraft_QQ
         public string CQ_code(string a)
         {
             for (; a.IndexOf("&#91;") != -1;)
-            {
                 a = a.Replace("&#91;", "[");
-            }
             for (; a.IndexOf("&#93;") != -1;)
-            {
                 a = a.Replace("&#93;", "]");
-            }
             return a;
         }
         public string code_CQ(string a)
         {
             for (; a.IndexOf("[") != -1;)
-            {
                 a = a.Replace("[", "&#91;");
-            }
             for (; a.IndexOf("]") != -1;)
-            {
                 a = a.Replace("]", "&#93;");
-            }
             for (; a.IndexOf(",") != -1;)
-            {
                 a = a.Replace(",", "&#44;");
-            }
             return a;
         }
 
         public bool key_ok(KeyEventArgs e)
         {
             if (e.Control == true)          //按下了ctrl
-            {
                 if (e.KeyData == Keys.V || e.KeyData == Keys.C)
                     return true;
-            }
-            else if (e.KeyCode == Keys.Back)//这是允许输入退格键
-                return true;
+                else if (e.KeyCode == Keys.Back)//这是允许输入退格键
+                    return true;
             if (e.KeyData == Keys.D0 || e.KeyData == Keys.D1 || e.KeyData == Keys.D2 || e.KeyData == Keys.D3 || e.KeyData == Keys.D4 ||
                 e.KeyData == Keys.D5 || e.KeyData == Keys.D6 || e.KeyData == Keys.D7 || e.KeyData == Keys.D8 || e.KeyData == Keys.D9)
                 return true;

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Color_yr.Minecraft_QQ;
+﻿using Color_yr.Minecraft_QQ;
 using Native.Csharp.App.Interface;
-using Native.Csharp.Sdk.Cqp;
+using System;
 
 namespace Native.Csharp.App.Event
 {
-	public class Event_UserExpand : IEvent_UserExpand
-	{
+    public class Event_UserExpand : IEvent_UserExpand
+    {
         #region --公开方法--
         /// <summary>
         /// 打开控制台窗口

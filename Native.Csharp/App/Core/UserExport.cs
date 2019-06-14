@@ -1,15 +1,11 @@
-﻿using Native.Csharp.App.Event;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Native.Csharp.App.Core
 {
-	public class UserExport
-	{
-		/*
+    public class UserExport
+    {
+        /*
 		 *	关于导出方法:
 		 *	
 		 *		1. 需要导出给 酷Q 调用的方法都需要使用 "DllExport" 进行标记
@@ -22,20 +18,20 @@ namespace Native.Csharp.App.Core
 		 *	至此! 
 		 */
 
-		#region --回调事件--
-		/// <summary>
-		/// 用户打开控制台事件
-		/// </summary>
-		public static event EventHandler<EventArgs> UserOpenConsole = (sender, e) => { };
-		#endregion
+        #region --回调事件--
+        /// <summary>
+        /// 用户打开控制台事件
+        /// </summary>
+        public static event EventHandler<EventArgs> UserOpenConsole = (sender, e) => { };
+        #endregion
 
-		#region --导出方法--
-		[DllExport (ExportName = "_eventOpenConsole", CallingConvention = CallingConvention.StdCall)]
-		private static int EventOpenConsole ()
-		{
-			UserOpenConsole (null, new EventArgs ());
-			return 0;
-		}
-		#endregion
-	}
+        #region --导出方法--
+        [DllExport(ExportName = "_eventOpenConsole", CallingConvention = CallingConvention.StdCall)]
+        private static int EventOpenConsole()
+        {
+            UserOpenConsole(null, new EventArgs());
+            return 0;
+        }
+        #endregion
+    }
 }
