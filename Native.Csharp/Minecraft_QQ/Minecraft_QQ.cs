@@ -9,16 +9,6 @@ namespace Color_yr.Minecraft_QQ
     /// </summary>
     public class Minecraft_QQ
     {
-        public static long GroupSet1;    //QQ群号1
-        public static long GroupSet2;    //QQ群号2
-        public static long GroupSet3;    //QQ群号3
-
-        public static bool server = true;
-        public static bool Group2_on = false;
-        public static bool Group3_on = false;
-        public static bool set_name = true;
-        public static bool Mysql_mode = false;
-
         public static void OpenSettingForm()
         {
             setform frm = new setform();
@@ -97,16 +87,18 @@ namespace Color_yr.Minecraft_QQ
             Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
             logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + qqInfo.Nick + "]:" + msg);
             // 处理群消息。
-            if (fromGroup == GroupSet1 || fromGroup == GroupSet2 || fromGroup == GroupSet3)
+            if (fromGroup == config_read.GroupSet1 || fromGroup == config_read.GroupSet2 || fromGroup == config_read.GroupSet3)
             {
                 if (config_read.allways_send == true)
                 {
-                    if (server == true && socket.ready == true)
+                    if (config_read.fix_mode == false && socket.ready == true)
                     {
-                        if ((fromGroup == GroupSet2 && Group2_on == true) || (fromGroup == GroupSet3 && Group3_on == true) || fromGroup == GroupSet1)
+                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == true) 
+                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true) 
+                            || fromGroup == config_read.GroupSet1)
                         {
                             string play_name = null;
-                            if (Mysql_mode == true)
+                            if (config_read.Mysql_mode == true)
                                 play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                             else
                             {
@@ -129,7 +121,7 @@ namespace Color_yr.Minecraft_QQ
                                     send = send.Replace("%message%", use.remove_pic(msg_copy));
                                     messagelist messagelist = new messagelist();
                                     messagelist.group = "group";
-                                    messagelist.message = "群消息" + send;
+                                    messagelist.message = "说话" + send;
                                     socket.Send(messagelist);
                                 }
                             }
@@ -142,18 +134,19 @@ namespace Color_yr.Minecraft_QQ
                     XML XML = new XML();
                     if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
                     {
-                        if ((fromGroup == GroupSet2 && Group2_on == false) || (fromGroup == GroupSet3 && Group3_on == false))
+                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false) 
+                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == false))
                         {
                             Common.CqApi.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
                         }
-                        else if (server == true)
+                        else if (config_read.fix_mode == false)
                         {
                             if (socket.ready == true)
                             {
                                 try
                                 {
                                     string play_name = null;
-                                    if (Mysql_mode == true)
+                                    if (config_read.Mysql_mode == true)
                                         play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                                     else
                                     {
@@ -178,7 +171,7 @@ namespace Color_yr.Minecraft_QQ
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
                                             messagelist messagelist = new messagelist();
                                             messagelist.group = "group";
-                                            messagelist.message = "群消息" + send;
+                                            messagelist.message = "说话" + send;
                                             socket.Send(messagelist);
                                         }
                                     }
@@ -274,7 +267,7 @@ namespace Color_yr.Minecraft_QQ
         public static void GroupMemberDecrease(int subType, long fromGroup, long beingOperateQQ)
         {
             // 处理群事件-群成员减少。
-            if (fromGroup == GroupSet1)
+            if (fromGroup == config_read.GroupSet1)
             {
                 if (subType == 1)
                 {
@@ -312,7 +305,7 @@ namespace Color_yr.Minecraft_QQ
         public static void GroupMemberIncrease(long fromGroup, long beingOperateQQ)
         {
             // 处理群事件-群成员增加。
-            if (fromGroup == GroupSet1)
+            if (fromGroup == config_read.GroupSet1)
             {
                 string a = config_read.event_join_message;
                 if (a != "")

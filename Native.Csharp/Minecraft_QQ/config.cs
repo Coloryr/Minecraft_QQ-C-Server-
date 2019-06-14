@@ -33,6 +33,9 @@ namespace Color_yr.Minecraft_QQ
         public static string menu_message;
         public static string unknow_message;
 
+        public static string data_Head;
+        public static string data_End;
+
         public static bool message_enable;
         public static bool color_code;
         public static bool fix_mode;
@@ -41,6 +44,7 @@ namespace Color_yr.Minecraft_QQ
         public static bool group3_mode;
         public static bool Mysql_mode;
         public static bool allways_send;
+        public static bool set_name = true;
 
         public static string config = "config.xml";
         public static string player = "player.xml";
@@ -53,6 +57,10 @@ namespace Color_yr.Minecraft_QQ
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
 
+        public static long GroupSet1;    //QQ群号1
+        public static long GroupSet2;    //QQ群号2
+        public static long GroupSet3;    //QQ群号3
+
         public static void start()
         {
             config_read config_read = new config_read();
@@ -64,6 +72,9 @@ namespace Color_yr.Minecraft_QQ
 
             read_config();
             reload();
+            GroupSet1 = 0;
+            GroupSet2 = 0;
+            GroupSet3 = 0;
             if (group1 == "无" || Port == null || (socket.setip == null && socket.useip == true))
             {
                 MessageBox.Show("参数错误，请设置");
@@ -73,18 +84,17 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                Minecraft_QQ.GroupSet1 = long.Parse(group1);
+                long.TryParse(group1, out GroupSet1);
                 socket.Port = int.Parse(Port);
             }
+            long.TryParse(group2, out GroupSet2);
+            long.TryParse(group3, out GroupSet3);
 
-            if (group2 != null)
-                Minecraft_QQ.GroupSet2 = long.Parse(group2);
-            else
-                Minecraft_QQ.GroupSet2 = 0;
-            if (group3 != null)
-                Minecraft_QQ.GroupSet3 = long.Parse(group3);
-            else
-                Minecraft_QQ.GroupSet3 = 0;
+            if (GroupSet1 == 0)
+            {
+                MessageBox.Show("[Minecraft_QQ]群1设置错误请修改后重载应用");
+                return;
+            }
 
             if (!File.Exists(path + logs.log))
             {
@@ -94,17 +104,9 @@ namespace Color_yr.Minecraft_QQ
                 }
                 catch (Exception)
                 {
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]日志文件创建失败");
+                    Common.CqApi.SendGroupMessage(GroupSet1, "[Minecraft_QQ]日志文件创建失败");
                 }
             }
-
-            if (fix_mode == false) Minecraft_QQ.server = true;
-            else Minecraft_QQ.server = false;
-
-            if (group2_mode == true) Minecraft_QQ.Group2_on = true;
-            else Minecraft_QQ.Group2_on = false;
-            if (group3_mode == true) Minecraft_QQ.Group3_on = true;
-            else Minecraft_QQ.Group3_on = false;
 
             if (Mysql_mode == true)
             {
@@ -113,21 +115,19 @@ namespace Color_yr.Minecraft_QQ
                 Mysql_user sql = new Mysql_user();
                 if (sql.mysql_start() == true)
                 {
-                    Minecraft_QQ.Mysql_mode = true;
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql已连接");
+                    Mysql_mode = true;
+                    Common.CqApi.SendGroupMessage(GroupSet1, "[Minecraft_QQ]Mysql已连接");
                     logs.Log_write("[INFO][Mysql]Mysql已连接");
                 }
                 else
                 {
-                    Minecraft_QQ.Mysql_mode = false;
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Mysql错误，请检查");
+                    Mysql_mode = false;
+                    Common.CqApi.SendGroupMessage(GroupSet1, "[Minecraft_QQ]Mysql错误，请检查");
                     logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
                 }
             }
             else
-            {
-                Minecraft_QQ.Mysql_mode = false;
-            }
+                Mysql_mode = false;
             socket socket_start = new socket();
             socket_start.Start_socket();
         }
@@ -316,9 +316,30 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + commder) == false)
             {
                 xml.write(commder, "核心配置", "启用", "是");
+
                 xml.write(commder, "指令1", "指令", "qq help");
                 xml.write(commder, "指令1", "触发", "插件帮助");
                 xml.write(commder, "指令1", "玩家可用", "是");
+                xml.write(commder, "指令1", "附带参数", "否");
+                xml.write(commder, "指令1", "玩家发送", "否");
+
+                xml.write(commder, "指令2", "指令", "money");
+                xml.write(commder, "指令2", "触发", "查钱");
+                xml.write(commder, "指令2", "玩家可用", "是");
+                xml.write(commder, "指令2", "附带参数", "否");
+                xml.write(commder, "指令2", "玩家发送", "是");
+
+                xml.write(commder, "指令3", "指令", "tp ");
+                xml.write(commder, "指令3", "触发", "tp玩家");
+                xml.write(commder, "指令3", "玩家可用", "是");
+                xml.write(commder, "指令3", "附带参数", "是");
+                xml.write(commder, "指令3", "玩家发送", "是");
+
+                xml.write(commder, "指令4", "指令", "mute ");
+                xml.write(commder, "指令4", "触发", "禁言");
+                xml.write(commder, "指令4", "玩家可用", "否");
+                xml.write(commder, "指令4", "附带参数", "是");
+                xml.write(commder, "指令4", "玩家发送", "否");
             }
             else
             {
@@ -357,8 +378,8 @@ namespace Color_yr.Minecraft_QQ
             else
                 socket.useip = false;
             ANSI = xml.read(config, "Socket", "编码");
-            Color_yr.Minecraft_QQ.message.Head = xml.read(config, "Socket", "数据包头");
-            Color_yr.Minecraft_QQ.message.End = xml.read(config, "Socket", "数据包尾");
+            data_Head = xml.read(config, "Socket", "数据包头");
+            data_End = xml.read(config, "Socket", "数据包尾");
 
             send_text = xml.read(config, "消息模式", "发送文本");
             if (xml.read(config, "消息模式", "始终发送消息") == "不！")
@@ -371,8 +392,8 @@ namespace Color_yr.Minecraft_QQ
                 color_code = false;
 
             group1 = xml.read(config, "QQ群设置", "绑定群号1");
-            group2 = xml.read(config, "QQ群设置", "绑定群号1");
-            group3 = xml.read(config, "QQ群设置", "绑定群号1");
+            group2 = xml.read(config, "QQ群设置", "绑定群号2");
+            group3 = xml.read(config, "QQ群设置", "绑定群号3");
             if (xml.read(config, "QQ群设置", "群2启用聊天") == "开")
                 group2_mode = true;
             else

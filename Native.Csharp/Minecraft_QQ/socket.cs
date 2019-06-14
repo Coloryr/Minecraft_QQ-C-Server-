@@ -51,17 +51,17 @@ namespace Color_yr.Minecraft_QQ
                 start = true;
                 ready = false;
                 if (useip == true)
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + setip + ":" + Port);
                 else
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在端口：" + Port);
                 logs.Log_write("[INFO][Socket]端口已启动");
             }
             catch (Exception exception)
             {
                 logs logs = new logs();
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]启动失败，请看日志");
+                Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]启动失败，请看日志");
                 logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
                 ready = false;
@@ -87,7 +87,7 @@ namespace Color_yr.Minecraft_QQ
                     read_thread.Start();                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
                     if (config_read.debug_mode == true)
                         logs.Log_write(client.ToString());
@@ -99,7 +99,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException e)
             {
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Socket发生错误，请重启");
+                Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]Socket发生错误，请重启");
                 logs.Log_write("[ERROR][socket]接收线程发生错误：" + e.Message);
                 return;
             }
@@ -144,7 +144,7 @@ namespace Color_yr.Minecraft_QQ
                     catch (Exception e)
                     {
                         logs logs = new logs();
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
+                        Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失：" + e.Message);
                         ready = false;
 
@@ -158,7 +158,7 @@ namespace Color_yr.Minecraft_QQ
 
                     if (!start)
                     {
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "线程已关闭");
+                        Common.CqApi.SendGroupMessage(config_read.GroupSet1, "线程已关闭");
                         return;
                     }
                     Thread.Sleep(100);      // 延时0.1秒后再接收客户端发送的消息
@@ -167,7 +167,7 @@ namespace Color_yr.Minecraft_QQ
             catch (ThreadAbortException e)
             {
                 logs logs = new logs();
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
+                Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开：" + e.Message);
                 return;
             }
@@ -192,18 +192,18 @@ namespace Color_yr.Minecraft_QQ
                     client = null;
 
                     GC.Collect();
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开，无法发送");
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]连接已断开，无法发送");
                     ready = false;
                 }
             }
             else
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
+                Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
         }
         private static void Send_data(string data)
         {
             if (client != null && data != null && !data.Equals(""))
             {
-                data = message.Head + data + message.End;
+                data = config_read.data_Head + data + config_read.data_End;
                 byte[] bytes = null;
                 if (config_read.ANSI == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);

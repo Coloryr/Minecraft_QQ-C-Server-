@@ -102,7 +102,7 @@ namespace Color_yr.Minecraft_QQ
                 string b = get_string(a, "=", "]");
                 string c = get_string(a, "[", "]");
                 string d;
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                 {
                     string e = Mysql_user.mysql_search(Mysql_user.Mysql_player, b);
                     if (e == null)
@@ -160,10 +160,10 @@ namespace Color_yr.Minecraft_QQ
 
         public static bool check_mute(string player)
         {
-            if (Minecraft_QQ.Mysql_mode == true)
+            if (config_read.Mysql_mode == true)
                 if (Mysql_user.mysql_search(Mysql_user.Mysql_mute, player.ToLower()) == "true")
                     return true;
-                else if (Minecraft_QQ.Mysql_mode == false)
+                else if (config_read.Mysql_mode == false)
                 {
                     XML XML = new XML();
                     if (XML.read_memory(config_read.player_m, "禁言", player.ToLower()) == "true")
@@ -177,7 +177,7 @@ namespace Color_yr.Minecraft_QQ
             string player = null;
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
-            if (Minecraft_QQ.Mysql_mode == true)
+            if (config_read.Mysql_mode == true)
                 player = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
             else
             {
@@ -193,7 +193,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     XML XML = new XML();
                     player_name = player_name.Trim();
-                    if (Minecraft_QQ.Mysql_mode == true)
+                    if (config_read.Mysql_mode == true)
                     {
                         if (Mysql_user.mysql_search(Mysql_user.Mysql_notid, player_name.ToLower()) == "notid")
                             return "禁止绑定ID：" + player_name;
@@ -230,7 +230,7 @@ namespace Color_yr.Minecraft_QQ
             string player = get_string(msg, "=", "]");
             string player_name = null;
             if (player.IndexOf("[CQ:at,qq=") != -1)
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
                 {
@@ -243,7 +243,7 @@ namespace Color_yr.Minecraft_QQ
                 return "ID无效";
             else
             {
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                 {
                     Mysql_user sql = new Mysql_user();
                     sql.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
@@ -267,7 +267,7 @@ namespace Color_yr.Minecraft_QQ
             string player_name = null;
             if (player.IndexOf("[CQ:at,qq=") != -1)
             {
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
                 {
@@ -281,7 +281,7 @@ namespace Color_yr.Minecraft_QQ
                 return "玩家无ID";
             else
             {
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                 {
                     Mysql_user sql = new Mysql_user();
                     sql.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
@@ -314,7 +314,7 @@ namespace Color_yr.Minecraft_QQ
                 is_me = true;
             }
             string player_name = null;
-            if (Minecraft_QQ.Mysql_mode == true)
+            if (config_read.Mysql_mode == true)
                 player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
             else
             {
@@ -347,7 +347,7 @@ namespace Color_yr.Minecraft_QQ
                 string player_name = null;
                 player_name = get_string(msg, "]");
                 player_name = player_name.Trim();
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                 {
                     Mysql_user sql = new Mysql_user();
                     sql.mysql_add(Mysql_user.Mysql_player, player, player_name);
@@ -368,11 +368,10 @@ namespace Color_yr.Minecraft_QQ
         {
             XML XML = new XML();
             logs logs = new logs();
-            if (XML.read(config_read.config, "核心设置", "维护模式") == "关")
+            if (config_read.fix_mode == false)
             {
                 XML.write(config_read.config, "核心设置", "维护模式", "开");
                 config_read.fix_mode = true;
-                Minecraft_QQ.server = false;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
@@ -380,14 +379,13 @@ namespace Color_yr.Minecraft_QQ
             {
                 XML.write(config_read.config, "核心设置", "维护模式", "关");
                 config_read.fix_mode = false;
-                Minecraft_QQ.server = true;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";
             }
         }
         public string online(long fromGroup)
         {
-            if (Minecraft_QQ.server == true)
+            if (config_read.fix_mode == true)
             {
                 if (socket.ready == true)
                 {
@@ -407,7 +405,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public string server(long fromGroup)
         {
-            if (Minecraft_QQ.server == true)
+            if (config_read.fix_mode == true)
             {
                 if (socket.ready == true)
                 {
@@ -453,9 +451,10 @@ namespace Color_yr.Minecraft_QQ
             {
                 i++;
                 a = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "触发");
-                if (a == msg)
+                if (a.IndexOf(msg) == 0)
                 {
-                    if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家可用") == "是" && socket.ready == true)
+                    if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家可用") == "是"
+                        || XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         if (socket.ready == false)
                         {
@@ -464,24 +463,19 @@ namespace Color_yr.Minecraft_QQ
                         }
                         messagelist messagelist = new messagelist();
                         messagelist.group = fromGroup.ToString();
-                        messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
-                        messagelist.is_commder = true;
-                        messagelist.player = fromQQ.ToString();
-                        socket.Send(messagelist);
-                        return true;
-                    }
-                    else if (XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true" && socket.ready == true)
-                    {
-                        if (socket.ready == false)
+                        if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "附带参数") == "是")
                         {
-                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
-                            return false;
+                            string b = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                            msg.Replace(a, "");
+                            messagelist.message = b + msg;
                         }
-                        messagelist messagelist = new messagelist();
-                        messagelist.group = fromGroup.ToString();
-                        messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                        else
+                            messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
                         messagelist.is_commder = true;
-                        messagelist.player = fromQQ.ToString();
+                        if(XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家发送") == "是")
+                            messagelist.player = fromQQ.ToString();
+                        else
+                            messagelist.player = "后台";
                         socket.Send(messagelist);
                         return true;
                     }

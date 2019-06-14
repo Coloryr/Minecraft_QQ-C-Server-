@@ -5,8 +5,6 @@ namespace Color_yr.Minecraft_QQ
 {
     class message
     {
-        public static string Head;
-        public static string End;
 
         public static messagelist Message_re(string read)
         {
@@ -14,21 +12,11 @@ namespace Color_yr.Minecraft_QQ
             try
             {
                 JObject jsonData = JObject.Parse(read);
-                if (jsonData.ContainsKey("message"))
+                if (jsonData["data"].ToString() == "data")
                 {
-                    JObject data = (JObject)jsonData["message"];
-                    messagelist.group = data["group"].ToString();
-                    messagelist.message = data["message"].ToString();
-                    messagelist.player = data["player"].ToString();
+                    messagelist.group = jsonData["group"].ToString();
+                    messagelist.message = jsonData["message"].ToString();
                     messagelist.is_commder = false;
-                }
-                else if (jsonData.ContainsKey("commder"))
-                {
-                    JObject data = (JObject)jsonData["commder"];
-                    messagelist.group = data["group"].ToString();
-                    messagelist.message = data["message"].ToString();
-                    messagelist.player = data["player"].ToString();
-                    messagelist.is_commder = true;
                 }
             }
             catch { }
@@ -37,28 +25,28 @@ namespace Color_yr.Minecraft_QQ
 
         public static void Message(string read)
         {
-            while (read.IndexOf(Head) == 0 && read.IndexOf(End) != -1)
+            while (read.IndexOf(config_read.data_Head) == 0 && read.IndexOf(config_read.data_End) != -1)
             {
                 use use = new use();
-                string buff = use.get_string(read, Head, End);
+                string buff = use.get_string(read, config_read.data_Head, config_read.data_End);
                 buff = use.RemoveColorCodes(buff);
                 messagelist messagelist = Message_re(buff);
                 if (messagelist.is_commder == false && messagelist.group == "group")
                 {
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, messagelist.message);
-                    if (Minecraft_QQ.GroupSet2 != 0 && Minecraft_QQ.Group2_on == true)
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, messagelist.message);
-                    if (Minecraft_QQ.GroupSet3 != 0 && Minecraft_QQ.Group3_on == true)
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, messagelist.message);
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);
+                    if (config_read.GroupSet2 != 0 && config_read.group2_mode == true)
+                        Common.CqApi.SendGroupMessage(config_read.GroupSet2, messagelist.message);
+                    if (config_read.GroupSet3 != 0 && config_read.group2_mode == true)
+                        Common.CqApi.SendGroupMessage(config_read.GroupSet3, messagelist.message);
                 }
-                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet1.ToString())
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, buff);
-                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet1.ToString())
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet2, buff);
-                else if (messagelist.is_commder == false && messagelist.group == Minecraft_QQ.GroupSet3.ToString())
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet3, buff);
-                int i = read.IndexOf(End);
-                read = read.Substring(i + End.Length);
+                else if (messagelist.group == config_read.GroupSet1.ToString())
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);
+                else if (messagelist.group == config_read.GroupSet1.ToString())
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet2, messagelist.message);
+                else if (messagelist.group == config_read.GroupSet3.ToString())
+                    Common.CqApi.SendGroupMessage(config_read.GroupSet3, messagelist.message);
+                int i = read.IndexOf(config_read.data_End);
+                read = read.Substring(i + config_read.data_End.Length);
             }
         }
     }

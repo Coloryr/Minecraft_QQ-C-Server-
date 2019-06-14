@@ -32,11 +32,11 @@ namespace Color_yr.Minecraft_QQ
             }
             XML xml = new XML();
             xml.write(config_read.config, "QQ群设置", "绑定群号1", textBox1.Text);
-            Minecraft_QQ.GroupSet1 = long.Parse(textBox1.Text);
+            config_read.GroupSet1 = long.Parse(textBox1.Text);
             xml.write(config_read.config, "QQ群设置", "绑定群号2", textBox2.Text);
-            Minecraft_QQ.GroupSet2 = long.Parse(textBox2.Text);
+            config_read.GroupSet2 = long.Parse(textBox2.Text);
             xml.write(config_read.config, "QQ群设置", "绑定群号3", textBox3.Text);
-            Minecraft_QQ.GroupSet3 = long.Parse(textBox3.Text);
+            config_read.GroupSet3 = long.Parse(textBox3.Text);
 
             xml.write(config_read.config, "Socket", "端口", textBox5.Text);
             socket.Port = int.Parse(textBox5.Text);
@@ -102,7 +102,7 @@ namespace Color_yr.Minecraft_QQ
                 checkBox3.Checked = true;
             else
                 checkBox3.Checked = false;
-            if (Minecraft_QQ.Mysql_mode == true)
+            if (config_read.Mysql_mode == true)
                 checkBox5.Checked = true;
             else
                 checkBox5.Checked = false;
@@ -129,7 +129,7 @@ namespace Color_yr.Minecraft_QQ
             XML xml = new XML();
             xml.write(config_read.config, "QQ群设置", "绑定群号1", textBox1.Text);
             config_read.group1 = textBox1.Text;
-            long.TryParse(textBox1.Text, out Minecraft_QQ.GroupSet1);
+            long.TryParse(textBox1.Text, out config_read.GroupSet1);
             button1.Text = "设置成功";
         }
 
@@ -144,7 +144,7 @@ namespace Color_yr.Minecraft_QQ
             XML xml = new XML();
             xml.write(config_read.config, "QQ群设置", "绑定群号2", textBox2.Text);
             config_read.group2 = textBox2.Text;
-            long.TryParse(textBox2.Text, out Minecraft_QQ.GroupSet2);
+            long.TryParse(textBox2.Text, out config_read.GroupSet2);
             button2.Text = "设置成功";
         }
 
@@ -159,7 +159,7 @@ namespace Color_yr.Minecraft_QQ
             XML xml = new XML();
             xml.write(config_read.config, "QQ群设置", "绑定群号3", textBox3.Text);
             config_read.group3 = textBox3.Text;
-            long.TryParse(textBox3.Text,out Minecraft_QQ.GroupSet3);
+            long.TryParse(textBox3.Text,out config_read.GroupSet3);
             button3.Text = "设置成功";
         }
 
@@ -216,7 +216,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (textBox8.Text != null)
             {
-                if (Minecraft_QQ.Mysql_mode == true)
+                if (config_read.Mysql_mode == true)
                 {
                     Mysql_user sql = new Mysql_user();
                     sql.mysql_add(Mysql_user.Mysql_notid, textBox8.Text.ToLower(), "notid");
@@ -251,7 +251,7 @@ namespace Color_yr.Minecraft_QQ
             if (sql.mysql_start() == true)
             {
                 button8.Text = "Mysql已设置";
-                Minecraft_QQ.Mysql_mode = true;
+                config_read.Mysql_mode = true;
                 checkBox5.Checked = true;
                 xml.write(config_read.config, "Mysql", "启用", "开");
                 config_read.Mysql_mode = true;
@@ -259,7 +259,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 button8.Text = "Mysql错误";
-                Minecraft_QQ.Mysql_mode = false;
+                config_read.Mysql_mode = false;
                 checkBox5.Checked = false;
                 xml.write(config_read.config, "Mysql", "启用", "关");
                 config_read.Mysql_mode = false;
@@ -286,16 +286,14 @@ namespace Color_yr.Minecraft_QQ
             if (checkBox1.Checked == true)
             {
                 xml.write(config_read.config, "核心设置", "维护模式", "开");
-                Minecraft_QQ.server = true;
-                checkBox1.Text = "服务器维护模式：开";
                 config_read.fix_mode = true;
+                checkBox1.Text = "服务器维护模式：开";            
             }
             else
             {
                 xml.write(config_read.config, "核心设置", "维护模式", "关");
-                Minecraft_QQ.server = false;
-                checkBox1.Text = "服务器维护模式：关";
                 config_read.fix_mode = false;
+                checkBox1.Text = "服务器维护模式：关";
             }
         }
 
@@ -305,13 +303,11 @@ namespace Color_yr.Minecraft_QQ
             if (checkBox2.Checked == true)
             {
                 xml.write(config_read.config, "QQ群设置", "群2启用聊天", "开");
-                Minecraft_QQ.Group2_on = true;
                 config_read.group2_mode = true;
             }
             else
             {
                 xml.write(config_read.config, "QQ群设置", "群2启用聊天", "关");
-                Minecraft_QQ.Group2_on = false;
                 config_read.group2_mode = false;
             }
         }
@@ -322,13 +318,11 @@ namespace Color_yr.Minecraft_QQ
             if (checkBox3.Checked == true)
             {
                 xml.write(config_read.config, "QQ群设置", "群3启用聊天", "开");
-                Minecraft_QQ.Group3_on = true;
                 config_read.group3_mode = true;
             }
             else
             {
                 xml.write(config_read.config, "QQ群设置", "群3启用聊天", "关");
-                Minecraft_QQ.Group3_on = false;
                 config_read.group3_mode = false;
             }
         }
@@ -353,13 +347,13 @@ namespace Color_yr.Minecraft_QQ
             if (checkBox5.Checked == true)
             {
                 xml.write(config_read.config, "Mysql", "启用", "开");
-                Minecraft_QQ.Mysql_mode = true;
+                config_read.Mysql_mode = true;
                 config_read.Mysql_mode = true;
             }
             if (checkBox5.Checked == false)
             {
                 xml.write(config_read.config, "Mysql", "启用", "关");
-                Minecraft_QQ.Mysql_mode = false;
+                config_read.Mysql_mode = false;
                 config_read.Mysql_mode = false;
             }
         }
