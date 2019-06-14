@@ -131,7 +131,7 @@ namespace Color_yr.Minecraft_QQ
                                     messagelist messagelist = new messagelist();
                                     messagelist.group = "group";
                                     messagelist.message = "群消息" + send;
-                                    socket.Send(messagelist, socket.MCserver);
+                                    socket.Send(messagelist);
                                 }
                             }
                         }
@@ -180,7 +180,7 @@ namespace Color_yr.Minecraft_QQ
                                             messagelist messagelist = new messagelist();
                                             messagelist.group = "group";
                                             messagelist.message = "群消息" + send;
-                                            socket.Send(messagelist, socket.MCserver);
+                                            socket.Send(messagelist);
                                         }
                                     }
                                     else

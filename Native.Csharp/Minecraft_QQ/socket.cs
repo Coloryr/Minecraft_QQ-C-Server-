@@ -11,13 +11,13 @@ namespace Color_yr.Minecraft_QQ
 {
     public class socket
     {
-        public static Dictionary<string, Socket> clients = new Dictionary<string, Socket>();
+        
         public Print print;                     // 运行时的信息输出方法
         public delegate void Print(string info);
-        private static Socket serverSocket;
-        private static byte[] read = new byte[4096];
 
-        public static string MCserver = null;        
+        private static Socket serverSocket;
+        public static Socket client;
+     
         public static string setip = null;
 
         public static bool start;
@@ -72,12 +72,12 @@ namespace Color_yr.Minecraft_QQ
         private static void listenClientConnect(object obj)
         {
             Socket socket = (Socket)obj;
+            logs logs = new logs();
             try
             {
                 while (true)
-                {
-                    logs logs = new logs();
-                    Socket clientScoket = socket.Accept();
+                {                 
+                    client = socket.Accept();
 
                     if (read_thread != null)
                     {
@@ -86,33 +86,33 @@ namespace Color_yr.Minecraft_QQ
                         read_thread = null;
                     }
                     read_thread = new Thread(receiveData);
-                    read_thread.Start(clientScoket);                   // 在新的线程中接收客户端信息
+                    read_thread.Start();                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
                     if (config_read.debug_mode == true)
-                        logs.Log_write(clientScoket.ToString());
+                        logs.Log_write(client.ToString());
                     ready = true;
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
                     if (!start) return;
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadAbortException e)
             {
+                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]Socket发生错误，请重启");
+                logs.Log_write("[ERROR][socket]接收线程发生错误：" + e.Message);
                 return;
             }
         }
         private static string Receive(Socket socket)
         {
             string data = "";
-
-            byte[] bytes = null;
             int len = socket.Available;
             if (len > 0)
             {
-                bytes = new byte[len];
+                byte[] bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
                 if (config_read.ANSI == "UTF-8")
@@ -123,22 +123,17 @@ namespace Color_yr.Minecraft_QQ
             return data;
         }
 
-        private static void receiveData(object obj)
+        private static void receiveData()
         {
             try
             {
-                Socket socket = (Socket)obj;
-
-                string clientIp = socket.RemoteEndPoint.ToString();                 // 获取客户端标识 ip和端口
-                if (!clients.ContainsKey(clientIp)) clients.Add(clientIp, socket);  // 将连接的客户端socket添加到clients中保存
-                else clients[clientIp] = socket;
-                MCserver = clientIp;
+                string clientIp = client.RemoteEndPoint.ToString();                 // 获取客户端标识 ip和端口
 
                 while (true)
                 {
                     try
                     {
-                        string str = Receive(socket);
+                        string str = Receive(client);
                         if (!str.Equals(""))
                         {
                             message.Message(str);
@@ -149,19 +144,16 @@ namespace Color_yr.Minecraft_QQ
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         logs logs = new logs();
                         Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
-                        logs.Log_write("[INFO][Socket]连接已断开-连接丢失");
+                        logs.Log_write("[INFO][Socket]连接已断开-连接丢失：" + e.Message);
                         ready = false;
 
-                        socket.Shutdown(SocketShutdown.Both);
-                        socket.Close();
-                        socket = null;
-
-                        clients.Clear();
-                        MCserver = null;
+                        client.Shutdown(SocketShutdown.Both);
+                        client.Close();
+                        client = null;
 
                         GC.Collect();
                         return;
@@ -175,19 +167,18 @@ namespace Color_yr.Minecraft_QQ
                     Thread.Sleep(100);      // 延时0.1秒后再接收客户端发送的消息
                 }
             }
-            catch (ThreadAbortException)
+            catch (ThreadAbortException e)
             {
                 logs logs = new logs();
                 Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
-                logs.Log_write("[INFO][Socket]连接已断开-主动断开");
+                logs.Log_write("[INFO][Socket]连接已断开-主动断开：" + e.Message);
                 return;
             }
         }
-        public static void Send(messagelist info, string id)
+        public static void Send(messagelist info)
         {
-            if (clients.ContainsKey(id))
+            if (client!=null)
             {
-                Socket socket = clients[id];
                 try
                 {
                     JObject jsonData = new JObject(
@@ -195,12 +186,13 @@ namespace Color_yr.Minecraft_QQ
                         new JProperty("message", info.message),
                         new JProperty("player", info.player),
                         new JProperty("is_commder", info.is_commder));
-                    Send_data(socket, jsonData.ToString());
+                    Send_data(jsonData.ToString());
                 }
                 catch (Exception)
                 {
-                    clients.Clear();
-                    MCserver = null;
+                    client.Shutdown(SocketShutdown.Both);
+                    client.Close();
+                    client = null;
 
                     GC.Collect();
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]连接已断开，无法发送");
@@ -210,22 +202,42 @@ namespace Color_yr.Minecraft_QQ
             else
                 Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet1, "[Minecraft_QQ]服务器未连接，无法发送");
         }
-        private static void Send_data(Socket socket, string data)
+        private static void Send_data(string data)
         {
-            if (socket != null && data != null && !data.Equals(""))
+            if (client != null && data != null && !data.Equals(""))
             {
                 data = message.Head + data + message.End;
                 byte[] bytes = null;
                 if (config_read.ANSI == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);
-                if (config_read.ANSI == "ANSI（GBK）")
+                else if (config_read.ANSI == "ANSI（GBK）")
                     bytes = Encoding.Default.GetBytes(data);
-                socket.Send(bytes);
+                client.Send(bytes);
                 if (config_read.debug_mode == true)
                 {
                     logs logs = new logs();
                     logs.Log_write("发送数据：" + data);
                 }
+            }
+        }
+
+        public static void socket_stop()
+        {
+            if (client != null)
+            {
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
+                client = null;
+            }
+            if (serverSocket != null)
+            {
+                serverSocket.Close();
+                serverSocket = null;
+            }
+            if(server_thread!=null)
+            { 
+                server_thread.Abort();
+                server_thread = null;
             }
         }
     }

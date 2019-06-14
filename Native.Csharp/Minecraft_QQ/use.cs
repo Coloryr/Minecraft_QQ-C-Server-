@@ -411,7 +411,7 @@ namespace Color_yr.Minecraft_QQ
                     messagelist.message = "在线人数";
                     messagelist.is_commder = false;
                     messagelist.player = null;
-                    socket.Send(messagelist, socket.MCserver);
+                    socket.Send(messagelist);
                 }
                 else
                     return "发送失败，服务器未准备好";
@@ -431,7 +431,7 @@ namespace Color_yr.Minecraft_QQ
                     messagelist.message = "服务器状态";
                     messagelist.is_commder = false;
                     messagelist.player = null;
-                    socket.Send(messagelist, socket.MCserver);
+                    socket.Send(messagelist);
                 }
                 else
                     return "发送失败，服务器未准备好";
@@ -482,7 +482,7 @@ namespace Color_yr.Minecraft_QQ
                         messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
                         messagelist.is_commder = true;
                         messagelist.player = fromQQ.ToString();
-                        socket.Send(messagelist, socket.MCserver);
+                        socket.Send(messagelist);
                         return true;
                     }
                     else if (XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true" && socket.ready == true)
@@ -497,7 +497,7 @@ namespace Color_yr.Minecraft_QQ
                         messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
                         messagelist.is_commder = true;
                         messagelist.player = fromQQ.ToString();
-                        socket.Send(messagelist, socket.MCserver);
+                        socket.Send(messagelist);
                         return true;
                     }
                 }

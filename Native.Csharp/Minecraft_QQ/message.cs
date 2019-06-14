@@ -11,23 +11,27 @@ namespace Color_yr.Minecraft_QQ
         public static messagelist Message_re(string read)
         {
             messagelist messagelist = new messagelist();
-            JObject jsonData = JObject.Parse(read);
-            if (jsonData.ContainsKey("message"))
+            try
             {
-                JObject data = (JObject)jsonData["message"];
-                messagelist.group = data["group"].ToString();
-                messagelist.message = data["message"].ToString();
-                messagelist.player = data["player"].ToString();
-                messagelist.is_commder = false;
+                JObject jsonData = JObject.Parse(read);
+                if (jsonData.ContainsKey("message"))
+                {
+                    JObject data = (JObject)jsonData["message"];
+                    messagelist.group = data["group"].ToString();
+                    messagelist.message = data["message"].ToString();
+                    messagelist.player = data["player"].ToString();
+                    messagelist.is_commder = false;
+                }
+                else if (jsonData.ContainsKey("commder"))
+                {
+                    JObject data = (JObject)jsonData["commder"];
+                    messagelist.group = data["group"].ToString();
+                    messagelist.message = data["message"].ToString();
+                    messagelist.player = data["player"].ToString();
+                    messagelist.is_commder = true;
+                }
             }
-            else if (jsonData.ContainsKey("commder"))
-            {
-                JObject data = (JObject)jsonData["commder"];
-                messagelist.group = data["group"].ToString();
-                messagelist.message = data["message"].ToString();
-                messagelist.player = data["player"].ToString();
-                messagelist.is_commder = true;
-            }
+            catch { }
             return messagelist;
         }
 
