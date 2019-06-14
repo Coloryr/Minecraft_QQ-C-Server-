@@ -1,5 +1,7 @@
 ﻿# Minecraft_QQ 酷Q server端
 # Minecraft服务器与QQ群聊天的插件  
+该项目使用的SDK：https://github.com/Jie2GG/Native.Csharp.Frame
+感谢作者提供的框架
 ## 更新日志：  
 1.4.0.0：增加禁言功能，老插件请把event.xml下的[更新？]参数修改为任意值来更新配置文件！请注意做好备份工作！  
 1.4.1.0：增加服务器维护功能，老插件请把event.xml和config.xml下的[更新？]参数修改为任意值来更新配置文件！请注意做好备份工作！  
