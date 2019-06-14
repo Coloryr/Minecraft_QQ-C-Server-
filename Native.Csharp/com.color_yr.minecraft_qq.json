@@ -22,7 +22,7 @@
       "type": 2,
       "name": "群消息处理",
       "function": "_eventGroupMsg",
-      "priority": 30000
+      "priority": 10000
     },
     {
       "id": 3,

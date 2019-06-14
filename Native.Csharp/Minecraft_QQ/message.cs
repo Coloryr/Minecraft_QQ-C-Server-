@@ -41,7 +41,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else if (messagelist.group == config_read.GroupSet1.ToString())
                     Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);
-                else if (messagelist.group == config_read.GroupSet1.ToString())
+                else if (messagelist.group == config_read.GroupSet2.ToString())
                     Common.CqApi.SendGroupMessage(config_read.GroupSet2, messagelist.message);
                 else if (messagelist.group == config_read.GroupSet3.ToString())
                     Common.CqApi.SendGroupMessage(config_read.GroupSet3, messagelist.message);

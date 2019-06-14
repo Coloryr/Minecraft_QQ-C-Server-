@@ -134,7 +134,7 @@ namespace Color_yr.Minecraft_QQ
                     XML XML = new XML();
                     if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
                     {
-                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false) 
+                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false)
                             || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == false))
                         {
                             Common.CqApi.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
@@ -189,48 +189,57 @@ namespace Color_yr.Minecraft_QQ
                         }
                         else
                             Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + config_read.fix_send_message);
+                        return;
                     }
                     else if (msg_low == config_read.online_players_message)
                     {
                         string test = use.online(fromGroup);
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
+                        return;
                     }
                     else if (msg_low == config_read.online_servers_message)
                     {
                         string test = use.server(fromGroup);
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
+                        return;
                     }
 
                     else if (msg_low.IndexOf(config_read.player_setid_message) == 0)
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
-                    else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player, "管理员", fromQQ.ToString()) != null)
+                        return;
+                    }
+                    else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", fromQQ.ToString()) != null)
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(fromQQ, msg));
-                    else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                        return;
+                    }
+                    else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(fromQQ, msg));
                     else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
                         return;
                     }
-                    else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(fromQQ, msg));
                         return;
                     }
-                    else if (msg_low == config_read.fix_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.fix_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
                         return;
                     }
-                    else if (msg_low == config_read.menu_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.menu_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                         OpenSettingForm();
                         return;
                     }
-                    else if (msg_low == config_read.reload_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.reload_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read read = new config_read();
@@ -238,7 +247,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return;
                     }
-                    else if (msg_low == config_read.gc_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                    else if (msg_low == config_read.gc_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         if (use.GC_now() == true)
                             Common.CqApi.SendGroupMessage(fromGroup, "已清理内存");
@@ -251,8 +260,11 @@ namespace Color_yr.Minecraft_QQ
 
                     string message = XML.read_memory(config_read.message_m, "自动回复消息", msg_low);
                     if (config_read.message_enable == true && message != null)
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, message);
-                    else if (config_read.unknow_message != "" && config_read.unknow_message != null)
+                        return;
+                    }
+                    if (config_read.unknow_message != "" && config_read.unknow_message != null)
                         Common.CqApi.SendGroupMessage(fromGroup, config_read.unknow_message);
                 }
             }

@@ -385,7 +385,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public string online(long fromGroup)
         {
-            if (config_read.fix_mode == true)
+            if (config_read.fix_mode == false)
             {
                 if (socket.ready == true)
                 {
@@ -405,7 +405,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public string server(long fromGroup)
         {
-            if (config_read.fix_mode == true)
+            if (config_read.fix_mode == false)
             {
                 if (socket.ready == true)
                 {
