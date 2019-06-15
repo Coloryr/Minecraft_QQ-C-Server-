@@ -55,7 +55,7 @@ namespace Color_yr.Minecraft_QQ
 
             textBox5.Text = XML.read(config_read.config, "Socket", "端口");
             textBox4.Text = XML.read(config_read.config, "Socket", "绑定IP");
-            textBox7.Text = XML.read(config_read.player, "管理员", "发送给的人");
+            textBox7.Text = XML.read_memory(config_read.player_m, "管理员", "发送给的人");
 
             temp = XML.read(config_read.config, "Mysql", "地址");
             if (temp != null)

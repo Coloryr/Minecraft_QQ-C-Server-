@@ -14,12 +14,13 @@ namespace Color_yr.Minecraft_QQ
                 JObject jsonData = JObject.Parse(read);
                 if (jsonData["data"].ToString() == "data")
                 {
-                    messagelist.group = jsonData["group"].ToString();
+                    messagelist.group = jsonData["group"].ToString();                  
                     messagelist.message = jsonData["message"].ToString();
+                    messagelist.player = jsonData["player"].ToString();
                     messagelist.is_commder = false;
                 }
             }
-            catch { }
+            catch { messagelist.player = "没有玩家"; }
             return messagelist;
         }
 
@@ -31,6 +32,10 @@ namespace Color_yr.Minecraft_QQ
                 string buff = use.get_string(read, config_read.data_Head, config_read.data_End);
                 buff = use.RemoveColorCodes(buff);
                 messagelist messagelist = Message_re(buff);
+                if (messagelist.message == null)
+                    return;
+                if (use.check_mute(messagelist.player) == true)
+                    return;
                 if (messagelist.is_commder == false && messagelist.group == "group")
                 {
                     Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);

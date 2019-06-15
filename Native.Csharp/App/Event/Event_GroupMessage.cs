@@ -18,7 +18,15 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             if (e.FromAnonymous == null)    // 如果此属性不为null, 则消息来自于匿名成员
-                Minecraft_QQ.GroupMessage(e.FromGroup, e.FromQQ, e.Msg);
+            {
+                readlist readlist = new readlist();
+                readlist.group = e.FromGroup;
+                readlist.player = e.FromQQ;
+                readlist.message = e.Msg;
+                Minecraft_QQ.mList.Add(readlist);
+            }
+                
+                //Minecraft_QQ.GroupMessage(e.FromGroup, e.FromQQ, e.Msg);
             e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
 
@@ -32,7 +40,7 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
-            //Minecraft_QQ.PrivateMessage(e.FromQQ, e.Msg);
+            //Minecraft_QQ.PrivateMessage(e.e.FromQQ, e.Msg);
 
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
@@ -93,8 +101,6 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
 
-            Minecraft_QQ.GroupMemberIncrease(e.FromQQ, e.BeingOperateQQ);
-
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
 
@@ -108,8 +114,6 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
-
-            Minecraft_QQ.GroupMemberIncrease(e.FromQQ, e.BeingOperateQQ);
 
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
@@ -125,8 +129,6 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
 
-            Minecraft_QQ.GroupMemberDecrease(1, e.FromGroup, e.BeingOperateQQ);
-
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
 
@@ -140,8 +142,6 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
-
-            Minecraft_QQ.GroupMemberDecrease(2, e.FromGroup, e.BeingOperateQQ);
 
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
@@ -157,8 +157,6 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
 
-
-
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
 
@@ -172,8 +170,6 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
-
-
 
             e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }

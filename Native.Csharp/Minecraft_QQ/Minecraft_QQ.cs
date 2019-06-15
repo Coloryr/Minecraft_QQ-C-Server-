@@ -1,6 +1,9 @@
 ﻿using Native.Csharp.App;
 using Native.Csharp.Sdk.Cqp.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -15,6 +18,29 @@ namespace Color_yr.Minecraft_QQ
             frm.ShowDialog();
         }
 
+        public static List<readlist> mList = new List<readlist>();
+        public static Thread message_thread = new Thread(message_t);
+
+        public static void message_t()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (mList.Count() != 0)
+                    {
+                        readlist readlist = mList.First();
+                        GroupMessage(readlist.group, readlist.player, readlist.message);
+                        mList.Remove(readlist);
+                    }
+                    Thread.Sleep(200);
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+        }
         /// <summary>
         /// Type=21 私聊消息。
         /// </summary>
@@ -36,22 +62,22 @@ namespace Color_yr.Minecraft_QQ
                 msg_low = msg_low.Replace(config_read.head, "");
                 if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_setid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_mute(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_unmute(fromQQ, msg));
                 else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_checkid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_rename(fromQQ, msg));
-                else if (msg_low == config_read.fix_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.fix_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     Common.CqApi.SendPrivateMessage(fromQQ, use.fix_mode_change());
-                else if (msg_low == config_read.menu_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.menu_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     Common.CqApi.SendPrivateMessage(fromQQ, "已打开，请前往后台查看");
                     OpenSettingForm();
                 }
-                else if (msg_low == config_read.reload_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.reload_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     config_read read = new config_read();
                     Common.CqApi.SendPrivateMessage(fromQQ, "开始重读配置文件");
@@ -59,7 +85,7 @@ namespace Color_yr.Minecraft_QQ
                     read.reload();
                     Common.CqApi.SendPrivateMessage(fromQQ, "重读完成");
                 }
-                else if (msg_low == config_read.gc_message && XML.read(config_read.player, "管理员", "admin" + fromQQ.ToString()) == "true")
+                else if (msg_low == config_read.gc_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
                     if (use.GC_now() == true)
                         Common.CqApi.SendPrivateMessage(fromQQ, "已清理内存");
@@ -83,9 +109,9 @@ namespace Color_yr.Minecraft_QQ
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
             logs logs = new logs();
-            QQ qqInfo;
-            Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
-            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + qqInfo.Nick + "]:" + msg);
+            GroupMember GroupMember;
+            Common.CqApi.GetMemberInfo(fromGroup, fromQQ, out GroupMember);
+            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + GroupMember.Nick + "]:" + msg);
             // 处理群消息。
             if (fromGroup == config_read.GroupSet1 || fromGroup == config_read.GroupSet2 || fromGroup == config_read.GroupSet3)
             {
@@ -97,7 +123,7 @@ namespace Color_yr.Minecraft_QQ
                             || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true) 
                             || fromGroup == config_read.GroupSet1)
                         {
-                            string play_name = null;
+                            string play_name;
                             if (config_read.Mysql_mode == true)
                                 play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                             else
@@ -136,9 +162,7 @@ namespace Color_yr.Minecraft_QQ
                     {
                         if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false)
                             || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == false))
-                        {
                             Common.CqApi.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
-                        }
                         else if (config_read.fix_mode == false)
                         {
                             if (socket.ready == true)
@@ -149,9 +173,7 @@ namespace Color_yr.Minecraft_QQ
                                     if (config_read.Mysql_mode == true)
                                         play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                                     else
-                                    {
-                                        play_name = XML.read(config_read.player, "玩家", fromQQ.ToString());
-                                    }
+                                        play_name = XML.read_memory(config_read.player_m, "玩家", fromQQ.ToString());
                                     if (play_name != null && use.check_mute(play_name) == false)
                                     {
                                         string send;
@@ -244,6 +266,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read read = new config_read();
                         read.read_config();
+                        read.reload();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return;
                     }
@@ -266,66 +289,6 @@ namespace Color_yr.Minecraft_QQ
                     }
                     if (config_read.unknow_message != "" && config_read.unknow_message != null)
                         Common.CqApi.SendGroupMessage(fromGroup, config_read.unknow_message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Type=102 群事件-群成员减少。
-        /// </summary>
-        /// <param name="subType">子类型，1/群员离开 2/群员被踢 3/自己(即登录号)被踢。</param>
-        /// <param name="fromGroup">来源群。</param>
-        /// <param name="beingOperateQQ">被操作QQ。</param>
-        public static void GroupMemberDecrease(int subType, long fromGroup, long beingOperateQQ)
-        {
-            // 处理群事件-群成员减少。
-            if (fromGroup == config_read.GroupSet1)
-            {
-                if (subType == 1)
-                {
-                    string a = config_read.event_quit_message;
-                    if (a != "")
-                    {
-                        QQ qqInfo;
-                        Common.CqApi.GetQQInfo(beingOperateQQ, out qqInfo);
-                        a = a.Replace("%player%", qqInfo.Nick);
-                        Common.CqApi.SendGroupMessage(fromGroup, a);
-                    }
-                }
-                if (subType == 2)
-                {
-                    string a = config_read.event_kick_message;
-                    if (a != "")
-                    {
-                        QQ qqInfo;
-                        Common.CqApi.GetQQInfo(beingOperateQQ, out qqInfo);
-                        a = a.Replace("%player%", qqInfo.Nick);
-                        Common.CqApi.SendGroupMessage(fromGroup, a);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Type=103 群事件-群成员增加。
-        /// </summary>
-        /// <param name="subType">子类型，1/管理员已同意 2/管理员邀请。</param>
-        /// <param name="sendTime">发送时间(时间戳)。</param>
-        /// <param name="fromGroup">来源群。</param>
-        /// <param name="fromQQ">来源QQ。</param>
-        /// <param name="beingOperateQQ">被操作QQ。</param>
-        public static void GroupMemberIncrease(long fromGroup, long beingOperateQQ)
-        {
-            // 处理群事件-群成员增加。
-            if (fromGroup == config_read.GroupSet1)
-            {
-                string a = config_read.event_join_message;
-                if (a != "")
-                {
-                    QQ qqInfo;
-                    Common.CqApi.GetQQInfo(beingOperateQQ, out qqInfo);
-                    a = a.Replace("%player%", qqInfo.Nick);
-                    Common.CqApi.SendGroupMessage(fromGroup, a);
                 }
             }
         }

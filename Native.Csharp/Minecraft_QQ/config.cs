@@ -130,6 +130,7 @@ namespace Color_yr.Minecraft_QQ
                 Mysql_mode = false;
             socket socket_start = new socket();
             socket_start.Start_socket();
+            Minecraft_QQ.message_thread.Start();
         }
 
         public void read_config()
