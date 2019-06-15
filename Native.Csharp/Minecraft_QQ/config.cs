@@ -15,9 +15,6 @@ namespace Color_yr.Minecraft_QQ
         public static string ANSI;
         public static string head;
         public static string send_text;
-        public static string event_join_message;
-        public static string event_quit_message;
-        public static string event_kick_message;
         public static string online_players_message;
         public static string online_servers_message;
         public static string player_setid_message;
@@ -184,10 +181,6 @@ namespace Color_yr.Minecraft_QQ
                 xml.write(config, "检测", "内存回收", "内存回收");
                 xml.write(config, "检测", "未知指令", "未知指令");
 
-                xml.write(config, "事件", "群员加入", "欢迎新人%player%，输入【"
-    + xml.read(config, "检测", "检测头") + "服务器菜单】获取更多帮助。");
-                xml.write(config, "事件", "群员退出", "%player%退出了群");
-                xml.write(config, "事件", "踢出群员", "%player%感受制裁吧！");
             }
             else if (xml.read(config, "更新", "更新配置文件") == "是")
             {
@@ -270,14 +263,6 @@ namespace Color_yr.Minecraft_QQ
                     xml.write(config, "检测", "内存回收", "内存回收");
                 if (xml.read(config, "检测", "未知指令") == null)
                     xml.write(config, "检测", "未知指令", "未知指令");
-
-                if (xml.read(config, "事件", "群员加入") == null)
-                    xml.write(config, "事件", "群员加入", "欢迎新人%player%，输入【"
-   + xml.read(config, "检测", "检测头") + "服务器菜单】获取更多帮助。");
-                if (xml.read(config, "事件", "群员退出") == null)
-                    xml.write(config, "事件", "群员退出", "%player%退出了群");
-                if (xml.read(config, "事件", "踢出群员") == null)
-                    xml.write(config, "事件", "踢出群员", "%player%感受制裁吧！");
             }
 
             string a;
@@ -428,10 +413,6 @@ namespace Color_yr.Minecraft_QQ
             gc_message = xml.read(config, "检测", "内存回收").ToLower();
             menu_message = xml.read(config, "检测", "打开菜单").ToLower();
             unknow_message = xml.read(config, "检测", "未知指令");
-
-            event_join_message = xml.read(config, "事件", "群员加入");
-            event_quit_message = xml.read(config, "事件", "群员退出");
-            event_kick_message = xml.read(config, "事件", "踢出群员");
         }
     }
 }
