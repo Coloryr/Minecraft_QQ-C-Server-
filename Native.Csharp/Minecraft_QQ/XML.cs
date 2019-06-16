@@ -71,7 +71,7 @@ namespace Color_yr.Minecraft_QQ
                     XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/config");
                     if (node == null)
                     {
-                        node = xmldoc.CreateElement(type);
+                        node = xmldoc.CreateElement("config");
                     }
                     node.SetAttribute("type", type);
                     XmlElement xesub1 = xmldoc.CreateElement(attribute);

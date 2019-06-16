@@ -51,10 +51,8 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else if (msg_low == config_read.reload_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                 {
-                    config_read read = new config_read();
                     Common.CqApi.SendPrivateMessage(fromQQ, "开始重读配置文件");
-                    read.read_config();
-                    read.reload();
+                    config_read.read_config();
                     Common.CqApi.SendPrivateMessage(fromQQ, "重读完成");
                 }
                 else if (msg_low == config_read.gc_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
@@ -232,9 +230,7 @@ namespace Color_yr.Minecraft_QQ
                     else if (msg_low == config_read.reload_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
-                        config_read read = new config_read();
-                        read.read_config();
-                        read.reload();
+                        config_read.read_config();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return true;
                     }

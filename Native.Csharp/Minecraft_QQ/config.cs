@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
@@ -58,15 +59,11 @@ namespace Color_yr.Minecraft_QQ
         public static long GroupSet2;    //QQ群号2
         public static long GroupSet3;    //QQ群号3
 
-        public static void start()
-        {
-            config_read config_read = new config_read();
-            config_read.start_read();
-        }
-        private void start_read()
+        public static Thread start = new Thread(start_read);
+
+        public static void start_read()
         {
             read_config();
-            reload();
             GroupSet1 = 0;
             GroupSet2 = 0;
             GroupSet3 = 0;
@@ -76,7 +73,6 @@ namespace Color_yr.Minecraft_QQ
                 MessageBox.Show("参数错误，请设置");
                 frm.ShowDialog();
                 read_config();
-                reload();
             }
             else
             {
@@ -126,7 +122,7 @@ namespace Color_yr.Minecraft_QQ
             socket.Start_socket();
         }
 
-        public void read_config()
+        public static void read_config()
         {
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -259,7 +255,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(config, "检测", "未知指令") == null)
                     XML.write(config, "检测", "未知指令", "未知指令");
             }
-
+        
             string a;
             if (File.Exists(path + player) == false)
             {
@@ -334,9 +330,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                     commder_m = null;
             }
-        }
-        public void reload()
-        {
+        
             logs.Log_write("[INFO][Config]读取配置文件中");
 
             if (XML.read(message, "核心配置", "启用") == "是")
@@ -372,7 +366,7 @@ namespace Color_yr.Minecraft_QQ
                 color_code = true;
             else
                 color_code = false;
-
+        
             group1 = XML.read(config, "QQ群设置", "绑定群号1");
             group2 = XML.read(config, "QQ群设置", "绑定群号2");
             group3 = XML.read(config, "QQ群设置", "绑定群号3");
@@ -395,6 +389,9 @@ namespace Color_yr.Minecraft_QQ
             Mysql_user.Mysql_Password = XML.read(config, "Mysql", "密码");
 
             head = XML.read(config, "检测", "检测头");
+        }
+        void test()
+        {
             online_players_message = XML.read(config, "检测", "在线人数").ToLower();
             online_servers_message = XML.read(config, "检测", "服务器状态").ToLower();
             player_setid_message = XML.read(config, "检测", "绑定文本").ToLower();
@@ -402,6 +399,7 @@ namespace Color_yr.Minecraft_QQ
             mute_message = XML.read(config, "检测", "禁言文本").ToLower();
             unmute_message = XML.read(config, "检测", "解禁文本").ToLower();
             check_id_message = XML.read(config, "检测", "查询玩家ID").ToLower();
+        
             rename_id_message = XML.read(config, "检测", "修改玩家ID").ToLower();
             fix_message = XML.read(config, "检测", "维护文本").ToLower();
             fix_send_message = XML.read(config, "检测", "服务器维护文本");
