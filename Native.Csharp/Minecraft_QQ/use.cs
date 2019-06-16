@@ -174,7 +174,7 @@ namespace Color_yr.Minecraft_QQ
 
         public string player_setid(long fromQQ, string msg)
         {
-            string player = null;
+            string player;
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
             if (config_read.Mysql_mode == true)
@@ -202,9 +202,9 @@ namespace Color_yr.Minecraft_QQ
                     }
                     else
                     {
-                        if (XML.read_memory(config_read.player_m, "禁止绑定", player_name.ToLower()) == "notid")
+                        if (XML.read_memory(config_read.player_m, player_name, "禁止绑定") == "是")
                             return "禁止绑定ID：" + player_name;
-                        XML.write(config_read.player, "禁止绑定", fromQQ.ToString(), player_name);
+                        XML.write(config_read.player, fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();
                     }
@@ -235,7 +235,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML XML = new XML();
-                    player_name = XML.read_memory(config_read.player_m, "玩家", player);
+                    player_name = XML.read_memory(config_read.player_m, fromQQ.ToString(), "绑定");
                 }
             else
                 player_name = player;
@@ -264,7 +264,7 @@ namespace Color_yr.Minecraft_QQ
                 msg = msg.Replace(config_read.head, null);
             msg = msg.Replace(config_read.unmute_message, "");
             string player = get_string(msg, "=", "]");
-            string player_name = null;
+            string player_name;
             if (player.IndexOf("[CQ:at,qq=") != -1)
             {
                 if (config_read.Mysql_mode == true)
@@ -272,7 +272,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML XML = new XML();
-                    player_name = XML.read_memory(config_read.player_m, "玩家", player);
+                    player_name = XML.read_memory(config_read.player_m, player, "绑定");
                 }
             }
             else
@@ -319,7 +319,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 XML XML = new XML();
-                player_name = XML.read_memory(config_read.player_m, "玩家", player);
+                player_name = XML.read_memory(config_read.player_m, player, "绑定");
             }
             if (player_name == null)
             {
@@ -344,7 +344,7 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 string player = get_string(msg, "=", "]");
-                string player_name = null;
+                string player_name;
                 player_name = get_string(msg, "]");
                 player_name = player_name.Trim();
                 if (config_read.Mysql_mode == true)
@@ -355,7 +355,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     XML xml = new XML();
-                    xml.write(config_read.player, "玩家", player, player_name);
+                    xml.write(config_read.player, player, "绑定", player_name);
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                 }

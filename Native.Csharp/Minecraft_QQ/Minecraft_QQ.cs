@@ -129,7 +129,7 @@ namespace Color_yr.Minecraft_QQ
                             else
                             {
                                 XML XML = new XML();
-                                play_name = XML.read_memory(config_read.player_m, "玩家", fromQQ.ToString());
+                                play_name = XML.read_memory(config_read.player_m, fromQQ.ToString(), "绑定");
                             }
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
@@ -173,7 +173,7 @@ namespace Color_yr.Minecraft_QQ
                                     if (config_read.Mysql_mode == true)
                                         play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
                                     else
-                                        play_name = XML.read_memory(config_read.player_m, "玩家", fromQQ.ToString());
+                                        play_name = XML.read_memory(config_read.player_m, fromQQ.ToString(), "绑定");
                                     if (play_name != null && use.check_mute(play_name) == false)
                                     {
                                         string send;
