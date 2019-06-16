@@ -183,6 +183,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config_read.player,textBox6.Text, "管理员", "是");
                 StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                 config_read.player_m = sr.ReadToEnd().TrimStart();
+                sr.Close();
                 button5.Text = "添加成功";
             }          
         }
@@ -199,6 +200,7 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config_read.player, "管理员", "发送给的人", textBox7.Text);
                 StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                 config_read.player_m = sr.ReadToEnd().TrimStart();
+                sr.Close();
                 button6.Text = "已设置";
             }
         }

@@ -263,12 +263,13 @@ namespace Color_yr.Minecraft_QQ
             string a;
             if (File.Exists(path + player) == false)
             {
-                XML.CreateFile(player, 0);
+                XML.write(player, "测试", "测试", "测试");
             }
             else
             {
                 StreamReader sr = new StreamReader(path + player, Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
+                sr.Close();
                 if (!string.IsNullOrEmpty(a))
                     player_m = a;
                 else
@@ -288,6 +289,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 StreamReader sr = new StreamReader(path + message, System.Text.Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
+                sr.Close();
                 if (!string.IsNullOrEmpty(a))
                     message_m = a;
                 else
@@ -326,6 +328,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 StreamReader sr = new StreamReader(path + commder, System.Text.Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
+                sr.Close();
                 if (!string.IsNullOrEmpty(a))
                     commder_m = a;
                 else

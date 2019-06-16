@@ -206,6 +206,7 @@ namespace Color_yr.Minecraft_QQ
                         XML.write(config_read.player, fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();
+                        sr.Close();
                     }
 
                     string qq_admin = XML.read_memory(config_read.player_m, "管理员", "发送给的人");
@@ -246,6 +247,7 @@ namespace Color_yr.Minecraft_QQ
                     XML.write(config_read.player, player_name.ToLower(), "禁言", "是");
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
+                    sr.Close();
                 }
                 return "已禁言：[" + player_name + "]";
             }
@@ -277,6 +279,7 @@ namespace Color_yr.Minecraft_QQ
                     XML.write(config_read.player, player_name.ToLower(), "禁言", "否");
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
+                    sr.Close();
                 }
                 return "已解禁：[" + player_name + "]";
             }
@@ -336,6 +339,7 @@ namespace Color_yr.Minecraft_QQ
                     XML.write(config_read.player, player, "绑定", player_name);
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
+                    sr.Close();
                 }
                 return "已修改玩家[" + player + "]ID为：" + player_name;
             }
