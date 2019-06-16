@@ -27,7 +27,7 @@ namespace Color_yr.Minecraft_QQ
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public bool mysql_start()
+        public static bool mysql_start()
         {
             ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;",
                 Mysql_IP, Mysql_Port, Mysql_User, Mysql_Password);
@@ -38,7 +38,7 @@ namespace Color_yr.Minecraft_QQ
             if (mysql_add_table(Mysql_mute) == false) return false;
             return true;
         }
-        public bool mysql_add_table(string table_name)
+        public static bool mysql_add_table(string table_name)
         {
             try
             {
@@ -58,7 +58,6 @@ namespace Color_yr.Minecraft_QQ
                         cmd.ExecuteNonQuery();
                         break;
                     default:
-                        logs logs = new logs();
                         logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                         break;
                 }
@@ -67,7 +66,7 @@ namespace Color_yr.Minecraft_QQ
             conn.Close();
             return true;
         }
-        public void mysql_add(string table_name, string qq, string name)
+        public static void mysql_add(string table_name, string qq, string name)
         {
             if (mysql_search(table_name, qq) != null)
                 mysql_replace(table_name, qq, name);
@@ -84,7 +83,6 @@ namespace Color_yr.Minecraft_QQ
                 }
                 catch (MySqlException ex)
                 {
-                    logs logs = new logs();
                     logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                 }
                 conn.Close();
@@ -107,14 +105,13 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
             return name;
         }
 
-        public void mysql_remove(string table_name, string qq)
+        public static void mysql_remove(string table_name, string qq)
         {
             try
             {
@@ -126,13 +123,12 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();
         }
 
-        public void mysql_replace(string table_name, string qq, string name)
+        public static void mysql_replace(string table_name, string qq, string name)
         {
             try
             {
@@ -145,7 +141,6 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (MySqlException ex)
             {
-                logs logs = new logs();
                 logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             conn.Close();

@@ -5,7 +5,6 @@ namespace Color_yr.Minecraft_QQ
 {
     class message
     {
-
         public static messagelist Message_re(string read)
         {
             messagelist messagelist = new messagelist();
@@ -28,7 +27,6 @@ namespace Color_yr.Minecraft_QQ
         {
             while (read.IndexOf(config_read.data_Head) == 0 && read.IndexOf(config_read.data_End) != -1)
             {
-                use use = new use();
                 string buff = use.get_string(read, config_read.data_Head, config_read.data_End);
                 buff = use.RemoveColorCodes(buff);
                 messagelist messagelist = Message_re(buff);

@@ -19,11 +19,8 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             if (e.FromAnonymous == null)    // 如果此属性不为null, 则消息来自于匿名成员
             {
-                readlist readlist = new readlist();
-                readlist.group = e.FromGroup;
-                readlist.player = e.FromQQ;
-                readlist.message = e.Msg;
-                Minecraft_QQ.mList.Add(readlist);
+                e.Handled = Minecraft_QQ.GroupMessage(e.FromGroup, e.FromQQ, e.Msg);
+                return;
             }
                 
                 //Minecraft_QQ.GroupMessage(e.FromGroup, e.FromQQ, e.Msg);

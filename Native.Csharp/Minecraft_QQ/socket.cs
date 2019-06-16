@@ -28,11 +28,11 @@ namespace Color_yr.Minecraft_QQ
 
         public static int Port;
 
-        public void Start_socket()
+        public static void Start_socket()
         {
             try
             {
-                logs logs = new logs();
+                
                 logs.Log_write("[INFO][Socket]正在启动端口");
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 if (useip == true)
@@ -61,7 +61,6 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception exception)
             {
-                logs logs = new logs();
                 Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]启动失败，请看日志");
                 logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
@@ -75,7 +74,6 @@ namespace Color_yr.Minecraft_QQ
             {
                 while (true)
                 {
-                    logs logs = new logs();
                     Socket clientScoket = socket.Accept();
 
                     if (read_thread != null)
@@ -142,15 +140,11 @@ namespace Color_yr.Minecraft_QQ
                         {
                             message.Message(str);
                             if (config_read.debug_mode == true)
-                            {
-                                logs logs = new logs();
                                 logs.Log_write("收到数据：" + str);
-                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        logs logs = new logs();
                         Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
                         ready = false;
@@ -176,7 +170,6 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException e)
             {
-                logs logs = new logs();
                 Common.CqApi.SendGroupMessage(config_read.GroupSet1, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开:" + e.ToString());
                 return;
@@ -221,10 +214,7 @@ namespace Color_yr.Minecraft_QQ
                     bytes = Encoding.Default.GetBytes(data);
                 socket.Send(bytes);
                 if (config_read.debug_mode == true)
-                {
-                    logs logs = new logs();
                     logs.Log_write("发送数据：" + data);
-                }
             }
         }
         public static void socket_stop()

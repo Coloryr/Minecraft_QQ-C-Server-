@@ -14,7 +14,7 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         /// <param name="file">文件</param>
         /// <param name="mode">模式</param>>
-        public void CreateFile(string file, int mode)
+        public static void CreateFile(string file, int mode)
         {
             if (File.Exists(config_read.path + file) && mode == 1) //文件存在就删除
                 File.Delete(config_read.path + file);
@@ -28,7 +28,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public void setXml(string file, string type, string attribute, string data)
+        public static void setXml(string file, string type, string attribute, string data)
         {
             if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
@@ -53,7 +53,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public void write(string file, string type, string attribute, string data)
+        public static void write(string file, string type, string attribute, string data)
         {
             if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
@@ -99,7 +99,7 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="fine">文件名</param>
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
-        public string read(string file, string type, string attribute)
+        public static string read(string file, string type, string attribute)
         {
             string temp = null;
             if (File.Exists(config_read.path + file) == false)
@@ -118,7 +118,7 @@ namespace Color_yr.Minecraft_QQ
             return temp;
         }
 
-        public string read_memory(string file, string type, string attribute)
+        public static string read_memory(string file, string type, string attribute)
         {
             string temp = null;
             try

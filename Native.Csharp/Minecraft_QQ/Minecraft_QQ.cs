@@ -17,30 +17,8 @@ namespace Color_yr.Minecraft_QQ
             setform frm = new setform();
             frm.ShowDialog();
         }
-
-        public static List<readlist> mList = new List<readlist>();
-        public static Thread message_thread = new Thread(message_t);
-
-        public static void message_t()
-        {
-            while (true)
-            {
-                try
-                {
-                    if (mList.Count() != 0)
-                    {
-                        readlist readlist = mList.First();
-                        GroupMessage(readlist.group, readlist.player, readlist.message);
-                        mList.Remove(readlist);
-                    }
-                    Thread.Sleep(200);
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-        }
+        private static QQ qqInfo;
+        private static GroupMember GroupMember;
         /// <summary>
         /// Type=21 私聊消息。
         /// </summary>
@@ -49,11 +27,8 @@ namespace Color_yr.Minecraft_QQ
         public static void PrivateMessage(long fromQQ, string msg)
         {
             // 处理私聊消息。
-            use use = new use();
             string msg_copy = use.CQ_code(msg);
-            string msg_low = msg.ToLower();
-            logs logs = new logs();
-            QQ qqInfo;
+            string msg_low = msg.ToLower();   
             Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
             logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + "][" + qqInfo.Nick + "]:" + msg_copy);
             if (msg_low.IndexOf(config_read.head) == 0)
@@ -103,13 +78,10 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="fromGroup">来源群号。</param>
         /// <param name="fromQQ">来源QQ。</param>
         /// <param name="msg">消息内容。</param>
-        public static void GroupMessage(long fromGroup, long fromQQ, string msg)
+        public static bool GroupMessage(long fromGroup, long fromQQ, string msg)
         {
-            use use = new use();
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
-            logs logs = new logs();
-            GroupMember GroupMember;
             Common.CqApi.GetMemberInfo(fromGroup, fromQQ, out GroupMember);
             logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + GroupMember.Nick + "]:" + msg);
             // 处理群消息。
@@ -157,7 +129,6 @@ namespace Color_yr.Minecraft_QQ
                 if (msg_low.IndexOf(config_read.head) == 0)
                 {
                     msg_low = msg_low.Replace(config_read.head, "");
-                    XML XML = new XML();
                     if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
                     {
                         if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false)
@@ -211,55 +182,55 @@ namespace Color_yr.Minecraft_QQ
                         }
                         else
                             Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + config_read.fix_send_message);
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.online_players_message)
                     {
                         string test = use.online(fromGroup);
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.online_servers_message)
                     {
                         string test = use.server(fromGroup);
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
-                        return;
+                        return true;
                     }
 
                     else if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
-                        return;
+                        return true;
                     }
                     else if (msg_low.IndexOf(config_read.mute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", fromQQ.ToString()) != null)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(fromQQ, msg));
-                        return;
+                        return true;
                     }
                     else if (msg_low.IndexOf(config_read.unmute_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(fromQQ, msg));
                     else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
-                        return;
+                        return true;
                     }
                     else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(fromQQ, msg));
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.fix_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.menu_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                         OpenSettingForm();
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.reload_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
@@ -268,7 +239,7 @@ namespace Color_yr.Minecraft_QQ
                         read.read_config();
                         read.reload();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
-                        return;
+                        return true;
                     }
                     else if (msg_low == config_read.gc_message && XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
                     {
@@ -276,21 +247,26 @@ namespace Color_yr.Minecraft_QQ
                             Common.CqApi.SendGroupMessage(fromGroup, "已清理内存");
                         else
                             Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
-                        return;
+                        return true;
                     }
 
-                    if (use.commder_check(fromGroup, msg_low, fromQQ) == true) return;
+                    bool test1;
+                    if (use.commder_check(fromGroup, msg_low, fromQQ, out test1) == true) return test1;
 
                     string message = XML.read_memory(config_read.message_m, "自动回复消息", msg_low);
                     if (config_read.message_enable == true && message != null)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, message);
-                        return;
+                        return true;
                     }
                     if (config_read.unknow_message != "" && config_read.unknow_message != null)
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, config_read.unknow_message);
+                        return true;
+                    }
                 }
             }
+            return false;
         }
     }
 }

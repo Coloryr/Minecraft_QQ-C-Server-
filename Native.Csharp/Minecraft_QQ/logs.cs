@@ -7,7 +7,7 @@ namespace Color_yr.Minecraft_QQ
     {
         public static string log = "logs.log";
 
-        public void Log_write(string a)
+        public static void Log_write(string a)
         {
             DateTime date = DateTime.Now;
             string year = date.ToShortDateString().ToString();
