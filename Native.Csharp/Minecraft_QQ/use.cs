@@ -163,7 +163,7 @@ namespace Color_yr.Minecraft_QQ
                     return true;
                 else if (config_read.Mysql_mode == false)
                 {
-                    if (XML.read_memory(config_read.player_m, player.ToLower(), "禁言") == "是")
+                    if (XML.read_memory(config_read.player_m, "QQ" + player.ToLower(), "禁言") == "是")
                         return true;
                 }
             return false;
@@ -171,7 +171,7 @@ namespace Color_yr.Minecraft_QQ
 
         public static bool check_admin(string player)
         {
-            if (XML.read_memory(config_read.player_m, player.ToLower(), "管理员") == "是")
+            if (XML.read_memory(config_read.player_m, "QQ" + player.ToLower(), "管理员") == "是")
                 return true;
             return false;
         }
@@ -184,7 +184,7 @@ namespace Color_yr.Minecraft_QQ
             if (config_read.Mysql_mode == true)
                 player = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
             else
-                player = XML.read_memory(config_read.player_m, fromQQ.ToString(), "绑定");
+                player = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
             if (player == null)
             {
                 string player_name = msg.Replace(config_read.player_setid_message, "");
@@ -197,13 +197,13 @@ namespace Color_yr.Minecraft_QQ
                     {
                         if (Mysql_user.mysql_search(Mysql_user.Mysql_notid, player_name.ToLower()) == "notid")
                             return "禁止绑定ID：" + player_name;
-                        Mysql_user.mysql_add(Mysql_user.Mysql_player, fromQQ.ToString(), player_name.ToString());
+                        Mysql_user.mysql_add(Mysql_user.Mysql_player, "QQ" + fromQQ.ToString(), player_name.ToString());
                     }
                     else
                     {
                         if (XML.read_memory(config_read.player_m, player_name, "禁止绑定") == "是")
                             return "禁止绑定ID：" + player_name;
-                        XML.write(config_read.player, fromQQ.ToString(), "绑定", player_name);
+                        XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();
                         sr.Close();
@@ -233,7 +233,7 @@ namespace Color_yr.Minecraft_QQ
                 if (config_read.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
-                    player_name = XML.read_memory(config_read.player_m, fromQQ.ToString(), "绑定");
+                    player_name = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
             else
                 player_name = player;
             if (player_name == null)
@@ -244,7 +244,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
                 else
                 {
-                    XML.write(config_read.player, player_name.ToLower(), "禁言", "是");
+                    XML.write(config_read.player, "QQ" + player_name.ToLower(), "禁言", "是");
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -264,7 +264,7 @@ namespace Color_yr.Minecraft_QQ
                 if (config_read.Mysql_mode == true)
                     player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
                 else
-                    player_name = XML.read_memory(config_read.player_m, player, "绑定");
+                    player_name = XML.read_memory(config_read.player_m, "QQ" + player, "绑定");
             }
             else
                 player_name = player;
@@ -273,7 +273,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 if (config_read.Mysql_mode == true)
-                    Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
+                    Mysql_user.mysql_add(Mysql_user.Mysql_mute, "QQ" + player_name.ToLower(), "false");
                 else
                 {
                     XML.write(config_read.player, player_name.ToLower(), "禁言", "否");
@@ -305,7 +305,7 @@ namespace Color_yr.Minecraft_QQ
             if (config_read.Mysql_mode == true)
                 player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
             else
-                player_name = XML.read_memory(config_read.player_m, player, "绑定");
+                player_name = XML.read_memory(config_read.player_m, "QQ" + player, "绑定");
             if (player_name == null)
             {
                 if (is_me == true)
@@ -336,7 +336,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_player, player, player_name);
                 else
                 {
-                    XML.write(config_read.player, player, "绑定", player_name);
+                    XML.write(config_read.player, "QQ" + player, "绑定", player_name);
                     StreamReader sr = new StreamReader(config_read.path + player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -435,7 +435,7 @@ namespace Color_yr.Minecraft_QQ
                 if (a.IndexOf(msg) == 0)
                 {
                     if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家可用") == "是"
-                        || XML.read_memory(config_read.player_m, "管理员", "admin" + fromQQ.ToString()) == "true")
+                        || check_admin(fromQQ.ToString()) == true)
                     {
                         if (socket.ready == false)
                         {

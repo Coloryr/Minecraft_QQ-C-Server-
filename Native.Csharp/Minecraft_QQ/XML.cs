@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(config_read.path + file);
-            XmlNodeList nodeList = xmldoc.SelectSingleNode("config/config").ChildNodes;//获取bookstore节点的所有子节点
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config/" + type).ChildNodes;//获取bookstore节点的所有子节点
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
                 XmlElement xe2 = (XmlElement)xn;//转换类型
@@ -68,10 +68,10 @@ namespace Color_yr.Minecraft_QQ
                     XmlDocument xmldoc = new XmlDocument();
                     xmldoc.Load(config_read.path + file);
 
-                    XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/config");
+                    XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
                     if (node == null)
                     {
-                        node = xmldoc.CreateElement("config");
+                        node = xmldoc.CreateElement(type);
                     }
                     node.SetAttribute("type", type);
                     XmlElement xesub1 = xmldoc.CreateElement(attribute);
@@ -109,7 +109,7 @@ namespace Color_yr.Minecraft_QQ
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(config_read.path + file);
 
-                XmlNode xnP = xmlDoc.SelectSingleNode("config/config" + "/" + attribute);
+                XmlNode xnP = xmlDoc.SelectSingleNode("config/"+ type + "/" + attribute);
                 temp = xnP.InnerText;
                 if (temp == "") temp = null;
             }
@@ -126,7 +126,7 @@ namespace Color_yr.Minecraft_QQ
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(file);
 
-                XmlNode xnP = xmlDoc.SelectSingleNode("config/config" + "/" + attribute);
+                XmlNode xnP = xmlDoc.SelectSingleNode("config/"+ type + "/" + attribute);
                 temp = xnP.InnerText;
                 if (temp == "") temp = null;
             }
