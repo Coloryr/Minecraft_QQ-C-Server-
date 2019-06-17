@@ -35,13 +35,13 @@ namespace Color_yr.Minecraft_QQ
                 if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_setid(fromQQ, msg));
                 else if (msg_low.IndexOf(config_read.mute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
-                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_mute(fromQQ, msg));
+                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_mute(msg));
                 else if (msg_low.IndexOf(config_read.unmute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
-                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_unmute(fromQQ, msg));
+                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_unmute(msg));
                 else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_checkid(fromQQ, msg));
                 else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
-                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_rename(fromQQ, msg));
+                    Common.CqApi.SendPrivateMessage(fromQQ, use.player_rename(msg));
                 else if (msg_low == config_read.fix_message && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.fix_mode_change());
                 else if (msg_low == config_read.menu_message && use.check_admin(fromQQ.ToString()) == true)
@@ -90,14 +90,8 @@ namespace Color_yr.Minecraft_QQ
                             || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true) 
                             || fromGroup == config_read.GroupSet1)
                         {
-                            string play_name;
-                            if (config_read.Mysql_mode == true)
-                                play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
-                            else
-                            {
-                                XML XML = new XML();
-                                play_name = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
-                            }
+                            string play_name = use.check_player_name(fromQQ.ToString());
+                            
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
                                 string send;
@@ -135,11 +129,7 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 try
                                 {
-                                    string play_name = null;
-                                    if (config_read.Mysql_mode == true)
-                                        play_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
-                                    else
-                                        play_name = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
+                                    string play_name = use.check_player_name(fromQQ.ToString());
                                     if (play_name != null && use.check_mute(play_name) == false)
                                     {
                                         string send;
@@ -201,11 +191,11 @@ namespace Color_yr.Minecraft_QQ
                     }
                     else if (msg_low.IndexOf(config_read.mute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
-                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(fromQQ, msg));
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(msg));
                         return true;
                     }
                     else if (msg_low.IndexOf(config_read.unmute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
-                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(fromQQ, msg));
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(msg));
                     else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
@@ -213,7 +203,7 @@ namespace Color_yr.Minecraft_QQ
                     }
                     else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
-                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(fromQQ, msg));
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(msg));
                         return true;
                     }
                     else if (msg_low == config_read.fix_message && use.check_admin(fromQQ.ToString()) == true)

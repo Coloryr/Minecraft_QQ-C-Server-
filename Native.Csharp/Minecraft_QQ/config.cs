@@ -302,11 +302,11 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(commder, "指令1", "附带参数", "否");
                 XML.write(commder, "指令1", "玩家发送", "否");
 
-                XML.write(commder, "指令2", "指令", "money");
+                XML.write(commder, "指令2", "指令", "money %playername%");
                 XML.write(commder, "指令2", "触发", "查钱");
                 XML.write(commder, "指令2", "玩家可用", "是");
                 XML.write(commder, "指令2", "附带参数", "否");
-                XML.write(commder, "指令2", "玩家发送", "是");
+                XML.write(commder, "指令2", "玩家发送", "否");
 
                 XML.write(commder, "指令3", "指令", "tp ");
                 XML.write(commder, "指令3", "触发", "tp玩家");

@@ -175,16 +175,23 @@ namespace Color_yr.Minecraft_QQ
                 return true;
             return false;
         }
+        public static string check_player_name(string player_qq)
+        {
+            if (config_read.Mysql_mode == true)
+                return Mysql_user.mysql_search(Mysql_user.Mysql_player, player_qq);
+            else
+            {
+                XML XML = new XML();
+                return XML.read_memory(config_read.player_m, "QQ" + player_qq, "绑定");
+            }
+        }
 
         public static string player_setid(long fromQQ, string msg)
         {
             string player;
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
-            if (config_read.Mysql_mode == true)
-                player = Mysql_user.mysql_search(Mysql_user.Mysql_player, fromQQ.ToString());
-            else
-                player = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
+            player = check_player_name(fromQQ.ToString());
             if (player == null)
             {
                 string player_name = msg.Replace(config_read.player_setid_message, "");
@@ -222,7 +229,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 return "你已经绑定ID了，请找腐竹更改";
         }
-        public static string player_mute(long fromQQ, string msg)
+        public static string player_mute(string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -230,10 +237,7 @@ namespace Color_yr.Minecraft_QQ
             string player = get_string(msg, "=", "]");
             string player_name;
             if (player.IndexOf("[CQ:at,qq=") != -1)
-                if (config_read.Mysql_mode == true)
-                    player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
-                else
-                    player_name = XML.read_memory(config_read.player_m, "QQ" + fromQQ.ToString(), "绑定");
+                player_name = check_player_name(player.ToString());
             else
                 player_name = player;
             if (player_name == null)
@@ -252,7 +256,7 @@ namespace Color_yr.Minecraft_QQ
                 return "已禁言：[" + player_name + "]";
             }
         }
-        public static string player_unmute(long fromQQ, string msg)
+        public static string player_unmute(string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -260,12 +264,7 @@ namespace Color_yr.Minecraft_QQ
             string player = get_string(msg, "=", "]");
             string player_name;
             if (player.IndexOf("[CQ:at,qq=") != -1)
-            {
-                if (config_read.Mysql_mode == true)
-                    player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
-                else
-                    player_name = XML.read_memory(config_read.player_m, "QQ" + player, "绑定");
-            }
+                player_name = check_player_name(player);
             else
                 player_name = player;
             if (player_name == null)
@@ -301,11 +300,7 @@ namespace Color_yr.Minecraft_QQ
                 player = fromQQ.ToString();
                 is_me = true;
             }
-            string player_name;
-            if (config_read.Mysql_mode == true)
-                player_name = Mysql_user.mysql_search(Mysql_user.Mysql_player, player);
-            else
-                player_name = XML.read_memory(config_read.player_m, "QQ" + player, "绑定");
+            string player_name = check_player_name(player);
             if (player_name == null)
             {
                 if (is_me == true)
@@ -321,7 +316,7 @@ namespace Color_yr.Minecraft_QQ
                     return "玩家" + player + "绑定的ID为：" + player_name;
             }
         }
-        public static string player_rename(long fromQQ, string msg)
+        public static string player_rename(string msg)
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
@@ -448,11 +443,15 @@ namespace Color_yr.Minecraft_QQ
                         if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "附带参数") == "是")
                         {
                             string b = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                            b = b.Replace("%playername%", check_player_name(fromQQ.ToString()));
                             msg.Replace(a, "");
                             messagelist.message = b + msg;
                         }
                         else
+                        {
                             messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
+                            messagelist.message = messagelist.message.Replace("%playername%", check_player_name(fromQQ.ToString()));
+                        }
                         messagelist.is_commder = true;
                         if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家发送") == "是")
                             messagelist.player = fromQQ.ToString();
