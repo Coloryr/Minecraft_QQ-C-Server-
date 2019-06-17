@@ -650,4 +650,3 @@ namespace System.Data.SQLite
         }
     }
 }
-

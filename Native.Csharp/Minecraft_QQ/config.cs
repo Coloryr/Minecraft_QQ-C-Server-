@@ -322,7 +322,7 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                StreamReader sr = new StreamReader(path + commder, System.Text.Encoding.Default);
+                StreamReader sr = new StreamReader(path + commder, Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
                 sr.Close();
                 if (!string.IsNullOrEmpty(a))
@@ -389,9 +389,6 @@ namespace Color_yr.Minecraft_QQ
             Mysql_user.Mysql_Password = XML.read(config, "Mysql", "密码");
 
             head = XML.read(config, "检测", "检测头");
-        }
-        void test()
-        {
             online_players_message = XML.read(config, "检测", "在线人数").ToLower();
             online_servers_message = XML.read(config, "检测", "服务器状态").ToLower();
             player_setid_message = XML.read(config, "检测", "绑定文本").ToLower();

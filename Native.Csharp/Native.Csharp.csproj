@@ -18,7 +18,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Minecraft_QQ_out\dev\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
@@ -81,6 +81,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
@@ -88,6 +89,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -113,30 +115,61 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LibExport.tt</DependentUpon>
     </Compile>
-    <Compile Include="App\Core\UserExport.cs" />
+    <Compile Include="App\Core\MenuExport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MenuExport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="App\Core\StatusExport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatusExport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="App\EventArgs\CqAddFriendRequestEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqAddGroupRequestEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqAppDisableEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqAppEnableEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqCallMenuEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqEventArgsBase.cs" />
+    <Compile Include="App\EventArgs\CqExitEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqDiscussMessageEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqStatusEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqFriendIncreaseEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqGroupFileUploadEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqGroupManageChangeEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqGroupMemberDecreaseEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqGroupMemberIncreaseEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqGroupMessageEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqPrivateMessageEventArgs.cs" />
+    <Compile Include="App\EventArgs\CqStartupEventArgs.cs" />
+    <Compile Include="App\Event\Event_CqAppEnable.cs" />
     <Compile Include="App\Event\Event_AppMain.cs" />
-    <Compile Include="App\Event\Event_AppStatus.cs" />
-    <Compile Include="App\Event\Event_DiscussMessage.cs" />
-    <Compile Include="App\Event\Event_FriendMessage.cs" />
+    <Compile Include="App\Event\Event_CqExit.cs" />
     <Compile Include="App\Event\Event_GroupMessage.cs" />
-    <Compile Include="App\Event\Event_OtherMessage.cs" />
-    <Compile Include="App\Event\Event_UserExpand.cs" />
-    <Compile Include="App\Interface\IEvent_AppStatus.cs" />
-    <Compile Include="App\Interface\IEvent_DiscussMessage.cs" />
-    <Compile Include="App\Interface\IEvent_FriendMessage.cs" />
-    <Compile Include="App\Interface\IEvent_GroupMessage.cs" />
-    <Compile Include="App\Interface\IEvent_OtherMessage.cs" />
-    <Compile Include="App\Interface\IEvent_UserExpand.cs" />
-    <Compile Include="App\Model\DiscussMessageEventArgs.cs" />
-    <Compile Include="App\Model\EventArgsBase.cs" />
-    <Compile Include="App\Model\FileUploadMessageEventArgs.cs" />
-    <Compile Include="App\Model\FriendAddRequestEventArgs.cs" />
-    <Compile Include="App\Model\FriendIncreaseEventArgs.cs" />
-    <Compile Include="App\Model\GroupAddRequestEventArgs.cs" />
-    <Compile Include="App\Model\GroupManageAlterEventArgs.cs" />
-    <Compile Include="App\Model\GroupMemberAlterEventArgs.cs" />
-    <Compile Include="App\Model\GroupMessageEventArgs.cs" />
-    <Compile Include="App\Model\PrivateMessageEventArgs.cs" />
+    <Compile Include="App\Event\Event_Openform.cs" />
+    <Compile Include="App\Interface\ICqAppDisable.cs" />
+    <Compile Include="App\Interface\ICqAppEnable.cs" />
+    <Compile Include="App\Interface\ICallMenu.cs" />
+    <Compile Include="App\Interface\ICqExit.cs" />
+    <Compile Include="App\Interface\ICqStartup.cs" />
+    <Compile Include="App\Interface\ICqStatus.cs" />
+    <Compile Include="App\Interface\IReceiveDiscussMessage.cs" />
+    <Compile Include="App\Interface\IReceiveDiscussPrivateMessage.cs" />
+    <Compile Include="App\Interface\IReceiveFriendAddRequest.cs" />
+    <Compile Include="App\Interface\IReceiveFriendIncrease.cs" />
+    <Compile Include="App\Interface\IReceiveFriendMessage.cs" />
+    <Compile Include="App\Interface\IReceiveAddGroupRequest.cs" />
+    <Compile Include="App\Interface\IReceiveAddGroupBeInvitee.cs" />
+    <Compile Include="App\Interface\IReceiveGroupFileUpload.cs" />
+    <Compile Include="App\Interface\IReceiveGroupManageDecrease.cs" />
+    <Compile Include="App\Interface\IReceiveGroupManageIncrease.cs" />
+    <Compile Include="App\Interface\IReceiveGroupMemberBeInvitee.cs" />
+    <Compile Include="App\Interface\IReceiveGroupMemberPass.cs" />
+    <Compile Include="App\Interface\IReceiveGroupMemberLeave.cs" />
+    <Compile Include="App\Interface\IReceiveGroupMemberRemove.cs" />
+    <Compile Include="App\Interface\IReceiveGroupMessage.cs" />
+    <Compile Include="App\Interface\IReceiveGroupPrivateMessage.cs" />
+    <Compile Include="App\Interface\IReceiveOnlineStatusMessage.cs" />
     <Compile Include="Minecraft_QQ\messagelist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
@@ -144,17 +177,6 @@
     <Compile Include="Repair\Helper\AssemblyHelper.cs" />
     <Compile Include="Repair\Helper\ReflectionHelper.cs" />
     <Compile Include="Repair\ModuleInitializer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Minecraft_QQ\config.cs" />
@@ -197,9 +219,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Core\StatusExport.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StatusExport.cs</LastGenOutput>
+    </Content>
     <Content Include="App\Core\LibExport.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LibExport.cs</LastGenOutput>
+    </Content>
+    <Content Include="App\Core\MenuExport.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MenuExport.cs</LastGenOutput>
     </Content>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

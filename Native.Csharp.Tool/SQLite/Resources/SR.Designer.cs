@@ -15,8 +15,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Data.SQLite
-{
+namespace System.Data.SQLite {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -29,52 +28,44 @@ namespace System.Data.SQLite
 #if !NET_COMPACT_20
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
 #endif
-    internal sealed class SR
-    {
-
+    internal sealed class SR {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SR()
-        {
+        internal SR() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if (object.ReferenceEquals(resourceMan, null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Data.SQLite.SR", typeof(SR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;DocumentElement&gt;
@@ -91,25 +82,21 @@ namespace System.Data.SQLite
         ///    &lt;IsLong&gt;false&lt;/IsLong&gt;
         ///    &lt;IsNullable&gt;true&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DataTypes
-        {
-            get
-            {
+        internal static string DataTypes {
+            get {
                 return ResourceManager.GetString("DataTypes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ALL,ALTER,AND,AS,AUTOINCREMENT,BETWEEN,BY,CASE,CHECK,COLLATE,COMMIT,CONSTRAINT,CREATE,CROSS,DEFAULT,DEFERRABLE,DELETE,DISTINCT,DROP,ELSE,ESCAPE,EXCEPT,FOREIGN,FROM,FULL,GROUP,HAVING,IN,INDEX,INNER,INSERT,INTERSECT,INTO,IS,ISNULL,JOIN,LEFT,LIMIT,NATURAL,NOT,NOTNULL,NULL,ON,OR,ORDER,OUTER,PRIMARY,REFERENCES,RIGHT,ROLLBACK,SELECT,SET,TABLE,THEN,TO,TRANSACTION,UNION,UNIQUE,UPDATE,USING,VALUES,WHEN,WHERE.
         /// </summary>
-        internal static string Keywords
-        {
-            get
-            {
+        internal static string Keywords {
+            get {
                 return ResourceManager.GetString("Keywords", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;DocumentElement&gt;
@@ -125,10 +112,8 @@ namespace System.Data.SQLite
         ///  &lt;/MetaDataCollections&gt;
         ///  &lt;MetaDataC [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string MetaDataCollections
-        {
-            get
-            {
+        internal static string MetaDataCollections {
+            get {
                 return ResourceManager.GetString("MetaDataCollections", resourceCulture);
             }
         }

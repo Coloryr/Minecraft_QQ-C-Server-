@@ -180,7 +180,7 @@ namespace Color_yr.Minecraft_QQ
             }
             if (textBox6.Text != null)
             {
-                XML.write(config_read.player,textBox6.Text, "管理员", "是");
+                XML.write(config_read.player,"QQ" + textBox6.Text, "管理员", "是");
                 StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                 config_read.player_m = sr.ReadToEnd().TrimStart();
                 sr.Close();
@@ -212,7 +212,7 @@ namespace Color_yr.Minecraft_QQ
                 if (config_read.Mysql_mode == true)
                     Mysql_user.mysql_add(Mysql_user.Mysql_notid, textBox8.Text.ToLower(), "notid");
                 else
-                    XML.write(config_read.player,  textBox8.Text.ToLower(),"禁止绑定", "是");
+                    XML.write(config_read.player, "ID" + textBox8.Text.ToLower(), "禁止绑定", "是");
                 button7.Text = "已添加";
             }
         }

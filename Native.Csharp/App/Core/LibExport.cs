@@ -1,165 +1,97 @@
-ï»¿/*
- *	æ­¤ä»£ç ç”±æ¨¡æ¿ç”Ÿæˆ, è¯·å‹¿éšæ„ä¿®æ”¹æ­¤æºä»£ç , é˜²æ­¢å‡ºç°é”™è¯¯
- *	éœ€è¦æ›´æ–° AppID è¯·å³å‡»æ¨¡æ¿æ–‡ä»¶, ç‚¹å‡»è¿è¡Œè‡ªå®šä¹‰å·¥å…·
+/*
+ *	´Ë´úÂëÓÉ T4 ÒıÇæ¸ù¾İ LibExport.tt Ä£°åÉú³É, ÈôÄú²»ÁË½âÒÔÏÂ´úÂëµÄÓÃ´¦, ÇëÎğĞŞ¸Ä!
+ *	
+ *	´ËÎÄ¼ş°üº¬ÏîÄ¿ Json ÎÄ¼şµÄÊÂ¼şµ¼³öº¯Êı.
  */
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using Unity;
 using Native.Csharp.App.Event;
-using Native.Csharp.App.Model;
+using Native.Csharp.App.EventArgs;
 using Native.Csharp.App.Interface;
 using Native.Csharp.Sdk.Cqp;
-using Native.Csharp.Sdk.Cqp.Enum;
+using Native.Csharp.Sdk.Cqp.Model;
 using Native.Csharp.Sdk.Cqp.Other;
-using Native.Csharp.Repair;
+using Unity;
 
 namespace Native.Csharp.App.Core
 {
-	public class LibExport
-	{
-		#region --å­—æ®µ--
+    public class LibExport
+    {
+		#region --×Ö¶Î--
 		private static Encoding _defaultEncoding = null;
 		#endregion
 
-		#region --æ„é€ å‡½æ•°--
+		#region --¹¹Ôìº¯Êı--
 		/// <summary>
-		/// é™æ€æ„é€ å‡½æ•°, æ³¨å†Œä¾èµ–æ³¨å…¥å›è°ƒ
+		/// ¾²Ì¬¹¹Ôìº¯Êı, ×¢²áÒÀÀµ×¢Èë»Øµ÷
 		/// </summary>
-		/// <returns></returns>
 		static LibExport ()
 		{
 			_defaultEncoding = Encoding.GetEncoding ("GB18030");
 			
-			// åˆå§‹åŒ– Costura
+			// ³õÊ¼»¯ Costura.Fody
 			CosturaUtility.Initialize ();
-
-			// åˆå§‹åŒ–ä¾èµ–æ³¨å…¥å®¹å™¨
+			
+			// ³õÊ¼»¯ÒÀÀµ×¢ÈëÈİÆ÷
 			Common.UnityContainer = new UnityContainer ();
 
-			// ç¨‹åºå¼€å§‹è°ƒç”¨æ–¹æ³•è¿›è¡Œæ³¨å†Œ
+			// ³ÌĞò¿ªÊ¼µ÷ÓÃ·½·¨½øĞĞ×¢²á
 			Event_AppMain.Registbackcall (Common.UnityContainer);
 
-			// æ³¨å†Œå®Œæ¯•è°ƒç”¨æ–¹æ³•è¿›è¡Œåˆ†å‘
+			// ×¢²áÍê±Ïµ÷ÓÃ·½·¨½øĞĞ·Ö·¢
 			Event_AppMain.Resolvebackcall (Common.UnityContainer);
 
-			// åˆ†å‘åº”ç”¨å†…æ³¨å†Œäº‹ä»¶
+			// ·Ö·¢Ó¦ÓÃÄÚÊÂ¼ş
 			ResolveAppbackcall ();
 		}
 		#endregion
-
-		#region --æ ¸å¿ƒæ–¹æ³•--
+		
+		#region --ºËĞÄ·½·¨--
 		/// <summary>
-		/// è¿”å› AppID ä¸ ApiVer, æœ¬æ–¹æ³•åœ¨æ¨¡æ¿è¿è¡Œåä¼šæ ¹æ®é¡¹ç›®åç§°è‡ªåŠ¨å¡«å†™ AppID ä¸ ApiVer
+		/// ·µ»Ø AppID Óë ApiVer, ±¾·½·¨ÔÚÄ£°åÔËĞĞºó»á¸ù¾İÏîÄ¿Ãû³Æ×Ô¶¯ÌîĞ´ AppID Óë ApiVer
 		/// </summary>
 		/// <returns></returns>
 		[DllExport (ExportName = "AppInfo", CallingConvention = CallingConvention.StdCall)]
 		private static string AppInfo ()
 		{
-			// è¯·å‹¿éšæ„ä¿®æ”¹
+			// ÇëÎğËæÒâĞŞ¸Ä
+			// 
+			Common.AppName = "Minecraft_QQ";
+			Common.AppVersion = Version.Parse ("2.0.0");		
+
 			//
-			// å½“å‰é¡¹ç›®åç§°: com.color_yr.minecraft_qq
-			// Apiç‰ˆæœ¬: 9
+			// µ±Ç°ÏîÄ¿Ãû³Æ: com.color_yr.minecraft_qq
+			// Api°æ±¾: 9
 
 			return string.Format ("{0},{1}", 9, "com.color_yr.minecraft_qq");
 		}
 
 		/// <summary>
-		/// æ¥æ”¶æ’ä»¶ AutoCode, æ³¨å†Œå¼‚å¸¸
+		/// ½ÓÊÕ²å¼ş AutoCode, ×¢²áÒì³£
 		/// </summary>
 		/// <param name="authCode"></param>
 		/// <returns></returns>
 		[DllExport (ExportName = "Initialize", CallingConvention = CallingConvention.StdCall)]
 		private static int Initialize (int authCode)
 		{
-			// é…·Qè·å–åº”ç”¨ä¿¡æ¯åï¼Œå¦‚æœæ¥å—è¯¥åº”ç”¨ï¼Œå°†ä¼šè°ƒç”¨è¿™ä¸ªå‡½æ•°å¹¶ä¼ é€’AuthCodeã€‚
+			// ¿áQ»ñÈ¡Ó¦ÓÃĞÅÏ¢ºó£¬Èç¹û½ÓÊÜ¸ÃÓ¦ÓÃ£¬½«»áµ÷ÓÃÕâ¸öº¯Êı²¢´«µİAuthCode¡£
 			Common.CqApi = new CqApi (authCode);
 
-			// AuthCode ä¼ é€’å®Œæ¯•åå°†å¯¹è±¡åŠ å…¥å®¹å™¨æ‰˜ç®¡, ä»¥ä¾¿åœ¨å…¶å®ƒé¡¹ç›®ä¸­è°ƒç”¨
+			// AuthCode ´«µİÍê±Ïºó½«¶ÔÏó¼ÓÈëÈİÆ÷ÍĞ¹Ü, ÒÔ±ãÔÚÆäËüÏîÄ¿ÖĞµ÷ÓÃ
 			Common.UnityContainer.RegisterInstance<CqApi> (Common.CqApi);
 
-			// æ³¨å†Œæ’ä»¶å…¨å±€å¼‚å¸¸æ•è·å›è°ƒ, ç”¨äºæ•è·æœªå¤„ç†çš„å¼‚å¸¸, å›å¼¹ç»™ é…·Q åšå¤„ç†
+			// ×¢²á²å¼şÈ«¾ÖÒì³£²¶»ñ»Øµ÷, ÓÃÓÚ²¶»ñÎ´´¦ÀíµÄÒì³£, »Øµ¯¸ø ¿áQ ×ö´¦Àí
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-			// æœ¬å‡½æ•°ã€ç¦æ­¢ã€‘å¤„ç†å…¶ä»–ä»»ä½•ä»£ç ï¼Œä»¥å…å‘ç”Ÿå¼‚å¸¸æƒ…å†µã€‚å¦‚éœ€æ‰§è¡Œåˆå§‹åŒ–ä»£ç è¯·åœ¨Startupäº‹ä»¶ä¸­æ‰§è¡Œï¼ˆType=1001ï¼‰ã€‚
+			// ±¾º¯Êı¡¾½ûÖ¹¡¿´¦ÀíÆäËûÈÎºÎ´úÂë£¬ÒÔÃâ·¢ÉúÒì³£Çé¿ö¡£ÈçĞèÖ´ĞĞ³õÊ¼»¯´úÂëÇëÔÚStartupÊÂ¼şÖĞÖ´ĞĞ£¨Type=1001£©¡£
 			return 0;
 		}
 		#endregion
-
-		#region --ç§æœ‰æ–¹æ³•--
+		
+		#region --Ë½ÓĞ·½·¨--
 		/// <summary>
-		/// è·å–æ‰€æœ‰çš„æ³¨å…¥é¡¹, åˆ†å‘åˆ°å¯¹åº”çš„äº‹ä»¶
-		/// </summary>
-		private static void ResolveAppbackcall ()
-		{
-			#region --IEvent_AppStatus--
-			// è§£æ IEvent_AppStatus æ¥å£
-			foreach (var appStatus in Common.UnityContainer.ResolveAll<IEvent_AppStatus> ())
-			{
-				// åˆ†å‘ IEvent_AppStatus æ¥å£åˆ°äº‹ä»¶
-				LibExport.CqStartup += appStatus.CqStartup;
-				LibExport.CqExit += appStatus.CqExit;
-				LibExport.AppEnable += appStatus.AppEnable;
-				LibExport.AppDisable += appStatus.AppDisable;
-			}
-			#endregion
-
-			#region --IEvent_DiscussMessage--
-			// è§£æ IEvent_DiscussMessage æ¥å£
-			foreach (var discussMessage in Common.UnityContainer.ResolveAll<IEvent_DiscussMessage> ())
-			{
-				// åˆ†å‘ IEvent_DiscussMessage æ¥å£åˆ°äº‹ä»¶
-				LibExport.ReceiveDiscussMessage += discussMessage.ReceiveDiscussMessage;
-				LibExport.ReceiveDiscussPrivateMessage += discussMessage.ReceiveDiscussPrivateMessage;
-			}
-			#endregion
-
-			#region --IEvent_FriendMessage--
-			// è§£æ IEvent_FriendMessage æ¥å£
-			foreach (var friendMessage in Common.UnityContainer.ResolveAll<IEvent_FriendMessage> ())
-			{
-				// åˆ†å‘ IEvent_FriendMessage æ¥å£åˆ°äº‹ä»¶
-				LibExport.ReceiveFriendAdd += friendMessage.ReceiveFriendAddRequest;
-				LibExport.ReceiveFriendIncrease += friendMessage.ReceiveFriendIncrease;
-				LibExport.ReceiveFriendMessage += friendMessage.ReceiveFriendMessage;
-			}
-			#endregion
-
-			#region --IEvent_GroupMessage--
-			// è§£æ IEvent_GroupMessage æ¥å£
-			foreach (var groupMessage in Common.UnityContainer.ResolveAll<IEvent_GroupMessage> ())
-			{
-				// åˆ†å‘ IEvent_GroupMessage æ¥å£åˆ°äº‹ä»¶
-				LibExport.ReceiveGroupMessage += groupMessage.ReceiveGroupMessage;
-				LibExport.ReceiveGroupPrivateMessage += groupMessage.ReceiveGroupPrivateMessage;
-				LibExport.ReceiveFileUploadMessage += groupMessage.ReceiveGroupFileUpload;
-				LibExport.ReceiveManageIncrease += groupMessage.ReceiveGroupManageIncrease;
-				LibExport.ReceiveManageDecrease += groupMessage.ReceiveGroupManageDecrease;
-				LibExport.ReceiveMemberJoin += groupMessage.ReceiveGroupMemberJoin;
-				LibExport.ReceiveMemberInvitee += groupMessage.ReceiveGroupMemberInvitee;
-				LibExport.ReceiveMemberLeave += groupMessage.ReceiveGroupMemberLeave;
-				LibExport.ReceiveMemberRemove += groupMessage.ReceiveGroupMemberRemove;
-				LibExport.ReceiveGroupAddApply += groupMessage.ReceiveGroupAddApply;
-				LibExport.ReceiveGroupAddInvitee += groupMessage.ReceiveGroupAddInvitee;
-			}
-			#endregion
-
-			#region --IEvent_OtherMessage--
-			// è§£æ IEvent_OtherMessage æ¥å£
-			foreach (var otherMessage in Common.UnityContainer.ResolveAll<IEvent_OtherMessage> ())
-			{
-				// åˆ†å‘ IEvent_OtherMessage æ¥å£åˆ°äº‹ä»¶
-				LibExport.ReceiveQnlineStatusMessage += otherMessage.ReceiveOnlineStatusMessage;
-			}
-			#endregion
-		}
-
-		/// <summary>
-		/// å…¨å±€å¼‚å¸¸æ•è·, ç”¨äºæ•è·å¼€å‘è€…æœªå¤„ç†çš„å¼‚å¸¸, æ­¤å¼‚å¸¸å°†å›å¼¹è‡³é…·Qè¿›è¡Œå¤„ç†
+		/// È«¾ÖÒì³£²¶»ñ, ÓÃÓÚ²¶»ñ¿ª·¢ÕßÎ´´¦ÀíµÄÒì³£, ´ËÒì³£½«»Øµ¯ÖÁ¿áQ½øĞĞ´¦Àí
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -169,414 +101,182 @@ namespace Native.Csharp.App.Core
 			if (ex != null)
 			{
 				StringBuilder innerLog = new StringBuilder ();
-				innerLog.AppendLine ("å‘ç°æœªå¤„ç†çš„å¼‚å¸¸!");
-				innerLog.AppendLine ("å¼‚å¸¸å †æ ˆï¼š");
+				innerLog.AppendLine ("·¢ÏÖÎ´´¦ÀíµÄÒì³£!");
+				innerLog.AppendLine ("Òì³£¶ÑÕ»£º");
 				innerLog.AppendLine (ex.ToString ());
-				Common.CqApi.AddFatalError (innerLog.ToString ());      //å°†æœªç»å¤„ç†çš„å¼‚å¸¸å¼¹å›é…·Qåšå¤„ç†
+				Common.CqApi.AddFatalError (innerLog.ToString ());      //½«Î´¾­´¦ÀíµÄÒì³£µ¯»Ø¿áQ×ö´¦Àí
 			}
 		}
+		
+		/// <summary>
+		/// »ñÈ¡ËùÓĞµÄ×¢ÈëÏî, ·Ö·¢µ½¶ÔÓ¦µÄÊÂ¼ş
+		/// </summary>
+		private static void ResolveAppbackcall ()
+		{
+			/*
+			 * Id: 1
+			 * Name: Ë½ÁÄÏûÏ¢´¦Àí
+			 */
+			if (Common.UnityContainer.IsRegistered<IReceiveFriendMessage> ("Ë½ÁÄÏûÏ¢´¦Àí") == true)
+			{
+				ReceiveFriendMessage_1 = Common.UnityContainer.Resolve<IReceiveFriendMessage> ("Ë½ÁÄÏûÏ¢´¦Àí").ReceiveFriendMessage;
+			}
+			if (Common.UnityContainer.IsRegistered<IReceiveOnlineStatusMessage> ("Ë½ÁÄÏûÏ¢´¦Àí") == true)
+			{
+				ReceiveOnlineStatusMessage_1 = Common.UnityContainer.Resolve<IReceiveOnlineStatusMessage> ("Ë½ÁÄÏûÏ¢´¦Àí").ReceiveOnlineStatusMessage;
+			}
+			if (Common.UnityContainer.IsRegistered<IReceiveGroupPrivateMessage> ("Ë½ÁÄÏûÏ¢´¦Àí") == true)
+			{
+				ReceiveGroupPrivateMessage_1 = Common.UnityContainer.Resolve<IReceiveGroupPrivateMessage> ("Ë½ÁÄÏûÏ¢´¦Àí").ReceiveGroupPrivateMessage;
+			}
+			if (Common.UnityContainer.IsRegistered<IReceiveDiscussPrivateMessage> ("Ë½ÁÄÏûÏ¢´¦Àí") == true)
+			{
+				ReceiveDiscussPrivateMessage_1 = Common.UnityContainer.Resolve<IReceiveDiscussPrivateMessage> ("Ë½ÁÄÏûÏ¢´¦Àí").ReceiveDiscussPrivateMessage;
+			}
+			
+			/*
+			 * Id: 2
+			 * Name: ÈºÏûÏ¢´¦Àí
+			 */
+			if (Common.UnityContainer.IsRegistered<IReceiveGroupMessage> ("ÈºÏûÏ¢´¦Àí") == true)
+			{
+				ReceiveGroupMessage_2 = Common.UnityContainer.Resolve<IReceiveGroupMessage> ("ÈºÏûÏ¢´¦Àí").ReceiveGroupMessage;
+			}
+			
+			/*
+			 * Id: 1002
+			 * Name: ¿áQ¹Ø±ÕÊÂ¼ş
+			 */
+			if (Common.UnityContainer.IsRegistered<ICqExit> ("¿áQ¹Ø±ÕÊÂ¼ş") == true)
+			{
+				CqExit_1002 = Common.UnityContainer.Resolve<ICqExit> ("¿áQ¹Ø±ÕÊÂ¼ş").CqExit;
+			}
+			
+			/*
+			 * Id: 1003
+			 * Name: Ó¦ÓÃÒÑ±»ÆôÓÃ
+			 */
+			if (Common.UnityContainer.IsRegistered<ICqAppEnable> ("Ó¦ÓÃÒÑ±»ÆôÓÃ") == true)
+			{
+				AppEnable_1003 = Common.UnityContainer.Resolve<ICqAppEnable> ("Ó¦ÓÃÒÑ±»ÆôÓÃ").CqAppEnable;
+			}
+			
+
+		}
 		#endregion
-
-		#region --å›è°ƒäº‹ä»¶--
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventStartup å›è°ƒ
-		/// <para>Type=1001 é…·Qå¯åŠ¨</para>
-		/// </summary>
-		public static event EventHandler<EventArgs> CqStartup = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventExit
-		/// <para>Type=1002 é…·Qé€€å‡º</para>
-		/// </summary>
-		public static event EventHandler<EventArgs> CqExit = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventEnable
-		/// <para>Type=1003 åº”ç”¨å·²è¢«å¯ç”¨</para>
-		/// </summary>
-		public static event EventHandler<EventArgs> AppEnable = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventDisable
-		/// <para>Type=1004 åº”ç”¨å°†è¢«åœç”¨</para>
-		/// </summary>
-		public static event EventHandler<EventArgs> AppDisable = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventPrivateMsg
-		/// <para>Type=21 ç§èŠæ¶ˆæ¯ - å¥½å‹</para>
-		/// </summary>
-		public static event EventHandler<PrivateMessageEventArgs> ReceiveFriendMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventPrivateMsg
-		/// <para>Type=21 ç§èŠæ¶ˆæ¯ - åœ¨çº¿çŠ¶æ€</para>
-		/// </summary>
-		public static event EventHandler<PrivateMessageEventArgs> ReceiveQnlineStatusMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventPrivateMsg
-		/// <para>Type=21 ç§èŠæ¶ˆæ¯ - ç¾¤ç§èŠ</para>
-		/// </summary>
-		public static event EventHandler<PrivateMessageEventArgs> ReceiveGroupPrivateMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventPrivateMsg
-		/// <para>Type=21 ç§èŠæ¶ˆæ¯ - è®¨è®ºç»„ç§èŠ</para>
-		/// </summary>
-		public static event EventHandler<PrivateMessageEventArgs> ReceiveDiscussPrivateMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventGroupMsg
-		/// <para>Type=2 ç¾¤æ¶ˆæ¯</para>
-		/// </summary>
-		public static event EventHandler<GroupMessageEventArgs> ReceiveGroupMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventDiscussMsg
-		/// <para>Type=4 è®¨è®ºç»„æ¶ˆæ¯</para>
-		/// </summary>
-		public static event EventHandler<DiscussMessageEventArgs> ReceiveDiscussMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventGroupUpload
-		/// <para>Type=11 ç¾¤æ–‡ä»¶ä¸Šä¼ äº‹ä»¶</para>
-		/// </summary>
-		public static event EventHandler<FileUploadMessageEventArgs> ReceiveFileUploadMessage = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupAdmin
-		/// <para>Type=101 ç¾¤äº‹ä»¶-ç®¡ç†å‘˜å˜åŠ¨ - ç¾¤ç®¡ç†å¢åŠ </para>
-		/// </summary>
-		public static event EventHandler<GroupManageAlterEventArgs> ReceiveManageIncrease = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupAdmin
-		/// <para>Type=101 ç¾¤äº‹ä»¶-ç®¡ç†å‘˜å˜åŠ¨ - ç¾¤ç®¡ç†å‡å°‘</para>
-		/// </summary>
-		public static event EventHandler<GroupManageAlterEventArgs> ReceiveManageDecrease = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupMemberIncrease
-		/// <para>Type=103 ç¾¤äº‹ä»¶-ç¾¤æˆå‘˜å¢åŠ  - ä¸»åŠ¨ç¦»å¼€</para>
-		/// </summary>
-		public static event EventHandler<GroupMemberAlterEventArgs> ReceiveMemberLeave = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupMemberIncrease
-		/// <para>Type=103 ç¾¤äº‹ä»¶-ç¾¤æˆå‘˜å¢åŠ  - æˆå‘˜ç§»é™¤</para>
-		/// </summary>
-		public static event EventHandler<GroupMemberAlterEventArgs> ReceiveMemberRemove = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupMemberIncrease
-		/// <para>Type=103 ç¾¤äº‹ä»¶-ç¾¤æˆå‘˜å¢åŠ  - ä¸»åŠ¨åŠ ç¾¤</para>
-		/// </summary>
-		public static event EventHandler<GroupMemberAlterEventArgs> ReceiveMemberJoin = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventSystem_GroupMemberIncrease
-		/// <para>Type=103 ç¾¤äº‹ä»¶-ç¾¤æˆå‘˜å¢åŠ  - é‚€è¯·å…¥ç¾¤</para>
-		/// </summary>
-		public static event EventHandler<GroupMemberAlterEventArgs> ReceiveMemberInvitee = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventFriend_Add
-		/// <para>Type=201 å¥½å‹äº‹ä»¶-å¥½å‹å·²æ·»åŠ </para>
-		/// </summary>
-		public static event EventHandler<FriendIncreaseEventArgs> ReceiveFriendIncrease = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventRequest_AddFriend
-		/// <para>Type=301 è¯·æ±‚-å¥½å‹æ·»åŠ </para>
-		/// </summary>
-		public static event EventHandler<FriendAddRequestEventArgs> ReceiveFriendAdd = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventRequest_AddGroup
-		/// <para>Type=302 è¯·æ±‚-ç¾¤æ·»åŠ  - ç”³è¯·å…¥ç¾¤</para>
-		/// </summary>
-		public static event EventHandler<GroupAddRequestEventArgs> ReceiveGroupAddApply = (sender, e) => { };
-
-		/// <summary>
-		/// é…·Qäº‹ä»¶: _eventRequest_AddGroup
-		/// <para>Type=302 è¯·æ±‚-ç¾¤æ·»åŠ  - è¢«é‚€å…¥ç¾¤</para>
-		/// </summary>
-		public static event EventHandler<GroupAddRequestEventArgs> ReceiveGroupAddInvitee = (sender, e) => { };
-		#endregion
-
-		#region --å¯¼å‡ºæ–¹æ³•--
-		[DllExport (ExportName = "_eventStartup", CallingConvention = CallingConvention.StdCall)]
-		private static int EventStartUp ()
-		{
-			CqStartup (null, new EventArgs ());
-			return 0;
-		}
-
-		[DllExport (ExportName = "_eventExit", CallingConvention = CallingConvention.StdCall)]
-		private static int EventExit ()
-		{
-			CqExit (null, new EventArgs ());
-			return 0;
-		}
-
-		[DllExport (ExportName = "_eventEnable", CallingConvention = CallingConvention.StdCall)]
-		private static int EventEnable ()
-		{
-			AppEnable (null, new EventArgs ());
-			return 0;
-		}
-
-		[DllExport (ExportName = "_eventDisable", CallingConvention = CallingConvention.StdCall)]
-		private static int EventDisable ()
-		{
-			AppDisable (null, new EventArgs ());
-			return 0;
-		}
-
+		
+		#region --µ¼³ö·½·¨--
+		/*
+		 * Id: 1
+		 * Type: 21
+		 * Name: Ë½ÁÄÏûÏ¢´¦Àí
+		 * Function: _eventPrivateMsg
+		 */
+		public static event EventHandler<CqPrivateMessageEventArgs> ReceiveFriendMessage_1;
+		public static event EventHandler<CqPrivateMessageEventArgs> ReceiveOnlineStatusMessage_1;
+		public static event EventHandler<CqPrivateMessageEventArgs> ReceiveGroupPrivateMessage_1;
+		public static event EventHandler<CqPrivateMessageEventArgs> ReceiveDiscussPrivateMessage_1;
 		[DllExport (ExportName = "_eventPrivateMsg", CallingConvention = CallingConvention.StdCall)]
-		private static int EventPrivateMsg (int subType, int msgId, long fromQQ, IntPtr msg, int font)
+		private static int Evnet__eventPrivateMsg (int subType, int msgId, long fromQQ, IntPtr msg, int font)
 		{
-			PrivateMessageEventArgs args = new PrivateMessageEventArgs ();
-			args.MsgId = msgId;
-			args.FromQQ = fromQQ;
-			args.Msg = msg.ToString (_defaultEncoding);
-			args.Handled = false;
-
-			if (subType == 11)      // æ¥è‡ªå¥½å‹
+			if (ReceiveFriendMessage_1 != null)
 			{
-				ReceiveFriendMessage (null, args);
+				CqPrivateMessageEventArgs args = new CqPrivateMessageEventArgs (1, msgId, fromQQ, msg.ToString (_defaultEncoding));
+				if (subType == 11)
+				{
+					if (ReceiveFriendMessage_1 != null)
+					{
+						ReceiveFriendMessage_1 (null, args);
+					}
+				}
+				else if (subType == 1)
+				{
+					if (ReceiveOnlineStatusMessage_1 != null)
+					{
+						ReceiveOnlineStatusMessage_1 (null, args);
+					}
+				}
+				else if (subType == 2)
+				{
+					if (ReceiveGroupPrivateMessage_1 != null)
+					{
+						ReceiveGroupPrivateMessage_1 (null, args);
+					}
+				}
+				else if (subType == 3)
+				{
+					if (ReceiveDiscussPrivateMessage_1 != null)
+					{
+						ReceiveDiscussPrivateMessage_1 (null, args);
+					}
+				}
+				return Convert.ToInt32 (args.Handler);
 			}
-			else if (subType == 1)  // æ¥è‡ªåœ¨çº¿çŠ¶æ€
-			{
-				ReceiveQnlineStatusMessage (null, args);
-			}
-			else if (subType == 2)  // æ¥è‡ªç¾¤
-			{
-				ReceiveGroupPrivateMessage (null, args);
-			}
-			else if (subType == 3)  // æ¥è‡ªè®¨è®ºç»„
-			{
-				ReceiveDiscussPrivateMessage (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventPrivateMsg æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
+			return -1;
 		}
 
+		/*
+		 * Id: 2
+		 * Type: 2
+		 * Name: ÈºÏûÏ¢´¦Àí
+		 * Function: _eventGroupMsg
+		 */
+		public static event EventHandler<CqGroupMessageEventArgs> ReceiveGroupMessage_2;
 		[DllExport (ExportName = "_eventGroupMsg", CallingConvention = CallingConvention.StdCall)]
-		private static int EventGroupMsg (int subType, int msgId, long fromGroup, long fromQQ, string fromAnonymous, IntPtr msg, int font)
+		private static int Evnet__eventGroupMsg (int subType, int msgId, long fromGroup, long fromQQ, string fromAnonymous, IntPtr msg, int font)
 		{
-			GroupMessageEventArgs args = new GroupMessageEventArgs ();
-			args.MsgId = msgId;
-			args.FromGroup = fromGroup;
-			args.FromQQ = fromQQ;
-			args.Msg = msg.ToString (_defaultEncoding);
-			args.FromAnonymous = null;
-			args.IsAnonymousMsg = false;
-			args.Handled = false;
-
+			GroupAnonymous anonymous = null;
 			if (fromQQ == 80000000 && !string.IsNullOrEmpty (fromAnonymous))
 			{
-				args.FromAnonymous = Common.CqApi.GetAnonymous (fromAnonymous); //è·å–åŒ¿åæˆå‘˜ä¿¡æ¯
-				args.IsAnonymousMsg = true;
+				anonymous = Common.CqApi.GetAnonymous (fromAnonymous);
 			}
-
-			if (subType == 1)   // ç¾¤æ¶ˆæ¯
+			CqGroupMessageEventArgs args = new CqGroupMessageEventArgs (2, msgId, fromGroup, fromQQ, anonymous, msg.ToString (_defaultEncoding));
+			if (subType == 1)
 			{
-				ReceiveGroupMessage (null, args);
+				if (ReceiveGroupMessage_2 != null)
+				{
+					ReceiveGroupMessage_2 (null, args);
+				}
 			}
-			else                // å…¶å®ƒç±»å‹
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventGroupMsg æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
+			return Convert.ToInt32 (args.Handler);
 		}
 
-		[DllExport (ExportName = "_eventDiscussMsg", CallingConvention = CallingConvention.StdCall)]
-		private static int EventDiscussMsg (int subType, int msgId, long fromDiscuss, long fromQQ, IntPtr msg, int font)
+		/*
+		 * Id: 1002
+		 * Type: 1002
+		 * Name: ¿áQ¹Ø±ÕÊÂ¼ş
+		 * Function: _eventExit
+		 */
+		public static event EventHandler<CqExitEventArgs> CqExit_1002;
+		[DllExport (ExportName = "_eventExit", CallingConvention = CallingConvention.StdCall)]
+		private static int Evnet__eventExit ()
 		{
-			DiscussMessageEventArgs args = new DiscussMessageEventArgs ();
-			args.MsgId = msgId;
-			args.FromDiscuss = fromDiscuss;
-			args.FromQQ = fromQQ;
-			args.Msg = msg.ToString (_defaultEncoding);
-			args.Handled = false;
-
-			if (subType == 1)   // è®¨è®ºç»„æ¶ˆæ¯
+			if (CqExit_1002 != null)
 			{
-				ReceiveDiscussMessage (null, args);
+				CqExit_1002 (null, new CqExitEventArgs (1002));
 			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventDiscussMsg æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventGroupUpload", CallingConvention = CallingConvention.StdCall)]
-		private static int EventGroupUpload (int subType, int sendTime, long fromGroup, long fromQQ, string file)
-		{
-			FileUploadMessageEventArgs args = new FileUploadMessageEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromGroup = fromGroup;
-			args.FromQQ = fromQQ;
-			args.File = Common.CqApi.GetFile (file);
-			ReceiveFileUploadMessage (null, args);
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventSystem_GroupAdmin", CallingConvention = CallingConvention.StdCall)]
-		private static int EventSystemGroupAdmin (int subType, int sendTime, long fromGroup, long beingOperateQQ)
-		{
-			GroupManageAlterEventArgs args = new GroupManageAlterEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromGroup = fromGroup;
-			args.BeingOperateQQ = beingOperateQQ;
-			args.Handled = false;
-
-			if (subType == 1)       // è¢«å–æ¶ˆç®¡ç†å‘˜
-			{
-				ReceiveManageDecrease (null, args);
-			}
-			else if (subType == 2)  // è¢«è®¾ç½®ç®¡ç†å‘˜
-			{
-				ReceiveManageIncrease (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventSystemGroupAdmin æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventSystem_GroupMemberDecrease", CallingConvention = CallingConvention.StdCall)]
-		private static int EventSystemGroupMemberDecrease (int subType, int sendTime, long fromGroup, long fromQQ, long beingOperateQQ)
-		{
-			GroupMemberAlterEventArgs args = new GroupMemberAlterEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromGroup = fromGroup;
-			args.FromQQ = fromQQ;
-			args.BeingOperateQQ = beingOperateQQ;
-			args.Handled = false;
-
-			if (subType == 1)       // ç¾¤å‘˜ç¦»å¼€
-			{
-				args.FromQQ = beingOperateQQ;   // æ­¤æ—¶ FormQQ ä¸ºæ“ä½œè€…QQ
-				ReceiveMemberLeave (null, args);
-			}
-			else if (subType == 2)
-			{
-				ReceiveMemberRemove (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventSystemGroupMemberDecrease æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventSystem_GroupMemberIncrease", CallingConvention = CallingConvention.StdCall)]
-		private static int EventSystemGroupMemberIncrease (int subType, int sendTime, long fromGroup, long fromQQ, long beingOperateQQ)
-		{
-			GroupMemberAlterEventArgs args = new GroupMemberAlterEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromGroup = fromGroup;
-			args.FromQQ = fromQQ;
-			args.BeingOperateQQ = beingOperateQQ;
-			args.Handled = false;
-
-			if (subType == 1)       // ç®¡ç†å‘˜åŒæ„
-			{
-				ReceiveMemberJoin (null, args);
-			}
-			else if (subType == 2)  // ç®¡ç†å‘˜é‚€è¯·
-			{
-				ReceiveMemberInvitee (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventSystemGroupMemberIncrease æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventFriend_Add", CallingConvention = CallingConvention.StdCall)]
-		private static int EventFriendAdd (int subType, int sendTime, long fromQQ)
-		{
-			FriendIncreaseEventArgs args = new FriendIncreaseEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromQQ = fromQQ;
-			args.Handled = false;
-
-			if (subType == 1)   // å¥½å‹å·²æ·»åŠ 
-			{
-				ReceiveFriendIncrease (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventFriendAdd æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventRequest_AddFriend", CallingConvention = CallingConvention.StdCall)]
-		private static int EventRequestAddFriend (int subType, int sendTime, long fromQQ, IntPtr msg, string responseFlag)
-		{
-			FriendAddRequestEventArgs args = new FriendAddRequestEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromQQ = fromQQ;
-			args.AppendMsg = msg.ToString (_defaultEncoding);
-			args.Tag = responseFlag;
-			args.Handled = false;
-
-			if (subType == 1)   // å¥½å‹æ·»åŠ è¯·æ±‚
-			{
-				ReceiveFriendAdd (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventRequestAddFriend æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
-			return (int)(args.Handled ? MessageHanding.Intercept : MessageHanding.Ignored); //å¦‚æœå¤„ç†è¿‡å°±æˆªæ–­æ¶ˆæ¯
-		}
-
-		[DllExport (ExportName = "_eventRequest_AddGroup", CallingConvention = CallingConvention.StdCall)]
-		private static int EventRequestAddGroup (int subType, int sendTime, long fromGroup, long fromQQ, IntPtr msg, string responseFlag)
-		{
-			GroupAddRequestEventArgs args = new GroupAddRequestEventArgs ();
-			args.SendTime = sendTime.ToDateTime ();
-			args.FromGroup = fromGroup;
-			args.FromQQ = fromQQ;
-			args.AppendMsg = msg.ToString (_defaultEncoding);
-			args.Tag = responseFlag;
-			args.Handled = false;
-
-			if (subType == 1)       // ç”³è¯·åŠ å…¥ç¾¤
-			{
-				ReceiveGroupAddApply (null, args);
-			}
-			else if (subType == 2)  // æœºå™¨äººè¢«é‚€è¯·
-			{
-				ReceiveGroupAddInvitee (null, args);
-			}
-			else
-			{
-				Common.CqApi.AddLoger (LogerLevel.Info, "Nativeæç¤º", "EventRequestAddGroup æ–¹æ³•å‘ç°æ–°çš„æ¶ˆæ¯ç±»å‹");
-			}
-
 			return 0;
 		}
+
+		/*
+		 * Id: 1003
+		 * Type: 1003
+		 * Name: Ó¦ÓÃÒÑ±»ÆôÓÃ
+		 * Function: _eventEnable
+		 */
+		public static event EventHandler<CqAppEnableEventArgs> AppEnable_1003;
+		[DllExport (ExportName = "_eventEnable", CallingConvention = CallingConvention.StdCall)]
+		private static int Evnet__eventEnable ()
+		{
+			if (AppEnable_1003 != null)
+			{
+				AppEnable_1003 (null, new CqAppEnableEventArgs (1003));
+			}
+			return 0;
+		}
+
+
 		#endregion
-	}
+    }
 }
+
