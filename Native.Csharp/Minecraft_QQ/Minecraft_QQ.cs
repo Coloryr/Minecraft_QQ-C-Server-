@@ -14,8 +14,6 @@ namespace Color_yr.Minecraft_QQ
             setform frm = new setform();
             frm.ShowDialog();
         }
-        private static QQ qqInfo;
-        private static GroupMember GroupMember;
         /// <summary>
         /// Type=21 私聊消息。
         /// </summary>
@@ -25,12 +23,10 @@ namespace Color_yr.Minecraft_QQ
         {
             // 处理私聊消息。
             string msg_copy = use.CQ_code(msg);
-            string msg_low = msg.ToLower();   
-            Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
-            logs.Log_write("私聊消息" + '[' + fromQQ.ToString() + "][" + qqInfo.Nick + "]:" + msg_copy);
+            string msg_low = msg.ToLower();
+            logs.Log_write("私聊消息" + "[QQ:" + fromQQ.ToString() + "]" + msg_copy);
             if (msg_low.IndexOf(config_read.head) == 0)
             {
-                XML XML = new XML();
                 msg_low = msg_low.Replace(config_read.head, "");
                 if (msg_low.IndexOf(config_read.player_setid_message) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_setid(fromQQ, msg));
@@ -77,8 +73,7 @@ namespace Color_yr.Minecraft_QQ
         {
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
-            Common.CqApi.GetMemberInfo(fromGroup, fromQQ, out GroupMember);
-            logs.Log_write('[' + fromGroup.ToString() + ']' + '[' + fromQQ.ToString() + "][" + GroupMember.Nick + "]:" + msg);
+            logs.Log_write('[' + fromGroup.ToString() + ']' + "[QQ:" + fromQQ.ToString() + "]:" + msg);
             // 处理群消息。
             if (fromGroup == config_read.GroupSet1 || fromGroup == config_read.GroupSet2 || fromGroup == config_read.GroupSet3)
             {
@@ -86,12 +81,12 @@ namespace Color_yr.Minecraft_QQ
                 {
                     if (config_read.fix_mode == false && socket.ready == true)
                     {
-                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == true) 
-                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true) 
+                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == true)
+                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true)
                             || fromGroup == config_read.GroupSet1)
                         {
                             string play_name = use.check_player_name(fromQQ.ToString());
-                            
+
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
                                 string send;
@@ -117,7 +112,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 if (msg_low.IndexOf(config_read.head) == 0)
                 {
-                    msg_low = msg_low.Replace(config_read.head, "");
+                    msg_low = use.ReplaceFirst(msg_low, config_read.head, "");
                     if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
                     {
                         if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false)
@@ -233,8 +228,7 @@ namespace Color_yr.Minecraft_QQ
                         return true;
                     }
 
-                    bool test1;
-                    if (use.commder_check(fromGroup, msg_low, fromQQ, out test1) == true) return test1;
+                    if (use.commder_check(fromGroup, msg_low, fromQQ) == true) return true;
 
                     string message = XML.read_memory(config_read.message_m, "自动回复消息", msg_low);
                     if (config_read.message_enable == true && message != null)

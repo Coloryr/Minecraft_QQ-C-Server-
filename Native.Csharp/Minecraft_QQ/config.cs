@@ -102,7 +102,7 @@ namespace Color_yr.Minecraft_QQ
 
             if (Mysql_mode == true)
             {
-                
+
                 logs.Log_write("[INFO][Mysql]正在链接Mysql");
                 if (Mysql_user.mysql_start() == true)
                 {
@@ -255,7 +255,7 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(config, "检测", "未知指令") == null)
                     XML.write(config, "检测", "未知指令", "未知指令");
             }
-        
+
             string a;
             if (File.Exists(path + player) == false)
             {
@@ -330,7 +330,7 @@ namespace Color_yr.Minecraft_QQ
                 else
                     commder_m = null;
             }
-        
+
             logs.Log_write("[INFO][Config]读取配置文件中");
 
             if (XML.read(message, "核心配置", "启用") == "是")
@@ -366,7 +366,7 @@ namespace Color_yr.Minecraft_QQ
                 color_code = true;
             else
                 color_code = false;
-        
+
             group1 = XML.read(config, "QQ群设置", "绑定群号1");
             group2 = XML.read(config, "QQ群设置", "绑定群号2");
             group3 = XML.read(config, "QQ群设置", "绑定群号3");
@@ -396,7 +396,7 @@ namespace Color_yr.Minecraft_QQ
             mute_message = XML.read(config, "检测", "禁言文本").ToLower();
             unmute_message = XML.read(config, "检测", "解禁文本").ToLower();
             check_id_message = XML.read(config, "检测", "查询玩家ID").ToLower();
-        
+
             rename_id_message = XML.read(config, "检测", "修改玩家ID").ToLower();
             fix_message = XML.read(config, "检测", "维护文本").ToLower();
             fix_send_message = XML.read(config, "检测", "服务器维护文本");
