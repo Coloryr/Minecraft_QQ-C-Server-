@@ -212,11 +212,14 @@ namespace Color_yr.Minecraft_QQ
                         if (Mysql_user.mysql_search(Mysql_user.Mysql_notid, player_name.ToLower()) == "notid")
                             return "禁止绑定ID：" + player_name;
                         Mysql_user.mysql_add(Mysql_user.Mysql_player, fromQQ.ToString(), player_name.ToString());
+                        
                     }
                     else
                     {
                         if (XML.read_memory(config_read.player_m, "ID" + player_name, "禁止绑定") == "是")
                             return "禁止绑定ID：" + player_name;
+                        if(XML.read_id(config_read.player, player_name) == true)
+                            return "ID：" + player_name + "已经被绑定过了";
                         XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();

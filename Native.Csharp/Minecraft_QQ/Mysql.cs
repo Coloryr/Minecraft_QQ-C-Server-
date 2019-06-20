@@ -111,6 +111,29 @@ namespace Color_yr.Minecraft_QQ
             return name;
         }
 
+        public static string mysql_search_id(string table_name, string id)
+        {
+            string name = null;
+            try
+            {
+                conn.Open();
+                string command = string.Format("SELECT * FROM {0} where name='{1}'", table_name, id);
+                MySqlCommand mycmd = new MySqlCommand(command, conn);
+                MySqlDataReader reader = mycmd.ExecuteReader();
+                while (reader.Read())
+                    name = reader.GetString(1);
+                mycmd = null;
+                command = null;
+                reader.Close();
+            }
+            catch (MySqlException ex)
+            {
+                logs.Log_write("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+            }
+            conn.Close();
+            return name;
+        }
+
         public static void mysql_remove(string table_name, string qq)
         {
             try

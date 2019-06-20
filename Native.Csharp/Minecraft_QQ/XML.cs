@@ -134,5 +134,21 @@ namespace Color_yr.Minecraft_QQ
             { }
             return temp;
         }
+
+        public static bool read_id(string file, string id)
+        {
+            if (File.Exists(config_read.path + file) == false)
+                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(config_read.path + file);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;//获取bookstore节点的所有子节点
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
+            {
+                XmlNode xnLurl = xn.SelectSingleNode("绑定");
+                if (xnLurl != null && xnLurl.FirstChild.InnerText == id)
+                    return true;
+            }
+            return false;
+        }
     }
 }
