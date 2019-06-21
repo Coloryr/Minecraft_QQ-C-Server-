@@ -468,9 +468,11 @@ namespace Color_yr.Minecraft_QQ
                         if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家发送") == "是")
                         {
                             messagelist.player = check_player_name(fromQQ.ToString());
-                            if(messagelist.player == null)
+                            if (messagelist.player == null)
+                            {
                                 Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
-                            return true;
+                                return true;
+                            }
                         }
                             
                         else
