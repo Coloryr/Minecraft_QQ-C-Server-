@@ -211,6 +211,8 @@ namespace Color_yr.Minecraft_QQ
                     {
                         if (Mysql_user.mysql_search(Mysql_user.Mysql_notid, player_name.ToLower()) == "notid")
                             return "禁止绑定ID：" + player_name;
+                        if (Mysql_user.mysql_search_id(Mysql_user.Mysql_player, player_name.ToLower()) != null)
+                            return "ID：" + player_name + "已经被绑定过了";
                         Mysql_user.mysql_add(Mysql_user.Mysql_player, fromQQ.ToString(), player_name.ToString());
                         
                     }

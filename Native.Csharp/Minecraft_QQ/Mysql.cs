@@ -117,11 +117,11 @@ namespace Color_yr.Minecraft_QQ
             try
             {
                 conn.Open();
-                string command = string.Format("SELECT * FROM {0} where name='{1}'", table_name, id);
+                string command = string.Format("SELECT * FROM {0} WHERE name='{1}'", table_name, id);
                 MySqlCommand mycmd = new MySqlCommand(command, conn);
                 MySqlDataReader reader = mycmd.ExecuteReader();
                 while (reader.Read())
-                    name = reader.GetString(1);
+                    name = reader.GetString(0);
                 mycmd = null;
                 command = null;
                 reader.Close();
