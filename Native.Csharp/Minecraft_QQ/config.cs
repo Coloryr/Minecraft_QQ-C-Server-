@@ -283,7 +283,7 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                StreamReader sr = new StreamReader(path + message, System.Text.Encoding.Default);
+                StreamReader sr = new StreamReader(path + message, Encoding.Default);
                 a = sr.ReadToEnd().TrimStart();
                 sr.Close();
                 if (!string.IsNullOrEmpty(a))

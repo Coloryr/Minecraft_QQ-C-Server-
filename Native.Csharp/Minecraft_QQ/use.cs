@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -223,7 +224,7 @@ namespace Color_yr.Minecraft_QQ
                     {
                         if (XML.read_memory(config_read.player_m, "ID" + player_name, "禁止绑定") == "是")
                             return "禁止绑定ID：" + player_name;
-                        if(XML.read_id(config_read.player, player_name) == true)
+                        if(XML.read_id_memory(config_read.player_m, player_name) == true)
                             return "ID：" + player_name + "已经被绑定过了";
                         XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
@@ -432,59 +433,63 @@ namespace Color_yr.Minecraft_QQ
         public static bool commder_check(long fromGroup, string msg, long fromQQ)
         {
             if (XML.read_memory(config_read.commder_m, "核心配置", "启用") != "是")
-            {
                 return false;
-            }
-            string a;
-            int i = 0;
-            while (true)
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.LoadXml(config_read.commder_m);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
-                i++;
-                a = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "触发");
-                if (a == null)
-                    return false;
-                if (msg.IndexOf(a) == 0)
+                XmlNode xnLurl = xn.SelectSingleNode("触发");
+                XmlNode xnLurl0 = xn.SelectSingleNode("玩家可用");
+                XmlNode xnLurl1 = xn.SelectSingleNode("指令");
+                XmlNode xnLurl2 = xn.SelectSingleNode("附带参数");
+                XmlNode xnLurl3 = xn.SelectSingleNode("玩家发送");
+                if (xnLurl != null && xnLurl0 != null && xnLurl1 != null && xnLurl2 != null && xnLurl3 != null)
                 {
-                    if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家可用") == "是"
-                        || check_admin(fromQQ.ToString()) == true)
+                    if (msg.IndexOf(xnLurl.FirstChild.InnerText) == 0)
                     {
-                        if (socket.ready == false)
+                        if (xnLurl0.FirstChild.InnerText == "是"
+                            || check_admin(fromQQ.ToString()) == true)
                         {
-                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
-                            return false;
-                        }
-                        messagelist messagelist = new messagelist();
-                        messagelist.group = fromGroup.ToString();
-                        if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "附带参数") == "是")
-                        {
-                            string b = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
-                            b = b.Replace("%playername%", check_player_name(fromQQ.ToString()));
-                            msg = msg.Replace(a, "");
-                            messagelist.message = b + msg;
-                        }
-                        else
-                        {
-                            messagelist.message = XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "指令");
-                            messagelist.message = messagelist.message.Replace("%playername%", check_player_name(fromQQ.ToString()));
-                        }
-                        messagelist.is_commder = true;
-                        if (XML.read_memory(config_read.commder_m, "指令" + i.ToString(), "玩家发送") == "是")
-                        {
-                            messagelist.player = check_player_name(fromQQ.ToString());
-                            if (messagelist.player == null)
+                            if (socket.ready == false)
                             {
-                                Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
-                                return true;
+                                Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
+                                return false;
                             }
+                            messagelist messagelist = new messagelist();
+                            messagelist.group = fromGroup.ToString();
+                            if (xnLurl2.FirstChild.InnerText == "是")
+                            {
+                                string b = xnLurl1.FirstChild.InnerText;
+                                b = b.Replace("%playername%", check_player_name(fromQQ.ToString()));
+                                msg = msg.Replace(xnLurl.FirstChild.InnerText, "");
+                                messagelist.message = b + msg;
+                            }
+                            else
+                            {
+                                messagelist.message = xnLurl1.FirstChild.InnerText;
+                                messagelist.message = messagelist.message.Replace("%playername%", check_player_name(fromQQ.ToString()));
+                            }
+                            messagelist.is_commder = true;
+                            if (xnLurl3.FirstChild.InnerText == "是")
+                            {
+                                messagelist.player = check_player_name(fromQQ.ToString());
+                                if (messagelist.player == null)
+                                {
+                                    Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
+                                    return true;
+                                }
+                            }
+
+                            else
+                                messagelist.player = "后台";
+                            socket.Send(messagelist);
+                            return true;
                         }
-                            
-                        else
-                            messagelist.player = "后台";
-                        socket.Send(messagelist);
-                        return true;
                     }
                 }
             }
+            return false;
         }
     }
 }

@@ -37,14 +37,11 @@ namespace Color_yr.Minecraft_QQ
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 if (useip == true)
                 {
-                    IPAddress ip = IPAddress.Parse("127.0.0.1");
+                    IPAddress ip = IPAddress.Parse(setip);
                     serverSocket.Bind(new IPEndPoint(ip, Port));
                 }
                 else
-                {
-                    setip = null;
                     serverSocket.Bind(new IPEndPoint(IPAddress.Any, Port));
-                }
                 serverSocket.Listen(5);
 
                 server_thread = new Thread(listenClientConnect);

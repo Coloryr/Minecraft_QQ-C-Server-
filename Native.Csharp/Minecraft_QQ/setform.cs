@@ -53,7 +53,7 @@ namespace Color_yr.Minecraft_QQ
             textBox3.Text = config_read.group3;
 
             textBox5.Text = XML.read(config_read.config, "Socket", "端口");
-            textBox4.Text = XML.read(config_read.config, "Socket", "绑定IP");
+            textBox4.Text = XML.read(config_read.config, "Socket", "地址");
             textBox7.Text = XML.read_memory(config_read.player_m, "管理员", "发送给的人");
 
             temp = XML.read(config_read.config, "Mysql", "地址");
@@ -113,7 +113,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 checkBox6.Checked = false;
-                textBox4.ReadOnly = false;
+                textBox4.ReadOnly = true;
             }
         }
 
@@ -164,7 +164,7 @@ namespace Color_yr.Minecraft_QQ
                 return;
             }
             XML.write(config_read.config, "Socket", "端口", textBox5.Text);
-            XML.write(config_read.config, "Socket", "绑定IP", textBox4.Text);
+            XML.write(config_read.config, "Socket", "地址", textBox4.Text);
             config_read.Port = textBox5.Text;
             socket.setip = textBox4.Text;
             int.TryParse(textBox5.Text, out socket.Port);
@@ -340,12 +340,14 @@ namespace Color_yr.Minecraft_QQ
             {
                 XML.write(config_read.config, "Socket", "绑定IP", "开");
                 socket.useip = true;
+                checkBox6.Checked = true;
                 textBox4.ReadOnly = false;
             }
             if (checkBox6.Checked == false)
             {
                 XML.write(config_read.config, "Socket", "绑定IP", "关");
                 socket.useip = false;
+                checkBox6.Checked = false;
                 textBox4.ReadOnly = true;
             }
         }
