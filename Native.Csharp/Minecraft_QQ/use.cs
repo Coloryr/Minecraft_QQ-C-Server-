@@ -75,7 +75,10 @@ namespace Color_yr.Minecraft_QQ
             if (c != null)
             {
                 y = a.IndexOf(c);
-                return a.Substring(x, y - x);
+                if (y - x == 0)
+                    return a;
+                else
+                    return a.Substring(x, y - x);
             }
             else
                 return a.Substring(x);
@@ -121,7 +124,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else
                 {
-                    string e = XML.read_memory(config_read.player_m, "玩家", b);
+                    string e = check_player_name(b);
                     if (e == null)
                         d = b;
                     else
@@ -129,8 +132,8 @@ namespace Color_yr.Minecraft_QQ
                 }
                 a = a.Replace(c, "@" + d + "");
             }
-            if (a.IndexOf("@all") != -1)
-                a.Replace("@all", "@全体人员");
+            if (a.IndexOf("[CQ:at,qq=all") != -1)
+                a.Replace("CQ:at,qq=all", "@全体人员");
             a = a.Replace("[", "").Replace("]", "");
             return a;
         }
