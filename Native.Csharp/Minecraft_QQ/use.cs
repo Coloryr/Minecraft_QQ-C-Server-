@@ -177,7 +177,7 @@ namespace Color_yr.Minecraft_QQ
                     return true;
                 else if (config_read.Mysql_mode == false)
                 {
-                    if (XML.read_memory(config_read.player_m, "QQ" + player.ToLower(), "禁言") == "是")
+                    if (XML.read_memory(config_read.player_m, "ID" + player.ToLower(), "禁言") == "是")
                         return true;
                 }
             return false;
@@ -264,7 +264,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
                 else
                 {
-                    XML.write(config_read.player, "QQ" + player_name.ToLower(), "禁言", "是");
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "是");
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -276,22 +276,22 @@ namespace Color_yr.Minecraft_QQ
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
-            msg = msg.Replace(config_read.unmute_message, "");
+            msg = msg.Replace(config_read.mute_message, "");
             string player = get_string(msg, "=", "]");
             string player_name;
             if (player.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(player);
+                player_name = check_player_name(player.ToString());
             else
                 player_name = player;
             if (player_name == null)
-                return "玩家无ID";
+                return "ID无效";
             else
             {
                 if (config_read.Mysql_mode == true)
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
                 else
                 {
-                    XML.write(config_read.player, player_name.ToLower(), "禁言", "否");
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "否");
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
