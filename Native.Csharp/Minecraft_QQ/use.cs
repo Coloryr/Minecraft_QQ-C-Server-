@@ -250,12 +250,11 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
             msg = msg.Replace(config_read.mute_message, "");
-            string player = get_string(msg, "=", "]");
             string player_name;
-            if (player.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(player.ToString());
+            if (msg.IndexOf("[CQ:at,qq=") != -1)
+                player_name = check_player_name(get_string(msg, "=", "]").ToString());
             else
-                player_name = player;
+                player_name = msg;
             if (player_name == null)
                 return "ID无效";
             else
@@ -276,13 +275,12 @@ namespace Color_yr.Minecraft_QQ
         {
             if (msg.IndexOf(config_read.head) == 0)
                 msg = msg.Replace(config_read.head, null);
-            msg = msg.Replace(config_read.mute_message, "");
-            string player = get_string(msg, "=", "]");
+            msg = msg.Replace(config_read.unmute_message, "");
             string player_name;
-            if (player.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(player.ToString());
+            if (msg.IndexOf("[CQ:at,qq=") != -1)
+                player_name = check_player_name(get_string(msg, "=", "]").ToString());
             else
-                player_name = player;
+                player_name = msg;
             if (player_name == null)
                 return "ID无效";
             else

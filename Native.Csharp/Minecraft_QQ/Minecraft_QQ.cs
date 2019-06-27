@@ -190,7 +190,10 @@ namespace Color_yr.Minecraft_QQ
                         return true;
                     }
                     else if (msg_low.IndexOf(config_read.unmute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(msg));
+                        return true;
+                    }
                     else if (msg_low.IndexOf(config_read.check_id_message) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
