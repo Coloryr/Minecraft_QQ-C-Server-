@@ -452,7 +452,7 @@ namespace Color_yr.Minecraft_QQ
                             if (socket.ready == false)
                             {
                                 Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
-                                return false;
+                                return true;
                             }
                             messagelist messagelist = new messagelist();
                             messagelist.group = fromGroup.ToString();

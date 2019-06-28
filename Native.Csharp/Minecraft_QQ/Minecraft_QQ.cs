@@ -1,5 +1,4 @@
 ﻿using Native.Csharp.App;
-using Native.Csharp.Sdk.Cqp.Model;
 using System;
 
 namespace Color_yr.Minecraft_QQ
