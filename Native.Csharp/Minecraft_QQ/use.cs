@@ -1,5 +1,6 @@
 ﻿using Native.Csharp.App;
 using Native.Csharp.Sdk.Cqp.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Text;
@@ -110,7 +111,7 @@ namespace Color_yr.Minecraft_QQ
 
         public static string get_at(string a)
         {
-            for (; a.IndexOf("[CQ:at,qq=") != -1;)
+            for (; a.IndexOf("CQ:at,qq=") != -1;)
             {
                 string b = get_string(a, "=", "]");
                 string c = get_string(a, "[", "]");
@@ -133,17 +134,39 @@ namespace Color_yr.Minecraft_QQ
                 }
                 a = a.Replace(c, "@" + d + "");
             }
-            if (a.IndexOf("[CQ:at,qq=all") != -1)
+            if (a.IndexOf("CQ:at,qq=all") != -1)
                 a.Replace("CQ:at,qq=all", "@全体人员");
             a = a.Replace("[", "").Replace("]", "");
             return a;
         }
+
+        public static string anno(string a)
+        {
+            string title = null;
+            string json_string = null;
+            string text = null;
+            try
+            {
+                title = get_string(a, "title=", ",content");
+                json_string = "{" + get_string(a, ":{", "}") + "}";
+                json_string = json_string.Replace("&#44;", ",");
+                JObject jsonData = JObject.Parse(json_string);
+                text = jsonData["text"].ToString();
+                byte[] bytes = Convert.FromBase64String(text);
+                text = Encoding.GetEncoding("utf-8").GetString(bytes);
+            }
+            catch { }
+            return title + "：\n" + text;
+        }
+
         public static string CQ_code(string a)
         {
             for (; a.IndexOf("&#91;") != -1;)
                 a = a.Replace("&#91;", "[");
             for (; a.IndexOf("&#93;") != -1;)
                 a = a.Replace("&#93;", "]");
+			for (; a.IndexOf("&#44;") != -1;)
+                a = a.Replace("&#44;", ",");
             return a;
         }
         public static string code_CQ(string a)

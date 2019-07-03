@@ -95,10 +95,15 @@ namespace Color_yr.Minecraft_QQ
                                 msg_copy = use.remove_pic(msg_copy);
                                 if (msg_copy != "")
                                 {
-                                    if (config_read.color_code == false)
-                                        msg_copy = use.RemoveColorCodes(msg_copy);
-                                    msg_copy = use.get_at(msg_copy);
-                                    msg_copy = use.CQ_code(msg_copy);
+                                    if (msg_copy.IndexOf("CQ:rich") != -1)
+                                        msg_copy = use.anno(msg_copy);
+                                    else
+                                    {
+                                        if (config_read.color_code == false)
+                                            msg_copy = use.RemoveColorCodes(msg_copy);
+                                        msg_copy = use.get_at(msg_copy);
+                                        msg_copy = use.CQ_code(msg_copy);
+                                    }
                                     send = send.Replace("%message%", use.remove_pic(msg_copy));
                                     messagelist messagelist = new messagelist();
                                     messagelist.group = "group";
