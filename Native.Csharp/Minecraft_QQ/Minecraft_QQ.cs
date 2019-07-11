@@ -74,18 +74,20 @@ namespace Color_yr.Minecraft_QQ
             string msg_low = msg.ToLower();
             logs.Log_write('[' + fromGroup.ToString() + ']' + "[QQ:" + fromQQ.ToString() + "]:" + msg);
             // 处理群消息。
-            if (fromGroup == config_read.GroupSet1 || fromGroup == config_read.GroupSet2 || fromGroup == config_read.GroupSet3)
+            grouplist list = null;
+            if (config_read.group_list.ContainsKey(fromGroup) == true)
+            {
+                list = config_read.group_list[fromGroup];
+            }
+            if (list != null)
             {
                 if (config_read.allways_send == true)
                 {
                     if (config_read.fix_mode == false && socket.ready == true)
                     {
-                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == true)
-                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == true)
-                            || fromGroup == config_read.GroupSet1)
+                        if (list.say == true)
                         {
                             string play_name = use.check_player_name(fromQQ.ToString());
-
                             if (play_name != null && use.check_mute(play_name) == false)
                             {
                                 string send;
@@ -114,13 +116,12 @@ namespace Color_yr.Minecraft_QQ
                         }
                     }
                 }
-                if (msg_low.IndexOf(config_read.head) == 0)
+                if (msg_low.IndexOf(config_read.head) == 0 && list.commder == true)
                 {
                     msg_low = use.ReplaceFirst(msg_low, config_read.head, "");
                     if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
                     {
-                        if ((fromGroup == config_read.GroupSet2 && config_read.group2_mode == false)
-                            || (fromGroup == config_read.GroupSet3 && config_read.group3_mode == false))
+                        if (list.say == false)
                             Common.CqApi.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
                         else if (config_read.fix_mode == false)
                         {

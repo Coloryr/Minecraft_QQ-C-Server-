@@ -2,6 +2,7 @@
 using Native.Csharp.Sdk.Cqp.Model;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace Color_yr.Minecraft_QQ
     {
         public static string RemoveColorCodes(string text)
         {
-            if (!text.Contains("§"))
+            if (!text.Contains("§") || !text.Contains("&"))
                 return text;
             var sb = new StringBuilder(text);
             sb.Replace("§0", string.Empty);
@@ -77,7 +78,7 @@ namespace Color_yr.Minecraft_QQ
             if (c != null)
             {
                 y = a.IndexOf(c);
-                if (y - x == 0)
+                if (y - x <= 0)
                     return a;
                 else
                     return a.Substring(x, y - x);
@@ -100,18 +101,24 @@ namespace Color_yr.Minecraft_QQ
 
         public static string remove_pic(string a)
         {
-            for (; a.IndexOf("[CQ:image") != -1;)
+            while (a.IndexOf("[CQ:image") != -1)
             {
                 string b = get_string(a, "[", "]");
                 a = a.Replace(b, "");
                 a = a.Replace("[]", "&#91;图片&#93;");
+            }
+            while (a.IndexOf("[CQ:face") != -1)
+            {
+                string b = get_string(a, "[", "]");
+                a = a.Replace(b, "");
+                a = a.Replace("[]", "&#91;表情&#93;");
             }
             return a;
         }
 
         public static string get_at(string a)
         {
-            for (; a.IndexOf("CQ:at,qq=") != -1;)
+            while (a.IndexOf("CQ:at,qq=") != -1)
             {
                 string b = get_string(a, "=", "]");
                 string c = get_string(a, "[", "]");
@@ -139,7 +146,6 @@ namespace Color_yr.Minecraft_QQ
             a = a.Replace("[", "").Replace("]", "");
             return a;
         }
-
         public static string anno(string a)
         {
             string title = null;
@@ -158,14 +164,13 @@ namespace Color_yr.Minecraft_QQ
             catch { }
             return title + "：\n" + text;
         }
-
         public static string CQ_code(string a)
         {
             for (; a.IndexOf("&#91;") != -1;)
                 a = a.Replace("&#91;", "[");
             for (; a.IndexOf("&#93;") != -1;)
                 a = a.Replace("&#93;", "]");
-			for (; a.IndexOf("&#44;") != -1;)
+            for (; a.IndexOf("&#44;") != -1;)
                 a = a.Replace("&#44;", ",");
             return a;
         }
@@ -249,7 +254,7 @@ namespace Color_yr.Minecraft_QQ
                             return "禁止绑定ID：" + player_name;
                         if(XML.read_id_memory(config_read.player_m, player_name) == true)
                             return "ID：" + player_name + "已经被绑定过了";
-                        XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name);
+                        XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name, true);
                         StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();
                         sr.Close();
@@ -258,8 +263,7 @@ namespace Color_yr.Minecraft_QQ
                     string qq_admin = XML.read_memory(config_read.player_m, "管理员", "发送给的人");
                     if (qq_admin != null)
                     {
-                        QQ qqInfo;
-                        Common.CqApi.GetQQInfo(fromQQ, out qqInfo);
+                        QQInfo qqInfo = Common.CqApi.GetQQInfo(fromQQ);
                         Common.CqApi.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + qqInfo.Nick + "]绑定了ID：[" + player_name + "]");
                     }
                     return "绑定ID：" + player_name + "成功！";
@@ -286,7 +290,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
                 else
                 {
-                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "是");
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "是", true);
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -312,7 +316,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
                 else
                 {
-                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "否");
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "否", true);
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -368,7 +372,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_player, player, player_name);
                 else
                 {
-                    XML.write(config_read.player, "QQ" + player, "绑定", player_name);
+                    XML.write(config_read.player, "QQ" + player, "绑定", player_name, true);
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -382,14 +386,14 @@ namespace Color_yr.Minecraft_QQ
         {
             if (config_read.fix_mode == false)
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "开");
+                XML.write(config_read.config, "核心设置", "维护模式", "开", true);
                 config_read.fix_mode = true;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
             else
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "关");
+                XML.write(config_read.config, "核心设置", "维护模式", "关", true);
                 config_read.fix_mode = false;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";
@@ -501,7 +505,6 @@ namespace Color_yr.Minecraft_QQ
                                     return true;
                                 }
                             }
-
                             else
                                 messagelist.player = "后台";
                             socket.Send(messagelist);
@@ -511,6 +514,48 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
             return false;
+        }
+
+        public static void group_check()
+        {
+            if (File.Exists(config_read.path + config_read.group) == false)
+                XML.CreateFile(config_read.group, 0);
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(config_read.path + config_read.group);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
+            {
+                XmlNode group = xn.SelectSingleNode("绑定群号");
+                XmlNode commder = xn.SelectSingleNode("指令");
+                XmlNode say = xn.SelectSingleNode("对话");
+                XmlNode main = xn.SelectSingleNode("主群");
+                if (group != null && commder != null && say != null 
+                    && main != null && IsNumber(group.FirstChild.InnerText) == false)
+                {
+                    grouplist list = new grouplist();
+                    bool a = false;
+                    list.group = group.FirstChild.InnerText;
+                    if (commder.FirstChild.InnerText == "开")
+                        a = true;
+                    else
+                        a = false;
+                    list.commder = a;
+                    if (say.FirstChild.InnerText == "开")
+                        a = true;
+                    else
+                        a = false;
+                    list.say = a;
+                    if (main.FirstChild.InnerText == "开")
+                        a = true;
+                    else
+                        a = false;
+                    list.main = a;
+                    long.TryParse(list.group, out list.group_l);
+                    if (a == true && config_read.GroupSet_Main == 0)
+                        config_read.GroupSet_Main = list.group_l;
+                    config_read.group_list.Add(list.group_l,list);
+                }
+            }
         }
     }
 }

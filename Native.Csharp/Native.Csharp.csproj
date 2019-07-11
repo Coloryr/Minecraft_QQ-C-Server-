@@ -172,7 +172,7 @@
     <Compile Include="App\Interface\IReceiveGroupMessage.cs" />
     <Compile Include="App\Interface\IReceiveGroupPrivateMessage.cs" />
     <Compile Include="App\Interface\IReceiveOnlineStatusMessage.cs" />
-    <Compile Include="Minecraft_QQ\messagelist.cs" />
+    <Compile Include="Minecraft_QQ\list.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
