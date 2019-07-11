@@ -37,6 +37,8 @@ namespace Color_yr.Minecraft_QQ
                     return;
                 if (messagelist.is_commder == false && messagelist.group == "group")
                 {
+                    if (config_read.nick_mode_group == true)
+                        messagelist.message = messagelist.message.Replace(messagelist.player, use.get_nick(messagelist.player));
                     Dictionary<long, grouplist>.ValueCollection valueCol = config_read.group_list.Values;
                     foreach (grouplist value in valueCol)
                     {
@@ -50,7 +52,7 @@ namespace Color_yr.Minecraft_QQ
                     if (config_read.group_list.ContainsKey(group) == true)
                     {
                         grouplist list = config_read.group_list[group];
-                            Common.CqApi.SendGroupMessage(list.group_l, messagelist.message);
+                        Common.CqApi.SendGroupMessage(list.group_l, messagelist.message);
                     }
                 }
                 int i = read.IndexOf(config_read.data_End);

@@ -81,38 +81,35 @@ namespace Color_yr.Minecraft_QQ
             }
             if (list != null)
             {
-                if (config_read.allways_send == true)
+                if (config_read.allways_send == true && config_read.fix_mode == false && socket.ready == true && list.say == true)
                 {
-                    if (config_read.fix_mode == false && socket.ready == true)
+                    string play_name = use.check_player_name(fromQQ.ToString());
+                    if (play_name != null && use.check_mute(play_name) == false)
                     {
-                        if (list.say == true)
+                        string send;
+                        string msg_copy = msg;
+                        send = config_read.send_text;
+                        if (config_read.nick_mode_server == true)
+                            send = send.Replace("%player%", play_name);
+                        else
+                            send = send.Replace("%player%", use.get_nick(play_name));
+                        msg_copy = use.remove_pic(msg_copy);
+                        if (msg_copy != "")
                         {
-                            string play_name = use.check_player_name(fromQQ.ToString());
-                            if (play_name != null && use.check_mute(play_name) == false)
+                            if (msg_copy.IndexOf("CQ:rich") != -1)
+                                msg_copy = use.anno(msg_copy);
+                            else
                             {
-                                string send;
-                                string msg_copy = msg;
-                                send = config_read.send_text;
-                                send = send.Replace("%player%", play_name);
-                                msg_copy = use.remove_pic(msg_copy);
-                                if (msg_copy != "")
-                                {
-                                    if (msg_copy.IndexOf("CQ:rich") != -1)
-                                        msg_copy = use.anno(msg_copy);
-                                    else
-                                    {
-                                        if (config_read.color_code == false)
-                                            msg_copy = use.RemoveColorCodes(msg_copy);
-                                        msg_copy = use.get_at(msg_copy);
-                                        msg_copy = use.CQ_code(msg_copy);
-                                    }
-                                    send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                    messagelist messagelist = new messagelist();
-                                    messagelist.group = "group";
-                                    messagelist.message = "说话" + send;
-                                    socket.Send(messagelist);
-                                }
+                                if (config_read.color_code == false)
+                                    msg_copy = use.RemoveColorCodes(msg_copy);
+                                msg_copy = use.get_at(msg_copy);
+                                msg_copy = use.CQ_code(msg_copy);
                             }
+                            send = send.Replace("%message%", use.remove_pic(msg_copy));
+                            messagelist messagelist = new messagelist();
+                            messagelist.group = fromGroup.ToString();
+                            messagelist.message = "说话" + send;
+                            socket.Send(messagelist);
                         }
                     }
                 }
@@ -135,7 +132,10 @@ namespace Color_yr.Minecraft_QQ
                                         string send;
                                         string msg_copy = msg;
                                         send = config_read.send_text;
-                                        send = send.Replace("%player%", play_name);
+                                        if (config_read.nick_mode_server == true)
+                                            send = send.Replace("%player%", play_name);
+                                        else
+                                            send = send.Replace("%player%", use.get_nick(play_name));
                                         msg_copy = msg_copy.Replace(config_read.send_text, "");
                                         msg_copy = use.remove_pic(msg_copy);
                                         if (msg_copy != "")

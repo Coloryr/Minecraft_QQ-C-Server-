@@ -37,6 +37,8 @@ namespace Color_yr.Minecraft_QQ
         public static bool debug_mode;
         public static bool Mysql_mode;
         public static bool allways_send;
+        public static bool nick_mode_server;
+        public static bool nick_mode_group;
         public static bool set_name = true;
 
         public static string config = "config.xml";
@@ -44,10 +46,12 @@ namespace Color_yr.Minecraft_QQ
         public static string message = "message.xml";
         public static string commder = "commder.xml";
         public static string group = "group.xml";
+        public static string nick = "nick.xml";
 
         public static string player_m;
         public static string message_m;
         public static string commder_m;
+        public static string nick_m;
 
         public static long GroupSet_Main = 0;
         public static long Admin_Send = 0;
@@ -116,132 +120,134 @@ namespace Color_yr.Minecraft_QQ
 
             if (File.Exists(path + config) == false)
             {
-                XML.write(config, "核心设置", "更新配置文件", "否", true);
-                XML.write(config, "核心设置", "维护模式", "关", true);
-                XML.write(config, "核心设置", "调试模式", "关", true);
+                XML.write(config, "核心设置", "更新配置文件", "否");
+                XML.write(config, "核心设置", "维护模式", "关");
+                XML.write(config, "核心设置", "调试模式", "关");
 
-                XML.write(config, "Socket", "地址", "127.0.0.1", true);
-                XML.write(config, "Socket", "端口", "25555", true);
-                XML.write(config, "Socket", "绑定IP", "关", true);
-                XML.write(config, "Socket", "编码", "ANSI（GBK）", true);
-                XML.write(config, "Socket", "数据包头", "[Head]", true);
-                XML.write(config, "Socket", "数据包尾", "[End]", true);
+                XML.write(config, "Socket", "地址", "127.0.0.1");
+                XML.write(config, "Socket", "端口", "25555");
+                XML.write(config, "Socket", "绑定IP", "关");
+                XML.write(config, "Socket", "编码", "ANSI（GBK）");
+                XML.write(config, "Socket", "数据包头", "[Head]");
+                XML.write(config, "Socket", "数据包尾", "[End]");
 
-                XML.write(config, "消息模式", "始终发送消息", "不！", true);
-                XML.write(config, "消息模式", "发送文本", "%player%:%message%", true);
-                XML.write(config, "消息模式", "发送颜色代码", "关", true);
+                XML.write(config, "消息模式", "始终发送消息", "不！");
+                XML.write(config, "消息模式", "发送文本", "%player%:%message%");
+                XML.write(config, "消息模式", "发送颜色代码", "关");
 
-                XML.write(config, "QQ群设置", "绑定群号1", "无", true);
-                XML.write(config, "QQ群设置", "绑定群号2", "无", true);
-                XML.write(config, "QQ群设置", "绑定群号3", "无", true);
-                XML.write(config, "QQ群设置", "群2启用聊天", "否", true);
-                XML.write(config, "QQ群设置", "群3启用聊天", "否", true);
+                XML.write(config, "昵称", "替换发送至服务器", "是");
+                XML.write(config, "昵称", "替换发送至群", "是");
 
-                XML.write(config, "Mysql", "地址", "127.0.0.1", true);
-                XML.write(config, "Mysql", "端口", "3306", true);
-                XML.write(config, "Mysql", "账户", "root", true);
-                XML.write(config, "Mysql", "密码", "123456", true);
-                XML.write(config, "Mysql", "启用", "关", true);
+                XML.write(config, "Mysql", "地址", "127.0.0.1");
+                XML.write(config, "Mysql", "端口", "3306");
+                XML.write(config, "Mysql", "账户", "root");
+                XML.write(config, "Mysql", "密码", "123456");
+                XML.write(config, "Mysql", "启用", "关");
 
-                XML.write(config, "检测", "检测头", "#", true);
-                XML.write(config, "检测", "在线人数", "在线人数", true);
-                XML.write(config, "检测", "服务器状态", "服务器状态", true);
-                XML.write(config, "检测", "绑定文本", "绑定：", true);
-                XML.write(config, "检测", "发送文本", "服务器：", true);
-                XML.write(config, "检测", "禁言文本", "禁言：", true);
-                XML.write(config, "检测", "解禁文本", "解禁：", true);
-                XML.write(config, "检测", "查询玩家ID", "查询：", true);
-                XML.write(config, "检测", "修改玩家ID", "修改：", true);
-                XML.write(config, "检测", "维护文本", "服务器维护", true);
-                XML.write(config, "检测", "打开菜单", "打开菜单", true);
-                XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！", true);
-                XML.write(config, "检测", "重读配置文件", "重读文件", true);
-                XML.write(config, "检测", "内存回收", "内存回收", true);
-                XML.write(config, "检测", "未知指令", "未知指令", true);
+                XML.write(config, "检测", "检测头", "#");
+                XML.write(config, "检测", "在线人数", "在线人数");
+                XML.write(config, "检测", "服务器状态", "服务器状态");
+                XML.write(config, "检测", "绑定文本", "绑定：");
+                XML.write(config, "检测", "发送文本", "服务器：");
+                XML.write(config, "检测", "禁言文本", "禁言：");
+                XML.write(config, "检测", "解禁文本", "解禁：");
+                XML.write(config, "检测", "查询玩家ID", "查询：");
+                XML.write(config, "检测", "修改玩家ID", "修改：");
+                XML.write(config, "检测", "维护文本", "服务器维护");
+                XML.write(config, "检测", "打开菜单", "打开菜单");
+                XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！");
+                XML.write(config, "检测", "重读配置文件", "重读文件");
+                XML.write(config, "检测", "内存回收", "内存回收");
+                XML.write(config, "检测", "未知指令", "未知指令");
 
             }
             else if (XML.read(config, "更新", "更新配置文件") == "是")
             {
-                XML.write(config, "核心设置", "更新配置文件", "否", true);
+                XML.write(config, "核心设置", "更新配置文件", "否");
 
                 if (XML.read(config, "核心设置", "维护模式") == null)
-                    XML.write(config, "核心设置", "维护模式", "关", true);
+                    XML.write(config, "核心设置", "维护模式", "关");
                 if (XML.read(config, "核心设置", "调试模式") == null)
-                    XML.write(config, "核心设置", "调试模式", "关", true);
+                    XML.write(config, "核心设置", "调试模式", "关");
 
                 if (XML.read(config, "Socket", "地址") == null)
-                    XML.write(config, "Socket", "地址", "127.0.0.1", true);
+                    XML.write(config, "Socket", "地址", "127.0.0.1");
                 if (XML.read(config, "Socket", "端口") == null)
-                    XML.write(config, "Socket", "端口", "25555", true);
+                    XML.write(config, "Socket", "端口", "25555");
                 if (XML.read(config, "Socket", "绑定IP") == null)
-                    XML.write(config, "Socket", "绑定IP", "关", true);
+                    XML.write(config, "Socket", "绑定IP", "关");
                 if (XML.read(config, "Socket", "编码") == null)
-                    XML.write(config, "Socket", "编码", "ANSI（GBK）", true);
+                    XML.write(config, "Socket", "编码", "ANSI（GBK）");
                 if (XML.read(config, "Socket", "数据包头") == null)
-                    XML.write(config, "Socket", "数据包头", "[Head]", true);
+                    XML.write(config, "Socket", "数据包头", "[Head]");
                 if (XML.read(config, "Socket", "数据包尾") == null)
-                    XML.write(config, "Socket", "数据包尾", "[End]", true);
+                    XML.write(config, "Socket", "数据包尾", "[End]");
 
                 if (XML.read(config, "消息模式", "始终发送消息") == null)
-                    XML.write(config, "消息模式", "始终发送消息", "不！", true);
+                    XML.write(config, "消息模式", "始终发送消息", "不！");
                 if (XML.read(config, "消息模式", "发送文本") == null)
-                    XML.write(config, "消息模式", "发送文本", "%player%:%message%", true);
+                    XML.write(config, "消息模式", "发送文本", "%player%:%message%");
                 if (XML.read(config, "消息模式", "发送颜色代码") == null)
-                    XML.write(config, "消息模式", "发送颜色代码", "关", true);
+                    XML.write(config, "消息模式", "发送颜色代码", "关");
+
+                if (XML.read(config, "昵称", "替换发送至服务器") == null)
+                    XML.write(config, "昵称", "替换发送至服务器", "是");
+                if (XML.read(config, "昵称", "替换发送至群") == null)
+                    XML.write(config, "昵称", "替换发送至群", "是");
 
                 if (XML.read(config, "Mysql", "地址") == null)
-                    XML.write(config, "Mysql", "地址", "127.0.0.1", true);
+                    XML.write(config, "Mysql", "地址", "127.0.0.1");
                 if (XML.read(config, "Mysql", "端口") == null)
-                    XML.write(config, "Mysql", "端口", "3306", true);
+                    XML.write(config, "Mysql", "端口", "3306");
                 if (XML.read(config, "Mysql", "账户") == null)
-                    XML.write(config, "Mysql", "账户", "root", true);
+                    XML.write(config, "Mysql", "账户", "root");
                 if (XML.read(config, "Mysql", "密码") == null)
-                    XML.write(config, "Mysql", "密码", "123456", true);
+                    XML.write(config, "Mysql", "密码", "123456");
                 if (XML.read(config, "Mysql", "启用") == null)
-                    XML.write(config, "Mysql", "启用", "关", true);
+                    XML.write(config, "Mysql", "启用", "关");
 
                 if (XML.read(config, "检测", "检测头") == null)
-                    XML.write(config, "检测", "检测头", "#", true);
+                    XML.write(config, "检测", "检测头", "#");
                 if (XML.read(config, "检测", "在线人数") == null)
-                    XML.write(config, "检测", "在线人数", "在线人数", true);
+                    XML.write(config, "检测", "在线人数", "在线人数");
                 if (XML.read(config, "检测", "服务器状态") == null)
-                    XML.write(config, "检测", "服务器状态", "服务器状态", true);
+                    XML.write(config, "检测", "服务器状态", "服务器状态");
                 if (XML.read(config, "检测", "绑定文本") == null)
-                    XML.write(config, "检测", "绑定文本", "绑定：", true);
+                    XML.write(config, "检测", "绑定文本", "绑定：");
                 if (XML.read(config, "检测", "发送文本") == null)
-                    XML.write(config, "检测", "发送文本", "服务器：", true);
+                    XML.write(config, "检测", "发送文本", "服务器：");
                 if (XML.read(config, "检测", "禁言文本") == null)
-                    XML.write(config, "检测", "禁言文本", "禁言：", true);
+                    XML.write(config, "检测", "禁言文本", "禁言：");
                 if (XML.read(config, "检测", "解禁文本") == null)
-                    XML.write(config, "检测", "解禁文本", "解禁：", true);
+                    XML.write(config, "检测", "解禁文本", "解禁：");
                 if (XML.read(config, "检测", "查询玩家ID") == null)
-                    XML.write(config, "检测", "查询玩家ID", "查询：", true);
+                    XML.write(config, "检测", "查询玩家ID", "查询：");
                 if (XML.read(config, "检测", "修改玩家ID") == null)
-                    XML.write(config, "检测", "修改玩家ID", "修改：", true);
+                    XML.write(config, "检测", "修改玩家ID", "修改：");
                 if (XML.read(config, "检测", "维护文本") == null)
-                    XML.write(config, "检测", "维护文本", "服务器维护", true);
+                    XML.write(config, "检测", "维护文本", "服务器维护");
                 if (XML.read(config, "检测", "打开菜单") == null)
-                    XML.write(config, "检测", "打开菜单", "打开菜单", true);
+                    XML.write(config, "检测", "打开菜单", "打开菜单");
                 if (XML.read(config, "检测", "服务器维护文本") == null)
-                    XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！", true);
+                    XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 if (XML.read(config, "检测", "重读配置文件") == null)
-                    XML.write(config, "检测", "重读配置文件", "重读文件", true);
+                    XML.write(config, "检测", "重读配置文件", "重读文件");
                 if (XML.read(config, "检测", "内存回收") == null)
-                    XML.write(config, "检测", "内存回收", "内存回收", true);
+                    XML.write(config, "检测", "内存回收", "内存回收");
                 if (XML.read(config, "检测", "未知指令") == null)
-                    XML.write(config, "检测", "未知指令", "未知指令", true);
+                    XML.write(config, "检测", "未知指令", "未知指令");
             }
 
             string a;
 
             if (File.Exists(path + group) == false)
             {
-                XML.write(group, "测试", "测试", "测试", true);
+                XML.write(group, "测试", "测试", "测试");
             }
 
             if (File.Exists(path + player) == false)
             {
-                XML.write(player, "测试", "测试", "测试", true);
+                XML.write(player, "测试", "测试", "测试");
             }
             else
             {
@@ -255,14 +261,29 @@ namespace Color_yr.Minecraft_QQ
                 long.TryParse(XML.read_memory(player_m, "管理员", "发送给的人"), out Admin_Send);
             }
 
+            if (File.Exists(path + nick) == false)
+            {
+                XML.write(nick, "测试", "测试", "测试");
+            }
+            else
+            {
+                StreamReader sr = new StreamReader(path + nick, Encoding.Default);
+                a = sr.ReadToEnd().TrimStart();
+                sr.Close();
+                if (!string.IsNullOrEmpty(a))
+                    nick_m = a;
+                else
+                    nick_m = null;
+            }
+
             if (File.Exists(path + message) == false)
             {
-                XML.write(message, "核心配置", "启用", "是", true);
+                XML.write(message, "核心配置", "启用", "是");
                 XML.write(message, "自动回复消息", "服务器菜单", "服务器查询菜单：\r\n【" + XML.read(config, "检测", "绑定文本")
                     + "】可以绑定你的游戏ID。\r\n【" + XML.read(config, "检测", "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
                     + XML.read(config, "检测", "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
                     + XML.read(config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
-                    + XML.read(config, "检测", "绑定文本") + "ID，来绑定ID）", true);
+                    + XML.read(config, "检测", "绑定文本") + "ID，来绑定ID）");
             }
             else
             {
@@ -277,31 +298,31 @@ namespace Color_yr.Minecraft_QQ
 
             if (File.Exists(path + commder) == false)
             {
-                XML.write(commder, "核心配置", "启用", "是", true);
+                XML.write(commder, "核心配置", "启用", "是");
 
-                XML.write(commder, "指令1", "指令", "qq help", true);
-                XML.write(commder, "指令1", "触发", "插件帮助", true);
-                XML.write(commder, "指令1", "玩家可用", "是", true);
-                XML.write(commder, "指令1", "附带参数", "否", true);
-                XML.write(commder, "指令1", "玩家发送", "否", true);
+                XML.write(commder, "指令1", "指令", "qq help");
+                XML.write(commder, "指令1", "触发", "插件帮助");
+                XML.write(commder, "指令1", "玩家可用", "是");
+                XML.write(commder, "指令1", "附带参数", "否");
+                XML.write(commder, "指令1", "玩家发送", "否");
 
-                XML.write(commder, "指令2", "指令", "money %playername%", true);
-                XML.write(commder, "指令2", "触发", "查钱", true);
-                XML.write(commder, "指令2", "玩家可用", "是", true);
-                XML.write(commder, "指令2", "附带参数", "否", true);
-                XML.write(commder, "指令2", "玩家发送", "否", true);
+                XML.write(commder, "指令2", "指令", "money %playername%");
+                XML.write(commder, "指令2", "触发", "查钱");
+                XML.write(commder, "指令2", "玩家可用", "是");
+                XML.write(commder, "指令2", "附带参数", "否");
+                XML.write(commder, "指令2", "玩家发送", "否");
 
-                XML.write(commder, "指令3", "指令", "tp ", true);
-                XML.write(commder, "指令3", "触发", "tp玩家", true);
-                XML.write(commder, "指令3", "玩家可用", "是", true);
-                XML.write(commder, "指令3", "附带参数", "是", true);
-                XML.write(commder, "指令3", "玩家发送", "是", true);
+                XML.write(commder, "指令3", "指令", "tp ");
+                XML.write(commder, "指令3", "触发", "tp玩家");
+                XML.write(commder, "指令3", "玩家可用", "是");
+                XML.write(commder, "指令3", "附带参数", "是");
+                XML.write(commder, "指令3", "玩家发送", "是");
 
-                XML.write(commder, "指令4", "指令", "mute ", true);
-                XML.write(commder, "指令4", "触发", "禁言", true);
-                XML.write(commder, "指令4", "玩家可用", "否", true);
-                XML.write(commder, "指令4", "附带参数", "是", true);
-                XML.write(commder, "指令4", "玩家发送", "否", true);
+                XML.write(commder, "指令4", "指令", "mute ");
+                XML.write(commder, "指令4", "触发", "禁言");
+                XML.write(commder, "指令4", "玩家可用", "否");
+                XML.write(commder, "指令4", "附带参数", "是");
+                XML.write(commder, "指令4", "玩家发送", "否");
             }
             else
             {
@@ -330,7 +351,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 debug_mode = false;
 
-            int.TryParse(XML.read(config, "Socket", "端口"),out socket.Port);
+            int.TryParse(XML.read(config, "Socket", "端口"), out socket.Port);
             socket.setip = XML.read(config, "Socket", "地址");
             if (XML.read(config, "Socket", "绑定IP") == "开")
                 socket.useip = true;
@@ -349,6 +370,15 @@ namespace Color_yr.Minecraft_QQ
                 color_code = true;
             else
                 color_code = false;
+
+            if (XML.read(config, "昵称", "替换发送至服务器") == "开")
+                nick_mode_server = true;
+            else
+                fix_mode = false;
+            if (XML.read(config, "昵称", "替换发送至群") == "开")
+                nick_mode_group = true;
+            else
+                nick_mode_group = false;
 
             if (XML.read(config, "Mysql", "启用") == "开")
                 Mysql_mode = true;

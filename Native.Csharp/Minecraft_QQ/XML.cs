@@ -53,42 +53,27 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public static void write(string file, string type, string attribute, string data, bool use_replace)
+        public static void write(string file, string type, string attribute, string data)
         {
             if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
                 string a = read(file, type, attribute);
-                if (a != null && use_replace == true)
+                if (a != null)
                     setXml(file, type, attribute, data);
                 else
                 {
                     ///导入XML文件
                     XmlDocument xmldoc = new XmlDocument();
                     xmldoc.Load(config_read.path + file);
-
-                    if (use_replace == false)
-                    {
-                        XmlElement books = xmldoc.DocumentElement;
-                        XmlElement xml = xmldoc.CreateElement(type);
-                        books.AppendChild(xml);
-                        XmlElement msgType = xmldoc.CreateElement(attribute);
-                        msgType.InnerText = data;
-                        xml.AppendChild(msgType);
-                    }
-                    else
-                    {
-                        XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
-                        if (node == null)
-                        {
-                            node = xmldoc.CreateElement(type);
-                        }
-                        XmlElement xesub1 = xmldoc.CreateElement(attribute);
-                        xesub1.InnerText = data;
-                        node.AppendChild(xesub1);
-                        xmldoc.DocumentElement.AppendChild(node);
-                    }
+                    XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
+                    if (node == null)
+                        node = xmldoc.CreateElement(type);
+                    XmlElement xesub1 = xmldoc.CreateElement(attribute);
+                    xesub1.InnerText = data;
+                    node.AppendChild(xesub1);
+                    xmldoc.DocumentElement.AppendChild(node);
                     xmldoc.Save(config_read.path + file);
                 }
             }
@@ -98,7 +83,7 @@ namespace Color_yr.Minecraft_QQ
                     "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     CreateFile(file, 0);
-                    write(file, type, attribute, data, use_replace);
+                    write(file, type, attribute, data);
                 }
             }
         }

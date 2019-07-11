@@ -14,51 +14,53 @@ namespace Color_yr.Minecraft_QQ
     {
         public static string RemoveColorCodes(string text)
         {
-            if (!text.Contains("§") || !text.Contains("&"))
+            if (text.Contains("§") || text.Contains("&"))
+            {
+                var sb = new StringBuilder(text);
+                sb.Replace("§0", string.Empty);
+                sb.Replace("§1", string.Empty);
+                sb.Replace("§2", string.Empty);
+                sb.Replace("§3", string.Empty);
+                sb.Replace("§4", string.Empty);
+                sb.Replace("§5", string.Empty);
+                sb.Replace("§6", string.Empty);
+                sb.Replace("§7", string.Empty);
+                sb.Replace("§8", string.Empty);
+                sb.Replace("§9", string.Empty);
+                sb.Replace("§a", string.Empty);
+                sb.Replace("§b", string.Empty);
+                sb.Replace("§c", string.Empty);
+                sb.Replace("§d", string.Empty);
+                sb.Replace("§e", string.Empty);
+                sb.Replace("§f", string.Empty);
+                sb.Replace("§r", string.Empty);
+                sb.Replace("§k", string.Empty);
+                sb.Replace("§n", string.Empty);
+                sb.Replace("§m", string.Empty);
+                sb.Replace("&0", string.Empty);
+                sb.Replace("&1", string.Empty);
+                sb.Replace("&2", string.Empty);
+                sb.Replace("&3", string.Empty);
+                sb.Replace("&4", string.Empty);
+                sb.Replace("&5", string.Empty);
+                sb.Replace("&6", string.Empty);
+                sb.Replace("&7", string.Empty);
+                sb.Replace("&8", string.Empty);
+                sb.Replace("&9", string.Empty);
+                sb.Replace("&a", string.Empty);
+                sb.Replace("&b", string.Empty);
+                sb.Replace("&c", string.Empty);
+                sb.Replace("&d", string.Empty);
+                sb.Replace("&e", string.Empty);
+                sb.Replace("&f", string.Empty);
+                sb.Replace("&r", string.Empty);
+                sb.Replace("&k", string.Empty);
+                sb.Replace("&n", string.Empty);
+                sb.Replace("&m", string.Empty);
+                return sb.ToString();
+            }
+            else
                 return text;
-            var sb = new StringBuilder(text);
-            sb.Replace("§0", string.Empty);
-            sb.Replace("§1", string.Empty);
-            sb.Replace("§2", string.Empty);
-            sb.Replace("§3", string.Empty);
-            sb.Replace("§4", string.Empty);
-            sb.Replace("§5", string.Empty);
-            sb.Replace("§6", string.Empty);
-            sb.Replace("§7", string.Empty);
-            sb.Replace("§8", string.Empty);
-            sb.Replace("§9", string.Empty);
-            sb.Replace("§a", string.Empty);
-            sb.Replace("§b", string.Empty);
-            sb.Replace("§c", string.Empty);
-            sb.Replace("§d", string.Empty);
-            sb.Replace("§e", string.Empty);
-            sb.Replace("§f", string.Empty);
-            sb.Replace("§r", string.Empty);
-            sb.Replace("§k", string.Empty);
-            sb.Replace("§n", string.Empty);
-            sb.Replace("§m", string.Empty);
-            sb.Replace("&0", string.Empty);
-            sb.Replace("&1", string.Empty);
-            sb.Replace("&2", string.Empty);
-            sb.Replace("&3", string.Empty);
-            sb.Replace("&4", string.Empty);
-            sb.Replace("&5", string.Empty);
-            sb.Replace("&6", string.Empty);
-            sb.Replace("&7", string.Empty);
-            sb.Replace("&8", string.Empty);
-            sb.Replace("&9", string.Empty);
-            sb.Replace("&a", string.Empty);
-            sb.Replace("&b", string.Empty);
-            sb.Replace("&c", string.Empty);
-            sb.Replace("&d", string.Empty);
-            sb.Replace("&e", string.Empty);
-            sb.Replace("&f", string.Empty);
-            sb.Replace("&r", string.Empty);
-            sb.Replace("&k", string.Empty);
-            sb.Replace("&n", string.Empty);
-            sb.Replace("&m", string.Empty);
-
-            return sb.ToString();
         }
         public static string ReplaceFirst(string value, string oldValue, string newValue)
         {
@@ -146,7 +148,7 @@ namespace Color_yr.Minecraft_QQ
         public static string anno(string a)
         {
             string title = null;
-            string json_string = null;
+            string json_string;
             string text = null;
             try
             {
@@ -181,7 +183,6 @@ namespace Color_yr.Minecraft_QQ
                 a = a.Replace(",", "&#44;");
             return a;
         }
-
         public static bool key_ok(KeyEventArgs e)
         {
             if (e.Control == true)          //按下了ctrl
@@ -219,6 +220,36 @@ namespace Color_yr.Minecraft_QQ
             else
                 return XML.read_memory(config_read.player_m, "QQ" + player_qq, "绑定");
         }
+        public static string get_nick(string player)
+        {
+            string nick = XML.read_memory(config_read.nick_m, "ID" + player, "昵称");
+            if (nick == null)
+                return player;
+            else
+                return nick;
+        }
+        public static string set_nick(string msg)
+        {
+            if (msg.IndexOf(config_read.head) == 0)
+                msg = msg.Replace(config_read.head, null);
+            msg = msg.Replace(config_read.unmute_message, "");
+            string player_name;
+            if (msg.IndexOf("[CQ:at,qq=") != -1)
+                player_name = check_player_name(get_string(msg, "=", "]").ToString());
+            else
+                player_name = msg;
+            if (player_name == null)
+                return "ID无效";
+            else
+            {
+                string nick = get_string(msg, "]").Trim();
+                XML.write(config_read.nick, "ID" + player_name, "昵称", nick);
+                StreamReader sr = new StreamReader(config_read.path + config_read.nick, Encoding.Default);
+                config_read.nick_m = sr.ReadToEnd().TrimStart();
+                sr.Close();
+                return "已修改玩家" + player_name + "的昵称为：" + nick;
+            }
+        }
         public static string player_setid(long fromQQ, string msg)
         {
             string player;
@@ -248,7 +279,7 @@ namespace Color_yr.Minecraft_QQ
                             return "禁止绑定ID：" + player_name;
                         if(XML.read_id_memory(config_read.player_m, player_name) == true)
                             return "ID：" + player_name + "已经被绑定过了";
-                        XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name, true);
+                        XML.write(config_read.player, "QQ" + fromQQ.ToString(), "绑定", player_name);
                         StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                         config_read.player_m = sr.ReadToEnd().TrimStart();
                         sr.Close();
@@ -283,7 +314,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
                 else
                 {
-                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "是", true);
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "是");
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -309,7 +340,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
                 else
                 {
-                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "否", true);
+                    XML.write(config_read.player, "ID" + player_name.ToLower(), "禁言", "否");
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -365,7 +396,7 @@ namespace Color_yr.Minecraft_QQ
                     Mysql_user.mysql_add(Mysql_user.Mysql_player, player, player_name);
                 else
                 {
-                    XML.write(config_read.player, "QQ" + player, "绑定", player_name, true);
+                    XML.write(config_read.player, "QQ" + player, "绑定", player_name);
                     StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                     config_read.player_m = sr.ReadToEnd().TrimStart();
                     sr.Close();
@@ -379,14 +410,14 @@ namespace Color_yr.Minecraft_QQ
         {
             if (config_read.fix_mode == false)
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "开", true);
+                XML.write(config_read.config, "核心设置", "维护模式", "开");
                 config_read.fix_mode = true;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
             else
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "关", true);
+                XML.write(config_read.config, "核心设置", "维护模式", "关");
                 config_read.fix_mode = false;
                 logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";

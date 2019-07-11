@@ -31,7 +31,7 @@ namespace Color_yr.Minecraft_QQ
                 return;
             }
 
-            XML.write(config_read.config, "Socket", "端口", textBox5.Text,true);
+            XML.write(config_read.config, "Socket", "端口", textBox5.Text);
             socket.Port = int.Parse(textBox5.Text);
             socket.setip = textBox4.Text;
             Close();
@@ -119,8 +119,8 @@ namespace Color_yr.Minecraft_QQ
                 button4.Text = "错误";
                 return;
             }
-            XML.write(config_read.config, "Socket", "端口", textBox5.Text, true);
-            XML.write(config_read.config, "Socket", "地址", textBox4.Text, true);
+            XML.write(config_read.config, "Socket", "端口", textBox5.Text);
+            XML.write(config_read.config, "Socket", "地址", textBox4.Text);
             socket.setip = textBox4.Text;
             int.TryParse(textBox5.Text, out socket.Port);
             button4.Text = "已设置";
@@ -135,7 +135,7 @@ namespace Color_yr.Minecraft_QQ
             }
             if (textBox6.Text != null)
             {
-                XML.write(config_read.player,"QQ" + textBox6.Text, "管理员", "是", true);
+                XML.write(config_read.player,"QQ" + textBox6.Text, "管理员", "是");
                 StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                 config_read.player_m = sr.ReadToEnd().TrimStart();
                 sr.Close();
@@ -152,7 +152,7 @@ namespace Color_yr.Minecraft_QQ
             }
             if (textBox7.Text != null)
             {
-                XML.write(config_read.player, "管理员", "发送给的人", textBox7.Text, false);
+                XML.write(config_read.player, "管理员", "发送给的人", textBox7.Text);
                 StreamReader sr = new StreamReader(config_read.path + config_read.player, Encoding.Default);
                 config_read.player_m = sr.ReadToEnd().TrimStart();
                 sr.Close();
@@ -171,7 +171,7 @@ namespace Color_yr.Minecraft_QQ
                 if (config_read.Mysql_mode == true)
                     Mysql_user.mysql_add(Mysql_user.Mysql_notid, textBox8.Text.ToLower(), "notid");
                 else
-                    XML.write(config_read.player, "ID" + textBox8.Text.ToLower(), "禁止绑定", "是", true);
+                    XML.write(config_read.player, "ID" + textBox8.Text.ToLower(), "禁止绑定", "是");
                 button7.Text = "已添加";
             }
         }
@@ -183,20 +183,20 @@ namespace Color_yr.Minecraft_QQ
                 button8.Text = "错误";
                 return;
             }
-            XML.write(config_read.config, "Mysql", "地址", textBox9.Text, true);
+            XML.write(config_read.config, "Mysql", "地址", textBox9.Text);
             Mysql_user.Mysql_IP = textBox9.Text;
-            XML.write(config_read.config, "Mysql", "端口", textBox10.Text, true);
+            XML.write(config_read.config, "Mysql", "端口", textBox10.Text);
             Mysql_user.Mysql_Port = textBox10.Text;
-            XML.write(config_read.config, "Mysql", "账户", textBox11.Text, true);
+            XML.write(config_read.config, "Mysql", "账户", textBox11.Text);
             Mysql_user.Mysql_User = textBox11.Text;
-            XML.write(config_read.config, "Mysql", "密码", textBox12.Text, true);
+            XML.write(config_read.config, "Mysql", "密码", textBox12.Text);
             Mysql_user.Mysql_Password = textBox12.Text;
             if (Mysql_user.mysql_start() == true)
             {
                 button8.Text = "Mysql已设置";
                 config_read.Mysql_mode = true;
                 checkBox5.Checked = true;
-                XML.write(config_read.config, "Mysql", "启用", "开", true);
+                XML.write(config_read.config, "Mysql", "启用", "开");
                 config_read.Mysql_mode = true;
             }
             else
@@ -204,20 +204,20 @@ namespace Color_yr.Minecraft_QQ
                 button8.Text = "Mysql错误";
                 config_read.Mysql_mode = false;
                 checkBox5.Checked = false;
-                XML.write(config_read.config, "Mysql", "启用", "关", true);
+                XML.write(config_read.config, "Mysql", "启用", "关");
                 config_read.Mysql_mode = false;
             }
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            XML.write(config_read.config, "Socket", "编码", "UTF-8", true);
+            XML.write(config_read.config, "Socket", "编码", "UTF-8");
             config_read.ANSI = "UTF-8";
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            XML.write(config_read.config, "Socket", "编码", "ANSI（GBK）", true);
+            XML.write(config_read.config, "Socket", "编码", "ANSI（GBK）");
             config_read.ANSI = "ANSI（GBK）";
         }
 
@@ -225,13 +225,13 @@ namespace Color_yr.Minecraft_QQ
         {
             if (checkBox1.Checked == true)
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "开", true);
+                XML.write(config_read.config, "核心设置", "维护模式", "开");
                 config_read.fix_mode = true;
                 checkBox1.Text = "服务器维护模式：开";            
             }
             else
             {
-                XML.write(config_read.config, "核心设置", "维护模式", "关", true);
+                XML.write(config_read.config, "核心设置", "维护模式", "关");
                 config_read.fix_mode = false;
                 checkBox1.Text = "服务器维护模式：关";
             }
@@ -241,12 +241,12 @@ namespace Color_yr.Minecraft_QQ
         {
             if (checkBox4.Checked == true)
             {
-                XML.write(config_read.config, "消息模式", "始终发送消息", "当然！", true);
+                XML.write(config_read.config, "消息模式", "始终发送消息", "当然！");
                 config_read.allways_send = true;
             }
             else
             {
-                XML.write(config_read.config, "消息模式", "始终发送消息", "不！", true);
+                XML.write(config_read.config, "消息模式", "始终发送消息", "不！");
                 config_read.allways_send = false;
             }
         }
@@ -254,13 +254,13 @@ namespace Color_yr.Minecraft_QQ
         {
             if (checkBox5.Checked == true)
             {
-                XML.write(config_read.config, "Mysql", "启用", "开", true);
+                XML.write(config_read.config, "Mysql", "启用", "开");
                 config_read.Mysql_mode = true;
                 config_read.Mysql_mode = true;
             }
             if (checkBox5.Checked == false)
             {
-                XML.write(config_read.config, "Mysql", "启用", "关", true);
+                XML.write(config_read.config, "Mysql", "启用", "关");
                 config_read.Mysql_mode = false;
                 config_read.Mysql_mode = false;
             }
@@ -269,14 +269,14 @@ namespace Color_yr.Minecraft_QQ
         {
             if (checkBox6.Checked == true)
             {
-                XML.write(config_read.config, "Socket", "绑定IP", "开", true);
+                XML.write(config_read.config, "Socket", "绑定IP", "开");
                 socket.useip = true;
                 checkBox6.Checked = true;
                 textBox4.ReadOnly = false;
             }
             if (checkBox6.Checked == false)
             {
-                XML.write(config_read.config, "Socket", "绑定IP", "关", true);
+                XML.write(config_read.config, "Socket", "绑定IP", "关");
                 socket.useip = false;
                 checkBox6.Checked = false;
                 textBox4.ReadOnly = true;
