@@ -23,7 +23,7 @@ namespace Native.Csharp.App.Event
         {
             // 本方法会在酷Q【主线程】中被调用。
             // 无论本应用是否被启用，本方法都会在酷Q退出前执行一次，请在这里执行插件关闭代码。
-            socket.socket_stop();
+			socket.socket_stop();
             // 本方法将固定给酷Q返回 0, 返回后酷Q将很快关闭，请不要再通过线程等方式执行其他代码。
         }
     }

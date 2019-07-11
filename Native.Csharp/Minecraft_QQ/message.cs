@@ -1,5 +1,6 @@
 ﻿using Native.Csharp.App;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -13,7 +14,7 @@ namespace Color_yr.Minecraft_QQ
                 JObject jsonData = JObject.Parse(read);
                 if (jsonData["data"].ToString() == "data")
                 {
-                    messagelist.group = jsonData["group"].ToString();                  
+                    messagelist.group = jsonData["group"].ToString();
                     messagelist.message = jsonData["message"].ToString();
                     messagelist.player = jsonData["player"].ToString();
                     messagelist.is_commder = false;
@@ -36,18 +37,23 @@ namespace Color_yr.Minecraft_QQ
                     return;
                 if (messagelist.is_commder == false && messagelist.group == "group")
                 {
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);
-                    if (config_read.GroupSet2 != 0 && config_read.group2_mode == true)
-                        Common.CqApi.SendGroupMessage(config_read.GroupSet2, messagelist.message);
-                    if (config_read.GroupSet3 != 0 && config_read.group2_mode == true)
-                        Common.CqApi.SendGroupMessage(config_read.GroupSet3, messagelist.message);
+                    Dictionary<long, grouplist>.ValueCollection valueCol = config_read.group_list.Values;
+                    foreach (grouplist value in valueCol)
+                    {
+                        if (value.say == true)
+                            Common.CqApi.SendGroupMessage(value.group_l, messagelist.message);
+                    }
                 }
-                else if (messagelist.group == config_read.GroupSet1.ToString())
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet1, messagelist.message);
-                else if (messagelist.group == config_read.GroupSet2.ToString())
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet2, messagelist.message);
-                else if (messagelist.group == config_read.GroupSet3.ToString())
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet3, messagelist.message);
+                else
+                {
+                    long.TryParse(messagelist.group, out long group);
+                    if (config_read.group_list.ContainsKey(group) == true)
+                    {
+                        grouplist list = config_read.group_list[group];
+                        if (list.group == messagelist.group && list.say == true)
+                            Common.CqApi.SendGroupMessage(list.group_l, messagelist.message);
+                    }
+                }
                 int i = read.IndexOf(config_read.data_End);
                 read = read.Substring(i + config_read.data_End.Length);
             }

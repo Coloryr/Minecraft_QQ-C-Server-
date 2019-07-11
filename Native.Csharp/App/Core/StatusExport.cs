@@ -1,7 +1,7 @@
-/*
- *	´Ë´úÂëÓÉ T4 ÒıÇæ¸ù¾İ StatusExport.tt Ä£°åÉú³É, ÈôÄú²»ÁË½âÒÔÏÂ´úÂëµÄÓÃ´¦, ÇëÎğĞŞ¸Ä!
+ï»¿/*
+ *	æ­¤ä»£ç ç”± T4 å¼•æ“æ ¹æ® StatusExport.tt æ¨¡æ¿ç”Ÿæˆ, è‹¥æ‚¨ä¸äº†è§£ä»¥ä¸‹ä»£ç çš„ç”¨å¤„, è¯·å‹¿ä¿®æ”¹!
  *	
- *	´ËÎÄ¼ş°üº¬ÏîÄ¿ Json ÎÄ¼şµÄĞü¸¡´°µ¼³öº¯Êı.
+ *	æ­¤æ–‡ä»¶åŒ…å«é¡¹ç›® Json æ–‡ä»¶çš„æ‚¬æµ®çª—å¯¼å‡ºå‡½æ•°.
  */
 using System;
 using System.Runtime.InteropServices;
@@ -14,28 +14,56 @@ namespace Native.Csharp.App.Core
 {
     public class StatusExport
     {
-		#region --¹¹Ôìº¯Êı--
+		#region --æ„é€ å‡½æ•°--
 		/// <summary>
-		/// ¾²Ì¬¹¹Ôìº¯Êı, ×¢²áÒÀÀµ×¢Èë»Øµ÷
+		/// é™æ€æ„é€ å‡½æ•°, æ³¨å†Œä¾èµ–æ³¨å…¥å›è°ƒ
 		/// </summary>
         static StatusExport ()
         {
-			// ·Ö·¢Ó¦ÓÃÄÚÊÂ¼ş
+			// åˆ†å‘åº”ç”¨å†…äº‹ä»¶
 			ResolveAppbackcall ();
         }
         #endregion
 
-		#region --Ë½ÓĞ·½·¨--
+		#region --ç§æœ‰æ–¹æ³•--
 		/// <summary>
-		/// »ñÈ¡ËùÓĞµÄ×¢ÈëÏî, ·Ö·¢µ½¶ÔÓ¦µÄÊÂ¼ş
+		/// è·å–æ‰€æœ‰çš„æ³¨å…¥é¡¹, åˆ†å‘åˆ°å¯¹åº”çš„äº‹ä»¶
 		/// </summary>
 		private static void ResolveAppbackcall ()
 		{
+			/*
+			 * Name: CPUä½¿ç”¨ç‡
+			 * Function: _statusCPU
+			 */
+			if (Common.UnityContainer.IsRegistered<ICqStatus> ("CPUä½¿ç”¨ç‡") == true)
+			{
+				Status_CPU = Common.UnityContainer.Resolve<ICqStatus> ("CPUä½¿ç”¨ç‡").CqStatus;
+			}
+
 
 		}
         #endregion
 
-		#region --µ¼³ö·½·¨--
+		#region --å¯¼å‡ºæ–¹æ³•--
+		/*
+		 * Id: 1
+		 * Name: CPUä½¿ç”¨ç‡
+		 * Title: CPU
+		 * Function: _statusCPU
+		 * Period: 1000
+		 */
+		public static event EventHandler<CqStatusEventArgs> Status_CPU;
+		[DllExport (ExportName = "_statusCPU", CallingConvention = CallingConvention.StdCall)]
+		private static string Evnet__statusCPU ()
+		{
+			CqStatusEventArgs args = new CqStatusEventArgs (1, "CPUä½¿ç”¨ç‡", "CPU", 1000);
+			if (Status_CPU != null)
+			{
+				Status_CPU (null, args);
+			}
+			return args.FloatWindowData;
+		}
+
 
         #endregion
 	}

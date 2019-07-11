@@ -53,14 +53,14 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public static void write(string file, string type, string attribute, string data)
+        public static void write(string file, string type, string attribute, string data, bool use_replace)
         {
             if (File.Exists(config_read.path + file) == false)
                 CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
                 string a = read(file, type, attribute);
-                if (a != null)
+                if (a != null && use_replace == true)
                     setXml(file, type, attribute, data);
                 else
                 {
@@ -87,7 +87,7 @@ namespace Color_yr.Minecraft_QQ
                     "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     CreateFile(file, 0);
-                    write(file, type, attribute, data);
+                    write(file, type, attribute, data, use_replace);
                 }
             }
         }

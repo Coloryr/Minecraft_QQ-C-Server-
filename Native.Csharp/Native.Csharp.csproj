@@ -147,6 +147,8 @@
     <Compile Include="App\Event\Event_CqExit.cs" />
     <Compile Include="App\Event\Event_GroupMessage.cs" />
     <Compile Include="App\Event\Event_Openform.cs" />
+	<Compile Include="App\Event\Event_CqAppDisable.cs" />
+	<Compile Include="App\Event\Event_CqStartup.cs" />
     <Compile Include="App\Interface\ICqAppDisable.cs" />
     <Compile Include="App\Interface\ICqAppEnable.cs" />
     <Compile Include="App\Interface\ICallMenu.cs" />

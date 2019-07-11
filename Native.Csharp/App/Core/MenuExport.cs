@@ -1,7 +1,7 @@
-/*
- *	´Ë´úÂëÓÉ T4 ÒıÇæ¸ù¾İ MenuExport.tt Ä£°åÉú³É, ÈôÄú²»ÁË½âÒÔÏÂ´úÂëµÄÓÃ´¦, ÇëÎğĞŞ¸Ä!
+ï»¿/*
+ *	æ­¤ä»£ç ç”± T4 å¼•æ“æ ¹æ® MenuExport.tt æ¨¡æ¿ç”Ÿæˆ, è‹¥æ‚¨ä¸äº†è§£ä»¥ä¸‹ä»£ç çš„ç”¨å¤„, è¯·å‹¿ä¿®æ”¹!
  *	
- *	´ËÎÄ¼ş°üº¬ÏîÄ¿ Json ÎÄ¼şµÄ²Ëµ¥µ¼³öº¯Êı.
+ *	æ­¤æ–‡ä»¶åŒ…å«é¡¹ç›® Json æ–‡ä»¶çš„èœå•å¯¼å‡ºå‡½æ•°.
  */
 using System;
 using System.Runtime.InteropServices;
@@ -14,39 +14,39 @@ namespace Native.Csharp.App.Core
 {
     public class MenuExport
     {
-		#region --¹¹Ôìº¯Êı--
+		#region --æ„é€ å‡½æ•°--
 		/// <summary>
-		/// ¾²Ì¬¹¹Ôìº¯Êı, ×¢²áÒÀÀµ×¢Èë»Øµ÷
+		/// é™æ€æ„é€ å‡½æ•°, æ³¨å†Œä¾èµ–æ³¨å…¥å›è°ƒ
 		/// </summary>
         static MenuExport ()
         {
-			// ·Ö·¢Ó¦ÓÃÄÚÊÂ¼ş
+			// åˆ†å‘åº”ç”¨å†…äº‹ä»¶
 			ResolveAppbackcall ();
         }
         #endregion
 
-		#region --Ë½ÓĞ·½·¨--
+		#region --ç§æœ‰æ–¹æ³•--
 		/// <summary>
-		/// »ñÈ¡ËùÓĞµÄ×¢ÈëÏî, ·Ö·¢µ½¶ÔÓ¦µÄÊÂ¼ş
+		/// è·å–æ‰€æœ‰çš„æ³¨å…¥é¡¹, åˆ†å‘åˆ°å¯¹åº”çš„äº‹ä»¶
 		/// </summary>
 		private static void ResolveAppbackcall ()
 		{
 			/*
-			 * Name: ´ò¿ª¿ØÖÆÌ¨
+			 * Name: æ‰“å¼€æ§åˆ¶å°
 			 * Function: _eventOpenConsole
 			 */
-			if (Common.UnityContainer.IsRegistered<ICallMenu> ("´ò¿ª¿ØÖÆÌ¨") == true)
+			if (Common.UnityContainer.IsRegistered<ICallMenu> ("æ‰“å¼€æ§åˆ¶å°") == true)
 			{
-				Menu__eventOpenConsole = Common.UnityContainer.Resolve<ICallMenu> ("´ò¿ª¿ØÖÆÌ¨").CallMenu;
+				Menu__eventOpenConsole = Common.UnityContainer.Resolve<ICallMenu> ("æ‰“å¼€æ§åˆ¶å°").CallMenu;
 			}
 
 
 		}
         #endregion
 
-		#region --µ¼³ö·½·¨--
+		#region --å¯¼å‡ºæ–¹æ³•--
 		/*
-		 * Name: ´ò¿ª¿ØÖÆÌ¨
+		 * Name: æ‰“å¼€æ§åˆ¶å°
 		 * Function: _eventOpenConsole
 		 */
 		public static event EventHandler<CqCallMenuEventArgs> Menu__eventOpenConsole;
@@ -55,7 +55,7 @@ namespace Native.Csharp.App.Core
 		{
 			if (Menu__eventOpenConsole != null)
 			{
-				Menu__eventOpenConsole (null, new CqCallMenuEventArgs ("´ò¿ª¿ØÖÆÌ¨"));
+				Menu__eventOpenConsole (null, new CqCallMenuEventArgs ("æ‰“å¼€æ§åˆ¶å°"));
 			}
 			return 0;
 		}
