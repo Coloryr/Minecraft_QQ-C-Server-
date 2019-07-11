@@ -513,6 +513,7 @@ namespace Color_yr.Minecraft_QQ
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(config_read.path + config_read.group);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            config_read.group_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
                 XmlNode group = xn.SelectSingleNode("群号");

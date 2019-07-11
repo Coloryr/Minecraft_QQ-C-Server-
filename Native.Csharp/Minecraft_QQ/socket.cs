@@ -18,6 +18,7 @@ namespace Color_yr.Minecraft_QQ
 
         public static string MCserver = null;
         public static string setip = null;
+        public static int Port;
 
         public static bool start;
         public static bool ready = false;
@@ -25,8 +26,6 @@ namespace Color_yr.Minecraft_QQ
 
         private static Thread server_thread;
         private static Thread read_thread;
-
-        public static int Port;
 
         public static void Start_socket()
         {

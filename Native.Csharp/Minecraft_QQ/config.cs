@@ -10,7 +10,6 @@ namespace Color_yr.Minecraft_QQ
 {
     public class config_read
     {
-        public static string Port;
         public static string ANSI;
         public static string head;
         public static string send_text;
@@ -62,7 +61,7 @@ namespace Color_yr.Minecraft_QQ
         public static void start_read()
         {
             read_config();
-            if (group_list.Count == 0 || Port == null || (socket.setip == null && socket.useip == true))
+            if (group_list.Count == 0 || socket.Port == 0 || (socket.setip == null && socket.useip == true))
             {
                 setform frm = new setform();
                 MessageBox.Show("参数错误，请设置");
@@ -331,7 +330,7 @@ namespace Color_yr.Minecraft_QQ
             else
                 debug_mode = false;
 
-            Port = XML.read(config, "Socket", "端口");
+            int.TryParse(XML.read(config, "Socket", "端口"),out socket.Port);
             socket.setip = XML.read(config, "Socket", "地址");
             if (XML.read(config, "Socket", "绑定IP") == "开")
                 socket.useip = true;

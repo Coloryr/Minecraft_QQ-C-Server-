@@ -50,7 +50,6 @@ namespace Color_yr.Minecraft_QQ
                     if (config_read.group_list.ContainsKey(group) == true)
                     {
                         grouplist list = config_read.group_list[group];
-                        if (list.group == messagelist.group && list.say == true)
                             Common.CqApi.SendGroupMessage(list.group_l, messagelist.message);
                     }
                 }

@@ -33,7 +33,6 @@ namespace Color_yr.Minecraft_QQ
 
             XML.write(config_read.config, "Socket", "端口", textBox5.Text,true);
             socket.Port = int.Parse(textBox5.Text);
-            config_read.Port = textBox5.Text;
             socket.setip = textBox4.Text;
             Close();
         }
@@ -122,7 +121,6 @@ namespace Color_yr.Minecraft_QQ
             }
             XML.write(config_read.config, "Socket", "端口", textBox5.Text, true);
             XML.write(config_read.config, "Socket", "地址", textBox4.Text, true);
-            config_read.Port = textBox5.Text;
             socket.setip = textBox4.Text;
             int.TryParse(textBox5.Text, out socket.Port);
             button4.Text = "已设置";
