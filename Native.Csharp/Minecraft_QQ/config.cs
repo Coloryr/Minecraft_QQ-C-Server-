@@ -76,7 +76,7 @@ namespace Color_yr.Minecraft_QQ
 
             if (group_list.Count == 0 || GroupSet_Main == 0)
             {
-                MessageBox.Show("[Minecraft_QQ]群1设置错误请修改后重载应用");
+                MessageBox.Show("[Minecraft_QQ]群设置错误请修改后重载应用");
                 return;
             }
 
