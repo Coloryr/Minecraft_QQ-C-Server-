@@ -235,6 +235,11 @@ namespace Color_yr.Minecraft_QQ
                             Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
                         return true;
                     }
+                    else if (msg_low == config_read.nick_message && use.check_admin(fromQQ.ToString()) == true)
+                    {
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.get_nick(msg));
+                        return true;
+                    }
 
                     if (use.commder_check(fromGroup, msg_low, fromQQ) == true) return true;
 

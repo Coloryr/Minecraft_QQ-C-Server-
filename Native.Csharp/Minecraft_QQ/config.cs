@@ -27,6 +27,7 @@ namespace Color_yr.Minecraft_QQ
         public static string gc_message;
         public static string menu_message;
         public static string unknow_message;
+        public static string nick_message;
 
         public static string data_Head;
         public static string data_End;
@@ -120,7 +121,6 @@ namespace Color_yr.Minecraft_QQ
 
             if (File.Exists(path + config) == false)
             {
-                XML.write(config, "核心设置", "更新配置文件", "否");
                 XML.write(config, "核心设置", "维护模式", "关");
                 XML.write(config, "核心设置", "调试模式", "关");
 
@@ -155,88 +155,87 @@ namespace Color_yr.Minecraft_QQ
                 XML.write(config, "检测", "修改玩家ID", "修改：");
                 XML.write(config, "检测", "维护文本", "服务器维护");
                 XML.write(config, "检测", "打开菜单", "打开菜单");
+                XML.write(config, "检测", "昵称", "昵称：");
                 XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！");
                 XML.write(config, "检测", "重读配置文件", "重读文件");
                 XML.write(config, "检测", "内存回收", "内存回收");
                 XML.write(config, "检测", "未知指令", "未知指令");
 
             }
-            else if (XML.read(config, "更新", "更新配置文件") == "是")
-            {
-                XML.write(config, "核心设置", "更新配置文件", "否");
 
-                if (XML.read(config, "核心设置", "维护模式") == null)
-                    XML.write(config, "核心设置", "维护模式", "关");
-                if (XML.read(config, "核心设置", "调试模式") == null)
-                    XML.write(config, "核心设置", "调试模式", "关");
+            if (XML.read(config, "核心设置", "维护模式") == null)
+                XML.write(config, "核心设置", "维护模式", "关");
+            if (XML.read(config, "核心设置", "调试模式") == null)
+                XML.write(config, "核心设置", "调试模式", "关");
 
-                if (XML.read(config, "Socket", "地址") == null)
-                    XML.write(config, "Socket", "地址", "127.0.0.1");
-                if (XML.read(config, "Socket", "端口") == null)
-                    XML.write(config, "Socket", "端口", "25555");
-                if (XML.read(config, "Socket", "绑定IP") == null)
-                    XML.write(config, "Socket", "绑定IP", "关");
-                if (XML.read(config, "Socket", "编码") == null)
-                    XML.write(config, "Socket", "编码", "ANSI（GBK）");
-                if (XML.read(config, "Socket", "数据包头") == null)
-                    XML.write(config, "Socket", "数据包头", "[Head]");
-                if (XML.read(config, "Socket", "数据包尾") == null)
-                    XML.write(config, "Socket", "数据包尾", "[End]");
+            if (XML.read(config, "Socket", "地址") == null)
+                XML.write(config, "Socket", "地址", "127.0.0.1");
+            if (XML.read(config, "Socket", "端口") == null)
+                XML.write(config, "Socket", "端口", "25555");
+            if (XML.read(config, "Socket", "绑定IP") == null)
+                XML.write(config, "Socket", "绑定IP", "关");
+            if (XML.read(config, "Socket", "编码") == null)
+                XML.write(config, "Socket", "编码", "ANSI（GBK）");
+            if (XML.read(config, "Socket", "数据包头") == null)
+                XML.write(config, "Socket", "数据包头", "[Head]");
+            if (XML.read(config, "Socket", "数据包尾") == null)
+                XML.write(config, "Socket", "数据包尾", "[End]");
 
-                if (XML.read(config, "消息模式", "始终发送消息") == null)
-                    XML.write(config, "消息模式", "始终发送消息", "不！");
-                if (XML.read(config, "消息模式", "发送文本") == null)
-                    XML.write(config, "消息模式", "发送文本", "%player%:%message%");
-                if (XML.read(config, "消息模式", "发送颜色代码") == null)
-                    XML.write(config, "消息模式", "发送颜色代码", "关");
+            if (XML.read(config, "消息模式", "始终发送消息") == null)
+                XML.write(config, "消息模式", "始终发送消息", "不！");
+            if (XML.read(config, "消息模式", "发送文本") == null)
+                XML.write(config, "消息模式", "发送文本", "%player%:%message%");
+            if (XML.read(config, "消息模式", "发送颜色代码") == null)
+                XML.write(config, "消息模式", "发送颜色代码", "关");
 
-                if (XML.read(config, "昵称", "替换发送至服务器") == null)
-                    XML.write(config, "昵称", "替换发送至服务器", "是");
-                if (XML.read(config, "昵称", "替换发送至群") == null)
-                    XML.write(config, "昵称", "替换发送至群", "是");
+            if (XML.read(config, "昵称", "替换发送至服务器") == null)
+                XML.write(config, "昵称", "替换发送至服务器", "是");
+            if (XML.read(config, "昵称", "替换发送至群") == null)
+                XML.write(config, "昵称", "替换发送至群", "是");
 
-                if (XML.read(config, "Mysql", "地址") == null)
-                    XML.write(config, "Mysql", "地址", "127.0.0.1");
-                if (XML.read(config, "Mysql", "端口") == null)
-                    XML.write(config, "Mysql", "端口", "3306");
-                if (XML.read(config, "Mysql", "账户") == null)
-                    XML.write(config, "Mysql", "账户", "root");
-                if (XML.read(config, "Mysql", "密码") == null)
-                    XML.write(config, "Mysql", "密码", "123456");
-                if (XML.read(config, "Mysql", "启用") == null)
-                    XML.write(config, "Mysql", "启用", "关");
+            if (XML.read(config, "Mysql", "地址") == null)
+                XML.write(config, "Mysql", "地址", "127.0.0.1");
+            if (XML.read(config, "Mysql", "端口") == null)
+                XML.write(config, "Mysql", "端口", "3306");
+            if (XML.read(config, "Mysql", "账户") == null)
+                XML.write(config, "Mysql", "账户", "root");
+            if (XML.read(config, "Mysql", "密码") == null)
+                XML.write(config, "Mysql", "密码", "123456");
+            if (XML.read(config, "Mysql", "启用") == null)
+                XML.write(config, "Mysql", "启用", "关");
 
-                if (XML.read(config, "检测", "检测头") == null)
-                    XML.write(config, "检测", "检测头", "#");
-                if (XML.read(config, "检测", "在线人数") == null)
-                    XML.write(config, "检测", "在线人数", "在线人数");
-                if (XML.read(config, "检测", "服务器状态") == null)
-                    XML.write(config, "检测", "服务器状态", "服务器状态");
-                if (XML.read(config, "检测", "绑定文本") == null)
-                    XML.write(config, "检测", "绑定文本", "绑定：");
-                if (XML.read(config, "检测", "发送文本") == null)
-                    XML.write(config, "检测", "发送文本", "服务器：");
-                if (XML.read(config, "检测", "禁言文本") == null)
-                    XML.write(config, "检测", "禁言文本", "禁言：");
-                if (XML.read(config, "检测", "解禁文本") == null)
-                    XML.write(config, "检测", "解禁文本", "解禁：");
-                if (XML.read(config, "检测", "查询玩家ID") == null)
-                    XML.write(config, "检测", "查询玩家ID", "查询：");
-                if (XML.read(config, "检测", "修改玩家ID") == null)
-                    XML.write(config, "检测", "修改玩家ID", "修改：");
-                if (XML.read(config, "检测", "维护文本") == null)
-                    XML.write(config, "检测", "维护文本", "服务器维护");
-                if (XML.read(config, "检测", "打开菜单") == null)
-                    XML.write(config, "检测", "打开菜单", "打开菜单");
-                if (XML.read(config, "检测", "服务器维护文本") == null)
-                    XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！");
-                if (XML.read(config, "检测", "重读配置文件") == null)
-                    XML.write(config, "检测", "重读配置文件", "重读文件");
-                if (XML.read(config, "检测", "内存回收") == null)
-                    XML.write(config, "检测", "内存回收", "内存回收");
-                if (XML.read(config, "检测", "未知指令") == null)
-                    XML.write(config, "检测", "未知指令", "未知指令");
-            }
+            if (XML.read(config, "检测", "检测头") == null)
+                XML.write(config, "检测", "检测头", "#");
+            if (XML.read(config, "检测", "在线人数") == null)
+                XML.write(config, "检测", "在线人数", "在线人数");
+            if (XML.read(config, "检测", "服务器状态") == null)
+                XML.write(config, "检测", "服务器状态", "服务器状态");
+            if (XML.read(config, "检测", "绑定文本") == null)
+                XML.write(config, "检测", "绑定文本", "绑定：");
+            if (XML.read(config, "检测", "发送文本") == null)
+                XML.write(config, "检测", "发送文本", "服务器：");
+            if (XML.read(config, "检测", "禁言文本") == null)
+                XML.write(config, "检测", "禁言文本", "禁言：");
+            if (XML.read(config, "检测", "解禁文本") == null)
+                XML.write(config, "检测", "解禁文本", "解禁：");
+            if (XML.read(config, "检测", "查询玩家ID") == null)
+                XML.write(config, "检测", "查询玩家ID", "查询：");
+            if (XML.read(config, "检测", "修改玩家ID") == null)
+                XML.write(config, "检测", "修改玩家ID", "修改：");
+            if (XML.read(config, "检测", "维护文本") == null)
+                XML.write(config, "检测", "维护文本", "服务器维护");
+            if (XML.read(config, "检测", "打开菜单") == null)
+                XML.write(config, "检测", "打开菜单", "打开菜单");
+            if (XML.read(config, "检测", "昵称") == null)
+                XML.write(config, "检测", "昵称", "昵称：");
+            if (XML.read(config, "检测", "服务器维护文本") == null)
+                XML.write(config, "检测", "服务器维护文本", "服务器正在维护，请等待维护结束！");
+            if (XML.read(config, "检测", "重读配置文件") == null)
+                XML.write(config, "检测", "重读配置文件", "重读文件");
+            if (XML.read(config, "检测", "内存回收") == null)
+                XML.write(config, "检测", "内存回收", "内存回收");
+            if (XML.read(config, "检测", "未知指令") == null)
+                XML.write(config, "检测", "未知指令", "未知指令");
 
             string a;
 
@@ -374,7 +373,7 @@ namespace Color_yr.Minecraft_QQ
             if (XML.read(config, "昵称", "替换发送至服务器") == "开")
                 nick_mode_server = true;
             else
-                fix_mode = false;
+                nick_mode_server = false;
             if (XML.read(config, "昵称", "替换发送至群") == "开")
                 nick_mode_group = true;
             else
@@ -397,13 +396,13 @@ namespace Color_yr.Minecraft_QQ
             mute_message = XML.read(config, "检测", "禁言文本").ToLower();
             unmute_message = XML.read(config, "检测", "解禁文本").ToLower();
             check_id_message = XML.read(config, "检测", "查询玩家ID").ToLower();
-
             rename_id_message = XML.read(config, "检测", "修改玩家ID").ToLower();
             fix_message = XML.read(config, "检测", "维护文本").ToLower();
             fix_send_message = XML.read(config, "检测", "服务器维护文本");
             reload_message = XML.read(config, "检测", "重读配置文件").ToLower();
             gc_message = XML.read(config, "检测", "内存回收").ToLower();
             menu_message = XML.read(config, "检测", "打开菜单").ToLower();
+            nick_message = XML.read(config, "检测", "昵称").ToLower();
             unknow_message = XML.read(config, "检测", "未知指令");
 
             use.group_check();
