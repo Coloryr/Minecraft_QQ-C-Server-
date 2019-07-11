@@ -101,34 +101,23 @@ namespace Color_yr.Minecraft_QQ
         {
             if (use.IsNumber(textBox1.Text) == false)
             {
-                button1.Text = "添加失败";
+                button1.Text = "错误";
                 return;
             }
-            XML.write(config_read.group, "QQ群设置", "绑定群号", textBox1.Text,false);
-            string a;
-            if (checkedListBox1.GetItemChecked(0) == true)
-                a = "开";
-            else
-                a = "关";
-            XML.write(config_read.group, "QQ群设置", "指令", a, false);
-            if (checkedListBox1.GetItemChecked(0) == true)
-                a = "开";
-            else
-                a = "关";
-            XML.write(config_read.group, "QQ群设置", "对话", a, false);
-            if (checkedListBox1.GetItemChecked(0) == true)
-                a = "开";
-            else
-                a = "关";
-            XML.write(config_read.group, "QQ群设置", "主群", a, false);
-            button1.Text = "设置成功";
+            grouplist list = new grouplist();
+            list.group = textBox1.Text;
+            list.commder = checkedListBox1.GetItemChecked(0);
+            list.say = checkedListBox1.GetItemChecked(1);
+            list.main = checkedListBox1.GetItemChecked(2);
+            XML.write_object(config_read.group, "QQ群设置", list);
+            button1.Text = "已添加";
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (use.IsNumber(textBox5.Text) == false)
             {
-                button4.Text = "设置失败";
+                button4.Text = "错误";
                 return;
             }
             XML.write(config_read.config, "Socket", "端口", textBox5.Text, true);
@@ -143,7 +132,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (use.IsNumber(textBox6.Text) == false)
             {
-                button5.Text = "设置失败";
+                button5.Text = "错误";
                 return;
             }
             if (textBox6.Text != null)
@@ -172,7 +161,7 @@ namespace Color_yr.Minecraft_QQ
                 long a;
                 long.TryParse(textBox7.Text,out a);
                 if (a != 0)
-                    config_read.admin_list_send.Add(a);
+                    config_read.Admin_Send = a;
                 button6.Text = "已设置";
             }
         }
@@ -193,7 +182,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (use.IsNumber(textBox10.Text) == false)
             {
-                button8.Text = "设置失败";
+                button8.Text = "错误";
                 return;
             }
             XML.write(config_read.config, "Mysql", "地址", textBox9.Text, true);

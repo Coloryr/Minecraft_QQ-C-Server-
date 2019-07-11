@@ -50,10 +50,10 @@ namespace Color_yr.Minecraft_QQ
         public static string message_m;
         public static string commder_m;
 
-        public static long GroupSet_Main;
+        public static long GroupSet_Main = 0;
+        public static long Admin_Send = 0;
 
         public static Dictionary<long, grouplist> group_list = new Dictionary<long, grouplist> { };
-        public static List<long> admin_list_send = new List<long> { };
 
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
 
@@ -253,6 +253,7 @@ namespace Color_yr.Minecraft_QQ
                     player_m = a;
                 else
                     player_m = null;
+                long.TryParse(XML.read_memory(player_m, "管理员", "发送给的人"), out Admin_Send);
             }
 
             if (File.Exists(path + message) == false)
@@ -315,8 +316,6 @@ namespace Color_yr.Minecraft_QQ
             }
 
             logs.Log_write("[INFO][Config]读取配置文件中");
-
-
 
             if (XML.read(message, "核心配置", "启用") == "是")
                 message_enable = true;

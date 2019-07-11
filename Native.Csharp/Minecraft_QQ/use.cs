@@ -86,7 +86,6 @@ namespace Color_yr.Minecraft_QQ
             else
                 return a.Substring(x);
         }
-
         public static bool IsNumber(string str)
         {
             for (int i = 0; i < str.Length; i++)
@@ -98,7 +97,6 @@ namespace Color_yr.Minecraft_QQ
             }
             return false;
         }
-
         public static string remove_pic(string a)
         {
             while (a.IndexOf("[CQ:image") != -1)
@@ -115,7 +113,6 @@ namespace Color_yr.Minecraft_QQ
             }
             return a;
         }
-
         public static string get_at(string a)
         {
             while (a.IndexOf("CQ:at,qq=") != -1)
@@ -197,7 +194,6 @@ namespace Color_yr.Minecraft_QQ
                 return true;
             return false;
         }
-
         public static bool check_mute(string player)
         {
             if (config_read.Mysql_mode == true)
@@ -210,7 +206,6 @@ namespace Color_yr.Minecraft_QQ
                 }
             return false;
         }
-
         public static bool check_admin(string player)
         {
             if (XML.read_memory(config_read.player_m, "QQ" + player.ToLower(), "管理员") == "是")
@@ -224,7 +219,6 @@ namespace Color_yr.Minecraft_QQ
             else
                 return XML.read_memory(config_read.player_m, "QQ" + player_qq, "绑定");
         }
-
         public static string player_setid(long fromQQ, string msg)
         {
             string player;
@@ -260,11 +254,10 @@ namespace Color_yr.Minecraft_QQ
                         sr.Close();
                     }
 
-                    string qq_admin = XML.read_memory(config_read.player_m, "管理员", "发送给的人");
-                    if (qq_admin != null)
+                    if (config_read.Admin_Send != 0)
                     {
                         QQInfo qqInfo = Common.CqApi.GetQQInfo(fromQQ);
-                        Common.CqApi.SendPrivateMessage(long.Parse(qq_admin), "玩家[" + qqInfo.Nick + "]绑定了ID：[" + player_name + "]");
+                        Common.CqApi.SendPrivateMessage(config_read.Admin_Send, "玩家[" + qqInfo.Nick + "]绑定了ID：[" + player_name + "]");
                     }
                     return "绑定ID：" + player_name + "成功！";
                 }
@@ -439,7 +432,6 @@ namespace Color_yr.Minecraft_QQ
                 return config_read.fix_send_message;
             return null;
         }
-
         public static bool GC_now()
         {
             try
@@ -454,7 +446,6 @@ namespace Color_yr.Minecraft_QQ
                 return false;
             }
         }
-
         public static bool commder_check(long fromGroup, string msg, long fromQQ)
         {
             if (XML.read_memory(config_read.commder_m, "核心配置", "启用") != "是")
@@ -515,7 +506,6 @@ namespace Color_yr.Minecraft_QQ
             }
             return false;
         }
-
         public static void group_check()
         {
             if (File.Exists(config_read.path + config_read.group) == false)
@@ -525,12 +515,12 @@ namespace Color_yr.Minecraft_QQ
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
-                XmlNode group = xn.SelectSingleNode("绑定群号");
-                XmlNode commder = xn.SelectSingleNode("指令");
+                XmlNode group = xn.SelectSingleNode("群号");
+                XmlNode commder = xn.SelectSingleNode("命令");
                 XmlNode say = xn.SelectSingleNode("对话");
                 XmlNode main = xn.SelectSingleNode("主群");
                 if (group != null && commder != null && say != null 
-                    && main != null && IsNumber(group.FirstChild.InnerText) == false)
+                    && main != null && IsNumber(group.FirstChild.InnerText) == true)
                 {
                     grouplist list = new grouplist();
                     bool a = false;

@@ -68,16 +68,27 @@ namespace Color_yr.Minecraft_QQ
                     XmlDocument xmldoc = new XmlDocument();
                     xmldoc.Load(config_read.path + file);
 
-                    XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
-                    if (node == null)
+                    if (use_replace == false)
                     {
-                        node = xmldoc.CreateElement(type);
+                        XmlElement books = xmldoc.DocumentElement;
+                        XmlElement xml = xmldoc.CreateElement(type);
+                        books.AppendChild(xml);
+                        XmlElement msgType = xmldoc.CreateElement(attribute);
+                        msgType.InnerText = data;
+                        xml.AppendChild(msgType);
                     }
-                    XmlElement xesub1 = xmldoc.CreateElement(attribute);
-                    xesub1.InnerText = data;
-                    node.AppendChild(xesub1);
-
-                    xmldoc.DocumentElement.AppendChild(node);
+                    else
+                    {
+                        XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
+                        if (node == null)
+                        {
+                            node = xmldoc.CreateElement(type);
+                        }
+                        XmlElement xesub1 = xmldoc.CreateElement(attribute);
+                        xesub1.InnerText = data;
+                        node.AppendChild(xesub1);
+                        xmldoc.DocumentElement.AppendChild(node);
+                    }
                     xmldoc.Save(config_read.path + file);
                 }
             }
@@ -88,6 +99,71 @@ namespace Color_yr.Minecraft_QQ
                 {
                     CreateFile(file, 0);
                     write(file, type, attribute, data, use_replace);
+                }
+            }
+        }
+        /// <summary>
+        /// //增加元素到XML文件
+        /// </summary>
+        /// <param name="fine">文件名</param>
+        /// <param name="name">类型名</param>
+        /// <param name="obj">类型</param>
+        public static void write_object(string file, string name, grouplist obj)
+        {
+            if (File.Exists(config_read.path + file) == false)
+                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            try
+            {
+                /*
+                string a = read(file, type, attribute);
+                if (a != null && use_replace == true)
+                    setXml(file, type, attribute, data);
+                else
+                {
+                */
+                ///导入XML文件
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(config_read.path + file);
+
+                XmlElement books = xmldoc.DocumentElement;
+                XmlElement xml = xmldoc.CreateElement(name);
+                books.AppendChild(xml);
+
+                XmlElement group = xmldoc.CreateElement("群号");
+                group.InnerText = obj.group;
+                xml.AppendChild(group);
+
+                XmlElement commder = xmldoc.CreateElement("命令");
+                if (obj.commder == true)
+                    commder.InnerText = "开";
+                else
+                    commder.InnerText = "关";
+                xml.AppendChild(commder);
+
+                XmlElement say = xmldoc.CreateElement("对话");
+                if (obj.say == true)
+                    say.InnerText = "开";
+                else
+                    say.InnerText = "关";
+                xml.AppendChild(say);
+
+                XmlElement main = xmldoc.CreateElement("主群");
+                if (obj.main == true)
+                    main.InnerText = "开";
+                else
+                    main.InnerText = "关";
+                xml.AppendChild(main);
+
+                xmldoc.Save(config_read.path + file);
+                //}
+            }
+            catch (Exception)
+            {
+                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
+                    "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    CreateFile(file, 0);
+                    write_object(file, name, obj);
                 }
             }
         }
