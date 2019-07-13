@@ -6,9 +6,9 @@ namespace Color_yr.Minecraft_QQ
 {
     class message
     {
-        public static messagelist Message_re(string read)
+        public static message_send Message_re(string read)
         {
-            messagelist messagelist = new messagelist();
+            message_send messagelist = new message_send();
             try
             {
                 JObject jsonData = JObject.Parse(read);
@@ -26,37 +26,37 @@ namespace Color_yr.Minecraft_QQ
 
         public static void Message(string read)
         {
-            while (read.IndexOf(config_read.data_Head) == 0 && read.IndexOf(config_read.data_End) != -1)
+            while (read.IndexOf(socket_config.data_Head) == 0 && read.IndexOf(socket_config.data_End) != -1)
             {
-                string buff = use.get_string(read, config_read.data_Head, config_read.data_End);
+                string buff = use.get_string(read, socket_config.data_Head, socket_config.data_End);
                 buff = use.RemoveColorCodes(buff);
-                messagelist messagelist = Message_re(buff);
-                if (messagelist.message == null)
+                message_send message = Message_re(buff);
+                if (message.message == null)
                     return;
-                if (use.check_mute(messagelist.player) == true)
+                if (use.check_mute(message.player) == true)
                     return;
-                if (messagelist.is_commder == false && messagelist.group == "group")
+                if (message.is_commder == false && message.group == "group")
                 {
-                    if (config_read.nick_mode_group == true)
-                        messagelist.message = messagelist.message.Replace(messagelist.player, use.get_nick(messagelist.player));
-                    Dictionary<long, grouplist>.ValueCollection valueCol = config_read.group_list.Values;
-                    foreach (grouplist value in valueCol)
+                    if (main_config.nick_group == true)
+                        message.message = message.message.Replace(message.player, use.get_nick(message.player));
+                    Dictionary<long, group_save>.ValueCollection valueCol = config_file.group_list.Values;
+                    foreach (group_save value in valueCol)
                     {
                         if (value.say == true)
-                            Common.CqApi.SendGroupMessage(value.group_l, messagelist.message);
+                            Common.CqApi.SendGroupMessage(value.group_l, message.message);
                     }
                 }
                 else
                 {
-                    long.TryParse(messagelist.group, out long group);
-                    if (config_read.group_list.ContainsKey(group) == true)
+                    long.TryParse(message.group, out long group);
+                    if (config_file.group_list.ContainsKey(group) == true)
                     {
-                        grouplist list = config_read.group_list[group];
-                        Common.CqApi.SendGroupMessage(list.group_l, messagelist.message);
+                        group_save list = config_file.group_list[group];
+                        Common.CqApi.SendGroupMessage(list.group_l, message.message);
                     }
                 }
-                int i = read.IndexOf(config_read.data_End);
-                read = read.Substring(i + config_read.data_End.Length);
+                int i = read.IndexOf(socket_config.data_End);
+                read = read.Substring(i + socket_config.data_End.Length);
             }
         }
     }

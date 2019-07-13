@@ -20,10 +20,7 @@ namespace Color_yr.Minecraft_QQ
         /// 主群群号
         /// </summary>
         public static long GroupSet_Main = 0;
-        /// <summary>
-        /// 发送绑定信息群号
-        /// </summary>
-        public static long Admin_Send = 0;
+
         /// <summary>
         /// 打开菜单
         /// </summary>
@@ -48,18 +45,23 @@ namespace Color_yr.Minecraft_QQ
             else
                 config_read.read_group();
             if (File.Exists(path + config_file.player) == false)
-                XML.write(path + config_file.player, "测试", "测试", "测试");
+                XML.write(path + config_file.player, "禁止绑定", "ID", "Color_yr");
             else
                 config_read.read_player();
             if (File.Exists(path + config_file.message) == false)
             {
-                XML.write(path + config_file.message, "自动回复", "服务器菜单", "服务器查询菜单：\r\n【" + XML.read(config_file.config, "检测", "绑定文本")
-                    + "】可以绑定你的游戏ID。\r\n【" + XML.read(path + config_file.config, "检测", "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
-                    + XML.read(path + config_file.config, "检测", "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
-                    + XML.read(path + config_file.config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
-                    + XML.read(path + config_file.config, "检测", "绑定文本") + "ID，来绑定ID）");
+                message_save message = new message_save();
+                message.check = "服务器菜单";
+                message.message = "服务器查询菜单：\r\n【" + XML.read(config_file.config, "检测", "绑定文本")
+                    + "】可以绑定你的游戏ID。\r\n【" + check_config.head + check_config.online_players
+                    + "】可以查询服务器在线人数。\r\n【" + check_config.head + check_config.online_servers
+                    + "】可以查询服务器是否在运行。\r\n【" + check_config.head + check_config.send_message
+                    + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
+                    + check_config.head + check_config.player_setid + "ID，来绑定ID）";
+                config_write.write_message(path + config_file.message, message);
             }
             else
+                config_read.read_message();
 
             if (File.Exists(path + config_file.commder) == false)
             {
@@ -93,6 +95,9 @@ namespace Color_yr.Minecraft_QQ
                 commder.parameter = false;
                 config_write.write_commder(path + config_file.commder, commder);
             }
+            else
+                config_read.read_commder();
+
             if (config_file.group_list.Count == 0)
             {
                 setform frm = new setform();
@@ -119,25 +124,25 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
 
-            if (Mysql_mode == true)
+            if (mysql_config.enable == true)
             {
 
                 logs.Log_write("[INFO][Mysql]正在链接Mysql");
                 if (Mysql_user.mysql_start() == true)
                 {
-                    Mysql_mode = true;
+                    mysql_config.enable = true;
                     Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
                     logs.Log_write("[INFO][Mysql]Mysql已连接");
                 }
                 else
                 {
-                    Mysql_mode = false;
+                    mysql_config.enable = false;
                     Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql错误，请检查");
                     logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
                 }
             }
             else
-                Mysql_mode = false;
+                mysql_config.enable = false;
             socket.Start_socket();
         }
         public static void PrivateMessage(long fromQQ, string msg)
@@ -146,41 +151,34 @@ namespace Color_yr.Minecraft_QQ
             string msg_copy = use.CQ_code(msg);
             string msg_low = msg.ToLower();
             logs.Log_write("私聊消息" + "[QQ:" + fromQQ.ToString() + "]" + msg_copy);
-            if (msg_low.IndexOf(config_read.head) == 0)
+            if (msg_low.IndexOf(check_config.head) == 0)
             {
-                msg_low = msg_low.Replace(config_read.head, "");
-                if (msg_low.IndexOf(config_read.player_setid_message) == 0)
+                msg_low = msg_low.Replace(check_config.head, "");
+                if (msg_low.IndexOf(check_config.player_setid) == 0)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_setid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.mute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low.IndexOf(admin_config.mute) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_mute(msg));
-                else if (msg_low.IndexOf(config_read.unmute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low.IndexOf(admin_config.unmute) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_unmute(msg));
-                else if (msg_low.IndexOf(config_read.check_id_message) == 0)
+                else if (msg_low.IndexOf(admin_config.check) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_checkid(fromQQ, msg));
-                else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low.IndexOf(admin_config.rename) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.player_rename(msg));
-                else if (msg_low == config_read.fix_message && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low == admin_config.fix && use.check_admin(fromQQ.ToString()) == true)
                     Common.CqApi.SendPrivateMessage(fromQQ, use.fix_mode_change());
-                else if (msg_low == config_read.menu_message && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low == admin_config.menu && use.check_admin(fromQQ.ToString()) == true)
                 {
                     Common.CqApi.SendPrivateMessage(fromQQ, "已打开，请前往后台查看");
                     OpenSettingForm();
                 }
-                else if (msg_low == config_read.reload_message && use.check_admin(fromQQ.ToString()) == true)
+                else if (msg_low == admin_config.reload && use.check_admin(fromQQ.ToString()) == true)
                 {
                     Common.CqApi.SendPrivateMessage(fromQQ, "开始重读配置文件");
                     config_read.read_config();
                     Common.CqApi.SendPrivateMessage(fromQQ, "重读完成");
                 }
-                else if (msg_low == config_read.gc_message && use.check_admin(fromQQ.ToString()) == true)
-                {
-                    if (use.GC_now() == true)
-                        Common.CqApi.SendPrivateMessage(fromQQ, "已清理内存");
-                    else
-                        Common.CqApi.SendPrivateMessage(fromQQ, "内存清理失败-请看日志");
-                }
-                else if (config_read.unknow_message != "" && config_read.unknow_message != null)
-                    Common.CqApi.SendGroupMessage(fromQQ, config_read.unknow_message);
+                else if (string.IsNullOrEmpty(message_config.unknow) != false)
+                    Common.CqApi.SendGroupMessage(fromQQ, message_config.unknow);
             }
         }
 
@@ -196,22 +194,20 @@ namespace Color_yr.Minecraft_QQ
             string msg_low = msg.ToLower();
             logs.Log_write('[' + fromGroup.ToString() + ']' + "[QQ:" + fromQQ.ToString() + "]:" + msg);
             // 处理群消息。
-            grouplist list = null;
-            if (config_read.group_list.ContainsKey(fromGroup) == true)
-            {
-                list = config_read.group_list[fromGroup];
-            }
+            group_save list = null;
+            if (config_file.group_list.ContainsKey(fromGroup) == true)
+                list = config_file.group_list[fromGroup];
             if (list != null)
             {
-                if (config_read.allways_send == true && config_read.fix_mode == false && socket.ready == true && list.say == true)
+                if (main_config.allways_send == true && main_config.fix_mode == false && socket.ready == true && list.say == true)
                 {
                     string play_name = use.check_player_name(fromQQ.ToString());
                     if (play_name != null && use.check_mute(play_name) == false)
                     {
                         string send;
                         string msg_copy = msg;
-                        send = config_read.send_text;
-                        if (config_read.nick_mode_server == true)
+                        send = message_config.send_text;
+                        if (main_config.nick_server == true)
                             send = send.Replace("%player%", play_name);
                         else
                             send = send.Replace("%player%", use.get_nick(play_name));
@@ -222,27 +218,27 @@ namespace Color_yr.Minecraft_QQ
                                 msg_copy = use.anno(msg_copy);
                             else
                             {
-                                if (config_read.color_code == false)
+                                if (main_config.color_code == false)
                                     msg_copy = use.RemoveColorCodes(msg_copy);
                                 msg_copy = use.get_at(msg_copy);
                                 msg_copy = use.CQ_code(msg_copy);
                             }
                             send = send.Replace("%message%", use.remove_pic(msg_copy));
-                            messagelist messagelist = new messagelist();
+                            message_send messagelist = new message_send();
                             messagelist.group = fromGroup.ToString();
                             messagelist.message = "说话" + send;
                             socket.Send(messagelist);
                         }
                     }
                 }
-                if (msg_low.IndexOf(config_read.head) == 0 && list.commder == true)
+                if (msg_low.IndexOf(check_config.head) == 0 && list.commder == true)
                 {
-                    msg_low = use.ReplaceFirst(msg_low, config_read.head, "");
-                    if (config_read.allways_send == false && msg_low.IndexOf(config_read.send_message) == 0)
+                    msg_low = use.ReplaceFirst(msg_low, check_config.head, "");
+                    if (main_config.allways_send == false && msg_low.IndexOf(check_config.send_message) == 0)
                     {
                         if (list.say == false)
                             Common.CqApi.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
-                        else if (config_read.fix_mode == false)
+                        else if (main_config.fix_mode == false)
                         {
                             if (socket.ready == true)
                             {
@@ -253,31 +249,32 @@ namespace Color_yr.Minecraft_QQ
                                     {
                                         string send;
                                         string msg_copy = msg;
-                                        send = config_read.send_text;
-                                        if (config_read.nick_mode_server == true)
+                                        send = message_config.send_text;
+                                        if (main_config.nick_server == true)
                                             send = send.Replace("%player%", play_name);
                                         else
                                             send = send.Replace("%player%", use.get_nick(play_name));
-                                        msg_copy = msg_copy.Replace(config_read.send_text, "");
+                                        msg_copy = msg_copy.Replace(check_config.send_message, "");
                                         msg_copy = use.remove_pic(msg_copy);
                                         if (msg_copy != "")
                                         {
-                                            if (config_read.color_code == false)
+                                            if (main_config.color_code == false)
                                                 msg_copy = use.RemoveColorCodes(msg_copy);
                                             msg_copy = use.get_at(msg_copy);
                                             msg_copy = use.CQ_code(msg_copy);
-                                            int temp = config_read.send_message.Length + config_read.head.Length;
+                                            int temp = check_config.send_message.Length + check_config.head.Length;
                                             msg_copy = msg_copy.Substring(temp - 1, msg_copy.Length - temp + 1);
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                            messagelist messagelist = new messagelist();
+                                            message_send messagelist = new message_send();
                                             messagelist.group = "group";
                                             messagelist.message = "说话" + send;
                                             socket.Send(messagelist);
                                         }
                                     }
                                     else
-                                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "检测到你没有绑定服务器ID，发送：" + config_read.player_setid_message + " [ID]来绑定，如：" +
-                                        "\n" + config_read.player_setid_message + " Color_yr");
+                                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) 
+                                            + "检测到你没有绑定服务器ID，发送：" + check_config.head + check_config.player_setid 
+                                            + "[ID]来绑定，如：" + "\n" + check_config.head + check_config.player_setid + " Color_yr");
                                 }
                                 catch (InvalidCastException e)
                                 {
@@ -288,17 +285,17 @@ namespace Color_yr.Minecraft_QQ
                                 Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
                         }
                         else
-                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + config_read.fix_send_message);
+                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + message_config.fix_send);
                         return true;
                     }
-                    else if (msg_low == config_read.online_players_message)
+                    else if (msg_low == check_config.online_players)
                     {
                         string test = use.online(fromGroup);
                         if (test != null)
                             Common.CqApi.SendGroupMessage(fromGroup, test);
                         return true;
                     }
-                    else if (msg_low == config_read.online_servers_message)
+                    else if (msg_low == check_config.online_servers)
                     {
                         string test = use.server(fromGroup);
                         if (test != null)
@@ -306,58 +303,50 @@ namespace Color_yr.Minecraft_QQ
                         return true;
                     }
 
-                    else if (msg_low.IndexOf(config_read.player_setid_message) == 0)
+                    else if (msg_low.IndexOf(check_config.player_setid) == 0)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(config_read.mute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.menu) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(config_read.unmute_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.unmute) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(config_read.check_id_message) == 0)
+                    else if (msg_low.IndexOf(admin_config.check) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(config_read.rename_id_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.rename) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(msg));
                         return true;
                     }
-                    else if (msg_low == config_read.fix_message && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.fix && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
                         return true;
                     }
-                    else if (msg_low == config_read.menu_message && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.menu && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                         OpenSettingForm();
                         return true;
                     }
-                    else if (msg_low == config_read.reload_message && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.reload && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read.read_config();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return true;
                     }
-                    else if (msg_low == config_read.gc_message && use.check_admin(fromQQ.ToString()) == true)
-                    {
-                        if (use.GC_now() == true)
-                            Common.CqApi.SendGroupMessage(fromGroup, "已清理内存");
-                        else
-                            Common.CqApi.SendGroupMessage(fromGroup, "内存清理失败-请看日志");
-                        return true;
-                    }
-                    else if (msg_low.IndexOf(config_read.nick_message) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.nick) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.set_nick(msg));
                         return true;
@@ -365,15 +354,18 @@ namespace Color_yr.Minecraft_QQ
 
                     if (use.commder_check(fromGroup, msg_low, fromQQ) == true) return true;
 
-                    string message = XML.read_memory(config_read.message_m, "自动回复消息", msg_low);
-                    if (config_read.message_enable == true && message != null)
+                    if (main_config.message_enable && config_file.message_list.ContainsKey(msg_low) == true)
                     {
-                        Common.CqApi.SendGroupMessage(fromGroup, message);
-                        return true;
+                        message_save message = config_file.message_list[msg_low];
+                        if (string.IsNullOrEmpty(message.message) == false)
+                        {
+                            Common.CqApi.SendGroupMessage(fromGroup, message.message);
+                            return true;
+                        }
                     }
-                    if (config_read.unknow_message != "" && config_read.unknow_message != null)
-                    {
-                        Common.CqApi.SendGroupMessage(fromGroup, config_read.unknow_message);
+                    if (string.IsNullOrEmpty(message_config.unknow) != false)
+                    { 
+                        Common.CqApi.SendGroupMessage(fromGroup, message_config.unknow);
                         return true;
                     }
                 }

@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Color_yr.Minecraft_QQ
 {
-    public class config_read
+    class config_read
     {  
         public static void read_config()
         {
@@ -105,6 +105,9 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl2 = xn.SelectSingleNode("昵称");
                             if (xnLurl2 != null)
                                 admin_config.nick = xnLurl2.InnerText;
+                            xnLurl2 = xn.SelectSingleNode("发送给的人");
+                            if (xnLurl2 != null)
+                                long.TryParse(xnLurl2.InnerText, out admin_config.Admin_Send);
                             break;
                         case "Socket":
                             XmlNode xnLurl3;
@@ -153,12 +156,32 @@ namespace Color_yr.Minecraft_QQ
                 logs.Log_write("[ERROR][Config]" + e.Message);
             }
         }
+        public static void read_cant_bind()
+        {
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(Minecraft_QQ.path + config_file.player);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            config_file.cant_bind.Clear();
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
+            {
+                if (xn.Name == "禁止绑定")
+                {
+                    foreach (XmlNode xn1 in xn)//遍历所有子节点
+                    {
+                        XmlNode ID = xn.SelectSingleNode("ID");
+                        if (config_file.cant_bind.Contains(ID.InnerText) == false)
+                            config_file.cant_bind.Add(ID.InnerText);
+                    }
+                    return;
+                }
+            }
+        }
         public static void read_player()
         {
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(Minecraft_QQ.path + config_file.player);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
-            config_file.group_list.Clear();
+            config_file.player_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
                 XmlNode id = xn.SelectSingleNode("绑定ID");
@@ -183,6 +206,16 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
         }
+        public static player_save read_player_form_id(string id)
+        {
+            Dictionary<long, player_save>.ValueCollection valueCol = config_file.player_list.Values;
+            foreach (player_save value in valueCol)
+            {
+                if (value.player == id)
+                    return value;
+            }
+            return null;
+        }
         public static void read_group()
         {
             XmlDocument xmldoc = new XmlDocument();
@@ -199,7 +232,7 @@ namespace Color_yr.Minecraft_QQ
                     && main != null && use.IsNumber(group.FirstChild.InnerText) == true)
                 {
                     group_save list = new group_save();
-                    list.group_s = group.FirstChild.InnerText;
+                    list.group_s = group.FirstChild.InnerText.ToLower();
                     long.TryParse(list.group_s, out list.group_l);
                     if (config_file.group_list.ContainsKey(list.group_l) == false)
                     {
@@ -219,28 +252,41 @@ namespace Color_yr.Minecraft_QQ
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(Minecraft_QQ.path + config_file.message);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
-            config_file.group_list.Clear();
+            config_file.message_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
-                XmlNode group = xn.SelectSingleNode("群号");
-                XmlNode commder = xn.SelectSingleNode("命令");
-                XmlNode say = xn.SelectSingleNode("对话");
-                XmlNode main = xn.SelectSingleNode("主群");
-                if (group != null && commder != null && say != null
-                    && main != null && use.IsNumber(group.FirstChild.InnerText) == true)
+                XmlNode check = xn.SelectSingleNode("检测");
+                XmlNode msg = xn.SelectSingleNode("回复");
+                if (check != null && msg != null)
                 {
-                    group_save list = new group_save();
-                    list.group_s = group.FirstChild.InnerText;
-                    long.TryParse(list.group_s, out list.group_l);
-                    if (config_file.group_list.ContainsKey(list.group_l) == false)
+                    message_save message = new message_save();
+                    message.check = check.InnerText;
+                    if (config_file.message_list.ContainsKey(message.check) == false)
                     {
-                        list.commder = commder.FirstChild.InnerText == "开" ? true : false;
-                        list.say = say.FirstChild.InnerText == "开" ? true : false;
-                        bool temp = main.FirstChild.InnerText == "开" ? true : false;
-                        list.main = temp;
-                        if (temp == true && Minecraft_QQ.GroupSet_Main == 0)
-                            Minecraft_QQ.GroupSet_Main = list.group_l;
-                        config_file.group_list.Add(list.group_l, list);
+                        message.message = msg.InnerText;
+                        config_file.message_list.Add(message.check, message);
+                    }
+                }
+            }
+        }
+        public static void read_commder()
+        {
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(Minecraft_QQ.path + config_file.commder);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            config_file.message_list.Clear();
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
+            {
+                XmlNode check = xn.SelectSingleNode("检测");
+                XmlNode msg = xn.SelectSingleNode("回复");
+                if (check != null && msg != null)
+                {
+                    message_save message = new message_save();
+                    message.check = check.InnerText;
+                    if (config_file.message_list.ContainsKey(message.check) == false)
+                    {
+                        message.message = msg.InnerText;
+                        config_file.message_list.Add(message.check, message);
                     }
                 }
             }

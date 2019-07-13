@@ -25,7 +25,7 @@ namespace Color_yr.Minecraft_QQ
         public static bool mysql_start()
         {
             ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;",
-                Mysql_IP, Mysql_Port, Mysql_User, Mysql_Password);
+                mysql_config.IP, mysql_config.Port, mysql_config.User, mysql_config.Password);
             conn = new MySqlConnection(ConnectString);
 
             if (mysql_add_table(Mysql_player) == false) return false;

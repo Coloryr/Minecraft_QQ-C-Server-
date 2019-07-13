@@ -36,6 +36,14 @@ namespace Color_yr.Minecraft_QQ
         /// 设置的群数据储存
         /// </summary>
         public static Dictionary<long, group_save> group_list = new Dictionary<long, group_save> { };
+        /// <summary>
+        /// 设置的群数据储存
+        /// </summary>
+        public static Dictionary<string, message_save> message_list = new Dictionary<string, message_save> { };
+        /// <summary>
+        /// 禁止绑定数据储存
+        /// </summary>
+        public static List<string> cant_bind = new List<string> { };
     }
     class main_config
     {
@@ -140,6 +148,10 @@ namespace Color_yr.Minecraft_QQ
         /// 昵称
         /// </summary>
         public static string nick = "昵称：";
+        /// <summary>
+        /// 发送绑定信息群号
+        /// </summary>
+        public static long Admin_Send = 0;
     }
     class socket_config
     {

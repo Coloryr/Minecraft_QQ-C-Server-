@@ -49,24 +49,24 @@ namespace Color_yr.Minecraft_QQ
         /// <summary>
         /// //增加元素到XML文件
         /// </summary>
-        /// <param name="fine">文件名</param>
+        /// <param name="path">文件(带路径)</param>
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public static void write(string file, string type, string attribute, string data)
+        public static void write(string path, string type, string attribute, string data)
         {
-            if (File.Exists(config_read.path + file) == false)
-                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            if (File.Exists(path) == false)
+                CreateFile(path, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
-                string a = read(file, type, attribute);
+                string a = read(path, type, attribute);
                 if (a != null)
-                    setXml(file, type, attribute, data);
+                    setXml(path, type, attribute, data);
                 else
                 {
                     ///导入XML文件
                     XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(config_read.path + file);
+                    xmldoc.Load(path);
                     XmlElement node = (XmlElement)xmldoc.SelectSingleNode("config/" + type);
                     if (node == null)
                         node = xmldoc.CreateElement(type);
@@ -74,7 +74,7 @@ namespace Color_yr.Minecraft_QQ
                     xesub1.InnerText = data;
                     node.AppendChild(xesub1);
                     xmldoc.DocumentElement.AppendChild(node);
-                    xmldoc.Save(config_read.path + file);
+                    xmldoc.Save(path);
                 }
             }
             catch (Exception)
@@ -82,8 +82,8 @@ namespace Color_yr.Minecraft_QQ
                 if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
                     "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    CreateFile(file, 0);
-                    write(file, type, attribute, data);
+                    CreateFile(path, 0);
+                    write(path, type, attribute, data);
                 }
             }
         }
@@ -91,41 +91,18 @@ namespace Color_yr.Minecraft_QQ
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="fine">文件名</param>
+        /// <param name="path">文件(带路径)</param>
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
-        public static string read(string file, string type, string attribute)
+        public static string read(string path, string type, string attribute)
         {
             string temp = null;
-            if (File.Exists(config_read.path + file) == false)
-                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            if (File.Exists(path) == false)
+                CreateFile(path, 0);//创建该文件，如果路径文件夹不存在，则报错。
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(config_read.path + file);
-
-                XmlNode xnP = xmlDoc.SelectSingleNode("config/"+ type + "/" + attribute);
-                temp = xnP.InnerText;
-                if (temp == "") temp = null;
-            }
-            catch (Exception)
-            { }
-            return temp;
-        }
-
-        /// <summary>
-        /// 查询-从字符串中
-        /// </summary>
-        /// <param name="fine">文件字符串</param>
-        /// <param name="type">类型名</param>
-        /// <param name="attribute">属性名</param>
-        public static string read_memory(string file, string type, string attribute)
-        {
-            string temp = null;
-            try
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(file);
+                xmlDoc.Load(path);
 
                 XmlNode xnP = xmlDoc.SelectSingleNode("config/"+ type + "/" + attribute);
                 temp = xnP.InnerText;

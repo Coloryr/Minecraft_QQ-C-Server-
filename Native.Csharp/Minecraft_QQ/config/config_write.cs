@@ -106,6 +106,9 @@ namespace Color_yr.Minecraft_QQ
                 Text = xmldoc.CreateElement("昵称");
                 Text.InnerText = admin_config.nick;
                 Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("发送给的人");
+                Text.InnerText = admin_config.Admin_Send.ToString();
+                Child.AppendChild(Text);
 
                 Child = xmldoc.CreateElement("Socket");
                 root.AppendChild(Child);
@@ -208,36 +211,64 @@ namespace Color_yr.Minecraft_QQ
                 XML.CreateFile(path, 0);
             try
             {
-                ///导入XML文件
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
+                if (XML.read(path, "玩家", "绑定ID") != null)
+                {
+                    ///导入XML文件
 
-                //根节点
-                XmlElement root = xmldoc.DocumentElement;
-                //子节点
-                XmlElement Child;
-                //保存的值
-                XmlElement Text;
-                Child = xmldoc.CreateElement("玩家");
-                root.AppendChild(Child);
+                    XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+                    foreach (XmlNode xn in nodeList)//遍历所有子节点
+                    {
+                        //查找玩家
+                        if (xn.Name == "玩家")
+                        {
+                            XmlNode xnLurl = xn.SelectSingleNode("QQ号");
+                            if (xnLurl.InnerText == obj.qq.ToString())
+                            {
+                                xnLurl = xn.SelectSingleNode("绑定ID");
+                                xnLurl.InnerText = obj.player;
+                                xnLurl = xn.SelectSingleNode("昵称");
+                                xnLurl.InnerText = obj.nick;
+                                xnLurl = xn.SelectSingleNode("禁言");
+                                xnLurl.InnerText = obj.mute ? "开" : "关";
+                                xnLurl = xn.SelectSingleNode("管理员");
+                                xnLurl.InnerText = obj.admin ? "开" : "关";
+                                xmldoc.Save(path);
+                                return;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //根节点
+                    XmlElement root = xmldoc.DocumentElement;
+                    //子节点
+                    XmlElement Child;
+                    //保存的值
+                    XmlElement Text;
+                    Child = xmldoc.CreateElement("玩家");
+                    root.AppendChild(Child);
 
-                Text = xmldoc.CreateElement("绑定ID");
-                Text.InnerText = obj.player;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("昵称");
-                Text.InnerText = obj.nick;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("QQ号");
-                Text.InnerText = obj.qq.ToString();
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("禁言");
-                Text.InnerText = obj.mute ? "开" : "关";
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("管理员");
-                Text.InnerText = obj.admin ? "开" : "关";
-                Child.AppendChild(Text);
+                    Text = xmldoc.CreateElement("绑定ID");
+                    Text.InnerText = obj.player;
+                    Child.AppendChild(Text);
+                    Text = xmldoc.CreateElement("昵称");
+                    Text.InnerText = obj.nick;
+                    Child.AppendChild(Text);
+                    Text = xmldoc.CreateElement("QQ号");
+                    Text.InnerText = obj.qq.ToString();
+                    Child.AppendChild(Text);
+                    Text = xmldoc.CreateElement("禁言");
+                    Text.InnerText = obj.mute ? "开" : "关";
+                    Child.AppendChild(Text);
+                    Text = xmldoc.CreateElement("管理员");
+                    Text.InnerText = obj.admin ? "开" : "关";
+                    Child.AppendChild(Text);
 
-                xmldoc.Save(path);
+                    xmldoc.Save(path);
+                }
             }
             catch (Exception)
             {

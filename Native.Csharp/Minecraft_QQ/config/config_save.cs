@@ -18,9 +18,9 @@ namespace Color_yr.Minecraft_QQ
     {
         public string player;
         public string nick;
-        public long qq;
-        public bool mute;
-        public bool admin;
+        public long qq = 0;
+        public bool mute = false;
+        public bool admin = false;
     }
     /// <summary>
     /// 服务器命令储存格式
@@ -34,9 +34,9 @@ namespace Color_yr.Minecraft_QQ
     {
         public string check;
         public string commder;
-        public bool player_use;   
-        public bool player_send;
-        public bool parameter;
+        public bool player_use = false;   
+        public bool player_send = false;
+        public bool parameter = false;
     }
     /// <summary>
     /// 发送/接受数据格式
@@ -50,7 +50,7 @@ namespace Color_yr.Minecraft_QQ
         public string group;
         public string player;
         public string message;
-        public bool is_commder;
+        public bool is_commder = false;
     }
     /// <summary>
     /// 群储存格式
@@ -64,9 +64,9 @@ namespace Color_yr.Minecraft_QQ
     {
         public string group_s;
         public bool commder;
-        public bool say;
-        public bool main;
-        public long group_l;
+        public bool say = false;
+        public bool main = false;
+        public long group_l = 0;
     }
     /// <summary>
     /// 自动回复消息储存格式

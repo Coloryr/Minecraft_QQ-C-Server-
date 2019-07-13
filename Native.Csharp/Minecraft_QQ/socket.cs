@@ -29,30 +29,30 @@ namespace Color_yr.Minecraft_QQ
             {
                 logs.Log_write("[INFO][Socket]正在启动端口");
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                if (useip == true)
+                if (socket_config.useip == true)
                 {
-                    IPAddress ip = IPAddress.Parse(setip);
-                    serverSocket.Bind(new IPEndPoint(ip, Port));
+                    IPAddress ip = IPAddress.Parse(socket_config.setip);
+                    serverSocket.Bind(new IPEndPoint(ip, socket_config.Port));
                 }
                 else
-                    serverSocket.Bind(new IPEndPoint(IPAddress.Any, Port));
+                    serverSocket.Bind(new IPEndPoint(IPAddress.Any, socket_config.Port));
                 serverSocket.Listen(5);
 
                 server_thread = new Thread(listenClientConnect);
                 server_thread.Start(serverSocket);
                 start = true;
                 ready = false;
-                if (useip == true)
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
-                        "已绑定在：" + setip + ":" + Port);
+                if (socket_config.useip == true)
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
+                        "已绑定在：" + socket_config.setip + ":" + socket_config.Port);
                 else
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
-                        "已绑定在端口：" + Port);
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
+                        "已绑定在端口：" + socket_config.Port);
                 logs.Log_write("[INFO][Socket]端口已启动");
             }
             catch (Exception exception)
             {
-                Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]启动失败，请看日志");
+                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]启动失败，请看日志");
                 logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
                 ready = false;
@@ -77,10 +77,8 @@ namespace Color_yr.Minecraft_QQ
                     read_thread.Start(clientScoket);                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]服务器已连接");
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
-                    if (config_read.debug_mode == true)
-                        logs.Log_write(clientScoket.ToString());
                     ready = true;
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
@@ -103,9 +101,9 @@ namespace Color_yr.Minecraft_QQ
                 bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
-                if (config_read.ANSI == "UTF-8")
+                if (socket_config.code == "UTF-8")
                     data = Encoding.UTF8.GetString(bytes, 0, receiveNumber);
-                if (config_read.ANSI == "ANSI（GBK）")
+                if (socket_config.code == "ANSI")
                     data = Encoding.Default.GetString(bytes, 0, receiveNumber);
             }
             return data;
@@ -128,15 +126,11 @@ namespace Color_yr.Minecraft_QQ
                     {
                         string str = Receive(socket);
                         if (!str.Equals(""))
-                        {
                             message.Message(str);
-                            if (config_read.debug_mode == true)
-                                logs.Log_write("收到数据：" + str);
-                        }
                     }
                     catch (Exception e)
                     {
-                        Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]连接已断开-连接丢失");
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
                         ready = false;
 
@@ -153,7 +147,7 @@ namespace Color_yr.Minecraft_QQ
 
                     if (!start)
                     {
-                        Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "线程已关闭");
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "线程已关闭");
                         return;
                     }
                     Thread.Sleep(100);      // 延时0.1秒后再接收客户端发送的消息
@@ -161,12 +155,12 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException e)
             {
-                Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]连接已断开-主动断开");
+                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开:" + e.ToString());
                 return;
             }
         }
-        public static void Send(messagelist info)
+        public static void Send(message_send info)
         {
             if (clients.ContainsKey(MCserver))
             {
@@ -186,26 +180,24 @@ namespace Color_yr.Minecraft_QQ
                     MCserver = null;
 
                     GC.Collect();
-                    Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]连接已断开，无法发送");
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开，无法发送");
                     ready = false;
                 }
             }
             else
-                Common.CqApi.SendGroupMessage(config_read.GroupSet_Main, "[Minecraft_QQ]服务器未连接，无法发送");
+                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]服务器未连接，无法发送");
         }
         private static void Send_data(Socket socket, string data)
         {
             if (socket != null && data != null && !data.Equals(""))
             {
-                data = config_read.data_Head + data + config_read.data_End;
+                data = socket_config.data_Head + data + socket_config.data_End;
                 byte[] bytes = null;
-                if (config_read.ANSI == "UTF-8")
+                if (socket_config.code == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);
-                if (config_read.ANSI == "ANSI（GBK）")
+                if (socket_config.code == "ANSI（GBK）")
                     bytes = Encoding.Default.GetBytes(data);
                 socket.Send(bytes);
-                if (config_read.debug_mode == true)
-                    logs.Log_write("发送数据：" + data);
             }
         }
         public static void socket_stop()
