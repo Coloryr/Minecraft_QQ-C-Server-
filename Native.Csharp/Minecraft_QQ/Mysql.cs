@@ -8,11 +8,6 @@ namespace Color_yr.Minecraft_QQ
     {
         private static MySqlConnection conn;
 
-        public static string Mysql_IP = "127.0.0.1";
-        public static string Mysql_Port = "3306";
-        public static string Mysql_User = "root";
-        public static string Mysql_Password = "123456";
-
         public static string Mysql_player = "minecraft_qq_player";
         public static string Mysql_notid = "minecraft_qq_notid";
         public static string Mysql_mute = "minecraft_qq_mute";

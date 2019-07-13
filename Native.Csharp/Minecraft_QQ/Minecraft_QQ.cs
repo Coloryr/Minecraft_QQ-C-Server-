@@ -1,23 +1,145 @@
 ﻿using Native.Csharp.App;
 using System;
+using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
-    /// <summary>
-    /// 酷Q C#版插件Demo
-    /// </summary>
     public class Minecraft_QQ
     {
+        /// <summary>
+        /// 插件启动线程
+        /// </summary>
+        public static Thread start = new Thread(Start);
+        /// <summary>
+        /// 配置文件路径
+        /// </summary>
+        public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
+        /// <summary>
+        /// 主群群号
+        /// </summary>
+        public static long GroupSet_Main = 0;
+        /// <summary>
+        /// 发送绑定信息群号
+        /// </summary>
+        public static long Admin_Send = 0;
+        /// <summary>
+        /// 打开菜单
+        /// </summary>
         public static void OpenSettingForm()
         {
             setform frm = new setform();
             frm.ShowDialog();
         }
         /// <summary>
-        /// Type=21 私聊消息。
+        /// 插件启动
         /// </summary>
-        /// <param name="fromQQ">来源QQ。</param>
-        /// <param name="msg">消息内容。</param>
+        public static void Start()
+        {
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+            if (File.Exists(path + config_file.config) == false)
+                config_write.write_config(path + config_file.config);
+            else
+                config_read.read_config();
+            if (File.Exists(path + config_file.group) == false)
+                XML.write(path + config_file.group, "测试", "测试", "测试");
+            else
+                config_read.read_group();
+            if (File.Exists(path + config_file.player) == false)
+                XML.write(path + config_file.player, "测试", "测试", "测试");
+            else
+                config_read.read_player();
+            if (File.Exists(path + config_file.message) == false)
+            {
+                XML.write(path + config_file.message, "自动回复", "服务器菜单", "服务器查询菜单：\r\n【" + XML.read(config_file.config, "检测", "绑定文本")
+                    + "】可以绑定你的游戏ID。\r\n【" + XML.read(path + config_file.config, "检测", "检测头") + "在线人数】可以查询服务器在线人数。\r\n【"
+                    + XML.read(path + config_file.config, "检测", "检测头") + "服务器状态】可以查询服务器是否在运行。\r\n【"
+                    + XML.read(path + config_file.config, "检测", "发送文本") + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，输入"
+                    + XML.read(path + config_file.config, "检测", "绑定文本") + "ID，来绑定ID）");
+            }
+            else
+
+            if (File.Exists(path + config_file.commder) == false)
+            {
+                commder_save commder = new commder_save();
+
+                commder.check = "插件帮助";
+                commder.commder = "qq help";
+                commder.player_use = false;
+                commder.player_send = false;
+                commder.parameter = true;
+                config_write.write_commder(path + config_file.commder, commder);
+
+                commder.check = "查钱";
+                commder.commder = "money %player_name%";
+                commder.player_use = true;
+                commder.player_send = false;
+                commder.parameter = false;
+                config_write.write_commder(path + config_file.commder, commder);
+
+                commder.check = "禁言";
+                commder.commder = "mute ";
+                commder.player_use = false;
+                commder.player_send = false;
+                commder.parameter = true;
+                config_write.write_commder(path + config_file.commder, commder);
+
+                commder.check = "传送";
+                commder.commder = "tpa %player_at%";
+                commder.player_use = true;
+                commder.player_send = false;
+                commder.parameter = false;
+                config_write.write_commder(path + config_file.commder, commder);
+            }
+            if (config_file.group_list.Count == 0)
+            {
+                setform frm = new setform();
+                MessageBox.Show("参数错误，请设置");
+                frm.ShowDialog();
+                config_read.read_config();
+            }
+
+            if (config_file.group_list.Count == 0 || GroupSet_Main == 0)
+            {
+                MessageBox.Show("[Minecraft_QQ]群设置错误请修改后重载应用");
+                return;
+            }
+
+            if (!File.Exists(path + logs.log))
+            {
+                try
+                {
+                    File.WriteAllText(path + logs.log, "正在尝试创建日志文件" + Environment.NewLine);
+                }
+                catch (Exception)
+                {
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]日志文件创建失败");
+                }
+            }
+
+            if (Mysql_mode == true)
+            {
+
+                logs.Log_write("[INFO][Mysql]正在链接Mysql");
+                if (Mysql_user.mysql_start() == true)
+                {
+                    Mysql_mode = true;
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
+                    logs.Log_write("[INFO][Mysql]Mysql已连接");
+                }
+                else
+                {
+                    Mysql_mode = false;
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql错误，请检查");
+                    logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
+                }
+            }
+            else
+                Mysql_mode = false;
+            socket.Start_socket();
+        }
         public static void PrivateMessage(long fromQQ, string msg)
         {
             // 处理私聊消息。

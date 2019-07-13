@@ -147,8 +147,8 @@
     <Compile Include="App\Event\Event_CqExit.cs" />
     <Compile Include="App\Event\Event_GroupMessage.cs" />
     <Compile Include="App\Event\Event_Openform.cs" />
-	<Compile Include="App\Event\Event_CqAppDisable.cs" />
-	<Compile Include="App\Event\Event_CqStartup.cs" />
+    <Compile Include="App\Event\Event_CqAppDisable.cs" />
+    <Compile Include="App\Event\Event_CqStartup.cs" />
     <Compile Include="App\Interface\ICqAppDisable.cs" />
     <Compile Include="App\Interface\ICqAppEnable.cs" />
     <Compile Include="App\Interface\ICallMenu.cs" />
@@ -172,7 +172,9 @@
     <Compile Include="App\Interface\IReceiveGroupMessage.cs" />
     <Compile Include="App\Interface\IReceiveGroupPrivateMessage.cs" />
     <Compile Include="App\Interface\IReceiveOnlineStatusMessage.cs" />
-    <Compile Include="Minecraft_QQ\list.cs" />
+    <Compile Include="Minecraft_QQ\config\config_main.cs" />
+    <Compile Include="Minecraft_QQ\config\config_save.cs" />
+    <Compile Include="Minecraft_QQ\config\config_write.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
@@ -181,7 +183,7 @@
     <Compile Include="Repair\ModuleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Minecraft_QQ\config.cs" />
+    <Compile Include="Minecraft_QQ\config\config_read.cs" />
     <Compile Include="Minecraft_QQ\logs.cs" />
     <Compile Include="Minecraft_QQ\message.cs" />
     <Compile Include="Minecraft_QQ\Mysql.cs" />

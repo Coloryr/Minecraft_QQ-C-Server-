@@ -537,47 +537,5 @@ namespace Color_yr.Minecraft_QQ
             }
             return false;
         }
-        public static void group_check()
-        {
-            if (File.Exists(config_read.path + config_read.group) == false)
-                XML.CreateFile(config_read.group, 0);
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(config_read.path + config_read.group);
-            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
-            config_read.group_list.Clear();
-            foreach (XmlNode xn in nodeList)//遍历所有子节点
-            {
-                XmlNode group = xn.SelectSingleNode("群号");
-                XmlNode commder = xn.SelectSingleNode("命令");
-                XmlNode say = xn.SelectSingleNode("对话");
-                XmlNode main = xn.SelectSingleNode("主群");
-                if (group != null && commder != null && say != null 
-                    && main != null && IsNumber(group.FirstChild.InnerText) == true)
-                {
-                    grouplist list = new grouplist();
-                    bool a = false;
-                    list.group = group.FirstChild.InnerText;
-                    if (commder.FirstChild.InnerText == "开")
-                        a = true;
-                    else
-                        a = false;
-                    list.commder = a;
-                    if (say.FirstChild.InnerText == "开")
-                        a = true;
-                    else
-                        a = false;
-                    list.say = a;
-                    if (main.FirstChild.InnerText == "开")
-                        a = true;
-                    else
-                        a = false;
-                    list.main = a;
-                    long.TryParse(list.group, out list.group_l);
-                    if (a == true && config_read.GroupSet_Main == 0)
-                        config_read.GroupSet_Main = list.group_l;
-                    config_read.group_list.Add(list.group_l,list);
-                }
-            }
-        }
     }
 }

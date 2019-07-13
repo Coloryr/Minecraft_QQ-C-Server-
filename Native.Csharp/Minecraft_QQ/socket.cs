@@ -15,14 +15,10 @@ namespace Color_yr.Minecraft_QQ
         public Print print;                     // 运行时的信息输出方法
         public delegate void Print(string info);
         private static Socket serverSocket;
-
         public static string MCserver = null;
-        public static string setip = null;
-        public static int Port;
 
         public static bool start;
         public static bool ready = false;
-        public static bool useip = false;
 
         private static Thread server_thread;
         private static Thread read_thread;

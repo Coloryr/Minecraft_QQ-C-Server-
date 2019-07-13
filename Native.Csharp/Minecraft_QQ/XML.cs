@@ -12,28 +12,28 @@ namespace Color_yr.Minecraft_QQ
         /// <summary>
         /// 使用linq 建立xml
         /// </summary>
-        /// <param name="file">文件</param>
+        /// <param name="path">文件(包含路径)</param>
         /// <param name="mode">模式</param>>
-        public static void CreateFile(string file, int mode)
+        public static void CreateFile(string path, int mode)
         {
-            if (File.Exists(config_read.path + file) && mode == 1) //文件存在就删除
-                File.Delete(config_read.path + file);
+            if (File.Exists(path) && mode == 1) //文件存在就删除
+                File.Delete(path);
             XElement contacts = new XElement("config");
-            contacts.Save(config_read.path + file);
+            contacts.Save(path);
         }
         /// <summary>
         /// //修改XML文件中的元素
         /// </summary>
-        /// <param name="file">文件名</param>
+        /// <param name="path">文件(包含路径)</param>
         /// <param name="type">类型名</param>
         /// <param name="attribute">属性名</param>
         /// <param name="data">数据</param>
-        public static void setXml(string file, string type, string attribute, string data)
+        public static void setXml(string path, string type, string attribute, string data)
         {
-            if (File.Exists(config_read.path + file) == false)
-                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
+            if (File.Exists(path) == false)
+                CreateFile(path, 0);//创建该文件，如果路径文件夹不存在，则报错。
             XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(config_read.path + file);
+            xmldoc.Load(path);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config/" + type).ChildNodes;
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
@@ -44,7 +44,7 @@ namespace Color_yr.Minecraft_QQ
                     break;//找到退出来就可以了
                 }
             }
-            xmldoc.Save(config_read.path + file);//保存。
+            xmldoc.Save(path);//保存。
         }
         /// <summary>
         /// //增加元素到XML文件
@@ -84,71 +84,6 @@ namespace Color_yr.Minecraft_QQ
                 {
                     CreateFile(file, 0);
                     write(file, type, attribute, data);
-                }
-            }
-        }
-        /// <summary>
-        /// //增加元素到XML文件
-        /// </summary>
-        /// <param name="fine">文件名</param>
-        /// <param name="name">类型名</param>
-        /// <param name="obj">类型</param>
-        public static void write_object(string file, string name, grouplist obj)
-        {
-            if (File.Exists(config_read.path + file) == false)
-                CreateFile(file, 0);//创建该文件，如果路径文件夹不存在，则报错。
-            try
-            {
-                /*
-                string a = read(file, type, attribute);
-                if (a != null && use_replace == true)
-                    setXml(file, type, attribute, data);
-                else
-                {
-                */
-                ///导入XML文件
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc.Load(config_read.path + file);
-
-                XmlElement books = xmldoc.DocumentElement;
-                XmlElement xml = xmldoc.CreateElement(name);
-                books.AppendChild(xml);
-
-                XmlElement group = xmldoc.CreateElement("群号");
-                group.InnerText = obj.group;
-                xml.AppendChild(group);
-
-                XmlElement commder = xmldoc.CreateElement("命令");
-                if (obj.commder == true)
-                    commder.InnerText = "开";
-                else
-                    commder.InnerText = "关";
-                xml.AppendChild(commder);
-
-                XmlElement say = xmldoc.CreateElement("对话");
-                if (obj.say == true)
-                    say.InnerText = "开";
-                else
-                    say.InnerText = "关";
-                xml.AppendChild(say);
-
-                XmlElement main = xmldoc.CreateElement("主群");
-                if (obj.main == true)
-                    main.InnerText = "开";
-                else
-                    main.InnerText = "关";
-                xml.AppendChild(main);
-
-                xmldoc.Save(config_read.path + file);
-                //}
-            }
-            catch (Exception)
-            {
-                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
-                    "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    CreateFile(file, 0);
-                    write_object(file, name, obj);
                 }
             }
         }
