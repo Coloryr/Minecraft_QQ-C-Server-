@@ -197,7 +197,7 @@ namespace Color_yr.Minecraft_QQ
                         if (main_config.nick_server == true)
                         {
                             string a = use.get_nick(play_name);
-                            if (a != null)
+                            if (string.IsNullOrEmpty(a) == true)
                                 send = send.Replace("%player%", a);
                             else
                                 send = send.Replace("%player%", play_name);
@@ -246,7 +246,7 @@ namespace Color_yr.Minecraft_QQ
                                         if (main_config.nick_server == true)
                                         {
                                             string a = use.get_nick(play_name);
-                                            if (a != null)
+                                            if (string.IsNullOrEmpty(a) == true)
                                                 send = send.Replace("%player%", a);
                                             else
                                                 send = send.Replace("%player%", play_name);
