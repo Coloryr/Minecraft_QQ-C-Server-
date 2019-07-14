@@ -21,6 +21,8 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         public static long GroupSet_Main = 0;
 
+        public static bool is_start = false;
+
         /// <summary>
         /// 打开菜单
         /// </summary>
@@ -144,9 +146,12 @@ namespace Color_yr.Minecraft_QQ
             else
                 mysql_config.enable = false;
             socket.Start_socket();
+            is_start = true;
         }
         public static void PrivateMessage(long fromQQ, string msg)
         {
+            if (is_start == false)
+                return;
             // 处理私聊消息。
             string msg_copy = use.CQ_code(msg);
             string msg_low = msg.ToLower();
@@ -190,6 +195,8 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="msg">消息内容。</param>
         public static bool GroupMessage(long fromGroup, long fromQQ, string msg)
         {
+            if (is_start == false)
+                return false;
             msg = use.CQ_code(msg);
             string msg_low = msg.ToLower();
             logs.Log_write('[' + fromGroup.ToString() + ']' + "[QQ:" + fromQQ.ToString() + "]:" + msg);
@@ -272,8 +279,8 @@ namespace Color_yr.Minecraft_QQ
                                         }
                                     }
                                     else
-                                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) 
-                                            + "检测到你没有绑定服务器ID，发送：" + check_config.head + check_config.player_setid 
+                                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ)
+                                            + "检测到你没有绑定服务器ID，发送：" + check_config.head + check_config.player_setid
                                             + "[ID]来绑定，如：" + "\n" + check_config.head + check_config.player_setid + " Color_yr");
                                 }
                                 catch (InvalidCastException e)
@@ -364,7 +371,7 @@ namespace Color_yr.Minecraft_QQ
                         }
                     }
                     if (string.IsNullOrEmpty(message_config.unknow) != false)
-                    { 
+                    {
                         Common.CqApi.SendGroupMessage(fromGroup, message_config.unknow);
                         return true;
                     }

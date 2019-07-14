@@ -185,9 +185,9 @@
   <ItemGroup>
     <Compile Include="Minecraft_QQ\config\config_read.cs" />
     <Compile Include="Minecraft_QQ\logs.cs" />
-    <Compile Include="Minecraft_QQ\message.cs" />
+    <Compile Include="Minecraft_QQ\socket\message.cs" />
     <Compile Include="Minecraft_QQ\Mysql.cs" />
-    <Compile Include="Minecraft_QQ\socket.cs" />
+    <Compile Include="Minecraft_QQ\socket\socket.cs" />
     <Compile Include="Minecraft_QQ\setform.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,7 +196,7 @@
     </Compile>
     <Compile Include="Minecraft_QQ\Minecraft_QQ.cs" />
     <Compile Include="Minecraft_QQ\use.cs" />
-    <Compile Include="Minecraft_QQ\XML.cs" />
+    <Compile Include="Minecraft_QQ\config\XML.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Minecraft_QQ\setform.resx">

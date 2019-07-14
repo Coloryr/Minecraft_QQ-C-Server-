@@ -1,16 +1,11 @@
-﻿using Native.Csharp.App;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace Color_yr.Minecraft_QQ
 {
     class config_read
-    {  
+    {
         public static void read_config()
         {
             logs.Log_write("[INFO][Config]读取配置文件中");
@@ -24,7 +19,7 @@ namespace Color_yr.Minecraft_QQ
                     if (xn == null)
                         break;
                     switch (xn.Name)
-                    {       
+                    {
                         case "设置":
                             XmlNode xnLurl;
                             xnLurl = xn.SelectSingleNode("自动应答");
@@ -116,7 +111,7 @@ namespace Color_yr.Minecraft_QQ
                                 socket_config.setip = xnLurl3.InnerText;
                             xnLurl3 = xn.SelectSingleNode("端口");
                             if (xnLurl3 != null)
-                                int.TryParse(xnLurl3.InnerText,out socket_config.Port);
+                                int.TryParse(xnLurl3.InnerText, out socket_config.Port);
                             xnLurl3 = xn.SelectSingleNode("编码类型");
                             if (xnLurl3 != null)
                                 socket_config.code = xnLurl3.InnerText;
@@ -169,8 +164,8 @@ namespace Color_yr.Minecraft_QQ
                     foreach (XmlNode xn1 in xn)//遍历所有子节点
                     {
                         XmlNode ID = xn.SelectSingleNode("ID");
-                        if (config_file.cant_bind.Contains(ID.InnerText) == false)
-                            config_file.cant_bind.Add(ID.InnerText);
+                        if (config_file.cant_bind.Contains(ID.InnerText.ToLower()) == false)
+                            config_file.cant_bind.Add(ID.InnerText.ToLower());
                     }
                     return;
                 }
@@ -277,16 +272,23 @@ namespace Color_yr.Minecraft_QQ
             config_file.message_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
-                XmlNode check = xn.SelectSingleNode("检测");
-                XmlNode msg = xn.SelectSingleNode("回复");
-                if (check != null && msg != null)
+                XmlNode check = xn.SelectSingleNode("触发");
+                XmlNode commder = xn.SelectSingleNode("命令");
+                XmlNode player_use = xn.SelectSingleNode("玩家使用");
+                XmlNode player_send = xn.SelectSingleNode("玩家发送");
+                XmlNode parameter = xn.SelectSingleNode("附带参数");
+                if (check != null && commder != null && player_use != null
+                    && player_send != null && parameter != null)
                 {
-                    message_save message = new message_save();
-                    message.check = check.InnerText;
-                    if (config_file.message_list.ContainsKey(message.check) == false)
+                    commder_save commder_save = new commder_save();
+                    commder_save.check = check.InnerText;
+                    if (config_file.commder_list.ContainsKey(commder_save.check) == false)
                     {
-                        message.message = msg.InnerText;
-                        config_file.message_list.Add(message.check, message);
+                        commder_save.commder = commder.InnerText;
+                        commder_save.player_use = player_use.InnerText == "开" ? true : false;
+                        commder_save.player_send = player_send.InnerText == "开" ? true : false;
+                        commder_save.parameter = parameter.InnerText == "开" ? true : false;
+                        config_file.commder_list.Add(commder_save.check, commder_save);
                     }
                 }
             }

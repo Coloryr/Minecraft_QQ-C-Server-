@@ -13,7 +13,7 @@ namespace Color_yr.Minecraft_QQ
             string year = date.ToShortDateString().ToString();
             string time = date.ToLongTimeString().ToString();
             string write = "[" + year + "]" + "[" + time + "]" + a;
-            File.AppendAllText(config_read.path + log, write + Environment.NewLine);
+            File.AppendAllText(Minecraft_QQ.path + log, write + Environment.NewLine);
         }
     }
 }

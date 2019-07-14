@@ -24,7 +24,7 @@ namespace Native.Csharp.App.Event
             // 当应用被启用后，本方法将被调用。
             // 如果酷Q载入时应用已被启用，则在 ICqStartup 接口的实现方法被调用后，本方法也将被调用一次。
             // 如非必要，不建议在这里加载窗口。（可以添加菜单，让用户手动打开窗口）
-			config_read.start.Start();
+			Minecraft_QQ.start.Start();
             Common.IsRunning = true;
         }
     }

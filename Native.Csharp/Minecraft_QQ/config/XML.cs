@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.MemoryMappedFiles;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -104,7 +103,7 @@ namespace Color_yr.Minecraft_QQ
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(path);
 
-                XmlNode xnP = xmlDoc.SelectSingleNode("config/"+ type + "/" + attribute);
+                XmlNode xnP = xmlDoc.SelectSingleNode("config/" + type + "/" + attribute);
                 temp = xnP.InnerText;
                 if (temp == "") temp = null;
             }

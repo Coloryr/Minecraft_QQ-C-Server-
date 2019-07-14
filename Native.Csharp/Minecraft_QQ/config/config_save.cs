@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Color_yr.Minecraft_QQ
+﻿namespace Color_yr.Minecraft_QQ
 {
     /// <summary>
     /// 玩家数据储存格式
@@ -34,7 +28,7 @@ namespace Color_yr.Minecraft_QQ
     {
         public string check;
         public string commder;
-        public bool player_use = false;   
+        public bool player_use = false;
         public bool player_send = false;
         public bool parameter = false;
     }
@@ -63,7 +57,7 @@ namespace Color_yr.Minecraft_QQ
     public class group_save
     {
         public string group_s;
-        public bool commder;
+        public bool commder = false;
         public bool say = false;
         public bool main = false;
         public long group_l = 0;

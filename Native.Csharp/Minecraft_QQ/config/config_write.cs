@@ -216,7 +216,6 @@ namespace Color_yr.Minecraft_QQ
                 if (XML.read(path, "玩家", "绑定ID") != null)
                 {
                     ///导入XML文件
-
                     XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
                     foreach (XmlNode xn in nodeList)//遍历所有子节点
                     {
@@ -277,6 +276,43 @@ namespace Color_yr.Minecraft_QQ
                 {
                     XML.CreateFile(path, 1);
                     write_player(path, obj);
+                }
+            }
+        }
+        public static void write_cant_bind(string path, string id)
+        {
+            if (File.Exists(path) == false)
+                XML.CreateFile(path, 0);
+            try
+            {
+                if (config_file.cant_bind.Contains(id) == true)
+                    return;
+                ///导入XML文件
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(path);
+
+                //根节点
+                XmlElement root = xmldoc.DocumentElement;
+                //子节点
+                XmlElement Child;
+                //保存的值
+                XmlElement Text;
+                Child = xmldoc.CreateElement("禁止绑定");
+                root.AppendChild(Child);
+
+                Text = xmldoc.CreateElement("ID");
+                Text.InnerText = id;
+                Child.AppendChild(Text);
+
+                xmldoc.Save(path);
+            }
+            catch (Exception)
+            {
+                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
+                    "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    XML.CreateFile(path, 1);
+                    write_cant_bind(path, id);
                 }
             }
         }
