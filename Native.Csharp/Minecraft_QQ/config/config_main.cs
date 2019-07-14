@@ -180,27 +180,4 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         public static bool useip = false;
     }
-    class mysql_config
-    {
-        /// <summary>
-        /// 地址
-        /// </summary>
-        public static string IP = "127.0.0.1";
-        /// <summary>
-        /// 端口
-        /// </summary>
-        public static string Port = "3306";
-        /// <summary>
-        /// 账户
-        /// </summary>
-        public static string User = "root";
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public static string Password = "123456";
-        /// <summary>
-        /// Mysql启用-开关
-        /// </summary>
-        public static bool enable = false;
-    }
 }

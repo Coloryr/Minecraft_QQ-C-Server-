@@ -131,24 +131,6 @@ namespace Color_yr.Minecraft_QQ
                 Text.InnerText = socket_config.useip ? "开" : "关";
                 Child.AppendChild(Text);
 
-                Child = xmldoc.CreateElement("Mysql");
-                root.AppendChild(Child);
-                Text = xmldoc.CreateElement("地址");
-                Text.InnerText = mysql_config.IP;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("端口");
-                Text.InnerText = mysql_config.Port;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("账户");
-                Text.InnerText = mysql_config.User;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("密码");
-                Text.InnerText = mysql_config.Password;
-                Child.AppendChild(Text);
-                Text = xmldoc.CreateElement("Mysql启用");
-                Text.InnerText = mysql_config.enable ? "开" : "关";
-                Child.AppendChild(Text);
-
                 xmldoc.Save(path);
             }
             catch (Exception)
@@ -213,7 +195,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
-                if (XML.read(path, "玩家", "绑定ID") != null)
+                if (XML.read(path, "玩家", "QQ号") == obj.qq.ToString())
                 {
                     ///导入XML文件
                     XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;

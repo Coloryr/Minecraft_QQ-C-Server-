@@ -34,10 +34,8 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -45,11 +43,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
@@ -58,14 +51,11 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -118,20 +108,10 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(281, 244);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(72, 20);
-            this.button8.TabIndex = 52;
-            this.button8.Text = "设置Mysql";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(11, 214);
+            this.checkBox1.Location = new System.Drawing.Point(11, 177);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(132, 16);
             this.checkBox1.TabIndex = 24;
@@ -142,24 +122,13 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(11, 235);
+            this.checkBox4.Location = new System.Drawing.Point(149, 177);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(168, 16);
             this.checkBox4.TabIndex = 23;
             this.checkBox4.Text = "始终发送消息到服务器里面";
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(194, 249);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(78, 16);
-            this.checkBox5.TabIndex = 60;
-            this.checkBox5.Text = "启用Mysql";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // label1
             // 
@@ -191,7 +160,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 177);
+            this.label5.Location = new System.Drawing.Point(192, 130);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(113, 12);
             this.label5.TabIndex = 21;
@@ -224,64 +193,19 @@
             this.label8.TabIndex = 43;
             this.label8.Text = "设置禁止绑定的ID：";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(192, 127);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(83, 12);
-            this.label9.TabIndex = 50;
-            this.label9.Text = "Mysql链接设定";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(192, 145);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(29, 12);
-            this.label10.TabIndex = 55;
-            this.label10.Text = "地址";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(192, 172);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(29, 12);
-            this.label11.TabIndex = 56;
-            this.label11.Text = "端口";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(192, 198);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(29, 12);
-            this.label12.TabIndex = 57;
-            this.label12.Text = "账户";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(192, 225);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(29, 12);
-            this.label13.TabIndex = 59;
-            this.label13.Text = "密码";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 254);
+            this.label14.Location = new System.Drawing.Point(174, 200);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(317, 24);
+            this.label14.Size = new System.Drawing.Size(179, 12);
             this.label14.TabIndex = 39;
-            this.label14.Text = "注：如果你要使用Mysql，需要先\r\n点一下\"设置Mysql\"进行设置。有且最多一个主群/日志群。";
+            this.label14.Text = "注：有且最多一个主群/日志群。";
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(14, 192);
+            this.radioButton1.Location = new System.Drawing.Point(197, 145);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(53, 16);
             this.radioButton1.TabIndex = 19;
@@ -293,7 +217,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(71, 192);
+            this.radioButton2.Location = new System.Drawing.Point(254, 145);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(47, 16);
             this.radioButton2.TabIndex = 20;
@@ -342,39 +266,6 @@
             this.textBox8.Size = new System.Drawing.Size(81, 21);
             this.textBox8.TabIndex = 44;
             // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(226, 142);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(115, 21);
-            this.textBox9.TabIndex = 51;
-            this.textBox9.Text = "127.0.0.1";
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(226, 169);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(115, 21);
-            this.textBox10.TabIndex = 53;
-            this.textBox10.Text = "3306";
-            this.textBox10.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyPress);
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new System.Drawing.Point(226, 196);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(115, 21);
-            this.textBox11.TabIndex = 54;
-            this.textBox11.Text = "root";
-            // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(226, 222);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(115, 21);
-            this.textBox12.TabIndex = 58;
-            this.textBox12.Text = "123456";
-            // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(43, 150);
@@ -417,11 +308,23 @@
             this.checkedListBox1.Size = new System.Drawing.Size(174, 52);
             this.checkedListBox1.TabIndex = 64;
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(11, 199);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(96, 16);
+            this.checkBox2.TabIndex = 65;
+            this.checkBox2.Text = "启用自动应答";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.CheckBox2_CheckedChanged);
+            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(359, 282);
+            this.ClientSize = new System.Drawing.Size(359, 220);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.checkBox6);
             this.Controls.Add(this.textBox4);
@@ -431,19 +334,13 @@
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button7);
-            this.Controls.Add(this.button8);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.textBox10);
-            this.Controls.Add(this.textBox11);
-            this.Controls.Add(this.textBox12);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.label1);
@@ -452,11 +349,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -479,11 +371,9 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
 
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -492,11 +382,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
 
         private System.Windows.Forms.TextBox textBox1;
@@ -504,10 +389,6 @@
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.TextBox textBox12;
 
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
@@ -515,5 +396,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

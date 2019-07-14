@@ -121,27 +121,9 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl3 = xn.SelectSingleNode("数据包尾");
                             if (xnLurl3 != null)
                                 socket_config.data_End = xnLurl3.InnerText;
-                            xnLurl3 = xn.SelectSingleNode("数据包尾");
+                            xnLurl3 = xn.SelectSingleNode("绑定IP");
                             if (xnLurl3 != null)
                                 socket_config.useip = xnLurl3.InnerText == "开" ? true : false;
-                            break;
-                        case "Mysql":
-                            XmlNode xnLurl4;
-                            xnLurl4 = xn.SelectSingleNode("地址");
-                            if (xnLurl4 != null)
-                                mysql_config.IP = xnLurl4.InnerText;
-                            xnLurl4 = xn.SelectSingleNode("端口");
-                            if (xnLurl4 != null)
-                                mysql_config.Port = xnLurl4.InnerText;
-                            xnLurl4 = xn.SelectSingleNode("账户");
-                            if (xnLurl4 != null)
-                                mysql_config.User = xnLurl4.InnerText;
-                            xnLurl4 = xn.SelectSingleNode("密码");
-                            if (xnLurl4 != null)
-                                mysql_config.Password = xnLurl4.InnerText;
-                            xnLurl4 = xn.SelectSingleNode("Mysql启用");
-                            if (xnLurl4 != null)
-                                mysql_config.enable = xnLurl4.InnerText == "开" ? true : false;
                             break;
                     }
                 }

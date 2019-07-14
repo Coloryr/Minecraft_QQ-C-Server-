@@ -38,7 +38,11 @@ namespace Color_yr.Minecraft_QQ
                 if (message.is_commder == false && message.group == "group")
                 {
                     if (main_config.nick_group == true)
-                        message.message = message.message.Replace(message.player, use.get_nick(message.player));
+                    {
+                        string a = use.get_nick(message.player);
+                        if (a != null)
+                            message.message = message.message.Replace(message.player, a);
+                    }
                     Dictionary<long, group_save>.ValueCollection valueCol = config_file.group_list.Values;
                     foreach (group_save value in valueCol)
                     {

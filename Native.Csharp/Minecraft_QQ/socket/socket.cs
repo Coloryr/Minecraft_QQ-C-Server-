@@ -195,7 +195,7 @@ namespace Color_yr.Minecraft_QQ
                 byte[] bytes = null;
                 if (socket_config.code == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);
-                if (socket_config.code == "ANSI（GBK）")
+                if (socket_config.code == "ANSI")
                     bytes = Encoding.Default.GetBytes(data);
                 socket.Send(bytes);
             }

@@ -11,7 +11,6 @@ namespace Color_yr.Minecraft_QQ
         {
             InitializeComponent();
         }
-
         /// <summary>
         /// 退出按钮事件处理方法。
         /// </summary>
@@ -30,22 +29,15 @@ namespace Color_yr.Minecraft_QQ
                 MessageBox.Show("请输入正确的参数");
                 return;
             }
-
             int.TryParse(textBox5.Text, out int port);
             socket_config.Port = port;
             socket_config.setip = textBox4.Text;
             Close();
         }
-
         private void FormSettings_Load(object sender, EventArgs e)
         {
             textBox5.Text = socket_config.Port.ToString();
             textBox4.Text = socket_config.setip;
-
-            textBox9.Text = mysql_config.IP;
-            textBox10.Text = mysql_config.Port;
-            textBox11.Text = mysql_config.User;
-            textBox12.Text = mysql_config.Password;
 
             if (socket_config.code == "UTF-8")
             {
@@ -57,10 +49,8 @@ namespace Color_yr.Minecraft_QQ
                 radioButton1.Checked = false;
                 radioButton2.Checked = true;
             }
-            if (main_config.allways_send == true)
-                checkBox4.Checked = true;
-            else
-                checkBox4.Checked = false;
+            checkBox2.Checked = main_config.message_enable;
+            checkBox4.Checked = main_config.allways_send;
             if (main_config.fix_mode == false)
             {
                 checkBox1.Checked = false;
@@ -71,10 +61,6 @@ namespace Color_yr.Minecraft_QQ
                 checkBox1.Checked = true;
                 checkBox1.Text = "服务器维护模式：开";
             }
-            if (mysql_config.enable == true)
-                checkBox5.Checked = true;
-            else
-                checkBox5.Checked = false;
             if (socket_config.useip == true)
             {
                 checkBox6.Checked = true;
@@ -86,7 +72,6 @@ namespace Color_yr.Minecraft_QQ
                 textBox4.ReadOnly = true;
             }
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (use.IsNumber(textBox1.Text) == false)
@@ -105,7 +90,6 @@ namespace Color_yr.Minecraft_QQ
                 config_file.group_list.Add(list.group_l, list);
             button1.Text = "已添加";
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             if (use.IsNumber(textBox5.Text) == false)
@@ -118,7 +102,6 @@ namespace Color_yr.Minecraft_QQ
             config_write.write_config(Minecraft_QQ.path + config_file.config);
             button4.Text = "已设置";
         }
-
         private void button5_Click(object sender, EventArgs e)
         {
             if (use.IsNumber(textBox6.Text) == false || textBox6.Text == null)
@@ -142,7 +125,6 @@ namespace Color_yr.Minecraft_QQ
             }
             button5.Text = "添加成功";
         }
-
         private void button6_Click(object sender, EventArgs e)
         {
             if (use.IsNumber(textBox7.Text) == false || textBox7.Text == null)
@@ -159,67 +141,34 @@ namespace Color_yr.Minecraft_QQ
         {
             if (textBox8.Text != null)
             {
-                if (mysql_config.enable == true)
-                    Mysql_user.mysql_add(Mysql_user.Mysql_notid, textBox8.Text.ToLower(), "notid");
-                else
                     config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
                 button7.Text = "已添加";
             }
         }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            if (use.IsNumber(textBox10.Text) == false)
-            {
-                button8.Text = "错误";
-                return;
-            }
-            mysql_config.IP = textBox9.Text;
-            mysql_config.Port = textBox10.Text;
-            mysql_config.User = textBox11.Text;
-            mysql_config.Password = textBox12.Text;
-            if (Mysql_user.mysql_start() == true)
-            {
-                button8.Text = "Mysql已设置";
-                mysql_config.enable = true;
-                checkBox5.Checked = true;
-            }
-            else
-            {
-                button8.Text = "Mysql错误";
-                checkBox5.Checked = false;
-                mysql_config.enable = false;
-            }
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
-        }
-
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             socket_config.code = "UTF-8";
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
-
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             socket_config.code = "ANSI";
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
-
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             main_config.fix_mode = checkBox1.Checked;
             checkBox1.Text = checkBox1.Checked ? "服务器维护模式：开" : "服务器维护模式：关";
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
-
+        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.message_enable = checkBox2.Checked;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             main_config.allways_send = checkBox4.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
-        }
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-            mysql_config.enable = checkBox5.Checked;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
         private void CheckBox6_CheckedChanged(object sender, EventArgs e)

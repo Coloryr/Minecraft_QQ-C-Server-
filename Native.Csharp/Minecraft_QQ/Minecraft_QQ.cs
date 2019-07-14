@@ -39,22 +39,16 @@ namespace Color_yr.Minecraft_QQ
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             if (File.Exists(path + config_file.config) == false)
-                config_write.write_config(path + config_file.config);
-            else
-                config_read.read_config();
+                config_write.write_config(path + config_file.config);        
             if (File.Exists(path + config_file.group) == false)
-                XML.write(path + config_file.group, "测试", "测试", "测试");
-            else
-                config_read.read_group();
+                XML.write(path + config_file.group, "测试", "测试", "测试");       
             if (File.Exists(path + config_file.player) == false)
-                XML.write(path + config_file.player, "禁止绑定", "ID", "Color_yr");
-            else
-                config_read.read_player();
+                XML.write(path + config_file.player, "禁止绑定", "ID", "Color_yr");        
             if (File.Exists(path + config_file.message) == false)
             {
                 message_save message = new message_save();
                 message.check = "服务器菜单";
-                message.message = "服务器查询菜单：\r\n【" + XML.read(config_file.config, "检测", "绑定文本")
+                message.message = "服务器查询菜单：\r\n【" + check_config.head + check_config.player_setid
                     + "】可以绑定你的游戏ID。\r\n【" + check_config.head + check_config.online_players
                     + "】可以查询服务器在线人数。\r\n【" + check_config.head + check_config.online_servers
                     + "】可以查询服务器是否在运行。\r\n【" + check_config.head + check_config.send_message
@@ -62,9 +56,6 @@ namespace Color_yr.Minecraft_QQ
                     + check_config.head + check_config.player_setid + "ID，来绑定ID）";
                 config_write.write_message(path + config_file.message, message);
             }
-            else
-                config_read.read_message();
-
             if (File.Exists(path + config_file.commder) == false)
             {
                 commder_save commder = new commder_save();
@@ -97,15 +88,24 @@ namespace Color_yr.Minecraft_QQ
                 commder.parameter = false;
                 config_write.write_commder(path + config_file.commder, commder);
             }
-            else
-                config_read.read_commder();
 
+            config_read.read_config();
+            config_read.read_cant_bind();
+            config_read.read_commder();
+            config_read.read_group();
+            config_read.read_player();
+            config_read.read_message();
             if (config_file.group_list.Count == 0)
             {
                 setform frm = new setform();
                 MessageBox.Show("参数错误，请设置");
                 frm.ShowDialog();
                 config_read.read_config();
+                config_read.read_cant_bind();
+                config_read.read_commder();
+                config_read.read_group();
+                config_read.read_player();
+                config_read.read_message();
             }
 
             if (config_file.group_list.Count == 0 || GroupSet_Main == 0)
@@ -125,26 +125,6 @@ namespace Color_yr.Minecraft_QQ
                     Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]日志文件创建失败");
                 }
             }
-
-            if (mysql_config.enable == true)
-            {
-
-                logs.Log_write("[INFO][Mysql]正在链接Mysql");
-                if (Mysql_user.mysql_start() == true)
-                {
-                    mysql_config.enable = true;
-                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
-                    logs.Log_write("[INFO][Mysql]Mysql已连接");
-                }
-                else
-                {
-                    mysql_config.enable = false;
-                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql错误，请检查");
-                    logs.Log_write("[ERROR][Mysql]Mysql错误，请检查");
-                }
-            }
-            else
-                mysql_config.enable = false;
             socket.Start_socket();
             is_start = true;
         }
@@ -215,9 +195,15 @@ namespace Color_yr.Minecraft_QQ
                         string msg_copy = msg;
                         send = message_config.send_text;
                         if (main_config.nick_server == true)
-                            send = send.Replace("%player%", play_name);
+                        {
+                            string a = use.get_nick(play_name);
+                            if (a != null)
+                                send = send.Replace("%player%", a);
+                            else
+                                send = send.Replace("%player%", play_name);
+                        }
                         else
-                            send = send.Replace("%player%", use.get_nick(play_name));
+                            send = send.Replace("%player%", play_name);
                         msg_copy = use.remove_pic(msg_copy);
                         if (msg_copy != "")
                         {
@@ -258,9 +244,15 @@ namespace Color_yr.Minecraft_QQ
                                         string msg_copy = msg;
                                         send = message_config.send_text;
                                         if (main_config.nick_server == true)
-                                            send = send.Replace("%player%", play_name);
+                                        {
+                                            string a = use.get_nick(play_name);
+                                            if (a != null)
+                                                send = send.Replace("%player%", a);
+                                            else
+                                                send = send.Replace("%player%", play_name);
+                                        }
                                         else
-                                            send = send.Replace("%player%", use.get_nick(play_name));
+                                            send = send.Replace("%player%", play_name);
                                         msg_copy = msg_copy.Replace(check_config.send_message, "");
                                         msg_copy = use.remove_pic(msg_copy);
                                         if (msg_copy != "")
@@ -315,7 +307,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.menu) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.mute) == 0 && use.check_admin(fromQQ.ToString()) == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(msg));
                         return true;
@@ -350,6 +342,11 @@ namespace Color_yr.Minecraft_QQ
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read.read_config();
+                        config_read.read_cant_bind();
+                        config_read.read_commder();
+                        config_read.read_group();
+                        config_read.read_player();
+                        config_read.read_message();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return true;
                     }

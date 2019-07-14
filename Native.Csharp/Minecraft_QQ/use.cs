@@ -126,22 +126,11 @@ namespace Color_yr.Minecraft_QQ
                 string b = get_string(a, "=", "]");
                 string c = get_string(a, "[", "]");
                 string d;
-                if (mysql_config.enable == true)
-                {
-                    string e = Mysql_user.mysql_search(Mysql_user.Mysql_player, b);
-                    if (e == null)
-                        d = b;
-                    else
-                        d = e;
-                }
+                string e = check_player_name(b);
+                if (e == null)
+                    d = b;
                 else
-                {
-                    string e = check_player_name(b);
-                    if (e == null)
-                        d = b;
-                    else
-                        d = e;
-                }
+                    d = e;
                 a = a.Replace(c, "@" + d + "");
             }
             if (a.IndexOf("CQ:at,qq=all") != -1)
@@ -201,34 +190,24 @@ namespace Color_yr.Minecraft_QQ
         }
         public static bool check_mute(string player_name)
         {
-            if (mysql_config.enable == true)
-                if (Mysql_user.mysql_search(Mysql_user.Mysql_mute, player_name.ToLower()) == "true")
-                    return true;
-                else
-                {
-                    player_save player = config_read.read_player_form_id(player_name);
-                    if (player != null)
-                        return player.mute;
-                }
+            player_save player = config_read.read_player_form_id(player_name);
+            if (player != null)
+                return player.mute;
             return false;
         }
         public static bool check_admin(string player_name)
         {
-            player_save player = config_read.read_player_form_id(player_name);
+            long.TryParse(player_name, out long qq);
+            player_save player = config_file.player_list[qq];
             if (player != null)
                 return player.admin;
             return false;
         }
         public static string check_player_name(string player_qq)
         {
-            if (mysql_config.enable == true)
-                return Mysql_user.mysql_search(Mysql_user.Mysql_player, player_qq);
-            else
-            {
-                int.TryParse(player_qq, out int qq);
-                if (config_file.player_list.ContainsKey(qq) == true)
-                    return config_file.player_list[qq].player;
-            }
+            int.TryParse(player_qq, out int qq);
+            if (config_file.player_list.ContainsKey(qq) == true)
+                return config_file.player_list[qq].player;
             return null;
         }
         public static string get_nick(string player_name)
@@ -243,22 +222,25 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.nick, "");
-            string player_name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(get_string(msg, "=", "]").ToString());
-            else
-                player_name = msg;
-            if (player_name == null)
-                return "ID无效";
-            else
             {
                 string nick = get_string(msg, "]").Trim();
-                player_save player = config_read.read_player_form_id(player_name);
-                config_file.player_list[player.qq].nick = nick;
-                player.nick = nick;
-                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-                return "已修改玩家" + player_name + "的昵称为：" + nick;
+                long.TryParse(get_string(msg, "=", "]"), out long qq);
+                if (config_file.player_list.ContainsKey(qq) == true)
+                {
+                    config_file.player_list[qq].nick = nick;
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                }
+                else
+                {
+                    player_save player = new player_save();
+                    player.qq = qq;
+                    player.nick = nick;
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                }
+                return "已修改玩家[" + qq + "]的昵称为：" + nick;
             }
+            return "找不到玩家";
         }
         public static string player_setid(long fromQQ, string msg)
         {
@@ -275,33 +257,21 @@ namespace Color_yr.Minecraft_QQ
                 {
                     player_name = player_name.Trim();
                     player_save player1 = new player_save();
-                    if (mysql_config.enable == true)
-                    {
-                        if (Mysql_user.mysql_search(Mysql_user.Mysql_notid, player_name.ToLower()) == "notid")
-                            return "禁止绑定ID：" + player_name;
-                        if (Mysql_user.mysql_search_id(Mysql_user.Mysql_player, player_name.ToLower()) != null)
-                            return "ID：" + player_name + "已经被绑定过了";
-                        Mysql_user.mysql_add(Mysql_user.Mysql_player, fromQQ.ToString(), player_name.ToString());
 
-                    }
-                    else
-                    {
-                        if (config_file.cant_bind.Contains(player_name.ToLower()) == true)
-                            return "禁止绑定ID：" + player_name;
-                        else if (config_read.read_player_form_id(player_name) != null)
-                            return "ID：" + player_name + "已经被绑定过了";
-                        player1.player = player_name;
-                        player1.qq = fromQQ;
-                        config_file.player_list.Add(fromQQ, player1);
-                        config_write.write_player(Minecraft_QQ.path + config_file.player, player1);
-                    }
-
+                    if (config_file.cant_bind.Contains(player_name.ToLower()) == true)
+                        return "禁止绑定ID：[" + player_name + "]";
+                    else if (config_read.read_player_form_id(player_name) != null)
+                        return "ID：[" + player_name + "]已经被绑定过了";
+                    player1.player = player_name;
+                    player1.qq = fromQQ;
+                    config_file.player_list.Add(fromQQ, player1);
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, player1);
                     if (admin_config.Admin_Send != 0)
                     {
                         QQInfo qqInfo = Common.CqApi.GetQQInfo(fromQQ);
                         Common.CqApi.SendPrivateMessage(admin_config.Admin_Send, "玩家[" + qqInfo.Id.ToString() + "]绑定了ID：[" + player_name + "]");
                     }
-                    return "绑定ID：" + player_name + "成功！";
+                    return "绑定ID：[" + player_name + "]成功！";
                 }
             }
             else
@@ -321,15 +291,10 @@ namespace Color_yr.Minecraft_QQ
                 return "ID无效";
             else
             {
-                if (mysql_config.enable == true)
-                    Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "true");
-                else
-                {
-                    player_save player = config_read.read_player_form_id(player_name);
-                    config_file.player_list[player.qq].mute = true;
-                    player.mute = true;
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-                }
+                player_save player = config_read.read_player_form_id(player_name);
+                config_file.player_list[player.qq].mute = true;
+                player.mute = true;
+                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
                 return "已禁言：[" + player_name + "]";
             }
         }
@@ -347,15 +312,10 @@ namespace Color_yr.Minecraft_QQ
                 return "ID无效";
             else
             {
-                if (mysql_config.enable == true)
-                    Mysql_user.mysql_add(Mysql_user.Mysql_mute, player_name.ToLower(), "false");
-                else
-                {
-                    player_save player = config_read.read_player_form_id(player_name);
-                    config_file.player_list[player.qq].mute = false;
-                    player.mute = false;
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-                }
+                player_save player = config_read.read_player_form_id(player_name);
+                config_file.player_list[player.qq].mute = false;
+                player.mute = false;
+                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
                 return "已解禁：[" + player_name + "]";
             }
         }
@@ -389,7 +349,7 @@ namespace Color_yr.Minecraft_QQ
                 if (is_me == true)
                     return "你绑定的ID为：" + player_name;
                 else
-                    return "玩家" + player + "绑定的ID为：" + player_name;
+                    return "玩家[" + player + "]绑定的ID为：" + player_name;
             }
         }
         public static string player_rename(string msg)
@@ -403,14 +363,9 @@ namespace Color_yr.Minecraft_QQ
                 string player_name;
                 player_name = get_string(msg, "]");
                 player_name = player_name.Trim();
-                if (mysql_config.enable == true)
-                    Mysql_user.mysql_add(Mysql_user.Mysql_player, player, player_name);
-                else
-                {
-                    long.TryParse(player, out long qq);
-                    config_file.player_list[qq].player = player_name;
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
-                }
+                long.TryParse(player, out long qq);
+                config_file.player_list[qq].player = player_name;
+                config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
                 return "已修改玩家[" + player + "]ID为：" + player_name;
             }
             else
@@ -472,20 +427,6 @@ namespace Color_yr.Minecraft_QQ
             else
                 return message_config.fix_send;
             return null;
-        }
-        public static bool GC_now()
-        {
-            try
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                return true;
-            }
-            catch (Exception e)
-            {
-                logs.Log_write("[ERROR]" + e.ToString());
-                return false;
-            }
         }
         public static bool commder_check(long fromGroup, string msg, long fromQQ)
         {
