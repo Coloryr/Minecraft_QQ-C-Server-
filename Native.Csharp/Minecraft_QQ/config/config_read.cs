@@ -251,7 +251,7 @@ namespace Color_yr.Minecraft_QQ
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(Minecraft_QQ.path + config_file.commder);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
-            config_file.message_list.Clear();
+            config_file.commder_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
                 XmlNode check = xn.SelectSingleNode("触发");
