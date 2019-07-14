@@ -317,7 +317,7 @@ namespace Color_yr.Minecraft_QQ
                 Child = xmldoc.CreateElement("命令");
                 root.AppendChild(Child);
 
-                Text = xmldoc.CreateElement("检测");
+                Text = xmldoc.CreateElement("触发");
                 Text.InnerText = obj.check;
                 Child.AppendChild(Text);
                 Text = xmldoc.CreateElement("命令");
