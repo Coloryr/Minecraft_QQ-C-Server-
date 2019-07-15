@@ -205,7 +205,7 @@ namespace Color_yr.Minecraft_QQ
                         else
                             send = send.Replace("%player%", player.player);
                         msg_copy = use.remove_pic(msg_copy);
-                        if (msg_copy != "")
+                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
                         {
                             if (msg_copy.IndexOf("CQ:rich") != -1)
                                 msg_copy = use.anno(msg_copy);
@@ -255,7 +255,7 @@ namespace Color_yr.Minecraft_QQ
                                             send = send.Replace("%player%", player.player);
                                         msg_copy = msg_copy.Replace(check_config.send_message, "");
                                         msg_copy = use.remove_pic(msg_copy);
-                                        if (msg_copy != "")
+                                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
                                         {
                                             if (main_config.color_code == false)
                                                 msg_copy = use.RemoveColorCodes(msg_copy);
@@ -367,7 +367,7 @@ namespace Color_yr.Minecraft_QQ
                             return true;
                         }
                     }
-                    if (string.IsNullOrWhiteSpace(message_config.unknow) != false)
+                    if (string.IsNullOrWhiteSpace(message_config.unknow) == false)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, message_config.unknow);
                         return true;

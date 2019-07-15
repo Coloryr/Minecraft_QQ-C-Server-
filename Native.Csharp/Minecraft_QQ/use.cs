@@ -248,7 +248,7 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             player_save player = check_player(fromQQ);
-            if (player != null && string.IsNullOrWhiteSpace(player.player) == true)
+            if (player == null || (player != null && string.IsNullOrWhiteSpace(player.player) == true))
             {
                 string player_name = msg.Replace(check_config.player_setid, "");
                 if (string.IsNullOrWhiteSpace(player_name) == true)
@@ -504,11 +504,10 @@ namespace Color_yr.Minecraft_QQ
                                 message_send.player = "后台";
                             socket.Send(message_send);
                         }
-                        else
-                        {
-                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
-                            return true;
-                        }
+                    }
+                    else
+                    {
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
                         return true;
                     }
                 }

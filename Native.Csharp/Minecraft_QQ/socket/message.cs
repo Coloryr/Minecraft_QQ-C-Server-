@@ -41,7 +41,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     if (main_config.nick_group == true)
                     {
-                        if (player != null)
+                        if (player != null && string.IsNullOrWhiteSpace(player.nick) == false)
                             message.message = message.message.Replace(message.player, player.nick);
                     }
                     Dictionary<long, group_save>.ValueCollection valueCol = config_file.group_list.Values;
