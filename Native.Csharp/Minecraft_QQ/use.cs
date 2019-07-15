@@ -503,6 +503,7 @@ namespace Color_yr.Minecraft_QQ
                             else
                                 message_send.player = "后台";
                             socket.Send(message_send);
+                            return true;
                         }
                     }
                     else
