@@ -31,17 +31,18 @@ namespace Color_yr.Minecraft_QQ
                 string buff = use.get_string(read, socket_config.data_Head, socket_config.data_End);
                 buff = use.RemoveColorCodes(buff);
                 message_send message = Message_re(buff);
-                if (message.message == null)
+                if (string.IsNullOrWhiteSpace(message.message) == true || 
+                    string.IsNullOrWhiteSpace(message.player) == true)
                     return;
-                if (use.check_mute(message.player) == true)
+                player_save player = use.check_player_form_id(message.player, true);
+                if (player != null && player.mute == true)
                     return;
                 if (message.is_commder == false && message.group == "group")
                 {
                     if (main_config.nick_group == true)
                     {
-                        string a = use.get_nick(message.player);
-                        if (a != null)
-                            message.message = message.message.Replace(message.player, a);
+                        if (player != null)
+                            message.message = message.message.Replace(message.player, player.nick);
                     }
                     Dictionary<long, group_save>.ValueCollection valueCol = config_file.group_list.Values;
                     foreach (group_save value in valueCol)

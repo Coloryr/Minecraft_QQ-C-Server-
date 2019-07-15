@@ -128,6 +128,7 @@ namespace Color_yr.Minecraft_QQ
             socket.Start_socket();
             is_start = true;
         }
+        /*
         public static void PrivateMessage(long fromQQ, string msg)
         {
             if (is_start == false)
@@ -162,11 +163,11 @@ namespace Color_yr.Minecraft_QQ
                     config_read.read_config();
                     Common.CqApi.SendPrivateMessage(fromQQ, "重读完成");
                 }
-                else if (string.IsNullOrEmpty(message_config.unknow) != false)
+                else if (string.IsNullOrWhiteSpace(message_config.unknow) != false)
                     Common.CqApi.SendGroupMessage(fromQQ, message_config.unknow);
             }
         }
-
+        */
         /// <summary>
         /// Type=2 群消息。
         /// </summary>
@@ -188,22 +189,21 @@ namespace Color_yr.Minecraft_QQ
             {
                 if (main_config.allways_send == true && main_config.fix_mode == false && socket.ready == true && list.say == true)
                 {
-                    string play_name = use.check_player_name(fromQQ.ToString());
-                    if (play_name != null && use.check_mute(play_name) == false)
+                    player_save player = use.check_player(fromQQ);
+                    if (player != null && player.mute == false)
                     {
                         string send;
                         string msg_copy = msg;
                         send = message_config.send_text;
                         if (main_config.nick_server == true)
                         {
-                            string a = use.get_nick(play_name);
-                            if (string.IsNullOrEmpty(a) == true)
-                                send = send.Replace("%player%", a);
+                            if (string.IsNullOrWhiteSpace(player.nick) == true)
+                                send = send.Replace("%player%", player.player);
                             else
-                                send = send.Replace("%player%", play_name);
+                                send = send.Replace("%player%", player.nick);
                         }
                         else
-                            send = send.Replace("%player%", play_name);
+                            send = send.Replace("%player%", player.player);
                         msg_copy = use.remove_pic(msg_copy);
                         if (msg_copy != "")
                         {
@@ -227,6 +227,7 @@ namespace Color_yr.Minecraft_QQ
                 if (msg_low.IndexOf(check_config.head) == 0 && list.commder == true)
                 {
                     msg_low = use.ReplaceFirst(msg_low, check_config.head, "");
+                    player_save player = use.check_player(fromQQ);
                     if (main_config.allways_send == false && msg_low.IndexOf(check_config.send_message) == 0)
                     {
                         if (list.say == false)
@@ -237,22 +238,21 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 try
                                 {
-                                    string play_name = use.check_player_name(fromQQ.ToString());
-                                    if (play_name != null && use.check_mute(play_name) == false)
+                                    if (player != null && player.mute == false)
                                     {
                                         string send;
                                         string msg_copy = msg;
                                         send = message_config.send_text;
                                         if (main_config.nick_server == true)
                                         {
-                                            string a = use.get_nick(play_name);
-                                            if (string.IsNullOrEmpty(a) == true)
+                                            string a = player.nick;
+                                            if (string.IsNullOrWhiteSpace(a) == true)
                                                 send = send.Replace("%player%", a);
                                             else
-                                                send = send.Replace("%player%", play_name);
+                                                send = send.Replace("%player%", player.nick);
                                         }
                                         else
-                                            send = send.Replace("%player%", play_name);
+                                            send = send.Replace("%player%", player.player);
                                         msg_copy = msg_copy.Replace(check_config.send_message, "");
                                         msg_copy = use.remove_pic(msg_copy);
                                         if (msg_copy != "")
@@ -307,38 +307,38 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_setid(fromQQ, msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.mute) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.mute) == 0 && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_mute(msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.unmute) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.unmute) == 0 && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_unmute(msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.check) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.check) == 0 && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_checkid(fromQQ, msg));
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.rename) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.rename) == 0 && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.player_rename(msg));
                         return true;
                     }
-                    else if (msg_low == admin_config.fix && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.fix && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
                         return true;
                     }
-                    else if (msg_low == admin_config.menu && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.menu && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
                         OpenSettingForm();
                         return true;
                     }
-                    else if (msg_low == admin_config.reload && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low == admin_config.reload && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read.read_config();
@@ -350,7 +350,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return true;
                     }
-                    else if (msg_low.IndexOf(admin_config.nick) == 0 && use.check_admin(fromQQ.ToString()) == true)
+                    else if (msg_low.IndexOf(admin_config.nick) == 0 && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.set_nick(msg));
                         return true;
@@ -361,13 +361,13 @@ namespace Color_yr.Minecraft_QQ
                     if (main_config.message_enable && config_file.message_list.ContainsKey(msg_low) == true)
                     {
                         message_save message = config_file.message_list[msg_low];
-                        if (string.IsNullOrEmpty(message.message) == false)
+                        if (string.IsNullOrWhiteSpace(message.message) == false)
                         {
                             Common.CqApi.SendGroupMessage(fromGroup, message.message);
                             return true;
                         }
                     }
-                    if (string.IsNullOrEmpty(message_config.unknow) != false)
+                    if (string.IsNullOrWhiteSpace(message_config.unknow) != false)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, message_config.unknow);
                         return true;

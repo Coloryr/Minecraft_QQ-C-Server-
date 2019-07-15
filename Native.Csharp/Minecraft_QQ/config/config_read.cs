@@ -183,16 +183,6 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
         }
-        public static player_save read_player_form_id(string id)
-        {
-            Dictionary<long, player_save>.ValueCollection valueCol = config_file.player_list.Values;
-            foreach (player_save value in valueCol)
-            {
-                if (value.player == id)
-                    return value;
-            }
-            return null;
-        }
         public static void read_group()
         {
             XmlDocument xmldoc = new XmlDocument();

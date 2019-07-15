@@ -62,7 +62,7 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string ReplaceFirst(string value, string oldValue, string newValue)
         {
-            if (string.IsNullOrEmpty(oldValue))
+            if (string.IsNullOrWhiteSpace(oldValue))
                 return value;
 
             int idx = value.IndexOf(oldValue);
@@ -119,24 +119,30 @@ namespace Color_yr.Minecraft_QQ
             }
             return a;
         }
-        public static string get_at(string a)
+        public static string get_at(string msg)
         {
-            while (a.IndexOf("CQ:at,qq=") != -1)
+            while (msg.IndexOf("CQ:at,qq=") != -1)
             {
-                string b = get_string(a, "=", "]");
-                string c = get_string(a, "[", "]");
-                string d;
-                string e = check_player_name(b);
-                if (e == null)
-                    d = b;
+                string player_QQ = get_string(msg, "=", "]");
+                string msg_QQ = get_string(msg, "[", "]");
+                string player_name;
+                long.TryParse(player_QQ, out long qq);
+                player_save player = check_player(qq);
+                if (player == null)
+                    player_name = player_QQ;
                 else
-                    d = e;
-                a = a.Replace(c, "@" + d + "");
+                {
+                    if(string.IsNullOrWhiteSpace(player.nick) == false)
+                        player_name = player.nick;
+                    else
+                        player_name = player.player;
+                }
+                msg = msg.Replace(msg_QQ, "@" + player_name + "");
             }
-            if (a.IndexOf("CQ:at,qq=all") != -1)
-                a.Replace("CQ:at,qq=all", "@全体人员");
-            a = a.Replace("[", "").Replace("]", "");
-            return a;
+            if (msg.IndexOf("CQ:at,qq=all") != -1)
+                msg.Replace("CQ:at,qq=all", "@全体人员");
+            msg = msg.Replace("[", "").Replace("]", "");
+            return msg;
         }
         public static string anno(string a)
         {
@@ -188,33 +194,28 @@ namespace Color_yr.Minecraft_QQ
                 return true;
             return false;
         }
-        public static bool check_mute(string player_name)
+        public static player_save check_player(long player_qq)
         {
-            player_save player = config_read.read_player_form_id(player_name);
-            if (player != null)
-                return player.mute;
-            return false;
-        }
-        public static bool check_admin(string player_name)
-        {
-            long.TryParse(player_name, out long qq);
-            player_save player = config_file.player_list[qq];
-            if (player != null)
-                return player.admin;
-            return false;
-        }
-        public static string check_player_name(string player_qq)
-        {
-            int.TryParse(player_qq, out int qq);
-            if (config_file.player_list.ContainsKey(qq) == true)
-                return config_file.player_list[qq].player;
+            if (config_file.player_list.ContainsKey(player_qq) == true)
+                return config_file.player_list[player_qq];
             return null;
         }
-        public static string get_nick(string player_name)
+        public static player_save check_player_form_id(string id, bool low)
         {
-            player_save player = config_read.read_player_form_id(player_name);
-            if (player != null)
-                return player.nick;
+            Dictionary<long, player_save>.ValueCollection valueCol = config_file.player_list.Values;
+            foreach (player_save value in valueCol)
+            {
+                if (low == true)
+                {
+                    if (value.player.ToLower() == id.ToLower())
+                        return value;
+                }
+                else
+                {
+                    if (value.player == id)
+                        return value;
+                }
+            }
             return null;
         }
         public static string set_nick(string msg)
@@ -244,24 +245,30 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string player_setid(long fromQQ, string msg)
         {
-            string player;
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
-            player = check_player_name(fromQQ.ToString());
-            if (player == null)
+            player_save player = check_player(fromQQ);
+            if (player != null && string.IsNullOrWhiteSpace(player.player) == true)
             {
                 string player_name = msg.Replace(check_config.player_setid, "");
-                if (player_name == " " || player_name == "")
+                if (string.IsNullOrWhiteSpace(player_name) == true)
                     return "ID无效，请检查";
                 else
                 {
                     player_name = player_name.Trim();
-                    player_save player1 = new player_save();
+                    player_save player1;
 
                     if (config_file.cant_bind.Contains(player_name.ToLower()) == true)
                         return "禁止绑定ID：[" + player_name + "]";
-                    else if (config_read.read_player_form_id(player_name) != null)
+                    else if (check_player_form_id(player_name, true) != null)
                         return "ID：[" + player_name + "]已经被绑定过了";
+                    if (config_file.player_list.ContainsKey(fromQQ) == true)
+                    {
+                        player1 = config_file.player_list[fromQQ];
+                        config_file.player_list.Remove(fromQQ);
+                    }
+                    else
+                        player1 = new player_save();
                     player1.player = player_name;
                     player1.qq = fromQQ;
                     config_file.player_list.Add(fromQQ, player1);
@@ -282,74 +289,71 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.mute, "");
-            string player_name;
+            player_save player;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(get_string(msg, "=", "]").ToString());
-            else
-                player_name = msg;
-            if (player_name == null)
-                return "ID无效";
+            {
+                long.TryParse(get_string(msg, "=", "]"), out long qq);
+                player = check_player(qq);
+                if (player == null)
+                    return "玩家[" + qq + "]未绑定ID";
+            }
             else
             {
-                player_save player = config_read.read_player_form_id(player_name);
-                config_file.player_list[player.qq].mute = true;
-                player.mute = true;
-                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-                return "已禁言：[" + player_name + "]";
+                player = check_player_form_id(msg, true);
+                if (player == null)
+                    return "ID无效";
             }
+            config_file.player_list[player.qq].mute = true;
+            player.mute = true;
+            config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+            return "已禁言：[" + player.qq + "]";
         }
         public static string player_unmute(string msg)
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.unmute, "");
-            string player_name;
+            player_save player;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
-                player_name = check_player_name(get_string(msg, "=", "]").ToString());
-            else
-                player_name = msg;
-            if (player_name == null)
-                return "ID无效";
+            {
+                long.TryParse(get_string(msg, "=", "]"), out long qq);
+                player = check_player(qq);
+                if (player == null)
+                    return "玩家[" + qq + "]未绑定ID";
+            }
             else
             {
-                player_save player = config_read.read_player_form_id(player_name);
-                config_file.player_list[player.qq].mute = false;
-                player.mute = false;
-                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-                return "已解禁：[" + player_name + "]";
+                player = check_player_form_id(msg, true);
+                if (player == null)
+                    return "ID无效";
             }
+            config_file.player_list[player.qq].mute = false;
+            player.mute = false;
+            config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+            return "已解禁：[" + player.qq + "]";
         }
         public static string player_checkid(long fromQQ, string msg)
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.check, "");
-            string player;
-            bool is_me;
+            player_save player;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
-                player = get_string(msg, "=", "]");
-                is_me = false;
+                long.TryParse(get_string(msg, "=", "]"), out long qq);
+                player = check_player(qq);
+                if (player == null)
+                    return "玩家[" + qq + "]未绑定ID";
+                else
+                    return "玩家[" + qq + "]绑定的ID为：" + player.player;
             }
             else
             {
-                player = fromQQ.ToString();
-                is_me = true;
-            }
-            string player_name = check_player_name(player);
-            if (player_name == null)
-            {
-                if (is_me == true)
+                player = check_player(fromQQ);
+                if (player == null)
                     return "你没有绑定ID";
                 else
-                    return "玩家" + player + "没有绑定ID";
-            }
-            else
-            {
-                if (is_me == true)
-                    return "你绑定的ID为：" + player_name;
-                else
-                    return "玩家[" + player + "]绑定的ID为：" + player_name;
+                    return "你绑定的ID为：" + player.player;
             }
         }
         public static string player_rename(string msg)
@@ -359,14 +363,25 @@ namespace Color_yr.Minecraft_QQ
             msg = msg.Replace(admin_config.rename, "");
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
-                string player = get_string(msg, "=", "]");
+                string player_qq = get_string(msg, "=", "]");
                 string player_name;
                 player_name = get_string(msg, "]");
                 player_name = player_name.Trim();
-                long.TryParse(player, out long qq);
-                config_file.player_list[qq].player = player_name;
-                config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
-                return "已修改玩家[" + player + "]ID为：" + player_name;
+                long.TryParse(player_qq, out long qq);
+                if (config_file.player_list.ContainsKey(qq) == false)
+                {
+                    player_save player = new player_save();
+                    player.qq = qq;
+                    player.player = player_name;
+                    config_file.player_list.Add(qq, player);
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                }
+                else
+                {
+                    config_file.player_list[qq].player = player_name;
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                }
+                return "已修改玩家[" + player_qq + "]ID为：" + player_name;
             }
             else
                 return "玩家错误，请检查";
@@ -435,52 +450,65 @@ namespace Color_yr.Minecraft_QQ
             {
                 if (msg.IndexOf(value) == 0)
                 {
-                    commder_save commder = config_file.commder_list[value];
-                    if (commder.player_use == true || check_admin(fromQQ.ToString()) == true)
+                    if (socket.ready == false)
                     {
-                        if (socket.ready == false)
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
+                        return true;
+                    }
+                    commder_save commder = config_file.commder_list[value];
+                    player_save player = check_player(fromQQ);
+                    if(player != null)
+                    {
+                        if (commder.player_use == true || player.admin == true)
                         {
-                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
-                            return true;
-                        }
-                        message_send message_send = new message_send();
-                        message_send.group = fromGroup.ToString();
-                        if (commder.parameter == true)
-                        {
-                            string b = commder.commder;
-                            if (b.IndexOf("%player_name%") != -1)
-                                b = b.Replace("%player_name%", check_player_name(fromQQ.ToString()));
-                            if (msg.IndexOf("CQ:at,qq=") != -1 && b.IndexOf("%player_at%") != -1)
+                            message_send message_send = new message_send();
+                            message_send.group = fromGroup.ToString();
+
+                            string cmd = commder.commder;
+                           
+                            if (cmd.IndexOf("%player_name%") != -1)
+                                cmd = cmd.Replace("%player_name%", player.player);
+                            if (msg.IndexOf("CQ:at,qq=") != -1 && cmd.IndexOf("%player_at%") != -1)
                             {
                                 string a = get_string(msg, "=", "]");
-                                if (a == null)
+                                long.TryParse(a, out long qq);
+                                player_save player1 = check_player(qq);
+                                if (player1 == null)
                                 {
                                     Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
                                     return true;
                                 }
-                                b = b.Replace("%player_at%", check_player_name(a));
+                                cmd = cmd.Replace("%player_at%", player1.player);
                             }
-                            msg = msg.Replace(commder.check, "");
-                            message_send.message = b + msg;
-                        }
-                        else
-                        {
-                            message_send.message = commder.commder;
-                            message_send.message = message_send.message.Replace("%player_name%", check_player_name(fromQQ.ToString()));
-                        }
-                        message_send.is_commder = true;
-                        if (commder.player_send)
-                        {
-                            message_send.player = check_player_name(fromQQ.ToString());
-                            if (message_send.player == null)
+                           
+                            if (commder.parameter == true)
+                            {                               
+                                if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
+                                    message_send.message = cmd + get_string(msg, "]");
+                                else
+                                    message_send.message = cmd + msg.Replace(commder.check, "");
+                            }
+                            else
+                                message_send.message = cmd;
+                            message_send.is_commder = true;
+                            if (commder.player_send)
                             {
-                                Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
-                                return true;
+                                message_send.player = player.player;
+                                if (string.IsNullOrWhiteSpace(player.player) == true)
+                                {
+                                    Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
+                                    return true;
+                                }
                             }
+                            else
+                                message_send.player = "后台";
+                            socket.Send(message_send);
                         }
                         else
-                            message_send.player = "后台";
-                        socket.Send(message_send);
+                        {
+                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你未绑定ID");
+                            return true;
+                        }
                         return true;
                     }
                 }
