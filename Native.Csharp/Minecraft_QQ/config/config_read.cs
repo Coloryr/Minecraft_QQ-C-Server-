@@ -176,8 +176,8 @@ namespace Color_yr.Minecraft_QQ
                     {
                         player.player = id.InnerXml;
                         player.nick = nick.InnerXml;
-                        player.mute = mute.FirstChild.InnerText == "开" ? true : false;
-                        player.admin = admin.FirstChild.InnerText == "开" ? true : false;
+                        player.mute = mute.InnerText == "开" ? true : false;
+                        player.admin = admin.InnerText == "开" ? true : false;
                         config_file.player_list.Add(player.qq, player);
                     }
                 }
@@ -203,9 +203,9 @@ namespace Color_yr.Minecraft_QQ
                     long.TryParse(list.group_s, out list.group_l);
                     if (config_file.group_list.ContainsKey(list.group_l) == false)
                     {
-                        list.commder = commder.FirstChild.InnerText == "开" ? true : false;
-                        list.say = say.FirstChild.InnerText == "开" ? true : false;
-                        bool temp = main.FirstChild.InnerText == "开" ? true : false;
+                        list.commder = commder.InnerText == "开" ? true : false;
+                        list.say = say.InnerText == "开" ? true : false;
+                        bool temp = main.InnerText == "开" ? true : false;
                         list.main = temp;
                         if (temp == true && Minecraft_QQ.GroupSet_Main == 0)
                             Minecraft_QQ.GroupSet_Main = list.group_l;

@@ -159,26 +159,29 @@ namespace Color_yr.Minecraft_QQ
                 byte[] bytes = Convert.FromBase64String(text);
                 text = Encoding.GetEncoding("utf-8").GetString(bytes);
             }
-            catch { }
+            catch(Exception e)
+            {
+                logs.Log_write("[ERROR][group]" + e.Message);
+            }
             return title + "：\n" + text;
         }
         public static string CQ_code(string a)
         {
-            for (; a.IndexOf("&#91;") != -1;)
+            while (a.IndexOf("&#91;") != -1)
                 a = a.Replace("&#91;", "[");
-            for (; a.IndexOf("&#93;") != -1;)
+            while (a.IndexOf("&#93;") != -1)
                 a = a.Replace("&#93;", "]");
-            for (; a.IndexOf("&#44;") != -1;)
+            while (a.IndexOf("&#44;") != -1)
                 a = a.Replace("&#44;", ",");
             return a;
         }
         public static string code_CQ(string a)
         {
-            for (; a.IndexOf("[") != -1;)
+            while (a.IndexOf("[") != -1)
                 a = a.Replace("[", "&#91;");
-            for (; a.IndexOf("]") != -1;)
+            while (a.IndexOf("]") != -1)
                 a = a.Replace("]", "&#93;");
-            for (; a.IndexOf(",") != -1;)
+            while (a.IndexOf(",") != -1)
                 a = a.Replace(",", "&#44;");
             return a;
         }
@@ -205,16 +208,10 @@ namespace Color_yr.Minecraft_QQ
             Dictionary<long, player_save>.ValueCollection valueCol = config_file.player_list.Values;
             foreach (player_save value in valueCol)
             {
-                if (low == true)
-                {
-                    if (value.player.ToLower() == id.ToLower())
-                        return value;
-                }
-                else
-                {
-                    if (value.player == id)
-                        return value;
-                }
+                if (low == true && value.player.ToLower() == id.ToLower())
+                    return value;
+                else if (value.player == id)
+                    return value;
             }
             return null;
         }
