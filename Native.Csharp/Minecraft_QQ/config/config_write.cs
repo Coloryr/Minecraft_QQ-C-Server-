@@ -152,7 +152,30 @@ namespace Color_yr.Minecraft_QQ
                 ///导入XML文件
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
-
+                if (XML.read(path, "QQ群", "群号") == obj.group_s)
+                {
+                    ///导入XML文件
+                    XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+                    foreach (XmlNode xn in nodeList)//遍历所有子节点
+                    {
+                        //查找玩家
+                        if (xn.Name == "QQ群")
+                        {
+                            XmlNode xnLurl = xn.SelectSingleNode("群号");
+                            if (xnLurl.InnerText == obj.group_s)
+                            {
+                                xnLurl = xn.SelectSingleNode("命令");
+                                xnLurl.InnerText = obj.commder ? "开" : "关";
+                                xnLurl = xn.SelectSingleNode("对话");
+                                xnLurl.InnerText = obj.say ? "开" : "关";
+                                xnLurl = xn.SelectSingleNode("主群");
+                                xnLurl.InnerText = obj.main ? "开" : "关";
+                                xmldoc.Save(path);
+                                return;
+                            }
+                        }
+                    }
+                }
                 //根节点
                 XmlElement root = xmldoc.DocumentElement;
                 //子节点

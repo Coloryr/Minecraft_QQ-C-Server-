@@ -165,15 +165,18 @@ namespace Color_yr.Minecraft_QQ
                         else
                             send = send.Replace("%player%", player.player);
                         msg_copy = msg_copy.Replace(check_config.send_message, "");
-                        msg_copy = use.remove_pic(msg_copy);
-                        msg_copy = use.get_at(msg_copy);
-                        msg_copy = use.CQ_code(msg_copy);
                         if (main_config.color_code == false)
                             msg_copy = use.RemoveColorCodes(msg_copy);
+                        if (msg_copy.IndexOf("CQ:rich") != -1)
+                            msg_copy = use.anno(msg_copy);
+                        else if (msg_copy.IndexOf("CQ:") != -1)
+                        {
+                            msg_copy = use.remove_pic(msg_copy);
+                            msg_copy = use.get_at(msg_copy);
+                            msg_copy = use.CQ_code(msg_copy);
+                        }
                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
                         {
-                            if (msg_copy.IndexOf("CQ:rich") != -1)
-                                msg_copy = use.anno(msg_copy);
                             send = send.Replace("%message%", use.remove_pic(msg_copy));
                             message_send messagelist = new message_send();
                             messagelist.group = fromGroup.ToString();
@@ -210,11 +213,14 @@ namespace Color_yr.Minecraft_QQ
                                         else
                                             send = send.Replace("%player%", player.player);
                                         msg_copy = msg_copy.Replace(check_config.send_message, "");
-                                        msg_copy = use.remove_pic(msg_copy);
-                                        msg_copy = use.get_at(msg_copy);
-                                        msg_copy = use.CQ_code(msg_copy);
                                         if (main_config.color_code == false)
                                             msg_copy = use.RemoveColorCodes(msg_copy);
+                                        if (msg_copy.IndexOf("CQ:") != -1)
+                                        {
+                                            msg_copy = use.remove_pic(msg_copy);
+                                            msg_copy = use.get_at(msg_copy);
+                                            msg_copy = use.CQ_code(msg_copy);
+                                        }
                                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
                                         {
                                             send = send.Replace("%message%", use.remove_pic(msg_copy));
@@ -329,6 +335,7 @@ namespace Color_yr.Minecraft_QQ
                     }
                 }
             }
+            GC.Collect();
         }
     }
 }
