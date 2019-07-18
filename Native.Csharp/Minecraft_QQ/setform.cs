@@ -38,7 +38,6 @@ namespace Color_yr.Minecraft_QQ
         {
             textBox5.Text = socket_config.Port.ToString();
             textBox4.Text = socket_config.setip;
-
             if (socket_config.code == "UTF-8")
             {
                 radioButton1.Checked = true;
@@ -81,9 +80,9 @@ namespace Color_yr.Minecraft_QQ
             }
             group_save list = new group_save();
             list.group_s = textBox1.Text;
-            list.commder = checkedListBox1.GetItemChecked(0);
-            list.say = checkedListBox1.GetItemChecked(1);
-            list.main = checkedListBox1.GetItemChecked(2);
+            list.commder = checkBox3.Checked;
+            list.say = checkBox5.Checked;
+            list.main = checkBox7.Checked;
             long.TryParse(textBox1.Text, out list.group_l);
             config_write.write_group(Minecraft_QQ.path + config_file.group, list);
             if (config_file.group_list.ContainsKey(list.group_l) == false)

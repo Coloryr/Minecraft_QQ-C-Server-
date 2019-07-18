@@ -125,6 +125,7 @@ namespace Color_yr.Minecraft_QQ
                     Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]日志文件创建失败");
                 }
             }
+            socket.socket_stop();
             socket.Start_socket();
             is_start = true;
         }

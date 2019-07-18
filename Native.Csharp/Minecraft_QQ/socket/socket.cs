@@ -224,7 +224,8 @@ namespace Color_yr.Minecraft_QQ
                 server_thread.Abort();
                 server_thread = null;
             }
-            clients.Clear();
+            if(clients.Count != 0)
+                clients.Clear();
         }
     }
 }
