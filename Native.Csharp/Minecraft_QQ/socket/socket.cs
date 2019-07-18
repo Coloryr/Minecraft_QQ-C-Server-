@@ -202,11 +202,12 @@ namespace Color_yr.Minecraft_QQ
         }
         public static void socket_stop()
         {
-            if (clients.ContainsKey(MCserver))
+            if (clients.Count != 0 && clients.ContainsKey(MCserver))
             {
                 Socket socket = clients[MCserver];
                 if (socket != null)
                     socket.Close();
+                clients.Clear();
             }
             if (read_thread != null)
             {
@@ -224,8 +225,6 @@ namespace Color_yr.Minecraft_QQ
                 server_thread.Abort();
                 server_thread = null;
             }
-            if(clients.Count != 0)
-                clients.Clear();
         }
     }
 }
