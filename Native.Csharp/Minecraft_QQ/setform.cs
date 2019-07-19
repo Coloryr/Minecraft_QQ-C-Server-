@@ -177,10 +177,5 @@ namespace Color_yr.Minecraft_QQ
             textBox4.ReadOnly = !socket_config.useip;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
-        private void TextBox_KeyPress(object sender, KeyEventArgs e)
-        {
-            if (use.key_ok(e) == false)
-                e.Handled = true;
-        }
     }
 }
