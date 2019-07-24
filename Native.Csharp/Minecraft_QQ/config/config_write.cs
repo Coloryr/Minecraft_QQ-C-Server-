@@ -286,8 +286,6 @@ namespace Color_yr.Minecraft_QQ
                 XML.CreateFile(path, 0);
             try
             {
-                if (config_file.cant_bind.Contains(id) == true)
-                    return;
                 ///导入XML文件
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
@@ -323,8 +321,6 @@ namespace Color_yr.Minecraft_QQ
                 XML.CreateFile(path, 0);
             try
             {
-                if (config_file.cant_bind.Contains(id) == true)
-                    return;
                 ///导入XML文件
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
@@ -352,6 +348,42 @@ namespace Color_yr.Minecraft_QQ
                     XML.CreateFile(path, 1);
                     write_mute(path, id);
                 }
+            }
+        }
+        public static void write_unmute(string path, string id)
+        {
+            if (File.Exists(path) == false)
+                XML.CreateFile(path, 0);
+            try
+            {
+                if (config_file.cant_bind.Contains(id) == true)
+                    return;
+                ///导入XML文件
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(path);
+                XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+                foreach (XmlNode xn in nodeList)//遍历所有子节点
+                {
+                    //查找玩家
+                    if (xn.Name == "禁言")
+                    {
+                        XmlNodeList nodeList1 = xn.ChildNodes;
+                        foreach (XmlNode xn1 in nodeList)//遍历所有子节点
+                        {
+                            XmlNode xnLurl = xn1.SelectSingleNode("ID");
+                            if (xnLurl.InnerText == id)
+                            {
+                                xn.RemoveChild(xnLurl);
+                                return;
+                            }
+                        }
+                    }
+                }
+                xmldoc.Save(path);
+            }
+            catch (Exception)
+            {
+
             }
         }
         public static void write_commder(string path, commder_save obj)

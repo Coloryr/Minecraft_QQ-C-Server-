@@ -285,48 +285,50 @@ namespace Color_yr.Minecraft_QQ
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
-            msg = msg.Replace(admin_config.mute, "");
-            player_save player;
+            msg = msg.Replace(admin_config.mute, ""); 
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
+                player_save player;
                 long.TryParse(get_string(msg, "=", "]"), out long qq);
                 player = check_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
+                name = player.player;
             }
             else
             {
-                msg = msg.Replace(admin_config.menu, "");
-                
+                name = msg.Replace(admin_config.mute, "").Trim();
             }
-            
-            config_write.write_mute(config_file.player, )
-            return "已禁言：[" + player.qq + "]";
+
+            config_write.write_mute(config_file.player, name);
+            if (config_file.mute_list.Contains(name.ToLower()) == false)
+                config_file.mute_list.Add(name.ToLower());
+            return "已禁言：[" + name + "]";
         }
         public static string player_unmute(string msg)
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.unmute, "");
-            player_save player;
+            string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
+                player_save player;
                 long.TryParse(get_string(msg, "=", "]"), out long qq);
                 player = check_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
+                name = player.player;
             }
             else
             {
-                player = check_player_form_id(msg, true);
-                if (player == null)
-                    return "ID无效";
+                name = msg.Replace(admin_config.unmute, "").Trim();
             }
-            config_file.player_list[player.qq].mute = false;
-            player.mute = false;
-            config_write.write_player(Minecraft_QQ.path + config_file.player, player);
-            return "已解禁：[" + player.qq + "]";
+            config_write.write_unmute(config_file.player, name.ToLower());
+            if (config_file.mute_list.Contains(name.ToLower()) == true)
+                config_file.mute_list.Remove(name.ToLower());
+            return "已解禁：[" + name + "]";
         }
         public static string player_checkid(long fromQQ, string msg)
         {

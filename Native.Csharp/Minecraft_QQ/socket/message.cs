@@ -34,13 +34,13 @@ namespace Color_yr.Minecraft_QQ
                 if (string.IsNullOrWhiteSpace(message.message) == true || 
                     string.IsNullOrWhiteSpace(message.player) == true)
                     return;
-                player_save player = use.check_player_form_id(message.player, true);
-                if (player != null && player.mute == true)
+                if (config_file.mute_list.Contains(message.player.ToLower()) == false)
                     return;
                 if (message.is_commder == false && message.group == "group")
                 {
                     if (main_config.nick_group == true)
                     {
+                        player_save player = use.check_player_form_id(message.player, true);
                         if (player != null && string.IsNullOrWhiteSpace(player.nick) == false)
                             message.message = message.message.Replace(message.player, player.nick);
                     }

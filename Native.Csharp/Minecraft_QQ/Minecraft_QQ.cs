@@ -151,7 +151,7 @@ namespace Color_yr.Minecraft_QQ
                 if (main_config.allways_send == true && main_config.fix_mode == false && socket.ready == true && list.say == true)
                 {
                     player_save player = use.check_player(fromQQ);
-                    if ((player != null && player.mute == false) || string.IsNullOrWhiteSpace(player.player))
+                    if ((player != null && config_file.mute_list.Contains(player.player.ToLower()) == false) || string.IsNullOrWhiteSpace(player.player))
                     {
                         string send;
                         string msg_copy = msg;
@@ -200,7 +200,7 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 try
                                 {
-                                    if ((player != null && player.mute == false) || string.IsNullOrWhiteSpace(player.player))
+                                    if ((player != null && config_file.mute_list.Contains(player.player.ToLower()) == false) || string.IsNullOrWhiteSpace(player.player))
                                     {
                                         string send = message_config.send_text;
                                         string msg_copy = msg;
