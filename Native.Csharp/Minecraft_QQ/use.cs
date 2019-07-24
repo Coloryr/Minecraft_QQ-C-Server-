@@ -287,6 +287,7 @@ namespace Color_yr.Minecraft_QQ
                 msg = msg.Replace(check_config.head, null);
             msg = msg.Replace(admin_config.mute, "");
             player_save player;
+            string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(get_string(msg, "=", "]"), out long qq);
@@ -296,13 +297,11 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                player = check_player_form_id(msg, true);
-                if (player == null)
-                    return "ID无效";
+                msg = msg.Replace(admin_config.menu, "");
+                
             }
-            config_file.player_list[player.qq].mute = true;
-            player.mute = true;
-            config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+            
+            config_write.write_mute(config_file.player, )
             return "已禁言：[" + player.qq + "]";
         }
         public static string player_unmute(string msg)

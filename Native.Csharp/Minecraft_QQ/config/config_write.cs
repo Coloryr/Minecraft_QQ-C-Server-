@@ -234,8 +234,6 @@ namespace Color_yr.Minecraft_QQ
                                 xnLurl.InnerText = obj.player;
                                 xnLurl = xn.SelectSingleNode("昵称");
                                 xnLurl.InnerText = obj.nick;
-                                xnLurl = xn.SelectSingleNode("禁言");
-                                xnLurl.InnerText = obj.mute ? "开" : "关";
                                 xnLurl = xn.SelectSingleNode("管理员");
                                 xnLurl.InnerText = obj.admin ? "开" : "关";
                                 xmldoc.Save(path);
@@ -264,8 +262,6 @@ namespace Color_yr.Minecraft_QQ
                     Text = xmldoc.CreateElement("QQ号");
                     Text.InnerText = obj.qq.ToString();
                     Child.AppendChild(Text);
-                    Text = xmldoc.CreateElement("禁言");
-                    Text.InnerText = obj.mute ? "开" : "关";
                     Child.AppendChild(Text);
                     Text = xmldoc.CreateElement("管理员");
                     Text.InnerText = obj.admin ? "开" : "关";
@@ -318,6 +314,43 @@ namespace Color_yr.Minecraft_QQ
                 {
                     XML.CreateFile(path, 1);
                     write_cant_bind(path, id);
+                }
+            }
+        }
+        public static void write_mute(string path, string id)
+        {
+            if (File.Exists(path) == false)
+                XML.CreateFile(path, 0);
+            try
+            {
+                if (config_file.cant_bind.Contains(id) == true)
+                    return;
+                ///导入XML文件
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(path);
+
+                //根节点
+                XmlElement root = xmldoc.DocumentElement;
+                //子节点
+                XmlElement Child;
+                //保存的值
+                XmlElement Text;
+                Child = xmldoc.CreateElement("禁言");
+                root.AppendChild(Child);
+
+                Text = xmldoc.CreateElement("ID");
+                Text.InnerText = id;
+                Child.AppendChild(Text);
+
+                xmldoc.Save(path);
+            }
+            catch (Exception)
+            {
+                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
+                    "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    XML.CreateFile(path, 1);
+                    write_mute(path, id);
                 }
             }
         }

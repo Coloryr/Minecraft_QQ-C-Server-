@@ -44,6 +44,10 @@ namespace Color_yr.Minecraft_QQ
         /// 禁止绑定数据储存
         /// </summary>
         public static List<string> cant_bind = new List<string> { };
+        /// <summary>
+        /// 禁言数据存储
+        /// </summary>
+        public static List<string> mute_list = new List<string> { };
     }
     class main_config
     {

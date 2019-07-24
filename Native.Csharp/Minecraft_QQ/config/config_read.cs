@@ -176,7 +176,6 @@ namespace Color_yr.Minecraft_QQ
                     {
                         player.player = id.InnerXml;
                         player.nick = nick.InnerXml;
-                        player.mute = mute.InnerText == "开" ? true : false;
                         player.admin = admin.InnerText == "开" ? true : false;
                         config_file.player_list.Add(player.qq, player);
                     }

@@ -5,7 +5,6 @@
     /// <param name="player">玩家名字</param>
     /// <param name="nick">昵称</param>
     /// <param name="qq">QQ号</param>
-    /// <param name="mute">是否被禁言</param>
     /// <param name="admin">是否为管理员</param>
     /// </summary>
     class player_save
@@ -13,7 +12,6 @@
         public string player;
         public string nick;
         public long qq = 0;
-        public bool mute = false;
         public bool admin = false;
     }
     /// <summary>
