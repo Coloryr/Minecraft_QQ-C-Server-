@@ -34,7 +34,7 @@ namespace Color_yr.Minecraft_QQ
                 if (string.IsNullOrWhiteSpace(message.message) == true || 
                     string.IsNullOrWhiteSpace(message.player) == true)
                     return;
-                if (config_file.mute_list.Contains(message.player.ToLower()) == false)
+                if (config_file.mute_list.Contains(message.player.ToLower()) == true)
                     return;
                 if (message.is_commder == false && message.group == "group")
                 {
