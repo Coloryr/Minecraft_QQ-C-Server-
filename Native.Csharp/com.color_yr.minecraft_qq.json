@@ -64,8 +64,8 @@
     //126, //置群成员名片		setGroupCard
     //127, //[敏感]置群退出		setGroupLeave
     //128, //置群成员专属头衔	setGroupSpecialTitle
-    130, //取群成员信息		getGroupMemberInfoV2 / getGroupMemberInfo
-    131 //取陌生人信息		getStrangerInfo
+    //130, //取群成员信息		getGroupMemberInfoV2 / getGroupMemberInfo
+    //131, //取陌生人信息		getStrangerInfo
     //140, //置讨论组退出		setDiscussLeave
     //150, //置好友添加请求		setFriendAddRequest
     //151, //置群添加请求		setGroupAddRequest
