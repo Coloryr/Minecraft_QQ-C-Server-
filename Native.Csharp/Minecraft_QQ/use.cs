@@ -272,8 +272,7 @@ namespace Color_yr.Minecraft_QQ
                     config_write.write_player(Minecraft_QQ.path + config_file.player, player1);
                     if (admin_config.Admin_Send != 0)
                     {
-                        QQInfo qqInfo = Common.CqApi.GetQQInfo(fromQQ);
-                        Common.CqApi.SendPrivateMessage(admin_config.Admin_Send, "玩家[" + qqInfo.Id.ToString() + "]绑定了ID：[" + player_name + "]");
+                        Common.CqApi.SendPrivateMessage(admin_config.Admin_Send, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
                     }
                     return "绑定ID：[" + player_name + "]成功！";
                 }

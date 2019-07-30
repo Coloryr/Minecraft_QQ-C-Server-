@@ -18,13 +18,13 @@ namespace Color_yr.Minecraft_QQ
         /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (textBox5.Text == "" || textBox1.Text == "" || textBox5.Text == null || textBox1.Text == null
-                || (checkBox6.Checked == true && textBox4.Text == null))
+            if (string.IsNullOrWhiteSpace(textBox5.Text) == true
+                || (checkBox6.Checked == true && string.IsNullOrWhiteSpace(textBox4.Text) == true))
             {
                 MessageBox.Show("请输入所需的参数");
                 return;
             }
-            if (use.IsNumber(textBox5.Text) == false || use.IsNumber(textBox6.Text) == false || use.IsNumber(textBox7.Text) == false)
+            if (use.IsNumber(textBox5.Text) == false)
             {
                 MessageBox.Show("请输入正确的参数");
                 return;
