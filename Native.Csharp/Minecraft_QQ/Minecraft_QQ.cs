@@ -191,6 +191,7 @@ namespace Color_yr.Minecraft_QQ
                         }
                     }
                 }
+                logs.Log_write("处理数据：" + msg_low);
                 if (msg_low.IndexOf(check_config.head) == 0 && list.commder == true)
                 {
                     msg_low = use.ReplaceFirst(msg_low, check_config.head, "");
@@ -205,35 +206,40 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 try
                                 {
-                                    if ((player != null && config_file.mute_list.Contains(player.player.ToLower()) == false) || string.IsNullOrWhiteSpace(player.player))
+                                    if (player != null || string.IsNullOrWhiteSpace(player.player))
                                     {
-                                        string send = message_config.send_text;
-                                        string msg_copy = msg;
-                                        if (main_config.nick_server == true)
-                                        {
-                                            if (string.IsNullOrWhiteSpace(player.nick) == true)
-                                                send = send.Replace("%player%", player.player);
-                                            else
-                                                send = send.Replace("%player%", player.nick);
-                                        }
+                                        if (config_file.mute_list.Contains(player.player.ToLower()) == true)
+                                            Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你已被禁言");
                                         else
-                                            send = send.Replace("%player%", player.player);
-                                        msg_copy = msg_copy.Replace(check_config.send_message, "");
-                                        if (main_config.color_code == false)
-                                            msg_copy = use.RemoveColorCodes(msg_copy);
-                                        if (msg_copy.IndexOf("CQ:") != -1)
                                         {
-                                            msg_copy = use.remove_pic(msg_copy);
-                                            msg_copy = use.get_at(msg_copy);
-                                            msg_copy = use.CQ_code(msg_copy);
-                                        }
-                                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                                        {
-                                            send = send.Replace("%message%", use.remove_pic(msg_copy));
-                                            message_send messagelist = new message_send();
-                                            messagelist.group = "group";
-                                            messagelist.message = "说话" + send;
-                                            socket.Send(messagelist);
+                                            string send = message_config.send_text;
+                                            string msg_copy = msg;
+                                            if (main_config.nick_server == true)
+                                            {
+                                                if (string.IsNullOrWhiteSpace(player.nick) == true)
+                                                    send = send.Replace("%player%", player.player);
+                                                else
+                                                    send = send.Replace("%player%", player.nick);
+                                            }
+                                            else
+                                                send = send.Replace("%player%", player.player);
+                                            msg_copy = msg_copy.Replace(check_config.send_message, "");
+                                            if (main_config.color_code == false)
+                                                msg_copy = use.RemoveColorCodes(msg_copy);
+                                            if (msg_copy.IndexOf("CQ:") != -1)
+                                            {
+                                                msg_copy = use.remove_pic(msg_copy);
+                                                msg_copy = use.get_at(msg_copy);
+                                                msg_copy = use.CQ_code(msg_copy);
+                                            }
+                                            if (string.IsNullOrWhiteSpace(msg_copy) == false)
+                                            {
+                                                send = send.Replace("%message%", use.remove_pic(msg_copy));
+                                                message_send messagelist = new message_send();
+                                                messagelist.group = "group";
+                                                messagelist.message = "说话" + send;
+                                                socket.Send(messagelist);
+                                            }
                                         }
                                     }
                                     else
@@ -352,7 +358,6 @@ namespace Color_yr.Minecraft_QQ
                     }
                 }
             }
-            GC.Collect();
         }
     }
 }
