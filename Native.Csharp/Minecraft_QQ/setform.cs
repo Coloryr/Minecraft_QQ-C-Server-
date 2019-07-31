@@ -32,7 +32,6 @@ namespace Color_yr.Minecraft_QQ
             int.TryParse(textBox5.Text, out int port);
             socket_config.Port = port;
             socket_config.setip = textBox4.Text;
-            Close();
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {

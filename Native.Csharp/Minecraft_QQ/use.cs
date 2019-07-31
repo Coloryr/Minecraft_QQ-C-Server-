@@ -300,7 +300,7 @@ namespace Color_yr.Minecraft_QQ
                 name = msg.Replace(admin_config.mute, "").Trim();
             }
 
-            config_write.write_mute(config_file.player, name);
+            config_write.write_mute(Minecraft_QQ.path + config_file.player, name.ToLower());
             if (config_file.mute_list.Contains(name.ToLower()) == false)
                 config_file.mute_list.Add(name.ToLower());
             return "已禁言：[" + name + "]";
@@ -324,7 +324,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 name = msg.Replace(admin_config.unmute, "").Trim();
             }
-            config_write.write_unmute(config_file.player, name.ToLower());
+            config_write.write_unmute(Minecraft_QQ.path + config_file.player, name.ToLower());
             if (config_file.mute_list.Contains(name.ToLower()) == true)
                 config_file.mute_list.Remove(name.ToLower());
             return "已解禁：[" + name + "]";
@@ -383,6 +383,37 @@ namespace Color_yr.Minecraft_QQ
             else
                 return "玩家错误，请检查";
         }
+
+        public static string mutelist()
+        {
+            if (config_file.mute_list.Count == 0)
+                return "没有禁言的玩家";
+            else
+            {
+                string a = "禁言的玩家：";
+                foreach (string name in config_file.mute_list)
+                {
+                    a += "\n" + name;
+                }
+                return a;
+            }
+        }
+
+        public static string unbindlist()
+        {
+            if (config_file.cant_bind.Count == 0)
+                return "没有禁止绑定的ID";
+            else
+            {
+                string a = "禁止绑定的ID：";
+                foreach (string name in config_file.cant_bind)
+                {
+                    a += "\n" + name;
+                }
+                return a;
+            }
+        }
+
         public static string fix_mode_change()
         {
             if (main_config.fix_mode == false)

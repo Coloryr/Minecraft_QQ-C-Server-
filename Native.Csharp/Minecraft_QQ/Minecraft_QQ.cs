@@ -41,9 +41,12 @@ namespace Color_yr.Minecraft_QQ
             if (File.Exists(path + config_file.config) == false)
                 config_write.write_config(path + config_file.config);        
             if (File.Exists(path + config_file.group) == false)
-                XML.write(path + config_file.group, "测试", "测试", "测试");       
+                XML.write(path + config_file.group, "测试", "测试", "测试");
             if (File.Exists(path + config_file.player) == false)
-                XML.write(path + config_file.player, "禁止绑定", "ID", "Color_yr");        
+            {
+                XML.write(path + config_file.player, "禁止绑定", "ID", "Color_yr");
+                XML.write(path + config_file.player, "禁言", "ID", "Color_yr");
+            }
             if (File.Exists(path + config_file.message) == false)
             {
                 message_save message = new message_save();
@@ -91,6 +94,7 @@ namespace Color_yr.Minecraft_QQ
 
             config_read.read_config();
             config_read.read_cant_bind();
+            config_read.read_mute();
             config_read.read_commder();
             config_read.read_group();
             config_read.read_player();
@@ -102,6 +106,7 @@ namespace Color_yr.Minecraft_QQ
                 frm.ShowDialog();
                 config_read.read_config();
                 config_read.read_cant_bind();
+                config_read.read_mute();
                 config_read.read_commder();
                 config_read.read_group();
                 config_read.read_player();
@@ -293,6 +298,16 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.fix_mode_change());
                         return;
                     }
+                    else if (msg_low == admin_config.mute_list && player != null && player.admin == true)
+                    {
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.mutelist());
+                        return;
+                    }
+                    else if (msg_low == admin_config.unbind_list && player != null && player.admin == true)
+                    {
+                        Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + use.unbindlist());
+                        return;
+                    }
                     else if (msg_low == admin_config.menu && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
@@ -304,6 +319,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read.read_config();
                         config_read.read_cant_bind();
+                        config_read.read_mute();
                         config_read.read_commder();
                         config_read.read_group();
                         config_read.read_player();

@@ -100,6 +100,12 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl2 = xn.SelectSingleNode("昵称");
                             if (xnLurl2 != null)
                                 admin_config.nick = xnLurl2.InnerText;
+                            xnLurl2 = xn.SelectSingleNode("禁止绑定列表");
+                            if (xnLurl2 != null)
+                                admin_config.unbind_list = xnLurl2.InnerText;
+                            xnLurl2 = xn.SelectSingleNode("禁言列表");
+                            if (xnLurl2 != null)
+                                admin_config.mute_list = xnLurl2.InnerText;
                             xnLurl2 = xn.SelectSingleNode("发送给的人");
                             if (xnLurl2 != null)
                                 long.TryParse(xnLurl2.InnerText, out admin_config.Admin_Send);
@@ -184,10 +190,8 @@ namespace Color_yr.Minecraft_QQ
                 XmlNode id = xn.SelectSingleNode("绑定ID");
                 XmlNode nick = xn.SelectSingleNode("昵称");
                 XmlNode qq = xn.SelectSingleNode("QQ号");
-                XmlNode mute = xn.SelectSingleNode("禁言");
                 XmlNode admin = xn.SelectSingleNode("管理员");
-                if (id != null && nick != null && qq != null
-                    && mute != null && admin != null
+                if (id != null && nick != null && qq != null && admin != null
                     && use.IsNumber(qq.FirstChild.InnerText) == true)
                 {
                     player_save player = new player_save();

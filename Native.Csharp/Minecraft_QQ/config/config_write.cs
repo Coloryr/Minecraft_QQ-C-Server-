@@ -106,6 +106,12 @@ namespace Color_yr.Minecraft_QQ
                 Text = xmldoc.CreateElement("昵称");
                 Text.InnerText = admin_config.nick;
                 Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("禁止绑定列表");
+                Text.InnerText = admin_config.unbind_list;
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("禁言列表");
+                Text.InnerText = admin_config.mute_list;
+                Child.AppendChild(Text);
                 Text = xmldoc.CreateElement("发送给的人");
                 Text.InnerText = admin_config.Admin_Send.ToString();
                 Child.AppendChild(Text);
@@ -368,18 +374,17 @@ namespace Color_yr.Minecraft_QQ
                     if (xn.Name == "禁言")
                     {
                         XmlNodeList nodeList1 = xn.ChildNodes;
-                        foreach (XmlNode xn1 in nodeList)//遍历所有子节点
+                        foreach (XmlNode xn1 in nodeList1)//遍历所有子节点
                         {
-                            XmlNode xnLurl = xn1.SelectSingleNode("ID");
-                            if (xnLurl.InnerText == id)
+                            if (xn1.InnerText == id)
                             {
-                                xn.RemoveChild(xnLurl);
+                                xn.RemoveChild(xn1);
+                                xmldoc.Save(path);
                                 return;
                             }
                         }
                     }
-                }
-                xmldoc.Save(path);
+                }  
             }
             catch (Exception)
             {

@@ -153,6 +153,14 @@ namespace Color_yr.Minecraft_QQ
         /// </summary>
         public static string nick = "昵称：";
         /// <summary>
+        /// 禁止绑定列表
+        /// </summary>
+        public static string unbind_list = "禁止绑定列表";
+        /// <summary>
+        /// 禁言列表
+        /// </summary>
+        public static string mute_list = "禁言列表";
+        /// <summary>
         /// 发送绑定信息群号
         /// </summary>
         public static long Admin_Send = 0;
