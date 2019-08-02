@@ -156,7 +156,7 @@ namespace Color_yr.Minecraft_QQ
                 if (main_config.allways_send == true && main_config.fix_mode == false && socket.ready == true && list.say == true)
                 {
                     player_save player = use.check_player(fromQQ);
-                    if (player != null && config_file.mute_list.Contains(player.player.ToLower()) == false && string.IsNullOrWhiteSpace(player.player))
+                    if (player != null && !config_file.mute_list.Contains(player.player.ToLower()) && !string.IsNullOrWhiteSpace(player.player))
                     {
                         string send;
                         string msg_copy = msg;
@@ -191,7 +191,6 @@ namespace Color_yr.Minecraft_QQ
                         }
                     }
                 }
-                logs.Log_write("处理数据：" + msg_low);
                 if (msg_low.IndexOf(check_config.head) == 0 && list.commder == true)
                 {
                     msg_low = use.ReplaceFirst(msg_low, check_config.head, "");

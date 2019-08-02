@@ -443,13 +443,13 @@ namespace Color_yr.Minecraft_QQ
                     message.is_commder = false;
                     message.player = null;
                     socket.Send(message);
+                    return null;
                 }
                 else
                     return "发送失败，服务器未准备好";
             }
             else
                 return message_config.fix_send;
-            return null;
         }
         public static string server(long fromGroup)
         {
@@ -463,13 +463,13 @@ namespace Color_yr.Minecraft_QQ
                     message.is_commder = false;
                     message.player = null;
                     socket.Send(message);
+                    return null;
                 }
                 else
                     return "发送失败，服务器未准备好";
             }
             else
                 return message_config.fix_send;
-            return null;
         }
         public static bool commder_check(long fromGroup, string msg, long fromQQ)
         {
