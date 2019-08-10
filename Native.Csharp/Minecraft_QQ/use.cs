@@ -514,7 +514,7 @@ namespace Color_yr.Minecraft_QQ
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
                                     message_send.message = cmd + get_string(msg, "]");
                                 else
-                                    message_send.message = cmd + msg.Replace(commder.check, "");
+                                    message_send.message = cmd + ReplaceFirst(msg, commder.check, "");
                             }
                             else
                                 message_send.message = cmd;
