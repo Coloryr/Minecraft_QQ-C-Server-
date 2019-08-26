@@ -384,7 +384,7 @@ namespace Color_yr.Minecraft_QQ
                             }
                         }
                     }
-                }  
+                }
             }
             catch (Exception)
             {

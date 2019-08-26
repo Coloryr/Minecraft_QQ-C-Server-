@@ -1,5 +1,4 @@
 ﻿using Native.Csharp.App;
-using Native.Csharp.Sdk.Cqp.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -132,7 +131,7 @@ namespace Color_yr.Minecraft_QQ
                     player_name = player_QQ;
                 else
                 {
-                    if(string.IsNullOrWhiteSpace(player.nick) == false)
+                    if (string.IsNullOrWhiteSpace(player.nick) == false)
                         player_name = player.nick;
                     else
                         player_name = player.player;
@@ -144,7 +143,7 @@ namespace Color_yr.Minecraft_QQ
             msg = msg.Replace("[", "").Replace("]", "");
             return msg;
         }
-        public static string anno(string a)
+        public static string rich(string a)
         {
             string title = null;
             string json_string;
@@ -155,15 +154,41 @@ namespace Color_yr.Minecraft_QQ
                 json_string = "{" + get_string(a, ":{", "}") + "}";
                 json_string = json_string.Replace("&#44;", ",");
                 JObject jsonData = JObject.Parse(json_string);
-                text = jsonData["text"].ToString();
-                byte[] bytes = Convert.FromBase64String(text);
-                text = Encoding.GetEncoding("utf-8").GetString(bytes);
+                if (jsonData.ContainsKey("text"))
+                {
+                    text = jsonData["text"].ToString();
+                    byte[] bytes = Convert.FromBase64String(text);
+                    text = Encoding.GetEncoding("utf-8").GetString(bytes);
+                }
+                else if (jsonData.ContainsKey("jumpUrl"))
+                {
+                    if (jsonData.ContainsKey("tag"))
+                    {
+                        text = jsonData["tag"].ToString() + "分享："
+                            + jsonData["jumpUrl"].ToString();
+                    }
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logs.Log_write("[ERROR][group]" + e.Message);
             }
             return title + "：\n" + text;
+        }
+        public static string sign(string a, string player)
+        {
+            string title = null;
+            string text = null;
+            try
+            {
+                title = get_string(a, "title=", ",image");
+                text = player + "群签到：" + title;
+            }
+            catch (Exception e)
+            {
+                logs.Log_write("[ERROR][group]" + e.Message);
+            }
+            return text;
         }
         public static string CQ_code(string a)
         {
@@ -284,7 +309,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
-            msg = msg.Replace(admin_config.mute, ""); 
+            msg = msg.Replace(admin_config.mute, "");
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
@@ -485,7 +510,7 @@ namespace Color_yr.Minecraft_QQ
                     }
                     commder_save commder = config_file.commder_list[value];
                     player_save player = check_player(fromQQ);
-                    if(player != null)
+                    if (player != null)
                     {
                         if (commder.player_use == true || player.admin == true)
                         {
@@ -493,7 +518,7 @@ namespace Color_yr.Minecraft_QQ
                             message_send.group = fromGroup.ToString();
 
                             string cmd = commder.commder;
-                           
+
                             if (cmd.IndexOf("%player_name%") != -1)
                                 cmd = cmd.Replace("%player_name%", player.player);
                             if (msg.IndexOf("CQ:at,qq=") != -1 && cmd.IndexOf("%player_at%") != -1)
@@ -508,9 +533,9 @@ namespace Color_yr.Minecraft_QQ
                                 }
                                 cmd = cmd.Replace("%player_at%", player1.player);
                             }
-                           
+
                             if (commder.parameter == true)
-                            {                               
+                            {
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
                                     message_send.message = cmd + get_string(msg, "]");
                                 else

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace Color_yr.Minecraft_QQ
@@ -108,7 +107,10 @@ namespace Color_yr.Minecraft_QQ
                                 admin_config.mute_list = xnLurl2.InnerText;
                             xnLurl2 = xn.SelectSingleNode("发送给的人");
                             if (xnLurl2 != null)
-                                long.TryParse(xnLurl2.InnerText, out admin_config.Admin_Send);
+                            {
+                                long.TryParse(xnLurl2.InnerText, out long a);
+                                admin_config.Admin_Send = a;
+                            }
                             break;
                         case "Socket":
                             XmlNode xnLurl3;
@@ -117,7 +119,10 @@ namespace Color_yr.Minecraft_QQ
                                 socket_config.setip = xnLurl3.InnerText;
                             xnLurl3 = xn.SelectSingleNode("端口");
                             if (xnLurl3 != null)
-                                int.TryParse(xnLurl3.InnerText, out socket_config.Port);
+                            {
+                                int.TryParse(xnLurl3.InnerText, out int a);
+                                socket_config.Port = a;
+                            }
                             xnLurl3 = xn.SelectSingleNode("编码类型");
                             if (xnLurl3 != null)
                                 socket_config.code = xnLurl3.InnerText;

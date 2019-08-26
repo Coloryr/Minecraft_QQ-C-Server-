@@ -39,7 +39,7 @@ namespace Color_yr.Minecraft_QQ
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             if (File.Exists(path + config_file.config) == false)
-                config_write.write_config(path + config_file.config);        
+                config_write.write_config(path + config_file.config);
             if (File.Exists(path + config_file.group) == false)
                 XML.write(path + config_file.group, "测试", "测试", "测试");
             if (File.Exists(path + config_file.player) == false)
@@ -115,7 +115,7 @@ namespace Color_yr.Minecraft_QQ
 
             if (config_file.group_list.Count == 0 || GroupSet_Main == 0)
             {
-                MessageBox.Show("[Minecraft_QQ]群设置错误请修改后重载应用");
+                MessageBox.Show("群设置错误请修改后重载应用");
                 return;
             }
 
@@ -174,7 +174,9 @@ namespace Color_yr.Minecraft_QQ
                         if (main_config.color_code == false)
                             msg_copy = use.RemoveColorCodes(msg_copy);
                         if (msg_copy.IndexOf("CQ:rich") != -1)
-                            msg_copy = use.anno(msg_copy);
+                            msg_copy = use.rich(msg_copy);
+                        if (msg_copy.IndexOf("CQ:sign") != -1)
+                            msg_copy = use.sign(msg_copy, player.player);
                         else if (msg_copy.IndexOf("CQ:") != -1)
                         {
                             msg_copy = use.remove_pic(msg_copy);

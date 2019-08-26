@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
@@ -95,7 +93,8 @@ namespace Color_yr.Minecraft_QQ
                 button4.Text = "错误";
                 return;
             }
-            int.TryParse(textBox5.Text, out socket_config.Port);
+            int.TryParse(textBox5.Text, out int a);
+            socket_config.Port = a;
             socket_config.setip = textBox4.Text;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
             button4.Text = "已设置";
@@ -130,7 +129,8 @@ namespace Color_yr.Minecraft_QQ
                 button6.Text = "设置失败";
                 return;
             }
-            long.TryParse(textBox7.Text, out admin_config.Admin_Send);
+            long.TryParse(textBox7.Text, out long a);
+            admin_config.Admin_Send = a;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
             button6.Text = "已设置";
         }
@@ -139,7 +139,7 @@ namespace Color_yr.Minecraft_QQ
         {
             if (textBox8.Text != null)
             {
-                    config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
+                config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
                 button7.Text = "已添加";
             }
         }

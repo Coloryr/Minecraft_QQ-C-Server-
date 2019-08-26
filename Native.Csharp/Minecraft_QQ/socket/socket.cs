@@ -52,7 +52,8 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception exception)
             {
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]启动失败，请看日志");
+                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]启动失败，请看日志" +
+                    "\n酷Q/Minecraft_QQ/logs.log");
                 logs.Log_write("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
                 ready = false;
@@ -150,7 +151,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "线程已关闭");
                         return;
                     }
-                    Thread.Sleep(100);      // 延时0.1秒后再接收客户端发送的消息
+                    Thread.Sleep(10);      // 延时0.01秒后再接收客户端发送的消息
                 }
             }
             catch (ThreadAbortException e)

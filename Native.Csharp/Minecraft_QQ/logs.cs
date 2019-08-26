@@ -17,7 +17,7 @@ namespace Color_yr.Minecraft_QQ
                 string write = "[" + year + "]" + "[" + time + "]" + a;
                 File.AppendAllText(Minecraft_QQ.path + log, write + Environment.NewLine);
             }
-            catch 
+            catch
             {
 
             }
