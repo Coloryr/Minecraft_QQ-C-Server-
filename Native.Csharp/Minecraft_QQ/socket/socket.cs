@@ -42,10 +42,10 @@ namespace Color_yr.Minecraft_QQ
                 server_thread.Start(serverSocket);
                 start = true;
                 ready = false;
-                if (socket_config.useip == true)
+                if (socket_config.useip == true && main_config.bq_message)
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + socket_config.setip + ":" + socket_config.Port);
-                else
+                else if (main_config.bq_message)
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在端口：" + socket_config.Port);
                 logs.Log_write("[INFO][Socket]端口已启动");
@@ -78,7 +78,8 @@ namespace Color_yr.Minecraft_QQ
                     read_thread.Start(clientScoket);                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]服务器已连接");
+                    if (main_config.bq_message)
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
                     ready = true;
 
@@ -131,7 +132,8 @@ namespace Color_yr.Minecraft_QQ
                     }
                     catch (Exception e)
                     {
-                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-连接丢失");
+                        if (main_config.bq_message)
+                            Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
                         ready = false;
 
@@ -156,7 +158,8 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException e)
             {
-                Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-主动断开");
+                if (main_config.bq_message)
+                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开:" + e.ToString());
                 return;
             }

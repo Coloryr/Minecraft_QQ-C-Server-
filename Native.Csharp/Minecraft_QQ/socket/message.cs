@@ -20,7 +20,10 @@ namespace Color_yr.Minecraft_QQ
                     messagelist.is_commder = false;
                 }
             }
-            catch { messagelist.player = "没有玩家"; }
+            catch
+            {
+                messagelist.player = "没有玩家";
+            }
             return messagelist;
         }
 

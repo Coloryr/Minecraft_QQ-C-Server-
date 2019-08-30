@@ -79,6 +79,11 @@ namespace Color_yr.Minecraft_QQ
         /// 允许玩家绑定ID
         /// </summary>
         public static bool set_name { get; set; } = true;
+        /// <summary>
+        /// 发送日志消息到群
+        /// </summary>
+        public static bool bq_message { get; set; } = true;
+
     }
     class message_config
     {
@@ -94,6 +99,10 @@ namespace Color_yr.Minecraft_QQ
         /// 未知的指令
         /// </summary>
         public static string unknow { get; set; } = "未知指令";
+        /// <summary>
+        /// 禁止绑定ID
+        /// </summary>
+        public static string cant_bind { get; set; } = "绑定ID已关闭";
     }
     class check_config
     {

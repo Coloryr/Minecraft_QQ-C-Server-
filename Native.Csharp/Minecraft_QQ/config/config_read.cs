@@ -42,6 +42,9 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl = xn.SelectSingleNode("允许玩家绑定ID");
                             if (xnLurl != null)
                                 main_config.set_name = xnLurl.InnerText == "开" ? true : false;
+                            xnLurl = xn.SelectSingleNode("广播日志到群");
+                            if (xnLurl != null)
+                                main_config.bq_message = xnLurl.InnerText == "开" ? true : false;
                             break;
                         case "文本":
                             XmlNode xnLurl0;
@@ -54,6 +57,9 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl0 = xn.SelectSingleNode("未知指令");
                             if (xnLurl0 != null)
                                 message_config.unknow = xnLurl0.InnerText;
+                            xnLurl0 = xn.SelectSingleNode("禁止绑定提示");
+                            if (xnLurl0 != null)
+                                message_config.cant_bind = xnLurl0.InnerText;
                             break;
                         case "检测":
                             XmlNode xnLurl1;

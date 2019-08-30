@@ -76,7 +76,7 @@ namespace Color_yr.Minecraft_QQ
             int y;
             if (c != null)
             {
-                y = a.IndexOf(c);
+                y = a.IndexOf(c, x);
                 if (y - x <= 0)
                     return a;
                 else
@@ -269,6 +269,8 @@ namespace Color_yr.Minecraft_QQ
         {
             if (msg.IndexOf(check_config.head) == 0)
                 msg = msg.Replace(check_config.head, null);
+            if (main_config.set_name == false)
+                return message_config.cant_bind;
             player_save player = check_player(fromQQ);
             if (player == null || (player != null && string.IsNullOrWhiteSpace(player.player) == true))
             {

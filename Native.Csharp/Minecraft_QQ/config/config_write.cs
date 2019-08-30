@@ -49,6 +49,9 @@ namespace Color_yr.Minecraft_QQ
                 Text = xmldoc.CreateElement("允许玩家绑定ID");
                 Text.InnerText = main_config.set_name ? "开" : "关";
                 Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("广播日志到群");
+                Text.InnerText = main_config.bq_message ? "开" : "关";
+                Child.AppendChild(Text);
 
                 Child = xmldoc.CreateElement("文本");
                 root.AppendChild(Child);
@@ -60,6 +63,9 @@ namespace Color_yr.Minecraft_QQ
                 Child.AppendChild(Text);
                 Text = xmldoc.CreateElement("未知指令");
                 Text.InnerText = message_config.unknow;
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("禁止绑定提示");
+                Text.InnerText = message_config.cant_bind;
                 Child.AppendChild(Text);
 
                 Child = xmldoc.CreateElement("检测");
