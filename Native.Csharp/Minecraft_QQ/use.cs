@@ -498,26 +498,26 @@ namespace Color_yr.Minecraft_QQ
         }
         public static bool commder_check(long fromGroup, string msg, long fromQQ)
         {
-            Dictionary<string, commder_save>.KeyCollection valueCol = config_file.commder_list.Keys;
-            foreach (string value in valueCol)
+            msg = ReplaceFirst(msg, check_config.head, "");
+            foreach (KeyValuePair<string, commder_save> value in config_file.commder_list)
             {
-                if (msg.IndexOf(value) == 0)
+
+                if (msg.ToLower().IndexOf(value.Key) == 0)
                 {
                     if (socket.ready == false)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
-                    commder_save commder = config_file.commder_list[value];
                     player_save player = check_player(fromQQ);
                     if (player != null)
                     {
-                        if (commder.player_use == true || player.admin == true)
+                        if (value.Value.player_use == true || player.admin == true)
                         {
                             message_send message_send = new message_send();
                             message_send.group = fromGroup.ToString();
 
-                            string cmd = commder.commder;
+                            string cmd = value.Value.commder;
 
                             if (cmd.IndexOf("%player_name%") != -1)
                                 cmd = cmd.Replace("%player_name%", player.player);
@@ -534,17 +534,17 @@ namespace Color_yr.Minecraft_QQ
                                 cmd = cmd.Replace("%player_at%", player1.player);
                             }
 
-                            if (commder.parameter == true)
+                            if (value.Value.parameter == true)
                             {
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
                                     message_send.message = cmd + get_string(msg, "]");
                                 else
-                                    message_send.message = cmd + ReplaceFirst(msg, commder.check, "");
+                                    message_send.message = cmd + ReplaceFirst(msg, value.Value.check, "");
                             }
                             else
                                 message_send.message = cmd;
                             message_send.is_commder = true;
-                            if (commder.player_send)
+                            if (value.Value.player_send)
                             {
                                 message_send.player = player.player;
                                 if (string.IsNullOrWhiteSpace(player.player) == true)

@@ -340,7 +340,7 @@ namespace Color_yr.Minecraft_QQ
                         return;
                     }
 
-                    if (use.commder_check(fromGroup, msg_low, fromQQ) == true)
+                    if (use.commder_check(fromGroup, msg, fromQQ) == true)
                         return;
 
                     if (main_config.message_enable && config_file.message_list.ContainsKey(msg_low) == true)
