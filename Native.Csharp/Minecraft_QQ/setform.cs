@@ -33,6 +33,7 @@ namespace Color_yr.Minecraft_QQ
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            label2.Text = "插件版本：" + Minecraft_QQ.vision;
             textBox5.Text = socket_config.Port.ToString();
             textBox4.Text = socket_config.setip;
             if (socket_config.code == "UTF-8")
@@ -67,6 +68,11 @@ namespace Color_yr.Minecraft_QQ
                 checkBox6.Checked = false;
                 textBox4.ReadOnly = true;
             }
+            checkBox8.Checked = main_config.color_code;
+            checkBox9.Checked = main_config.nick_server;
+            checkBox10.Checked = main_config.nick_group;
+            checkBox11.Checked = main_config.set_name;
+            checkBox12.Checked = main_config.bq_message;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -174,6 +180,36 @@ namespace Color_yr.Minecraft_QQ
             socket_config.useip = checkBox6.Checked;
             checkBox6.Checked = socket_config.useip;
             textBox4.ReadOnly = !socket_config.useip;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.color_code = checkBox8.Checked;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void checkBox9_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.nick_server = checkBox9.Checked;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void checkBox10_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.nick_group = checkBox10.Checked;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void checkBox11_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.set_name = checkBox11.Checked;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void checkBox12_CheckedChanged(object sender, EventArgs e)
+        {
+            main_config.bq_message = checkBox12.Checked;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
     }

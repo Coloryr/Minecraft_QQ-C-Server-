@@ -199,6 +199,6 @@ namespace Color_yr.Minecraft_QQ
         /// <summary>
         /// 绑定IP-开关
         /// </summary>
-        public static bool useip { get; set; } = false;
+        public static bool useip { get; set; } = true;
     }
 }

@@ -29,6 +29,7 @@ namespace Color_yr.Minecraft_QQ
 
         public static void Message(string read)
         {
+            int a;
             while (read.IndexOf(socket_config.data_Head) == 0 && read.IndexOf(socket_config.data_End) != -1)
             {
                 string buff = use.get_string(read, socket_config.data_Head, socket_config.data_End);
@@ -63,8 +64,8 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(list.group_l, message.message);
                     }
                 }
-                int i = read.IndexOf(socket_config.data_End);
-                read = read.Substring(i + socket_config.data_End.Length);
+                a = read.IndexOf(socket_config.data_End);
+                read = read.Substring(a + socket_config.data_End.Length);
             }
         }
     }
