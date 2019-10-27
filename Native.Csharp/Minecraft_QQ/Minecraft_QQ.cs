@@ -134,6 +134,8 @@ namespace Color_yr.Minecraft_QQ
             socket.socket_stop();
             socket.Start_socket();
             is_start = true;
+            Send.Send_T = new Thread(Send.Send_);
+            Send.Send_T.Start();
         }
         /// <summary>
         /// Type=2 群消息。

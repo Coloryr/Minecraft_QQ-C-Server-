@@ -52,7 +52,7 @@ namespace Color_yr.Minecraft_QQ
                     foreach (group_save value in valueCol)
                     {
                         if (value.say == true)
-                            Common.CqApi.SendGroupMessage(value.group_l, message.message);
+                            Send.Send_List.Add(value.group_l, message.message);
                     }
                 }
                 else
@@ -61,7 +61,7 @@ namespace Color_yr.Minecraft_QQ
                     if (config_file.group_list.ContainsKey(group) == true)
                     {
                         group_save list = config_file.group_list[group];
-                        Common.CqApi.SendGroupMessage(list.group_l, message.message);
+                        Send.Send_List.Add(list.group_l, message.message);
                     }
                 }
                 a = read.IndexOf(socket_config.data_End);

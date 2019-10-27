@@ -117,6 +117,12 @@ namespace Color_yr.Minecraft_QQ
                                 long.TryParse(xnLurl2.InnerText, out long a);
                                 admin_config.Admin_Send = a;
                             }
+                            xnLurl2 = xn.SelectSingleNode("发送群消息间隔");
+                            if (xnLurl2 != null)
+                            {
+                                int.TryParse(xnLurl2.InnerText, out int a);
+                                admin_config.Send_Tick = a;
+                            }
                             break;
                         case "Socket":
                             XmlNode xnLurl3;

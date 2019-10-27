@@ -121,6 +121,9 @@ namespace Color_yr.Minecraft_QQ
                 Text = xmldoc.CreateElement("发送给的人");
                 Text.InnerText = admin_config.Admin_Send.ToString();
                 Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("发送消息间隔");
+                Text.InnerText = admin_config.Send_Tick.ToString();
+                Child.AppendChild(Text);
 
                 Child = xmldoc.CreateElement("Socket");
                 root.AppendChild(Child);

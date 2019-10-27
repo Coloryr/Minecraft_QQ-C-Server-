@@ -173,6 +173,10 @@ namespace Color_yr.Minecraft_QQ
         /// 发送绑定信息群号
         /// </summary>
         public static long Admin_Send { get; set; } = 0;
+        /// <summary>
+        /// 发送群消息间隔
+        /// </summary>
+        public static int Send_Tick { get; set; } = 500;
     }
     class socket_config
     {

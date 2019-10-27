@@ -176,6 +176,7 @@
     <Compile Include="Minecraft_QQ\config\config_main.cs" />
     <Compile Include="Minecraft_QQ\config\obj.cs" />
     <Compile Include="Minecraft_QQ\config\config_write.cs" />
+    <Compile Include="Minecraft_QQ\Send.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
