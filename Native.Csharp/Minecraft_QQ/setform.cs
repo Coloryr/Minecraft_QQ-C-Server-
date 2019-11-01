@@ -73,6 +73,12 @@ namespace Color_yr.Minecraft_QQ
             checkBox10.Checked = main_config.nick_group;
             checkBox11.Checked = main_config.set_name;
             checkBox12.Checked = main_config.bq_message;
+
+            mysql_ip.Text = mysql_config.ip;
+            mysql_port.Text = mysql_config.Port.ToString();
+            mysql_user.Text = mysql_config.user;
+            mysql_password.Text = mysql_config.password;
+            mysql_use.Checked = mysql_config.use;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -211,6 +217,39 @@ namespace Color_yr.Minecraft_QQ
         {
             main_config.bq_message = checkBox12.Checked;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
+        }
+
+        private void mysql_b_Click(object sender, EventArgs e)
+        {
+            mysql_config.ip = mysql_port.Text;
+            int.TryParse(mysql_port.Text, out int a);
+            mysql_config.Port = a;
+            mysql_config.user = mysql_user.Text;
+            mysql_config.password = mysql_password.Text;
+            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            if (Mysql.mysql_start() == false)
+            {
+                MessageBox.Show("Mysql链接错误，请检查设置");
+                mysql_use.Checked = false;
+                config_file.Mysql_use = false;
+            }
+        }
+
+        private void mysql_use_CheckedChanged(object sender, EventArgs e)
+        {
+            if (config_file.Mysql_use == false)
+            {
+                if (Mysql.mysql_start() == false)
+                {
+                    MessageBox.Show("Mysql链接错误，请检查设置");
+                    mysql_use.Checked = false;
+                    config_file.Mysql_use = false;
+                }
+            }
+            else
+            {
+                config_file.Mysql_use = false;
+            }
         }
     }
 }

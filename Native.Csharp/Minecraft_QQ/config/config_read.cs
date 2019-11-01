@@ -148,6 +148,27 @@ namespace Color_yr.Minecraft_QQ
                             if (xnLurl3 != null)
                                 socket_config.useip = xnLurl3.InnerText == "开" ? true : false;
                             break;
+                        case "Mysql":
+                            XmlNode xnLurl4;
+                            xnLurl4 = xn.SelectSingleNode("地址");
+                            if (xnLurl4 != null)
+                                mysql_config.ip = xnLurl4.InnerText;
+                            xnLurl4 = xn.SelectSingleNode("端口");
+                            if (xnLurl4 != null)
+                            {
+                                int.TryParse(xnLurl4.InnerText, out int a);
+                                mysql_config.Port = a;
+                            }
+                            xnLurl4 = xn.SelectSingleNode("用户");
+                            if (xnLurl4 != null)
+                                mysql_config.user = xnLurl4.InnerText;
+                            xnLurl4 = xn.SelectSingleNode("密码");
+                            if (xnLurl4 != null)
+                                mysql_config.password = xnLurl4.InnerText;
+                            xnLurl4 = xn.SelectSingleNode("启用");
+                            if (xnLurl4 != null)
+                                mysql_config.use = xnLurl4.InnerText == "开" ? true : false;
+                            break;
                     }
                 }
             }
@@ -176,38 +197,20 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
         }
-        public static void read_mute()
-        {
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(Minecraft_QQ.path + config_file.player);
-            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
-            config_file.cant_bind.Clear();
-            foreach (XmlNode xn in nodeList)//遍历所有子节点
-            {
-                if (xn.Name == "禁言")
-                {
-                    foreach (XmlNode xn1 in xn)//遍历所有子节点
-                    {
-                        XmlNode ID = xn.SelectSingleNode("ID");
-                        if (config_file.mute_list.Contains(ID.InnerText.ToLower()) == false)
-                            config_file.mute_list.Add(ID.InnerText.ToLower());
-                    }
-                    return;
-                }
-            }
-        }
         public static void read_player()
         {
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(Minecraft_QQ.path + config_file.player);
             XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
             config_file.player_list.Clear();
+            config_file.mute_list.Clear();
             foreach (XmlNode xn in nodeList)//遍历所有子节点
             {
                 XmlNode id = xn.SelectSingleNode("绑定ID");
                 XmlNode nick = xn.SelectSingleNode("昵称");
                 XmlNode qq = xn.SelectSingleNode("QQ号");
                 XmlNode admin = xn.SelectSingleNode("管理员");
+                XmlNode mute = xn.SelectSingleNode("禁言");
                 if (id != null && nick != null && qq != null && admin != null
                     && use.IsNumber(qq.FirstChild.InnerText) == true)
                 {
@@ -218,6 +221,9 @@ namespace Color_yr.Minecraft_QQ
                         player.player = id.InnerXml;
                         player.nick = nick.InnerXml;
                         player.admin = admin.InnerText == "开" ? true : false;
+                        player.mute = mute.InnerText == "开" ? true : false;
+                        if (config_file.mute_list.Contains(player.player.ToLower()) == false)
+                            config_file.mute_list.Add(player.player.ToLower());
                         config_file.player_list.Add(player.qq, player);
                     }
                 }

@@ -13,6 +13,7 @@
         public string nick;
         public long qq = 0;
         public bool admin = false;
+        public bool mute = false;
     }
     /// <summary>
     /// 服务器命令储存格式

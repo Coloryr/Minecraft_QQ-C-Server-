@@ -1,5 +1,4 @@
-﻿using Native.Csharp.App;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace Color_yr.Minecraft_QQ

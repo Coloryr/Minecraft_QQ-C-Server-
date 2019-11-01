@@ -146,6 +146,24 @@ namespace Color_yr.Minecraft_QQ
                 Text.InnerText = socket_config.useip ? "开" : "关";
                 Child.AppendChild(Text);
 
+                Child = xmldoc.CreateElement("Mysql");
+                root.AppendChild(Child);
+                Text = xmldoc.CreateElement("地址");
+                Text.InnerText = mysql_config.ip;
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("端口");
+                Text.InnerText = mysql_config.Port.ToString();
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("用户");
+                Text.InnerText = mysql_config.user;
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("密码");
+                Text.InnerText = mysql_config.password;
+                Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("启用");
+                Text.InnerText = mysql_config.use ? "开" : "关";
+                Child.AppendChild(Text);
+
                 xmldoc.Save(path);
             }
             catch (Exception)

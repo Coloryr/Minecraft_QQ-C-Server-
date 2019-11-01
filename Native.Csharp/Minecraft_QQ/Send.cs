@@ -17,7 +17,7 @@ namespace Color_yr.Minecraft_QQ
                 if(Send_List.Count != 0)
                 {
                     long group = Send_List.Keys.First();
-                    foreach (KeyValuePair<long, string> a in Send_List)
+                    foreach (KeyValuePair<long, string> a in Send_List.ToArray())
                     {
                         string b = null;
                         if (group == a.Key && string.IsNullOrWhiteSpace(a.Value) == false)

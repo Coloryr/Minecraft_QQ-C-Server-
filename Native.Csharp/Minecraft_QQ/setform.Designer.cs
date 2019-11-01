@@ -67,10 +67,22 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.mysql_use = new System.Windows.Forms.CheckBox();
+            this.mysql_password = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.mysql_user = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.mysql_ip = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.mysql_port = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.mysql_b = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label14
@@ -473,11 +485,122 @@
             this.label2.TabIndex = 73;
             this.label2.Text = "插件版本：x.x.x";
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.mysql_use);
+            this.groupBox5.Controls.Add(this.mysql_password);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.mysql_user);
+            this.groupBox5.Controls.Add(this.label9);
+            this.groupBox5.Controls.Add(this.mysql_ip);
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.mysql_port);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.mysql_b);
+            this.groupBox5.Location = new System.Drawing.Point(207, 187);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(201, 130);
+            this.groupBox5.TabIndex = 73;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "mysql设置";
+            // 
+            // mysql_use
+            // 
+            this.mysql_use.AutoSize = true;
+            this.mysql_use.Checked = true;
+            this.mysql_use.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mysql_use.Location = new System.Drawing.Point(135, 47);
+            this.mysql_use.Name = "mysql_use";
+            this.mysql_use.Size = new System.Drawing.Size(48, 16);
+            this.mysql_use.TabIndex = 73;
+            this.mysql_use.Text = "启用";
+            this.mysql_use.UseVisualStyleBackColor = true;
+            this.mysql_use.CheckedChanged += new System.EventHandler(this.mysql_use_CheckedChanged);
+            // 
+            // mysql_password
+            // 
+            this.mysql_password.Location = new System.Drawing.Point(40, 101);
+            this.mysql_password.Name = "mysql_password";
+            this.mysql_password.Size = new System.Drawing.Size(89, 21);
+            this.mysql_password.TabIndex = 72;
+            this.mysql_password.Text = "root";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(7, 104);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 71;
+            this.label12.Text = "密码";
+            // 
+            // mysql_user
+            // 
+            this.mysql_user.Location = new System.Drawing.Point(40, 74);
+            this.mysql_user.Name = "mysql_user";
+            this.mysql_user.Size = new System.Drawing.Size(89, 21);
+            this.mysql_user.TabIndex = 70;
+            this.mysql_user.Text = "root";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 77);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 69;
+            this.label9.Text = "用户";
+            // 
+            // mysql_ip
+            // 
+            this.mysql_ip.Location = new System.Drawing.Point(40, 20);
+            this.mysql_ip.Name = "mysql_ip";
+            this.mysql_ip.Size = new System.Drawing.Size(89, 21);
+            this.mysql_ip.TabIndex = 68;
+            this.mysql_ip.Text = "127.0.0.1";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 23);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 12);
+            this.label10.TabIndex = 67;
+            this.label10.Text = "地址";
+            // 
+            // mysql_port
+            // 
+            this.mysql_port.Location = new System.Drawing.Point(40, 47);
+            this.mysql_port.Name = "mysql_port";
+            this.mysql_port.Size = new System.Drawing.Size(89, 21);
+            this.mysql_port.TabIndex = 65;
+            this.mysql_port.Text = "3306";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 51);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(29, 12);
+            this.label11.TabIndex = 64;
+            this.label11.Text = "端口";
+            // 
+            // mysql_b
+            // 
+            this.mysql_b.Location = new System.Drawing.Point(135, 20);
+            this.mysql_b.Name = "mysql_b";
+            this.mysql_b.Size = new System.Drawing.Size(63, 20);
+            this.mysql_b.TabIndex = 66;
+            this.mysql_b.Text = "链接测试";
+            this.mysql_b.UseVisualStyleBackColor = true;
+            this.mysql_b.Click += new System.EventHandler(this.mysql_b_Click);
+            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(413, 384);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
@@ -501,6 +624,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -545,5 +670,16 @@
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox mysql_use;
+        private System.Windows.Forms.TextBox mysql_password;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox mysql_user;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox mysql_ip;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button mysql_b;
+        private System.Windows.Forms.TextBox mysql_port;
+        private System.Windows.Forms.Label label11;
     }
 }

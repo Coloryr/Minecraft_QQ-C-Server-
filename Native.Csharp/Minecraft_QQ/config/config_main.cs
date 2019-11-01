@@ -48,6 +48,10 @@ namespace Color_yr.Minecraft_QQ
         /// 禁言数据存储
         /// </summary>
         public static List<string> mute_list { get; set; } = new List<string> { };
+        /// <summary>
+        /// Mysql启用
+        /// </summary>
+        public static bool Mysql_use { get; set; } = false;
     }
     class main_config
     {
@@ -204,5 +208,29 @@ namespace Color_yr.Minecraft_QQ
         /// 绑定IP-开关
         /// </summary>
         public static bool useip { get; set; } = true;
+    }
+
+    class mysql_config
+    {
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public static string ip { get; set; } = "127.0.0.1";
+        /// <summary>
+        /// 端口
+        /// </summary>
+        public static int Port { get; set; } = 3306;
+        /// <summary>
+        /// 账户
+        /// </summary>
+        public static string user { get; set; } = "root";
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public static string password { get; set; } = "root";
+        /// <summary>
+        /// Mysql启用
+        /// </summary>
+        public static bool use { get; set; } = false;
     }
 }

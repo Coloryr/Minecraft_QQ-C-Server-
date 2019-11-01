@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public static string vision = "2.2.2";
+        public static string vision = "2.3.0";
         /// <summary>
         /// 插件启动线程
         /// </summary>
@@ -95,7 +95,6 @@ namespace Color_yr.Minecraft_QQ
 
             config_read.read_config();
             config_read.read_cant_bind();
-            config_read.read_mute();
             config_read.read_commder();
             config_read.read_group();
             config_read.read_player();
@@ -107,7 +106,6 @@ namespace Color_yr.Minecraft_QQ
                 frm.ShowDialog();
                 config_read.read_config();
                 config_read.read_cant_bind();
-                config_read.read_mute();
                 config_read.read_commder();
                 config_read.read_group();
                 config_read.read_player();
@@ -134,6 +132,19 @@ namespace Color_yr.Minecraft_QQ
             socket.socket_stop();
             socket.Start_socket();
             is_start = true;
+
+            if (mysql_config.use == true)
+            {
+                if (Mysql.mysql_start() == false)
+                {
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql链接失败");
+                    mysql_config.use = false;
+                }
+                else
+                {
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
+                }
+            }
             Send.Send_T = new Thread(Send.Send_);
             Send.Send_T.Start();
         }
@@ -329,7 +340,6 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
                         config_read.read_config();
                         config_read.read_cant_bind();
-                        config_read.read_mute();
                         config_read.read_commder();
                         config_read.read_group();
                         config_read.read_player();
