@@ -32,6 +32,43 @@ namespace Color_yr.Minecraft_QQ
             setform frm = new setform();
             frm.ShowDialog();
         }
+        public static void reload()
+        {
+            config_read.read_group();
+
+            while (config_file.group_list.Count == 0 && GroupSet_Main == 0)
+            {
+                setform frm = new setform();
+                MessageBox.Show("请设置QQ群，有且最多一个主群", "参数错误，请设置");
+                frm.ShowDialog();
+                config_read.read_group();
+            }
+
+            config_read.read_config();
+            config_read.read_commder();
+            config_read.read_message();
+
+            if (mysql_config.use == true)
+            {
+                if (Mysql.mysql_start() == false)
+                {
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql链接失败");
+                    config_file.Mysql_ok = false;
+                }
+                else
+                {
+                    Mysql Mysql = new Mysql();
+                    Mysql.load();
+                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
+                    config_file.Mysql_ok = true;
+                }
+            }
+            else
+            {
+                config_read.read_cant_bind();
+                config_read.read_player();
+            }
+        }
         /// <summary>
         /// 插件启动
         /// </summary>
@@ -93,31 +130,6 @@ namespace Color_yr.Minecraft_QQ
                 config_write.write_commder(path + config_file.commder, commder);
             }
 
-            config_read.read_config();
-            config_read.read_cant_bind();
-            config_read.read_commder();
-            config_read.read_group();
-            config_read.read_player();
-            config_read.read_message();
-            if (config_file.group_list.Count == 0)
-            {
-                setform frm = new setform();
-                MessageBox.Show("参数错误，请设置");
-                frm.ShowDialog();
-                config_read.read_config();
-                config_read.read_cant_bind();
-                config_read.read_commder();
-                config_read.read_group();
-                config_read.read_player();
-                config_read.read_message();
-            }
-
-            if (config_file.group_list.Count == 0 || GroupSet_Main == 0)
-            {
-                MessageBox.Show("群设置错误请修改后重载应用");
-                return;
-            }
-
             if (!File.Exists(path + logs.log))
             {
                 try
@@ -129,22 +141,13 @@ namespace Color_yr.Minecraft_QQ
                     Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]日志文件创建失败");
                 }
             }
+
+            reload();
+
             socket.socket_stop();
             socket.Start_socket();
             is_start = true;
 
-            if (mysql_config.use == true)
-            {
-                if (Mysql.mysql_start() == false)
-                {
-                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql链接失败");
-                    mysql_config.use = false;
-                }
-                else
-                {
-                    Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
-                }
-            }
             Send.Send_T = new Thread(Send.Send_);
             Send.Send_T.Start();
         }
@@ -338,12 +341,7 @@ namespace Color_yr.Minecraft_QQ
                     else if (msg_low == admin_config.reload && player != null && player.admin == true)
                     {
                         Common.CqApi.SendGroupMessage(fromGroup, "开始重读配置文件");
-                        config_read.read_config();
-                        config_read.read_cant_bind();
-                        config_read.read_commder();
-                        config_read.read_group();
-                        config_read.read_player();
-                        config_read.read_message();
+                        reload();
                         Common.CqApi.SendGroupMessage(fromGroup, "重读完成");
                         return;
                     }

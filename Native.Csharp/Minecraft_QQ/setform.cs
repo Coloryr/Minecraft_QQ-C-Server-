@@ -125,12 +125,26 @@ namespace Color_yr.Minecraft_QQ
                 player.qq = qq;
                 player.admin = true;
                 config_file.player_list.Add(qq, player);
-                config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                if (config_file.Mysql_ok == true)
+                {
+                    new Mysql_Add_data().player(player);
+                }
+                else
+                {
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                }
             }
             else
             {
                 config_file.player_list[qq].admin = true;
-                config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                if (config_file.Mysql_ok == true)
+                {
+                    new Mysql_Add_data().player(config_file.player_list[qq]);
+                }
+                else
+                {
+                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                }
             }
             button5.Text = "添加成功";
         }
@@ -151,7 +165,14 @@ namespace Color_yr.Minecraft_QQ
         {
             if (textBox8.Text != null)
             {
-                config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
+                if (config_file.Mysql_ok == true)
+                {
+                    new Mysql_Add_data().notid(textBox8.Text.ToLower());
+                }
+                else
+                {
+                    config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
+                }
                 button7.Text = "已添加";
             }
         }
@@ -221,7 +242,7 @@ namespace Color_yr.Minecraft_QQ
 
         private void mysql_b_Click(object sender, EventArgs e)
         {
-            mysql_config.ip = mysql_port.Text;
+            mysql_config.ip = mysql_ip.Text;
             int.TryParse(mysql_port.Text, out int a);
             mysql_config.Port = a;
             mysql_config.user = mysql_user.Text;
@@ -230,25 +251,31 @@ namespace Color_yr.Minecraft_QQ
             if (Mysql.mysql_start() == false)
             {
                 MessageBox.Show("Mysql链接错误，请检查设置");
+                mysql_b.Text = "已断开";
                 mysql_use.Checked = false;
-                config_file.Mysql_use = false;
+                config_file.Mysql_ok = false;
+            }
+            else
+            {
+                mysql_b.Text = "已连接";
+                mysql_use.Checked = true;
+                config_file.Mysql_ok = true;
             }
         }
 
         private void mysql_use_CheckedChanged(object sender, EventArgs e)
         {
-            if (config_file.Mysql_use == false)
+            mysql_config.use = mysql_use.Checked;
+            if (mysql_use.Checked == false)
             {
-                if (Mysql.mysql_start() == false)
-                {
-                    MessageBox.Show("Mysql链接错误，请检查设置");
-                    mysql_use.Checked = false;
-                    config_file.Mysql_use = false;
-                }
+                config_file.Mysql_ok = false;
             }
             else
             {
-                config_file.Mysql_use = false;
+                if (config_file.Mysql_ok == false)
+                {
+                    mysql_b_Click(null, null);
+                }
             }
         }
     }

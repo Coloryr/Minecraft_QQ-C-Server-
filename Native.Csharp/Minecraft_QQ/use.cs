@@ -252,7 +252,14 @@ namespace Color_yr.Minecraft_QQ
                 if (config_file.player_list.ContainsKey(qq) == true)
                 {
                     config_file.player_list[qq].nick = nick;
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                    if (config_file.Mysql_ok == true)
+                    {
+                        new Mysql_Add_data().player(config_file.player_list[qq]);
+                    }
+                    else
+                    {
+                        config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                    }
                 }
                 else
                 {
@@ -296,7 +303,14 @@ namespace Color_yr.Minecraft_QQ
                     player1.player = player_name;
                     player1.qq = fromQQ;
                     config_file.player_list.Add(fromQQ, player1);
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, player1);
+                    if (config_file.Mysql_ok == true)
+                    {
+                        new Mysql_Add_data().player(player1);
+                    }
+                    else
+                    {
+                        config_write.write_player(Minecraft_QQ.path + config_file.player, player1);
+                    }
                     if (admin_config.Admin_Send != 0)
                     {
                         Common.CqApi.SendPrivateMessage(admin_config.Admin_Send, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
@@ -326,8 +340,14 @@ namespace Color_yr.Minecraft_QQ
             {
                 name = msg.Replace(admin_config.mute, "").Trim();
             }
-
-            config_write.write_mute(Minecraft_QQ.path + config_file.player, name.ToLower());
+            if (config_file.Mysql_ok == true)
+            {
+                new Mysql_Add_data().mute(name.ToLower());
+            }
+            else
+            {
+                config_write.write_mute(Minecraft_QQ.path + config_file.player, name.ToLower());
+            }
             if (config_file.mute_list.Contains(name.ToLower()) == false)
                 config_file.mute_list.Add(name.ToLower());
             return "已禁言：[" + name + "]";
@@ -351,7 +371,14 @@ namespace Color_yr.Minecraft_QQ
             {
                 name = msg.Replace(admin_config.unmute, "").Trim();
             }
-            config_write.write_unmute(Minecraft_QQ.path + config_file.player, name.ToLower());
+            if (config_file.Mysql_ok == true)
+            {
+                new Mysql_remove_data().mute(name);
+            }
+            else
+            {
+                config_write.write_unmute(Minecraft_QQ.path + config_file.player, name.ToLower());
+            }
             if (config_file.mute_list.Contains(name.ToLower()) == true)
                 config_file.mute_list.Remove(name.ToLower());
             return "已解禁：[" + name + "]";
@@ -398,12 +425,26 @@ namespace Color_yr.Minecraft_QQ
                     player.qq = qq;
                     player.player = player_name;
                     config_file.player_list.Add(qq, player);
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                    if (config_file.Mysql_ok == true)
+                    {
+                        new Mysql_Add_data().player(player);
+                    }
+                    else
+                    {
+                        config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                    }
                 }
                 else
                 {
                     config_file.player_list[qq].player = player_name;
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                    if (config_file.Mysql_ok == true)
+                    {
+                        new Mysql_Add_data().player(config_file.player_list[qq]);
+                    }
+                    else
+                    {
+                        config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                    }
                 }
                 return "已修改玩家[" + player_qq + "]ID为：" + player_name;
             }

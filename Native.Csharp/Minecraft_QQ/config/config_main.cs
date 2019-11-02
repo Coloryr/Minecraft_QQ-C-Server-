@@ -51,7 +51,7 @@ namespace Color_yr.Minecraft_QQ
         /// <summary>
         /// Mysql启用
         /// </summary>
-        public static bool Mysql_use { get; set; } = false;
+        public static bool Mysql_ok { get; set; } = false;
     }
     class main_config
     {
