@@ -47,8 +47,7 @@ namespace Color_yr.Minecraft_QQ
                         if (player != null && string.IsNullOrWhiteSpace(player.nick) == false)
                             message.message = message.message.Replace(message.player, player.nick);
                     }
-                    Dictionary<long, group_save>.ValueCollection valueCol = config_file.group_list.Values;
-                    foreach (group_save value in valueCol)
+                    foreach (group_save value in config_file.group_list.Values)
                     {
                         if (value.say == true)
                             Send.Send_List.Add(value.group_l, message.message);
