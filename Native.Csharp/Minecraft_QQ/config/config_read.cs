@@ -220,8 +220,6 @@ namespace Color_yr.Minecraft_QQ
                         player.player = id.InnerXml;
                         player.nick = nick.InnerXml;
                         player.admin = admin.InnerText == "开" ? true : false;
-                        if (config_file.mute_list.Contains(player.player.ToLower()) == false)
-                            config_file.mute_list.Add(player.player.ToLower());
                         config_file.player_list.Add(player.qq, player);
                     }
                 }

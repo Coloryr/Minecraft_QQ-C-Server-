@@ -4,4 +4,4 @@
 obj
 .vs
 bin
-build
+build_out
