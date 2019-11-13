@@ -66,6 +66,7 @@ namespace Color_yr.Minecraft_QQ
             else
             {
                 config_read.read_cant_bind();
+                config_read.read_mute();
                 config_read.read_player();
             }
         }

@@ -197,6 +197,26 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
         }
+        public static void read_mute()
+        {
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(Minecraft_QQ.path + config_file.player);
+            XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
+            config_file.cant_bind.Clear();
+            foreach (XmlNode xn in nodeList)//遍历所有子节点
+            {
+                if (xn.Name == "禁言")
+                {
+                    foreach (XmlNode xn1 in xn)//遍历所有子节点
+                    {
+                        XmlNode ID = xn.SelectSingleNode("ID");
+                        if (config_file.mute_list.Contains(ID.InnerText.ToLower()) == false)
+                            config_file.mute_list.Add(ID.InnerText.ToLower());
+                    }
+                    return;
+                }
+            }
+        }
         public static void read_player()
         {
             XmlDocument xmldoc = new XmlDocument();

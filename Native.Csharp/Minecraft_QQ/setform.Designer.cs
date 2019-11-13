@@ -455,6 +455,7 @@
             this.checkBox2.TabIndex = 71;
             this.checkBox2.Text = "启用自动应答";
             this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // checkBox1
             // 
@@ -465,6 +466,7 @@
             this.checkBox1.TabIndex = 70;
             this.checkBox1.Text = "服务器维护模式：关";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // checkBox4
             // 
@@ -475,6 +477,7 @@
             this.checkBox4.TabIndex = 69;
             this.checkBox4.Text = "始终发送消息到服务器里面";
             this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // label2
             // 

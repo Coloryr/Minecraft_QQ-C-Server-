@@ -192,7 +192,7 @@ namespace Color_yr.Minecraft_QQ
             checkBox1.Text = checkBox1.Checked ? "服务器维护模式：开" : "服务器维护模式：关";
             config_write.write_config(Minecraft_QQ.path + config_file.config);
         }
-        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             main_config.message_enable = checkBox2.Checked;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
