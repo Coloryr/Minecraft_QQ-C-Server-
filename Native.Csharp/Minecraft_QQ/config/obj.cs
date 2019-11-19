@@ -1,5 +1,11 @@
 ﻿namespace Color_yr.Minecraft_QQ
 {
+    class commder_list
+    {
+        public static readonly string SPEAK = "speak";
+        public static readonly string ONLINE = "online";
+        public static readonly string SERVER = "server";
+    }
     /// <summary>
     /// 玩家数据储存格式
     /// <param name="player">玩家名字</param>
@@ -42,6 +48,7 @@
         public string group;
         public string player;
         public string message;
+        public string commder;
         public bool is_commder = false;
     }
     /// <summary>

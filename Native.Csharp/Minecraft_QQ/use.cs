@@ -507,7 +507,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     message_send message = new message_send();
                     message.group = fromGroup.ToString();
-                    message.message = "在线人数";
+                    message.commder = commder_list.ONLINE;
                     message.is_commder = false;
                     message.player = null;
                     socket.Send(message);
@@ -527,7 +527,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     message_send message = new message_send();
                     message.group = fromGroup.ToString();
-                    message.message = "服务器状态";
+                    message.commder = commder_list.SERVER;
                     message.is_commder = false;
                     message.player = null;
                     socket.Send(message);
@@ -580,12 +580,12 @@ namespace Color_yr.Minecraft_QQ
                             if (value.Value.parameter == true)
                             {
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
-                                    message_send.message = cmd + get_string(msg, "]");
+                                    message_send.commder = cmd + get_string(msg, "]");
                                 else
-                                    message_send.message = cmd + ReplaceFirst(msg, value.Value.check, "");
+                                    message_send.commder = cmd + ReplaceFirst(msg, value.Value.check, "");
                             }
                             else
-                                message_send.message = cmd;
+                                message_send.commder = cmd;
                             message_send.is_commder = true;
                             if (value.Value.player_send)
                             {

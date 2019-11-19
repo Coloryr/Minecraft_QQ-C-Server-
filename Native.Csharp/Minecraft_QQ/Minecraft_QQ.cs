@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public static string vision = "2.3.0";
+        public readonly static string vision = "2.4.0";
         /// <summary>
         /// 插件启动线程
         /// </summary>
@@ -151,6 +151,8 @@ namespace Color_yr.Minecraft_QQ
 
             Send.Send_T = new Thread(Send.Send_);
             Send.Send_T.Start();
+
+            Common.CqApi.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]已启动" + vision);
         }
         /// <summary>
         /// Type=2 群消息。
@@ -206,7 +208,8 @@ namespace Color_yr.Minecraft_QQ
                             send = send.Replace("%message%", use.remove_pic(msg_copy));
                             message_send messagelist = new message_send();
                             messagelist.group = fromGroup.ToString();
-                            messagelist.message = "说话" + send;
+                            messagelist.message = send;
+                            messagelist.commder = commder_list.SPEAK;
                             socket.Send(messagelist);
                         }
                     }
@@ -256,7 +259,8 @@ namespace Color_yr.Minecraft_QQ
                                                 send = send.Replace("%message%", use.remove_pic(msg_copy));
                                                 message_send messagelist = new message_send();
                                                 messagelist.group = "group";
-                                                messagelist.message = "说话" + send;
+                                                messagelist.message = send;
+                                                messagelist.commder = commder_list.SPEAK;
                                                 socket.Send(messagelist);
                                             }
                                         }

@@ -175,6 +175,7 @@ namespace Color_yr.Minecraft_QQ
                         new JProperty("group", info.group),
                         new JProperty("message", info.message),
                         new JProperty("player", info.player),
+                        new JProperty("commder", info.commder),
                         new JProperty("is_commder", info.is_commder));
                     Send_data(socket, jsonData.ToString());
                 }

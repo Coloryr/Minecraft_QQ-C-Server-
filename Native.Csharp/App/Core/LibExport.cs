@@ -58,7 +58,7 @@ namespace Native.Csharp.App.Core
 			// 请勿随意修改
 			// 
 			Common.AppName = "Minecraft_QQ";
-			Common.AppVersion = Version.Parse ("2.3.0");		
+			Common.AppVersion = Version.Parse ("2.4.0");		
 
 			//
 			// 当前项目名称: com.color_yr.minecraft_qq
