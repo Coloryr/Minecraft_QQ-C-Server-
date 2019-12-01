@@ -251,7 +251,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(path);
-                if (XML.read(path, "玩家", "QQ号") == obj.qq.ToString())
+                if (XML.read(path, "玩家", "QQ号") != null)
                 {
                     ///导入XML文件
                     XmlNodeList nodeList = xmldoc.SelectSingleNode("config").ChildNodes;
@@ -294,7 +294,6 @@ namespace Color_yr.Minecraft_QQ
                     Child.AppendChild(Text);
                     Text = xmldoc.CreateElement("QQ号");
                     Text.InnerText = obj.qq.ToString();
-                    Child.AppendChild(Text);
                     Child.AppendChild(Text);
                     Text = xmldoc.CreateElement("管理员");
                     Text.InnerText = obj.admin ? "开" : "关";
