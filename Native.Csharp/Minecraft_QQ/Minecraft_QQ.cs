@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.4.0";
+        public readonly static string vision = "2.4.1";
         /// <summary>
         /// 插件启动线程
         /// </summary>
@@ -17,6 +17,21 @@ namespace Color_yr.Minecraft_QQ
         /// 配置文件路径
         /// </summary>
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
+
+        public static void PrivateMessage(long fromQQ, string message_re)
+        {
+            Common.CqApi.SendPrivateMessage(fromQQ, message_re);
+            if (main_config.message_enable && config_file.message_list.ContainsKey(message_re) == true)
+            {
+                message_save message = config_file.message_list[message_re];
+                if (string.IsNullOrWhiteSpace(message.message) == false)
+                {
+                    Common.CqApi.SendPrivateMessage(fromQQ, message.message);
+                    return;
+                }
+            }
+        }
+
         /// <summary>
         /// 主群群号
         /// </summary>
@@ -230,7 +245,7 @@ namespace Color_yr.Minecraft_QQ
                                 {
                                     if (player != null || string.IsNullOrWhiteSpace(player.player))
                                     {
-                                        if (config_file.mute_list.Contains(player.player.ToLower()) == true)
+                                        if (config_file.mute_list.Contains(player.player.ToLower()))
                                             Common.CqApi.SendGroupMessage(fromGroup, Common.CqApi.CqCode_At(fromQQ) + "你已被禁言");
                                         else
                                         {
