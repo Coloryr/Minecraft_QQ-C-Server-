@@ -29,6 +29,8 @@ namespace Native.Csharp.App.Event
             // 以下为 Json 文件中的 1001, 1002, 1003, 1004 事件的注入
 
             container.RegisterType<IReceiveGroupPrivateMessage, Event_GroupPrivateMessage>("私聊消息处理");
+            container.RegisterType<IReceiveFriendMessage, Event_FriendMessage>("私聊消息处理");
+            container.RegisterType<IReceiveDiscussPrivateMessage, Event_DiscussPrivateMessage>("私聊消息处理");
 
             container.RegisterType<IReceiveGroupMessage, Event_GroupMessage>("群消息处理");
             // 注入 Type=1002 的回调

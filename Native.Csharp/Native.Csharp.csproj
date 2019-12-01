@@ -119,9 +119,9 @@
       <DependentUpon>LibExport.tt</DependentUpon>
     </Compile>
     <Compile Include="App\Core\MenuExport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>MenuExport.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="App\Core\StatusExport.cs">
       <AutoGen>True</AutoGen>
@@ -148,6 +148,8 @@
     <Compile Include="App\Event\Event_CqAppEnable.cs" />
     <Compile Include="App\Event\Event_AppMain.cs" />
     <Compile Include="App\Event\Event_CqExit.cs" />
+    <Compile Include="App\Event\Event_DiscussPrivateMessage.cs" />
+    <Compile Include="App\Event\Event_FriendMessage.cs" />
     <Compile Include="App\Event\Event_GroupMessage.cs" />
     <Compile Include="App\Event\Event_Openform.cs" />
     <Compile Include="App\Event\Event_CqAppDisable.cs" />
@@ -234,6 +236,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Core\MenuExport.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MenuExport.cs</LastGenOutput>
+    </Content>
     <Content Include="App\Core\StatusExport.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StatusExport.cs</LastGenOutput>
@@ -241,10 +247,6 @@
     <Content Include="App\Core\LibExport.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LibExport.cs</LastGenOutput>
-    </Content>
-    <Content Include="App\Core\MenuExport.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MenuExport.cs</LastGenOutput>
     </Content>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

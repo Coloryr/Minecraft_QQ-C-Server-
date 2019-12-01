@@ -20,7 +20,6 @@ namespace Color_yr.Minecraft_QQ
 
         public static void PrivateMessage(long fromQQ, string message_re)
         {
-            Common.CqApi.SendPrivateMessage(fromQQ, message_re);
             if (main_config.message_enable && config_file.message_list.ContainsKey(message_re) == true)
             {
                 message_save message = config_file.message_list[message_re];
