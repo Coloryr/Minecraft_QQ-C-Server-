@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ
 {
@@ -13,10 +14,13 @@ namespace Color_yr.Minecraft_QQ
 
         public static bool mysql_start()
         {
-            string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database=minecraft_qq;Charset=utf8;",
-                mysql_config.ip, mysql_config.Port, mysql_config.user, mysql_config.password);
+            string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
+                mysql_config.ip, mysql_config.Port, mysql_config.user, mysql_config.password, mysql_config.database);
             conn = new MySqlConnection(ConnectString);
-
+            if (conn == null)
+            {
+                MessageBox.Show("Mysql错误\n" + ConnectString);
+            }
             Mysql_Add_table table = new Mysql_Add_table();
 
             if (table.player(Mysql_player) == false) return false;

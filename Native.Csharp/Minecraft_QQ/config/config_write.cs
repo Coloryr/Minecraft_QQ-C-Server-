@@ -163,6 +163,9 @@ namespace Color_yr.Minecraft_QQ
                 Text = xmldoc.CreateElement("启用");
                 Text.InnerText = mysql_config.use ? "开" : "关";
                 Child.AppendChild(Text);
+                Text = xmldoc.CreateElement("数据库名");
+                Text.InnerText = mysql_config.database;
+                Child.AppendChild(Text);
 
                 xmldoc.Save(path);
             }

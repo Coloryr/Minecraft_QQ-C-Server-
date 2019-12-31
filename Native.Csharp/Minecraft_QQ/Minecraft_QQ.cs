@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.4.3";
+        public readonly static string vision = "2.4.4";
         /// <summary>
         /// 插件启动线程
         /// </summary>

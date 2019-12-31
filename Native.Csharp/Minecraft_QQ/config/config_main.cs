@@ -232,5 +232,9 @@ namespace Color_yr.Minecraft_QQ
         /// Mysql启用
         /// </summary>
         public static bool use { get; set; } = false;
+        /// <summary>
+        /// 数据库名
+        /// </summary>
+        public static string database { get; set; } = "database";
     }
 }

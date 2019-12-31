@@ -68,6 +68,8 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.mysql_database = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.mysql_use = new System.Windows.Forms.CheckBox();
             this.mysql_password = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -78,6 +80,7 @@
             this.mysql_port = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.mysql_b = new System.Windows.Forms.Button();
+            this.mysql_now = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -490,6 +493,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.mysql_now);
+            this.groupBox5.Controls.Add(this.mysql_database);
+            this.groupBox5.Controls.Add(this.label13);
             this.groupBox5.Controls.Add(this.mysql_use);
             this.groupBox5.Controls.Add(this.mysql_password);
             this.groupBox5.Controls.Add(this.label12);
@@ -502,10 +508,27 @@
             this.groupBox5.Controls.Add(this.mysql_b);
             this.groupBox5.Location = new System.Drawing.Point(207, 187);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(201, 130);
+            this.groupBox5.Size = new System.Drawing.Size(201, 177);
             this.groupBox5.TabIndex = 73;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "mysql设置";
+            // 
+            // database_name
+            // 
+            this.mysql_database.Location = new System.Drawing.Point(40, 128);
+            this.mysql_database.Name = "database_name";
+            this.mysql_database.Size = new System.Drawing.Size(89, 21);
+            this.mysql_database.TabIndex = 75;
+            this.mysql_database.Text = "minecraft_qq";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(7, 131);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(29, 12);
+            this.label13.TabIndex = 74;
+            this.label13.Text = "库名";
             // 
             // mysql_use
             // 
@@ -598,6 +621,15 @@
             this.mysql_b.UseVisualStyleBackColor = true;
             this.mysql_b.Click += new System.EventHandler(this.mysql_b_Click);
             // 
+            // mysql_now
+            // 
+            this.mysql_now.AutoSize = true;
+            this.mysql_now.Location = new System.Drawing.Point(7, 157);
+            this.mysql_now.Name = "mysql_now";
+            this.mysql_now.Size = new System.Drawing.Size(71, 12);
+            this.mysql_now.TabIndex = 76;
+            this.mysql_now.Text = "Mysql未连接";
+            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -684,5 +716,8 @@
         private System.Windows.Forms.Button mysql_b;
         private System.Windows.Forms.TextBox mysql_port;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox mysql_database;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label mysql_now;
     }
 }

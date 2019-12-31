@@ -79,6 +79,8 @@ namespace Color_yr.Minecraft_QQ
             mysql_user.Text = mysql_config.user;
             mysql_password.Text = mysql_config.password;
             mysql_use.Checked = mysql_config.use;
+            mysql_database.Text = mysql_config.database;
+            mysql_now.Text = config_file.Mysql_ok ? "已连接" : "未连接";
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -247,17 +249,17 @@ namespace Color_yr.Minecraft_QQ
             mysql_config.Port = a;
             mysql_config.user = mysql_user.Text;
             mysql_config.password = mysql_password.Text;
+            mysql_config.database = mysql_database.Text;
             config_write.write_config(Minecraft_QQ.path + config_file.config);
             if (Mysql.mysql_start() == false)
             {
-                MessageBox.Show("Mysql链接错误，请检查设置");
-                mysql_b.Text = "已断开";
+                mysql_now.Text = "Mysql无法连接";
                 mysql_use.Checked = false;
                 config_file.Mysql_ok = false;
             }
             else
             {
-                mysql_b.Text = "已连接";
+                mysql_now.Text = "Mysql已连接";
                 mysql_use.Checked = true;
                 config_file.Mysql_ok = true;
             }
@@ -266,17 +268,6 @@ namespace Color_yr.Minecraft_QQ
         private void mysql_use_CheckedChanged(object sender, EventArgs e)
         {
             mysql_config.use = mysql_use.Checked;
-            if (mysql_use.Checked == false)
-            {
-                config_file.Mysql_ok = false;
-            }
-            else
-            {
-                if (config_file.Mysql_ok == false)
-                {
-                    mysql_b_Click(null, null);
-                }
-            }
         }
     }
 }

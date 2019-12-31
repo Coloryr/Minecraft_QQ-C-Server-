@@ -168,6 +168,9 @@ namespace Color_yr.Minecraft_QQ
                             xnLurl4 = xn.SelectSingleNode("启用");
                             if (xnLurl4 != null)
                                 mysql_config.use = xnLurl4.InnerText == "开" ? true : false;
+                            xnLurl4 = xn.SelectSingleNode("数据库名");
+                            if (xnLurl4 != null)
+                                mysql_config.database = xnLurl4.InnerText;
                             break;
                     }
                 }
