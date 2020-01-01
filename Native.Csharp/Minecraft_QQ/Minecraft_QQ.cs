@@ -353,6 +353,7 @@ namespace Color_yr.Minecraft_QQ
                                     messagelist.commder = Commder_list.SPEAK;
                                     socket.Send(messagelist);
                                 }
+                                return;
                             }
                             catch (InvalidCastException e)
                             {
