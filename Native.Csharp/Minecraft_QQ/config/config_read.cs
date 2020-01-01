@@ -60,7 +60,7 @@ namespace Color_yr.Minecraft_QQ
                 return new Group_obj();
             }
         }
-        public Ask_obj Read_message()
+        public Ask_obj Read_ask()
         {
             logs.Log_write("[INFO][Config]读取自定义应答");
             try

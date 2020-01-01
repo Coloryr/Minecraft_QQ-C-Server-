@@ -145,6 +145,10 @@ namespace Color_yr.Minecraft_QQ
                 };
                 File.WriteAllText(Config_file.ask.FullName, JsonConvert.SerializeObject(Askconfig, Formatting.Indented));
             }
+            else
+            {
+                Askconfig = read.Read_ask();
+            }
 
             //读取玩家数据
             if (Mainconfig.数据库.是否启用 == true)
@@ -221,6 +225,10 @@ namespace Color_yr.Minecraft_QQ
                     }
                 };
                 File.WriteAllText(Config_file.command.FullName, JsonConvert.SerializeObject(Commandconfig, Formatting.Indented));
+            }
+            else
+            {
+                Commandconfig = read.Read_commder();
             }
         }
         /// <summary>
