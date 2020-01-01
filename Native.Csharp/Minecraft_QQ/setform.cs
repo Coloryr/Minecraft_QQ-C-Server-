@@ -22,21 +22,22 @@ namespace Color_yr.Minecraft_QQ
                 MessageBox.Show("请输入所需的参数");
                 return;
             }
-            if (use.IsNumber(textBox5.Text) == false)
+            if (Utils.IsNumber(textBox5.Text) == false)
             {
                 MessageBox.Show("请输入正确的参数");
                 return;
             }
             int.TryParse(textBox5.Text, out int port);
-            socket_config.Port = port;
-            socket_config.setip = textBox4.Text;
+            Minecraft_QQ.Mainconfig.链接.端口 = port;
+            Minecraft_QQ.Mainconfig.链接.地址 = textBox4.Text;
+            new Config_write().Write_config();
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
             label2.Text = "插件版本：" + Minecraft_QQ.vision;
-            textBox5.Text = socket_config.Port.ToString();
-            textBox4.Text = socket_config.setip;
-            if (socket_config.code == "UTF-8")
+            textBox5.Text = Minecraft_QQ.Mainconfig.链接.端口.ToString();
+            textBox4.Text = Minecraft_QQ.Mainconfig.链接.地址;
+            if (Minecraft_QQ.Mainconfig.链接.编码 == "UTF-8")
             {
                 radioButton1.Checked = true;
                 radioButton2.Checked = false;
@@ -46,19 +47,19 @@ namespace Color_yr.Minecraft_QQ
                 radioButton1.Checked = false;
                 radioButton2.Checked = true;
             }
-            checkBox2.Checked = main_config.message_enable;
-            checkBox4.Checked = main_config.allways_send;
-            if (main_config.fix_mode == false)
+            checkBox2.Checked = Minecraft_QQ.Mainconfig.设置.自动应答开关;
+            checkBox4.Checked = Minecraft_QQ.Mainconfig.设置.始终发送消息;
+            if (Minecraft_QQ.Mainconfig.设置.维护模式 == false)
             {
                 checkBox1.Checked = false;
                 checkBox1.Text = "服务器维护模式：关";
             }
-            else if (main_config.fix_mode == true)
+            else if (Minecraft_QQ.Mainconfig.设置.维护模式 == true)
             {
                 checkBox1.Checked = true;
                 checkBox1.Text = "服务器维护模式：开";
             }
-            if (socket_config.useip == true)
+            if (Minecraft_QQ.Mainconfig.链接.是否绑定地址 == true)
             {
                 checkBox6.Checked = true;
                 textBox4.ReadOnly = false;
@@ -68,98 +69,99 @@ namespace Color_yr.Minecraft_QQ
                 checkBox6.Checked = false;
                 textBox4.ReadOnly = true;
             }
-            checkBox8.Checked = main_config.color_code;
-            checkBox9.Checked = main_config.nick_server;
-            checkBox10.Checked = main_config.nick_group;
-            checkBox11.Checked = main_config.set_name;
-            checkBox12.Checked = main_config.bq_message;
+            checkBox8.Checked = Minecraft_QQ.Mainconfig.设置.颜色代码开关;
+            checkBox9.Checked = Minecraft_QQ.Mainconfig.设置.使用昵称发送至服务器;
+            checkBox10.Checked = Minecraft_QQ.Mainconfig.设置.使用昵称发送至群;
+            checkBox11.Checked = Minecraft_QQ.Mainconfig.设置.可以绑定名字;
+            checkBox12.Checked = Minecraft_QQ.Mainconfig.设置.发送日志到群;
 
-            mysql_ip.Text = mysql_config.ip;
-            mysql_port.Text = mysql_config.Port.ToString();
-            mysql_user.Text = mysql_config.user;
-            mysql_password.Text = mysql_config.password;
-            mysql_use.Checked = mysql_config.use;
-            mysql_database.Text = mysql_config.database;
-            mysql_now.Text = config_file.Mysql_ok ? "已连接" : "未连接";
+            mysql_ip.Text = Minecraft_QQ.Mainconfig.数据库.地址;
+            mysql_port.Text = Minecraft_QQ.Mainconfig.数据库.端口.ToString();
+            mysql_user.Text = Minecraft_QQ.Mainconfig.数据库.用户名;
+            mysql_password.Text = Minecraft_QQ.Mainconfig.数据库.密码;
+            mysql_use.Checked = Minecraft_QQ.Mainconfig.数据库.是否启用;
+            mysql_database.Text = Minecraft_QQ.Mainconfig.数据库.数据库;
+            mysql_now.Text = Minecraft_QQ.Mysql_ok ? "已连接" : "未连接";
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if (use.IsNumber(textBox1.Text) == false)
+            if (Utils.IsNumber(textBox1.Text) == false)
             {
                 button1.Text = "错误";
                 return;
             }
-            group_save list = new group_save();
+            Group_save_obj list = new Group_save_obj();
             list.group_s = textBox1.Text;
             list.commder = checkBox3.Checked;
             list.say = checkBox5.Checked;
             list.main = checkBox7.Checked;
             long.TryParse(textBox1.Text, out list.group_l);
-            config_write.write_group(Minecraft_QQ.path + config_file.group, list);
-            if (config_file.group_list.ContainsKey(list.group_l) == false)
-                config_file.group_list.Add(list.group_l, list);
+            if (Minecraft_QQ.Groupconfig.群列表.ContainsKey(list.group_l) == false)
+                Minecraft_QQ.Groupconfig.群列表.Add(list.group_l, list);
+            new Config_write().Write_Group();
+            
             button1.Text = "已添加";
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            if (use.IsNumber(textBox5.Text) == false)
+            if (Utils.IsNumber(textBox5.Text) == false)
             {
                 button4.Text = "错误";
                 return;
             }
             int.TryParse(textBox5.Text, out int a);
-            socket_config.Port = a;
-            socket_config.setip = textBox4.Text;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.链接.端口 = a;
+            Minecraft_QQ.Mainconfig.链接.地址 = textBox4.Text;
+            new Config_write().Write_config();
             button4.Text = "已设置";
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            if (use.IsNumber(textBox6.Text) == false || textBox6.Text == null)
+            if (Utils.IsNumber(textBox6.Text) == false || textBox6.Text == null)
             {
                 button5.Text = "错误";
                 return;
             }
             long.TryParse(textBox6.Text, out long qq);
-            if (config_file.player_list.ContainsKey(qq) == false)
+            if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(qq) == false)
             {
-                player_save player = new player_save();
+                Player_save_obj player = new Player_save_obj();
                 player.qq = qq;
                 player.admin = true;
-                config_file.player_list.Add(qq, player);
-                if (config_file.Mysql_ok == true)
+                Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
+                if (Minecraft_QQ.Mysql_ok == true)
                 {
                     new Mysql_Add_data().player(player);
                 }
                 else
                 {
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, player);
+                    new Config_write().Write_player();
                 }
             }
             else
             {
-                config_file.player_list[qq].admin = true;
-                if (config_file.Mysql_ok == true)
+                Minecraft_QQ.Playerconfig.玩家列表[qq].admin = true;
+                if (Minecraft_QQ.Mysql_ok == true)
                 {
-                    new Mysql_Add_data().player(config_file.player_list[qq]);
+                    new Mysql_Add_data().player(Minecraft_QQ.Playerconfig.玩家列表[qq]);
                 }
                 else
                 {
-                    config_write.write_player(Minecraft_QQ.path + config_file.player, config_file.player_list[qq]);
+                    new Config_write().Write_player();
                 }
             }
             button5.Text = "添加成功";
         }
         private void button6_Click(object sender, EventArgs e)
         {
-            if (use.IsNumber(textBox7.Text) == false || textBox7.Text == null)
+            if (Utils.IsNumber(textBox7.Text) == false || textBox7.Text == null)
             {
                 button6.Text = "设置失败";
                 return;
             }
             long.TryParse(textBox7.Text, out long a);
-            admin_config.Admin_Send = a;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.管理员.发送绑定信息QQ号 = a;
+            new Config_write().Write_config();
             button6.Text = "已设置";
         }
 
@@ -167,107 +169,109 @@ namespace Color_yr.Minecraft_QQ
         {
             if (textBox8.Text != null)
             {
-                if (config_file.Mysql_ok == true)
+                if (!Minecraft_QQ.Playerconfig.禁止绑定列表.Contains(textBox8.Text))
+                    Minecraft_QQ.Playerconfig.禁止绑定列表.Add(textBox8.Text.ToLower());
+                if (Minecraft_QQ.Mysql_ok == true)
                 {
                     new Mysql_Add_data().notid(textBox8.Text.ToLower());
                 }
                 else
                 {
-                    config_write.write_cant_bind(Minecraft_QQ.path + config_file.player, textBox8.Text.ToLower());
+                    new Config_write().Write_player();
                 }
                 button7.Text = "已添加";
             }
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            socket_config.code = "UTF-8";
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.链接.编码 = "UTF-8";
+            new Config_write().Write_config();
         }
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            socket_config.code = "ANSI";
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.链接.编码 = "ANSI";
+            new Config_write().Write_config();
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.fix_mode = checkBox1.Checked;
+            Minecraft_QQ.Mainconfig.设置.维护模式 = checkBox1.Checked;
             checkBox1.Text = checkBox1.Checked ? "服务器维护模式：开" : "服务器维护模式：关";
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            new Config_write().Write_config();
         }
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.message_enable = checkBox2.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.自动应答开关 = checkBox2.Checked;
+            new Config_write().Write_config();
         }
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.allways_send = checkBox4.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.始终发送消息 = checkBox4.Checked;
+            new Config_write().Write_config();
         }
         private void CheckBox6_CheckedChanged(object sender, EventArgs e)
         {
-            socket_config.useip = checkBox6.Checked;
-            checkBox6.Checked = socket_config.useip;
-            textBox4.ReadOnly = !socket_config.useip;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.链接.是否绑定地址 = checkBox6.Checked;
+            checkBox6.Checked = Minecraft_QQ.Mainconfig.链接.是否绑定地址;
+            textBox4.ReadOnly = !Minecraft_QQ.Mainconfig.链接.是否绑定地址;
+            new Config_write().Write_config();
         }
 
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.color_code = checkBox8.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.颜色代码开关 = checkBox8.Checked;
+            new Config_write().Write_config();
         }
 
         private void checkBox9_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.nick_server = checkBox9.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.使用昵称发送至服务器 = checkBox9.Checked;
+            new Config_write().Write_config();
         }
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.nick_group = checkBox10.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.使用昵称发送至群 = checkBox10.Checked;
+            new Config_write().Write_config();
         }
 
         private void checkBox11_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.set_name = checkBox11.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.可以绑定名字 = checkBox11.Checked;
+            new Config_write().Write_config();
         }
 
         private void checkBox12_CheckedChanged(object sender, EventArgs e)
         {
-            main_config.bq_message = checkBox12.Checked;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
+            Minecraft_QQ.Mainconfig.设置.发送日志到群 = checkBox12.Checked;
+            new Config_write().Write_config();
         }
 
         private void mysql_b_Click(object sender, EventArgs e)
         {
-            mysql_config.ip = mysql_ip.Text;
+            Minecraft_QQ.Mainconfig.数据库.地址 = mysql_ip.Text;
             int.TryParse(mysql_port.Text, out int a);
-            mysql_config.Port = a;
-            mysql_config.user = mysql_user.Text;
-            mysql_config.password = mysql_password.Text;
-            mysql_config.database = mysql_database.Text;
-            config_write.write_config(Minecraft_QQ.path + config_file.config);
-            if (Mysql.mysql_start() == false)
+            Minecraft_QQ.Mainconfig.数据库.端口 = a;
+            Minecraft_QQ.Mainconfig.数据库.用户名 = mysql_user.Text;
+            Minecraft_QQ.Mainconfig.数据库.密码 = mysql_password.Text;
+            Minecraft_QQ.Mainconfig.数据库.数据库 = mysql_database.Text;
+            new Config_write().Write_config();
+            if (Mysql.Mysql_start() == false)
             {
                 mysql_now.Text = "Mysql无法连接";
                 mysql_use.Checked = false;
-                config_file.Mysql_ok = false;
+                Minecraft_QQ.Mysql_ok = false;
             }
             else
             {
                 mysql_now.Text = "Mysql已连接";
                 mysql_use.Checked = true;
-                config_file.Mysql_ok = true;
+                Minecraft_QQ.Mysql_ok = true;
             }
         }
 
         private void mysql_use_CheckedChanged(object sender, EventArgs e)
         {
-            mysql_config.use = mysql_use.Checked;
+            Minecraft_QQ.Mainconfig.数据库.是否启用 = mysql_use.Checked;
         }
     }
 }

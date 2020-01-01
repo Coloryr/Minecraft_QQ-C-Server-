@@ -29,25 +29,26 @@ namespace Color_yr.Minecraft_QQ
             {
                 logs.Log_write("[INFO][Socket]正在启动端口");
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                if (socket_config.useip == true)
+                if (Minecraft_QQ.Mainconfig.链接.是否绑定地址)
                 {
-                    IPAddress ip = IPAddress.Parse(socket_config.setip);
-                    serverSocket.Bind(new IPEndPoint(ip, socket_config.Port));
+                    IPAddress ip = IPAddress.Parse(Minecraft_QQ.Mainconfig.链接.地址);
+                    serverSocket.Bind(new IPEndPoint(ip, Minecraft_QQ.Mainconfig.链接.端口));
                 }
                 else
-                    serverSocket.Bind(new IPEndPoint(IPAddress.Any, socket_config.Port));
+                    serverSocket.Bind(new IPEndPoint(IPAddress.Any, Minecraft_QQ.Mainconfig.链接.端口));
                 serverSocket.Listen(5);
 
                 server_thread = new Thread(listenClientConnect);
                 server_thread.Start(serverSocket);
                 start = true;
                 ready = false;
-                if (socket_config.useip == true && main_config.bq_message)
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
-                        "已绑定在：" + socket_config.setip + ":" + socket_config.Port);
-                else if (main_config.bq_message)
-                    Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
-                        "已绑定在端口：" + socket_config.Port);
+                if (Minecraft_QQ.Mainconfig.设置.发送日志到群)
+                    if (Minecraft_QQ.Mainconfig.链接.是否绑定地址)
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
+                            "已绑定在：" + Minecraft_QQ.Mainconfig.链接.地址 + ":" + Minecraft_QQ.Mainconfig.链接.端口);
+                    else
+                        Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]端口已启动\n" +
+                            "已绑定在端口：" + Minecraft_QQ.Mainconfig.链接.端口);
                 logs.Log_write("[INFO][Socket]端口已启动");
             }
             catch (Exception exception)
@@ -78,7 +79,7 @@ namespace Color_yr.Minecraft_QQ
                     read_thread.Start(clientScoket);                   // 在新的线程中接收客户端信息
 
                     GC.Collect();
-                    if (main_config.bq_message)
+                    if (Minecraft_QQ.Mainconfig.设置.发送日志到群)
                         Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]服务器已连接");
                     logs.Log_write("[INFO][Socket]服务器已连接");
                     ready = true;
@@ -103,9 +104,9 @@ namespace Color_yr.Minecraft_QQ
                 bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
-                if (socket_config.code == "UTF-8")
+                if (Minecraft_QQ.Mainconfig.链接.编码 == "UTF-8")
                     data = Encoding.UTF8.GetString(bytes, 0, receiveNumber);
-                if (socket_config.code == "ANSI")
+                if (Minecraft_QQ.Mainconfig.链接.编码 == "ANSI")
                     data = Encoding.Default.GetString(bytes, 0, receiveNumber);
             }
             return data;
@@ -132,7 +133,7 @@ namespace Color_yr.Minecraft_QQ
                     }
                     catch (Exception e)
                     {
-                        if (main_config.bq_message)
+                        if (Minecraft_QQ.Mainconfig.设置.发送日志到群)
                             Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.Log_write("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
                         ready = false;
@@ -158,13 +159,13 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (ThreadAbortException e)
             {
-                if (main_config.bq_message)
+                if (Minecraft_QQ.Mainconfig.设置.发送日志到群)
                     Common.CqApi.SendGroupMessage(Minecraft_QQ.GroupSet_Main, "[Minecraft_QQ]连接已断开-主动断开");
                 logs.Log_write("[INFO][Socket]连接已断开-主动断开:" + e.ToString());
                 return;
             }
         }
-        public static void Send(message_send info)
+        public static void Send(Message_send_obj info)
         {
             if (clients.ContainsKey(MCserver))
             {
@@ -196,11 +197,11 @@ namespace Color_yr.Minecraft_QQ
         {
             if (socket != null && data != null && !data.Equals(""))
             {
-                data = socket_config.data_Head + data + socket_config.data_End;
+                data = Minecraft_QQ.Mainconfig.链接.数据头 + data + Minecraft_QQ.Mainconfig.链接.数据尾;
                 byte[] bytes = null;
-                if (socket_config.code == "UTF-8")
+                if (Minecraft_QQ.Mainconfig.链接.编码 == "UTF-8")
                     bytes = Encoding.UTF8.GetBytes(data);
-                if (socket_config.code == "ANSI")
+                if (Minecraft_QQ.Mainconfig.链接.编码 == "ANSI")
                     bytes = Encoding.Default.GetBytes(data);
                 socket.Send(bytes);
             }

@@ -19,7 +19,7 @@ namespace Color_yr.Minecraft_QQ
             }
         }
 
-        public void player(player_save player)
+        public void player(Player_save_obj player)
         {
             try
             {

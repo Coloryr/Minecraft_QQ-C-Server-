@@ -12,10 +12,11 @@ namespace Color_yr.Minecraft_QQ
         public static string Mysql_notid = "minecraft_qq_notid";
         public static string Mysql_mute = "minecraft_qq_mute";
 
-        public static bool mysql_start()
+        public static bool Mysql_start()
         {
             string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
-                mysql_config.ip, mysql_config.Port, mysql_config.user, mysql_config.password, mysql_config.database);
+                Minecraft_QQ.Mainconfig.数据库.地址, Minecraft_QQ.Mainconfig.数据库.端口, Minecraft_QQ.Mainconfig.数据库.用户名, 
+                Minecraft_QQ.Mainconfig.数据库.密码, Minecraft_QQ.Mainconfig.数据库.数据库);
             conn = new MySqlConnection(ConnectString);
             if (conn == null)
             {
@@ -29,16 +30,16 @@ namespace Color_yr.Minecraft_QQ
             return true;
         }
 
-        public void load()
+        public void Load()
         {
-            load_player();
+            Load_player();
             load_mute();
-            load_notid();
+            Load_notid();
         }
 
-        private void load_player()
+        private void Load_player()
         {
-            config_file.player_list.Clear();
+            Minecraft_QQ.Playerconfig.玩家列表.Clear();
             try
             {
                 conn.Open();
@@ -48,14 +49,14 @@ namespace Color_yr.Minecraft_QQ
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    player_save player = new player_save
+                    Player_save_obj player = new Player_save_obj
                     {
                         player = reader.GetString(0),
                         nick = reader.GetString(1),
                         admin = reader.GetString(3).ToLower() == "true" ? true : false,
                     };
                     long.TryParse(reader.GetString(2), out player.qq);
-                    config_file.player_list.Add(player.qq, player);
+                    Minecraft_QQ.Playerconfig.玩家列表.Add(player.qq, player);
                 }
                 reader.Close();
             }
@@ -65,8 +66,9 @@ namespace Color_yr.Minecraft_QQ
             }
             conn.Close();
         }
-        private void load_notid()
+        private void Load_notid()
         {
+            Minecraft_QQ.Playerconfig.禁止绑定列表.Clear();
             try
             {
                 conn.Open();
@@ -77,8 +79,8 @@ namespace Color_yr.Minecraft_QQ
                 while (reader.Read())
                 {
                     if (!string.IsNullOrWhiteSpace(reader.GetString(0)))
-                        if (config_file.cant_bind.Contains(reader.GetString(0).ToLower()) == false)
-                            config_file.cant_bind.Add(reader.GetString(0).ToLower());
+                        if (Minecraft_QQ.Playerconfig.禁止绑定列表.Contains(reader.GetString(0).ToLower()) == false)
+                            Minecraft_QQ.Playerconfig.禁止绑定列表.Add(reader.GetString(0).ToLower());
                 }
                 reader.Close();
             }
@@ -90,6 +92,7 @@ namespace Color_yr.Minecraft_QQ
         }
         private void load_mute()
         {
+            Minecraft_QQ.Playerconfig.禁言列表.Clear();
             try
             {
                 conn.Open();
@@ -100,8 +103,8 @@ namespace Color_yr.Minecraft_QQ
                 while (reader.Read())
                 {
                     if (!string.IsNullOrWhiteSpace(reader.GetString(0)))
-                        if (config_file.cant_bind.Contains(reader.GetString(0).ToLower()) == false)
-                            config_file.cant_bind.Add(reader.GetString(0).ToLower());
+                        if (Minecraft_QQ.Playerconfig.禁言列表.Contains(reader.GetString(0).ToLower()) == false)
+                            Minecraft_QQ.Playerconfig.禁言列表.Add(reader.GetString(0).ToLower());
                 }
                 reader.Close();
             }

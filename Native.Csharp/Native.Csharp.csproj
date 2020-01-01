@@ -178,9 +178,9 @@
     <Compile Include="App\Interface\IReceiveGroupMessage.cs" />
     <Compile Include="App\Interface\IReceiveGroupPrivateMessage.cs" />
     <Compile Include="App\Interface\IReceiveOnlineStatusMessage.cs" />
-    <Compile Include="Minecraft_QQ\config\config_main.cs" />
-    <Compile Include="Minecraft_QQ\config\obj.cs" />
-    <Compile Include="Minecraft_QQ\config\config_write.cs" />
+    <Compile Include="Minecraft_QQ\config\Config_obj.cs" />
+    <Compile Include="Minecraft_QQ\config\Save_obj.cs" />
+    <Compile Include="Minecraft_QQ\config\Config_write.cs" />
     <Compile Include="Minecraft_QQ\Mysql\Mysql.cs" />
     <Compile Include="Minecraft_QQ\Mysql\Mysql_Add_data.cs" />
     <Compile Include="Minecraft_QQ\Mysql\Mysql_Add_table.cs" />
@@ -196,7 +196,7 @@
     <Compile Include="Repair\ModuleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Minecraft_QQ\config\config_read.cs" />
+    <Compile Include="Minecraft_QQ\config\Config_read.cs" />
     <Compile Include="Minecraft_QQ\logs.cs" />
     <Compile Include="Minecraft_QQ\socket\message.cs" />
     <Compile Include="Minecraft_QQ\socket\socket.cs" />
@@ -207,8 +207,7 @@
       <DependentUpon>setform.cs</DependentUpon>
     </Compile>
     <Compile Include="Minecraft_QQ\Minecraft_QQ.cs" />
-    <Compile Include="Minecraft_QQ\use.cs" />
-    <Compile Include="Minecraft_QQ\config\XML.cs" />
+    <Compile Include="Minecraft_QQ\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Minecraft_QQ\setform.resx">

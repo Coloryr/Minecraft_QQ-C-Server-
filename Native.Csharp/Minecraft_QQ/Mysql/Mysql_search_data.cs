@@ -4,9 +4,9 @@ namespace Color_yr.Minecraft_QQ
 {
     class Mysql_search_data
     {
-        public player_save player(long qq)
+        public Player_save_obj player(long qq)
         {
-            player_save player = null;
+            Player_save_obj player = null;
             try
             {
                 Mysql.conn.Open();
@@ -15,7 +15,7 @@ namespace Color_yr.Minecraft_QQ
                 MySqlDataReader reader = mycmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    player = new player_save();
+                    player = new Player_save_obj();
                     player.player = reader.GetString(0);
                     player.nick = reader.GetString(1);
                     long.TryParse(reader.GetString(2), out player.qq);

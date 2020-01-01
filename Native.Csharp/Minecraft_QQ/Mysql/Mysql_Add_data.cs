@@ -27,7 +27,7 @@ namespace Color_yr.Minecraft_QQ
         /// 添加玩家
         /// </summary>
         /// <param name="player">玩家名字</param>
-        public void player(player_save player)
+        public void player(Player_save_obj player)
         {
             Mysql_search_data search = new Mysql_search_data();
             if (search.player(player.qq) != null)

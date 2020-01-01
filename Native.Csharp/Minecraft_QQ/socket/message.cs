@@ -5,9 +5,9 @@ namespace Color_yr.Minecraft_QQ
 {
     class message
     {
-        public static message_send Message_re(string read)
+        public static Message_send_obj Message_re(string read)
         {
-            message_send messagelist = new message_send();
+            Message_send_obj messagelist = new Message_send_obj();
             try
             {
                 JObject jsonData = JObject.Parse(read);
@@ -29,25 +29,25 @@ namespace Color_yr.Minecraft_QQ
         public static void Message(string read)
         {
             int a;
-            while (read.IndexOf(socket_config.data_Head) == 0 && read.IndexOf(socket_config.data_End) != -1)
+            while (read.IndexOf(Minecraft_QQ.Mainconfig.链接.数据头) == 0 && read.IndexOf(Minecraft_QQ.Mainconfig.链接.数据尾) != -1)
             {
-                string buff = use.get_string(read, socket_config.data_Head, socket_config.data_End);
-                buff = use.RemoveColorCodes(buff);
-                message_send message = Message_re(buff);
+                string buff = Utils.Get_string(read, Minecraft_QQ.Mainconfig.链接.数据头, Minecraft_QQ.Mainconfig.链接.数据尾);
+                buff = Utils.RemoveColorCodes(buff);
+                Message_send_obj message = Message_re(buff);
                 if (string.IsNullOrWhiteSpace(message.message) == true || 
                     string.IsNullOrWhiteSpace(message.player) == true)
                     return;
-                if (config_file.mute_list.Contains(message.player.ToLower()) == true)
+                if (Minecraft_QQ.Playerconfig.禁言列表.Contains(message.player.ToLower()) == true)
                     return;
                 if (message.is_commder == false && message.group == "group")
                 {
-                    if (main_config.nick_group == true)
+                    if (Minecraft_QQ.Mainconfig.设置.使用昵称发送至群 == true)
                     {
-                        player_save player = use.check_player_form_id(message.player, true);
+                        Player_save_obj player = Utils.Get_player_from_id(message.player, true);
                         if (player != null && string.IsNullOrWhiteSpace(player.nick) == false)
                             message.message = message.message.Replace(message.player, player.nick);
                     }
-                    foreach (group_save value in config_file.group_list.Values)
+                    foreach (Group_save_obj value in Minecraft_QQ.Groupconfig.群列表.Values)
                     {
                         if (value.say == true)
                             Send.Send_List.Add(value.group_l, message.message);
@@ -56,14 +56,14 @@ namespace Color_yr.Minecraft_QQ
                 else
                 {
                     long.TryParse(message.group, out long group);
-                    if (config_file.group_list.ContainsKey(group) == true)
+                    if (Minecraft_QQ.Groupconfig.群列表.ContainsKey(group) == true)
                     {
-                        group_save list = config_file.group_list[group];
+                        Group_save_obj list = Minecraft_QQ.Groupconfig.群列表[group];
                         Send.Send_List.Add(list.group_l, message.message);
                     }
                 }
-                a = read.IndexOf(socket_config.data_End);
-                read = read.Substring(a + socket_config.data_End.Length);
+                a = read.IndexOf(Minecraft_QQ.Mainconfig.链接.数据尾);
+                read = read.Substring(a + Minecraft_QQ.Mainconfig.链接.数据尾.Length);
             }
         }
     }

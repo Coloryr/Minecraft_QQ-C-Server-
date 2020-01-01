@@ -40,7 +40,7 @@ namespace Color_yr.Minecraft_QQ
                         Common.CqApi.SendGroupMessage(group, b);
                     }
                 }
-                Thread.Sleep(admin_config.Send_Tick);
+                Thread.Sleep(Minecraft_QQ.Mainconfig.设置.发送群消息间隔);
             }
         }
     }
