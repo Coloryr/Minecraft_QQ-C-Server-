@@ -270,7 +270,7 @@ namespace Color_yr.Minecraft_QQ
                     {
                         string send = Mainconfig.消息.发送至服务器文本;
                         string msg_copy = msg;
-                        send = send.Replace("%player%", Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
+                        send = send.Replace("%player%", !Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
                         if (Mainconfig.设置.颜色代码开关 == false)
                             msg_copy = Utils.RemoveColorCodes(msg_copy);
                         if (msg_copy.IndexOf("CQ:rich") != -1)
@@ -334,7 +334,7 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 string send = Mainconfig.消息.发送至服务器文本;
                                 string msg_copy = msg;
-                                send = send.Replace("%player%", Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
+                                send = send.Replace("%player%", !Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
                                 msg_copy = msg_copy.Replace(Mainconfig.检测.发送消息至服务器, "");
                                 if (Mainconfig.设置.颜色代码开关 == false)
                                     msg_copy = Utils.RemoveColorCodes(msg_copy);
