@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
   <Import Project="..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props" Condition="Exists('..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props')" />
+  <Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Native.Csharp</RootNamespace>
-    <AssemblyName>com.color_yr.minecraft_qq</AssemblyName>
+    <AssemblyName>Native.Csharp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -26,7 +26,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -57,16 +56,14 @@
     </Reference>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="DllExport, PublicKeyToken=8337224c9ad9e356">
       <HintPath>$(SolutionDir)packages\DllExport.1.6.1\gcache\metalib\$(DllExportNamespace)\$(DllExportMetaLibName)</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.10.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.10.1\lib\net45\Google.Protobuf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Google.Protobuf, Version=3.11.2.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.11.2\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="ModuleInit, Version=2.1.0.0, Culture=neutral, PublicKeyToken=409b3227471b0f0d, processorArchitecture=MSIL">
       <HintPath>..\packages\ModuleInit.Fody.2.1.0\lib\net452\ModuleInit.dll</HintPath>
@@ -75,12 +72,15 @@
       <HintPath>..\packages\MySql.Data.8.0.18\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -91,103 +91,45 @@
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard1.1\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.11.1\lib\net45\Unity.Abstractions.dll</HintPath>
+    <Reference Include="Unity.Abstractions, Version=5.11.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.3\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.11.1\lib\net45\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.11.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.3\lib\net45\Unity.Container.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\Common.cs" />
-    <Compile Include="App\Core\LibExport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LibExport.tt</DependentUpon>
+    <Compile Include="App\Common\AppInfo.cs" />
+    <Compile Include="App\Common\AppData.cs" />
+    <Compile Include="App\Export\CQEventExport.cs">
+      <DependentUpon>CQExport.tt</DependentUpon>
     </Compile>
-    <Compile Include="App\Core\MenuExport.cs">
-      <DependentUpon>MenuExport.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
+    <Compile Include="App\Export\CQMenuExport.cs">
+      <DependentUpon>CQExport.tt</DependentUpon>
     </Compile>
-    <Compile Include="App\Core\StatusExport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StatusExport.tt</DependentUpon>
+    <Compile Include="App\Export\CQStatusExport.cs">
+      <DependentUpon>CQExport.tt</DependentUpon>
     </Compile>
-    <Compile Include="App\EventArgs\CqAddFriendRequestEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqAddGroupRequestEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqAppDisableEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqAppEnableEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqCallMenuEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqEventArgsBase.cs" />
-    <Compile Include="App\EventArgs\CqExitEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqDiscussMessageEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqStatusEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqFriendIncreaseEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqGroupFileUploadEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqGroupManageChangeEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqGroupMemberDecreaseEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqGroupMemberIncreaseEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqGroupMessageEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqPrivateMessageEventArgs.cs" />
-    <Compile Include="App\EventArgs\CqStartupEventArgs.cs" />
-    <Compile Include="App\Event\Event_CqAppEnable.cs" />
-    <Compile Include="App\Event\Event_AppMain.cs" />
-    <Compile Include="App\Event\Event_CqExit.cs" />
-    <Compile Include="App\Event\Event_DiscussPrivateMessage.cs" />
-    <Compile Include="App\Event\Event_FriendMessage.cs" />
-    <Compile Include="App\Event\Event_GroupMessage.cs" />
-    <Compile Include="App\Event\Event_Openform.cs" />
-    <Compile Include="App\Event\Event_CqAppDisable.cs" />
-    <Compile Include="App\Event\Event_CqStartup.cs" />
-    <Compile Include="App\Event\Event_GroupPrivateMessage.cs" />
-    <Compile Include="App\Interface\ICqAppDisable.cs" />
-    <Compile Include="App\Interface\ICqAppEnable.cs" />
-    <Compile Include="App\Interface\ICallMenu.cs" />
-    <Compile Include="App\Interface\ICqExit.cs" />
-    <Compile Include="App\Interface\ICqStartup.cs" />
-    <Compile Include="App\Interface\ICqStatus.cs" />
-    <Compile Include="App\Interface\IReceiveDiscussMessage.cs" />
-    <Compile Include="App\Interface\IReceiveDiscussPrivateMessage.cs" />
-    <Compile Include="App\Interface\IReceiveFriendAddRequest.cs" />
-    <Compile Include="App\Interface\IReceiveFriendIncrease.cs" />
-    <Compile Include="App\Interface\IReceiveFriendMessage.cs" />
-    <Compile Include="App\Interface\IReceiveAddGroupRequest.cs" />
-    <Compile Include="App\Interface\IReceiveAddGroupBeInvitee.cs" />
-    <Compile Include="App\Interface\IReceiveGroupFileUpload.cs" />
-    <Compile Include="App\Interface\IReceiveGroupManageDecrease.cs" />
-    <Compile Include="App\Interface\IReceiveGroupManageIncrease.cs" />
-    <Compile Include="App\Interface\IReceiveGroupMemberBeInvitee.cs" />
-    <Compile Include="App\Interface\IReceiveGroupMemberPass.cs" />
-    <Compile Include="App\Interface\IReceiveGroupMemberLeave.cs" />
-    <Compile Include="App\Interface\IReceiveGroupMemberRemove.cs" />
-    <Compile Include="App\Interface\IReceiveGroupMessage.cs" />
-    <Compile Include="App\Interface\IReceiveGroupPrivateMessage.cs" />
-    <Compile Include="App\Interface\IReceiveOnlineStatusMessage.cs" />
-    <Compile Include="Minecraft_QQ\config\Config_obj.cs" />
-    <Compile Include="Minecraft_QQ\config\Save_obj.cs" />
-    <Compile Include="Minecraft_QQ\config\Config_write.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql_Add_data.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql_Add_table.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql_remove_data.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql_replace_data.cs" />
-    <Compile Include="Minecraft_QQ\Mysql\Mysql_search_data.cs" />
-    <Compile Include="Minecraft_QQ\Send.cs" />
+    <Compile Include="App\CQMain.cs" />
+    <Compile Include="Event\Event_AppDisable.cs" />
+    <Compile Include="Event\Event_AppEnable.cs" />
+    <Compile Include="Event\Event_GroupMessage.cs" />
+    <Compile Include="Event\Event_PrivateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
@@ -196,36 +138,24 @@
     <Compile Include="Repair\ModuleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Minecraft_QQ\config\Config_read.cs" />
-    <Compile Include="Minecraft_QQ\logs.cs" />
-    <Compile Include="Minecraft_QQ\socket\message.cs" />
-    <Compile Include="Minecraft_QQ\socket\socket.cs" />
-    <Compile Include="Minecraft_QQ\setform.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minecraft_QQ\setform.Designer.cs">
-      <DependentUpon>setform.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Minecraft_QQ\Minecraft_QQ.cs" />
-    <Compile Include="Minecraft_QQ\Utils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Minecraft_QQ\setform.resx">
-      <DependentUpon>setform.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\Color_yr.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="com.color_yr.minecraft_qq.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="App\Export\CQExport.log">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CQExport.tt</DependentUpon>
     </None>
+    <None Include="com.color_yr.minecraft_qq.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Minecraft_QQ.UI\Minecraft_QQ.UI.csproj">
+      <Project>{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}</Project>
+      <Name>Minecraft_QQ.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Minecraft_QQ\Minecraft_QQ.Code.csproj">
+      <Project>{58af8b85-e0df-46bc-a932-81dd14c71165}</Project>
+      <Name>Minecraft_QQ.Code</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
       <Project>{797eaebc-4d5b-4eef-87f4-a508fda2cb6a}</Project>
       <Name>Native.Csharp.Sdk</Name>
@@ -235,27 +165,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\Core\MenuExport.tt">
+    <Content Include="App\Export\CQExport.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MenuExport.cs</LastGenOutput>
+      <LastGenOutput>CQExport.log</LastGenOutput>
     </Content>
-    <Content Include="App\Core\StatusExport.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StatusExport.cs</LastGenOutput>
-    </Content>
-    <Content Include="App\Core\LibExport.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LibExport.cs</LastGenOutput>
-    </Content>
-    <None Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ImportGroup Label=".NET DllExport" />
   <ImportGroup Label=".NET DllExport" />
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets" Condition="Exists('$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets')" Label="8337224c9ad9e356" />
-    <Import Project="..\packages\Fody.6.0.4\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.4\build\Fody.targets')" />
+    <Import Project="..\packages\Fody.6.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.6\build\Fody.targets')" />
   </ImportGroup>
   <Target Name="DllExportRestorePkg" BeforeTargets="PrepareForBuild">
     <Warning Condition="!Exists('$(SolutionDir)DllExport.bat')" Text="We can't find 'DllExport.bat' in '$(SolutionDir)' - https://github.com/3F/DllExport" />
@@ -283,8 +203,8 @@ rename "$(TargetDir)$(TargetName)\$(TargetName).json" "app.json"
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.6\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.0.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ModuleInit.Fody.2.1.0\build\ModuleInit.Fody.props'))" />
   </Target>
 </Project>

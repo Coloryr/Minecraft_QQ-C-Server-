@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Minecraft_QQ")]
-[assembly: AssemblyDescription("Minecraft服务器与QQ群互联")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright © Color_yr 2019 . GitHub: https://github.com/Coloryr/Minecraft_QQ-C-Server-")]
+[assembly: AssemblyProduct("Minecraft_QQ")]
+[assembly: AssemblyCopyright("Copyright © Color_yr 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("8bc2c861-d30c-425b-98a7-812792d2017d")]
+//[assembly: Guid("8bc2c861-d30c-425b-98a7-812792d2017d")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
@@ -30,7 +30,5 @@ using System.Runtime.InteropServices;
 //
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 //通过使用 "*"，如下所示:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.2")]
-[assembly: AssemblyFileVersion("2.4.2")]
-
+[assembly: AssemblyVersion("2.6.0")]
+[assembly: AssemblyFileVersion("2.6.0")]

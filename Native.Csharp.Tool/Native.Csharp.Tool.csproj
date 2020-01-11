@@ -9,37 +9,49 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Native.Csharp.Tool</RootNamespace>
     <AssemblyName>Native.Csharp.Tool</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET_45;SQLITE_STANDARD;INTEROP_VIRTUAL_TABLE;INTEROP_SESSION_EXTENSION;TRACE_SHARED</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_45;SQLITE_STANDARD;INTEROP_VIRTUAL_TABLE;INTEROP_SESSION_EXTENSION;TRACE_SHARED;THROW_ON_DISPOSED</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>618,1591;3001</NoWarn>
+    <NoWarn>618,1591;3001;CA2213;CA2210;CA2100;IDE1006;CA1063</NoWarn>
     <WarningsAsErrors>NU1605</WarningsAsErrors>
     <DocumentationFile>bin\x86\Debug\Native.Csharp.Tool.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET_45;SQLITE_STANDARD;INTEROP_VIRTUAL_TABLE;INTEROP_SESSION_EXTENSION;TRACE_SHARED;THROW_ON_DISPOSED</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <DocumentationFile>bin\x86\Release\Native.Csharp.Tool.xml</DocumentationFile>
+    <NoWarn>618,1591;3001</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -110,6 +122,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="IniConfig\README.md" />
     <None Include="SQLite\Configurations\System.Data.SQLite.dll.config" />
   </ItemGroup>
