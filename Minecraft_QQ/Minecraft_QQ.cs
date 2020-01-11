@@ -11,7 +11,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.6.0";
+        public readonly static string vision = "2.6.1";
         /// <summary>
         /// 插件启动线程
         /// </summary>
@@ -415,15 +415,15 @@ namespace Color_yr.Minecraft_QQ
                         }
                         else if (msg_low == Mainconfig.管理员.打开菜单 && player.admin == true)
                         {
-                            e.FromGroup.SendGroupMessage(fromGroup, "已打开，请前往后台查看");
+                            e.FromGroup.SendGroupMessage("已打开，请前往后台查看");
                             OpenSettingForm();
                             return;
                         }
                         else if (msg_low == Mainconfig.管理员.重读配置 && player.admin == true)
                         {
-                            e.FromGroup.SendGroupMessage(fromGroup, "开始重读配置文件");
+                            e.FromGroup.SendGroupMessage("开始重读配置文件");
                             reload();
-                            e.FromGroup.SendGroupMessage(fromGroup, "重读完成");
+                            e.FromGroup.SendGroupMessage("重读完成");
                             return;
                         }
                         else if (msg_low.IndexOf(Mainconfig.管理员.设置昵称) == 0 && player.admin == true)
@@ -436,14 +436,14 @@ namespace Color_yr.Minecraft_QQ
                     {
                         string test = Utils.Get_online_player(fromGroup);
                         if (test != null)
-                            e.FromGroup.SendGroupMessage(fromGroup, test);
+                            e.FromGroup.SendGroupMessage(test);
                         return;
                     }
                     else if (msg_low == Mainconfig.检测.服务器在线检测)
                     {
                         string test = Utils.Get_online_server(fromGroup);
                         if (test != null)
-                            e.FromGroup.SendGroupMessage(fromGroup, test);
+                            e.FromGroup.SendGroupMessage(test);
                         return;
                     }
 
@@ -460,13 +460,13 @@ namespace Color_yr.Minecraft_QQ
                         string message = Askconfig.自动应答列表[msg_low];
                         if (string.IsNullOrWhiteSpace(message) == false)
                         {
-                            e.FromGroup.SendGroupMessage(fromGroup, message);
+                            e.FromGroup.SendGroupMessage(message);
                             return;
                         }
                     }
                     else if (string.IsNullOrWhiteSpace(Mainconfig.消息.位置指令文本) == false)
                     {
-                        e.FromGroup.SendGroupMessage(fromGroup, Mainconfig.消息.位置指令文本);
+                        e.FromGroup.SendGroupMessage(Mainconfig.消息.位置指令文本);
                         return;
                     }
                 }

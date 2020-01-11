@@ -42,7 +42,7 @@ namespace Color_yr.Minecraft_QQ
                 {
                     if (Minecraft_QQ.Mainconfig.设置.使用昵称发送至群 == true)
                     {
-                        Player_save_obj player = Utils.Get_player_from_id(message.player, true);
+                        Player_save_obj player = Utils.Get_player_from_id(message.player);
                         if (player != null && string.IsNullOrWhiteSpace(player.nick) == false)
                             message.message = message.message.Replace(message.player, player.nick);
                     }

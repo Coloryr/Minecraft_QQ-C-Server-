@@ -228,14 +228,14 @@ namespace Color_yr.Minecraft_QQ
                 return Minecraft_QQ.Playerconfig.玩家列表[player_qq];
             return null;
         }
-        public static Player_save_obj Get_player_from_id(string id, bool low)
+        public static Player_save_obj Get_player_from_id(string id)
         {
             Dictionary<long, Player_save_obj>.ValueCollection valueCol = Minecraft_QQ.Playerconfig.玩家列表.Values;
             foreach (Player_save_obj value in valueCol)
             {
-                if (low == true && value.player.ToLower() == id.ToLower())
-                    return value;
-                else if (value.player == id)
+                if(value == null)
+                    return null;
+                if (value.player.ToLower() == id.ToLower())
                     return value;
             }
             return null;
@@ -295,7 +295,7 @@ namespace Color_yr.Minecraft_QQ
 
                     if (Minecraft_QQ.Playerconfig.禁止绑定列表.Contains(player_name.ToLower()) == true)
                         return "禁止绑定ID：[" + player_name + "]";
-                    else if (Get_player_from_id(player_name, true) != null)
+                    else if (Get_player_from_id(player_name) != null)
                         return "ID：[" + player_name + "]已经被绑定过了";
                     if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(fromQQ) == true)
                     {
