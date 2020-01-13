@@ -70,7 +70,7 @@
 		TemplateBuilder.WriteLine (2, "CosturaUtility.Initialize ();");
 		TemplateBuilder.WriteLine (2);
 		TemplateBuilder.WriteLine (2, "Type type = typeof (Common.AppInfo);\t// 反射初始化容器");
-		TemplateBuilder.WriteFormatLine (2, "type.GetProperty (\"Id\", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] {{ \"{0}\" }});", this.Host.ResolveAssemblyReference ("$(TargetName)"));
+		TemplateBuilder.WriteFormatLine (2, "type.GetProperty (\"Id\", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] {{ \"{0}\" }});", this.Host.ResolveAssemblyReference ("com.color_yr.minecraft_qq"));
 		TemplateBuilder.WriteFormatLine (2, "type.GetProperty (\"ResultCode\", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] {{ {0} }});", CQJsonReader.GetResultCode ());
 		TemplateBuilder.WriteFormatLine (2, "type.GetProperty (\"ApiVersion\", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] {{ {0} }});", CQJsonReader.GetApiVer ());
 		TemplateBuilder.WriteFormatLine (2, "type.GetProperty (\"Name\", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] {{ \"{0}\" }});", CQJsonReader.GetName ());
@@ -98,7 +98,7 @@
 		TemplateBuilder.WriteLine (1, "[DllExport (ExportName = \"AppInfo\", CallingConvention = CallingConvention.StdCall)]");
 		TemplateBuilder.WriteLine (1, "private static string AppInfo ()");
 		TemplateBuilder.WriteLine (1, "{");
-		TemplateBuilder.WriteFormatLine (2, "return \"{0},{1}\";", CQJsonReader.GetApiVer (), this.Host.ResolveAssemblyReference ("$(TargetName)"));
+		TemplateBuilder.WriteFormatLine (2, "return \"{0},{1}\";", CQJsonReader.GetApiVer (), this.Host.ResolveAssemblyReference ("com.color_yr.minecraft_qq"));
 		TemplateBuilder.WriteLine (1, "}");
 		TemplateBuilder.WriteLine (1);
 
@@ -113,10 +113,10 @@
 		TemplateBuilder.WriteLine (1, "{");
 		TemplateBuilder.WriteLine (2, "// 向容器注册一个 CQApi 实例");
 		TemplateBuilder.WriteLine (2, "api = new CQApi (authCode);");
-		TemplateBuilder.WriteFormatLine (2, "Common.AppInfo.UnityContainer.RegisterInstance<CQApi> (\"{0}\", api);", this.Host.ResolveAssemblyReference ("$(TargetName)"));
+		TemplateBuilder.WriteFormatLine (2, "Common.AppInfo.UnityContainer.RegisterInstance<CQApi> (\"{0}\", api);", this.Host.ResolveAssemblyReference ("com.color_yr.minecraft_qq"));
 		TemplateBuilder.WriteLine (2, "// 向容器注册一个 CQLog 实例");
 		TemplateBuilder.WriteLine (2, "log = new CQLog (authCode);");
-		TemplateBuilder.WriteFormatLine (2, "Common.AppInfo.UnityContainer.RegisterInstance<CQLog> (\"{0}\", log);", this.Host.ResolveAssemblyReference ("$(TargetName)"));
+		TemplateBuilder.WriteFormatLine (2, "Common.AppInfo.UnityContainer.RegisterInstance<CQLog> (\"{0}\", log);", this.Host.ResolveAssemblyReference ("com.color_yr.minecraft_qq"));
 		TemplateBuilder.WriteLine (2, "// 注册插件全局异常捕获回调, 用于捕获未处理的异常, 回弹给 酷Q 做处理");
 		TemplateBuilder.WriteLine (2, "AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;");
 		TemplateBuilder.WriteLine (2, "// 本函数【禁止】处理其他任何代码，以免发生异常情况。如需执行初始化代码请在Startup事件中执行（Type=1001）。");
@@ -890,7 +890,7 @@
 			Log.Info ("获取项目基本信息...");
 			string projectDir = host.ResolveAssemblyReference ("$(ProjectDir)");
 			Log.Info ("项目目录: {0}", projectDir);
-			string targetName = host.ResolveAssemblyReference ("$(TargetName)");
+			string targetName = host.ResolveAssemblyReference ("com.color_yr.minecraft_qq");
 			Log.Info ("项目名称: {0}", targetName);
 			string filePath = Path.Combine (projectDir, string.Format ("{0}.json", targetName));
 			Log.Info ("Json路径: {0}", filePath);
