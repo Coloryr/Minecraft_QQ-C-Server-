@@ -45,7 +45,7 @@ namespace Native.Csharp.Sdk.Cqp.Model
         {
             if (cipherBytes == null)
             {
-                throw new ArgumentNullException(nameof(cipherBytes));
+                throw new ArgumentNullException("cipherBytes");
             }
 
             using (BinaryReader reader = new BinaryReader(new MemoryStream(cipherBytes)))

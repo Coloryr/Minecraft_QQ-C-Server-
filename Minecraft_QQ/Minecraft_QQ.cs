@@ -11,7 +11,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.6.1";
+        public readonly static string vision = "2.6.2";
         /// <summary>
         /// 插件启动线程
         /// </summary>
@@ -58,9 +58,9 @@ namespace Color_yr.Minecraft_QQ
 
         public static void PrivateMessage(CQPrivateMessageEventArgs e)
         {
-            if (Mainconfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(e.Message.OriginalMessage) == true)
+            if (Mainconfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(e.Message.Text) == true)
             {
-                string message = Askconfig.自动应答列表[e.Message.OriginalMessage];
+                string message = Askconfig.自动应答列表[e.Message.Text];
                 if (string.IsNullOrWhiteSpace(message) == false)
                     e.FromQQ.SendPrivateMessage(message);
             }
@@ -271,7 +271,7 @@ namespace Color_yr.Minecraft_QQ
         {
             long fromGroup = e.FromGroup.Id;
             long fromQQ = e.FromQQ.Id;
-            string msg = e.Message.OriginalMessage;
+            string msg = e.Message.Text;
             if (is_start == false)
                 return;
             logs.Log_write('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);

@@ -233,7 +233,7 @@ namespace Color_yr.Minecraft_QQ
             Dictionary<long, Player_save_obj>.ValueCollection valueCol = Minecraft_QQ.Playerconfig.玩家列表.Values;
             foreach (Player_save_obj value in valueCol)
             {
-                if(value == null)
+                if (value == null)
                     return null;
                 if (value.player.ToLower() == id.ToLower())
                     return value;

@@ -1,4 +1,5 @@
 ﻿using Native.Csharp.Sdk.Cqp.Interface;
+using System;
 using System.Runtime;
 
 namespace Native.Csharp.Sdk.Cqp.Model
@@ -8,6 +9,13 @@ namespace Native.Csharp.Sdk.Cqp.Model
     /// </summary>
     public class Discuss : IToSendString
     {
+        #region --常量--
+        /// <summary>
+        /// 表示 <see cref="Discuss"/> 的最小值, 此字段为常数.
+        /// </summary>
+        public const long MinValue = 10000;
+        #endregion
+
         #region --属性--
         /// <summary>
         /// 获取当前实例用于获取信息的 <see cref="Native.Csharp.Sdk.Cqp.CQApi"/> 实例对象
@@ -29,6 +37,10 @@ namespace Native.Csharp.Sdk.Cqp.Model
         public Discuss(CQApi api, long discussId)
         {
             this.CQApi = api;
+            if (discussId < MinValue)
+            {
+                throw new ArgumentOutOfRangeException("discussId");
+            }
             this.Id = discussId;
         }
         #endregion
