@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 namespace Native.Csharp.Sdk.Cqp.Enum
 {
@@ -10,17 +14,17 @@ namespace Native.Csharp.Sdk.Cqp.Enum
         /// <summary>
         /// 成员
         /// </summary>
-        [Description("成员")]
+        [Description ("成员")]
         Member = 1,
         /// <summary>
         /// 管理
         /// </summary>
-        [Description("管理员")]
+        [Description ("管理员")]
         Manage = 2,
         /// <summary>
         /// 群主
         /// </summary>
-        [Description("群主")]
+        [Description ("群主")]
         Creator = 3
     }
 }

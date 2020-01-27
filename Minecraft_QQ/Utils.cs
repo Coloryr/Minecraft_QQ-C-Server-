@@ -126,7 +126,7 @@ namespace Color_yr.Minecraft_QQ
                 string msg_QQ = Get_string(msg, "[", "]");
                 string player_name;
                 long.TryParse(player_QQ, out long qq);
-                Player_save_obj player = Get_player(qq);
+                var player = Get_player(qq);
                 if (player == null)
                     player_name = player_QQ;
                 else
@@ -145,50 +145,90 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string Get_rich(string a)
         {
-            string title = null;
-            string json_string;
-            string text = null;
             try
             {
-                title = Get_string(a, "title=", ",content");
-                json_string = "{" + Get_string(a, ":{", "}") + "}";
-                json_string = json_string.Replace("&#44;", ",");
-                JObject jsonData = JObject.Parse(json_string);
-                if (jsonData.ContainsKey("text"))
+                if (a.Contains("title=") && a.Contains(",content"))
                 {
-                    text = jsonData["text"].ToString();
-                    byte[] bytes = Convert.FromBase64String(text);
-                    text = Encoding.GetEncoding("utf-8").GetString(bytes);
-                }
-                else if (jsonData.ContainsKey("jumpUrl"))
-                {
-                    if (jsonData.ContainsKey("tag"))
+                    string text = "";
+                    var title = Get_string(a, "title=", ",content");
+                    var json_string = "{" + Get_string(a, ":{", "}") + "}";
+                    json_string = json_string.Replace("&#44;", ",");
+                    JObject jsonData = JObject.Parse(json_string);
+                    if (jsonData.ContainsKey("text"))
                     {
-                        text = jsonData["tag"].ToString() + "分享："
-                            + jsonData["jumpUrl"].ToString();
+                        text = jsonData["text"].ToString();
+                        byte[] bytes = Convert.FromBase64String(text);
+                        text = Encoding.GetEncoding("utf-8").GetString(bytes);
                     }
+                    else if (jsonData.ContainsKey("jumpUrl"))
+                    {
+                        if (jsonData.ContainsKey("tag"))
+                        {
+                            text = jsonData["tag"].ToString() + "分享："
+                                + jsonData["jumpUrl"].ToString();
+                        }
+                    }
+                    if (string.IsNullOrWhiteSpace(text) == false)
+                        return title + "：" + text;
+                }
+                else if (a.Contains(@"url=http://client.qun.qq.com/qqweb/m/qun/vote/detail.html?"))
+                {
+                    var temp = a.Split(' ');
+                    if (temp[0].Contains("text="))
+                    {
+                        string title = Get_string(temp[0], "text=");
+                        string text = "群投票：" + title + "\n选项：";
+                        for (int i = 1; i < temp.Length; i++)
+                        {
+                            string t = temp[i];
+                            if (string.IsNullOrWhiteSpace(t))
+                                continue;
+                            if (Guid.TryParse(t, out Guid test) && long.TryParse(temp[i + 1], out long test1))
+                            {
+                                return text;
+                            }
+                            text += "\n" + t;
+                        }
+                    }
+                }
+                else if (a.Contains(",text=") && a.Contains("条转发消息]"))
+                {
+                    string text = "转发消息";
+                    foreach (var line in CQ_code(Get_string(a, ",text=")).Split(' '))
+                    {
+                        if (line.Contains(@"&amp;gt;"))
+                        {
+                            var temp = line;
+                            while (temp.IndexOf("&amp;gt;") != -1)
+                                temp = temp.Replace("&amp;gt;", "[消息]");
+                            text += "\n" + temp;
+                        }
+                        else if (string.IsNullOrWhiteSpace(line) == false && line != "\n")
+                            text += "\n" + line;
+                    }
+                    return text.Remove(text.Length - 1);
                 }
             }
             catch (Exception e)
             {
                 logs.Log_write("[ERROR][group]" + e.Message);
             }
-            return title + "：\n" + text;
+            return null;
         }
         public static string Get_sign(string a, string player)
         {
-            string title;
-            string text = null;
             try
             {
-                title = Get_string(a, "title=", ",image");
-                text = player + "群签到：" + title;
+                if (a.Contains("title=") && a.Contains(",image"))
+                {
+                    return player + "群签到：" + Get_string(a, "title=", ",image");
+                }
             }
             catch (Exception e)
             {
                 logs.Log_write("[ERROR][group]" + e.Message);
             }
-            return text;
+            return null;
         }
         public static string CQ_code(string a)
         {
@@ -252,13 +292,10 @@ namespace Color_yr.Minecraft_QQ
                 Player_save_obj player;
                 if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(qq) == true)
                 {
-                    player = Minecraft_QQ.Playerconfig.玩家列表[qq];
-                    player.nick = nick;
-                    Minecraft_QQ.Playerconfig.玩家列表.Remove(qq);
-                    Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
+                    Minecraft_QQ.Playerconfig.玩家列表[qq].nick = nick;
                     if (Minecraft_QQ.Mysql_ok == true)
                     {
-                        new Mysql_Add_data().player(player);
+                        new Mysql_Add_data().player(Minecraft_QQ.Playerconfig.玩家列表[qq]);
                     }
                     else
                     {
@@ -267,9 +304,11 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else
                 {
-                    player = new Player_save_obj();
-                    player.qq = qq;
-                    player.nick = nick;
+                    player = new Player_save_obj()
+                    {
+                        qq = qq,
+                        nick = nick
+                    };
                     Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
                     new Config_write().Write_player();
                 }
@@ -283,8 +322,8 @@ namespace Color_yr.Minecraft_QQ
                 msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
             if (Minecraft_QQ.Mainconfig.设置.可以绑定名字 == false)
                 return Minecraft_QQ.Mainconfig.消息.不能绑定文本;
-            Player_save_obj player = Get_player(fromQQ);
-            if (player == null || (player != null && string.IsNullOrWhiteSpace(player.player) == true))
+            var player = Get_player(fromQQ);
+            if (player == null || string.IsNullOrWhiteSpace(player.player) == true)
             {
                 string player_name = msg.Replace(Minecraft_QQ.Mainconfig.检测.玩家设置名字, "");
                 if (string.IsNullOrWhiteSpace(player_name) == true)
@@ -333,9 +372,8 @@ namespace Color_yr.Minecraft_QQ
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
-                Player_save_obj player;
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                player = Get_player(qq);
+                var player = Get_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.player;
@@ -364,9 +402,8 @@ namespace Color_yr.Minecraft_QQ
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
-                Player_save_obj player;
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                player = Get_player(qq);
+                var player = Get_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.player;
@@ -392,11 +429,10 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
             msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.查询绑定名字, "");
-            Player_save_obj player;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                player = Get_player(qq);
+                var player = Get_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 else
@@ -404,7 +440,7 @@ namespace Color_yr.Minecraft_QQ
             }
             else
             {
-                player = Get_player(fromQQ);
+                var player = Get_player(fromQQ);
                 if (player == null)
                     return "你没有绑定ID";
                 else
@@ -419,15 +455,15 @@ namespace Color_yr.Minecraft_QQ
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 string player_qq = Get_string(msg, "=", "]");
-                string player_name;
-                player_name = Get_string(msg, "]");
-                player_name = player_name.Trim();
+                string player_name = Get_string(msg, "]").Trim();
                 long.TryParse(player_qq, out long qq);
                 if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(qq) == false)
                 {
-                    Player_save_obj player = new Player_save_obj();
-                    player.qq = qq;
-                    player.player = player_name;
+                    var player = new Player_save_obj()
+                    {
+                        qq = qq,
+                        player = player_name
+                    };
                     Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
                     if (Minecraft_QQ.Mysql_ok == true)
                     {
@@ -509,11 +545,13 @@ namespace Color_yr.Minecraft_QQ
             {
                 if (socket.ready == true)
                 {
-                    Message_send_obj message = new Message_send_obj();
-                    message.group = fromGroup.ToString();
-                    message.commder = Commder_list.ONLINE;
-                    message.is_commder = false;
-                    message.player = null;
+                    var message = new Message_send_obj()
+                    {
+                        group = fromGroup.ToString(),
+                        commder = Commder_list.ONLINE,
+                        is_commder = false,
+                        player = null
+                    };
                     socket.Send(message);
                     return null;
                 }
@@ -529,11 +567,13 @@ namespace Color_yr.Minecraft_QQ
             {
                 if (socket.ready == true)
                 {
-                    Message_send_obj message = new Message_send_obj();
-                    message.group = fromGroup.ToString();
-                    message.commder = Commder_list.SERVER;
-                    message.is_commder = false;
-                    message.player = null;
+                    var message = new Message_send_obj()
+                    {
+                        group = fromGroup.ToString(),
+                        commder = Commder_list.SERVER,
+                        is_commder = false,
+                        player = null
+                    };
                     socket.Send(message);
                     return null;
                 }
@@ -545,10 +585,8 @@ namespace Color_yr.Minecraft_QQ
         }
         public static bool Send_command(long fromGroup, string msg, long fromQQ)
         {
-            msg = ReplaceFirst(msg, Minecraft_QQ.Mainconfig.检测.检测头, "");
-            foreach (KeyValuePair<string, Command_save_obj> value in Minecraft_QQ.Commandconfig.命令列表)
+            foreach (var value in Minecraft_QQ.Commandconfig.命令列表)
             {
-
                 if (msg.ToLower().IndexOf(value.Key) == 0)
                 {
                     if (socket.ready == false)
@@ -556,12 +594,12 @@ namespace Color_yr.Minecraft_QQ
                         Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
-                    Player_save_obj player = Get_player(fromQQ);
+                    var player = Get_player(fromQQ);
                     if (player != null)
                     {
                         if (value.Value.player_use == true || player.admin == true)
                         {
-                            Message_send_obj message_send = new Message_send_obj();
+                            var message_send = new Message_send_obj();
                             message_send.group = fromGroup.ToString();
 
                             string cmd = value.Value.command;
@@ -572,7 +610,7 @@ namespace Color_yr.Minecraft_QQ
                             {
                                 string a = Get_string(msg, "=", "]");
                                 long.TryParse(a, out long qq);
-                                Player_save_obj player1 = Get_player(qq);
+                                var player1 = Get_player(qq);
                                 if (player1 == null)
                                 {
                                     Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");

@@ -1,112 +1,116 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 namespace Native.Csharp.Sdk.Cqp.Enum
 {
     /// <summary>
     /// 表示酷Q消息中内含 [CQ:...] 中的类型
     /// </summary>
-    [DefaultValue(CQFunction.Unknown)]
+    [DefaultValue (CQFunction.Unknown)]
     public enum CQFunction
     {
         /// <summary>
         /// 未知类型, 同时也是默认值
         /// </summary>
-        [Description("unknown")]
+        [Description ("unknown")]
         Unknown,
         /// <summary>
         /// QQ表情
         /// </summary>
-        [Description("face")]
+        [Description ("face")]
         Face,
         /// <summary>
         /// Emoji表情
         /// </summary>
-        [Description("emoji")]
+        [Description ("emoji")]
         Emoji,
         /// <summary>
         /// 原创表情
         /// </summary>
-        [Description("bface")]
+        [Description ("bface")]
         Bface,
         /// <summary>
         /// 小表情
         /// </summary>
-        [Description("sface")]
+        [Description ("sface")]
         Sface,
         /// <summary>
         /// 图片
         /// </summary>
-        [Description("image")]
+        [Description ("image")]
         Image,
         /// <summary>
         /// 语音
         /// </summary>
-        [Description("record")]
+        [Description ("record")]
         Record,
         /// <summary>
         /// At默认
         /// </summary>
-        [Description("at")]
+        [Description ("at")]
         At,
         /// <summary>
         /// 猜拳魔法表情
         /// </summary>
-        [Description("rps")]
+        [Description ("rps")]
         Rps,
         /// <summary>
         /// 掷骰子魔法表情
         /// </summary>
-        [Description("dice")]
+        [Description ("dice")]
         Dice,
         /// <summary>
         /// 戳一戳
         /// </summary>
-        [Description("shake")]
+        [Description ("shake")]
         Shake,
         /// <summary>
         /// 音乐
         /// </summary>
-        [Description("music")]
+        [Description ("music")]
         Music,
         /// <summary>
         /// 链接分享
         /// </summary>
-        [Description("share")]
+        [Description ("share")]
         Share,
         /// <summary>
         /// 卡片消息
         /// </summary>
-        [Description("rich")]
+        [Description ("rich")]
         Rich,
         /// <summary>
         /// 签到
         /// </summary>
-        [Description("sign")]
+        [Description ("sign")]
         Sign,
         /// <summary>
         /// 红包
         /// </summary>
-        [Description("hb")]
+        [Description ("hb")]
         Hb,
         /// <summary>
         /// 推荐
         /// </summary>
-        [Description("contact")]
+        [Description ("contact")]
         Contact,
         /// <summary>
         /// 厘米秀
         /// </summary>
-        [Description("show")]
+        [Description ("show")]
         Show,
         /// <summary>
         /// 位置分享
         /// </summary>
-        [Description("location")]
+        [Description ("location")]
         Location,
         /// <summary>
         /// 匿名消息
         /// </summary>
-        [Description("anonymous")]
+        [Description ("anonymous")]
         Anonymous
     }
 }

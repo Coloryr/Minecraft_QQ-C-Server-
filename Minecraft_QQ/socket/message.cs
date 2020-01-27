@@ -49,7 +49,7 @@ namespace Color_yr.Minecraft_QQ
                     foreach (Group_save_obj value in Minecraft_QQ.Groupconfig.群列表.Values)
                     {
                         if (value.say == true)
-                            Send.Send_List.Add(value.group_l, message.message);
+                            Send.Send_List.Add(new Send_Obj { group = value.group_l, message = message.message });
                     }
                 }
                 else
@@ -58,7 +58,7 @@ namespace Color_yr.Minecraft_QQ
                     if (Minecraft_QQ.Groupconfig.群列表.ContainsKey(group) == true)
                     {
                         Group_save_obj list = Minecraft_QQ.Groupconfig.群列表[group];
-                        Send.Send_List.Add(list.group_l, message.message);
+                        Send.Send_List.Add(new Send_Obj { group = list.group_l, message = message.message });
                     }
                 }
                 a = read.IndexOf(Minecraft_QQ.Mainconfig.链接.数据尾);

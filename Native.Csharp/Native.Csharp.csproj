@@ -194,9 +194,9 @@ if exist "$(TargetDir)$(TargetName)\app.json" (del /F /A /Q "$(TargetDir)$(Targe
 move "$(TargetDir)$(TargetName).dll" "$(TargetDir)$(TargetName)" 
 rename "$(TargetDir)$(TargetName)\$(TargetName).dll" "app.dll" 
 ) 
-if exist "$(TargetDir)$(TargetName).json" (
-move "$(TargetDir)$(TargetName).json" "$(TargetDir)$(TargetName)" 
-rename "$(TargetDir)$(TargetName)\$(TargetName).json" "app.json" 
+if exist "$(ProjectDir)com.color_yr.minecraft_qq.json" (
+copy "$(ProjectDir)com.color_yr.minecraft_qq.json" "$(TargetDir)$(TargetName)" 
+rename "$(TargetDir)$(TargetName)\com.color_yr.minecraft_qq.json" "app.json" 
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
