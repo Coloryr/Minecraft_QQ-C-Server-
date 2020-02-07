@@ -76,29 +76,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="config\config_obj.cs" />
-    <Compile Include="config\Config_read.cs" />
-    <Compile Include="config\Config_write.cs" />
-    <Compile Include="config\Save_obj.cs" />
-    <Compile Include="logs.cs" />
+    <Compile Include="Config\ConfigObj.cs" />
+    <Compile Include="Config\ConfigRead.cs" />
+    <Compile Include="Config\ConfigWrite.cs" />
+    <Compile Include="Utils\Obj.cs" />
+    <Compile Include="Utils\logs.cs" />
     <Compile Include="Minecraft_QQ.cs" />
-    <Compile Include="Mysql\Mysql.cs" />
-    <Compile Include="Mysql\Mysql_Add_data.cs" />
-    <Compile Include="Mysql\Mysql_Add_table.cs" />
-    <Compile Include="Mysql\Mysql_remove_data.cs" />
-    <Compile Include="Mysql\Mysql_replace_data.cs" />
-    <Compile Include="Mysql\Mysql_search_data.cs" />
+    <Compile Include="MyMysql\Mysql.cs" />
+    <Compile Include="MyMysql\MysqlAddData.cs" />
+    <Compile Include="MyMysql\MysqlAddTable.cs" />
+    <Compile Include="MyMysql\MysqlRemoveData.cs" />
+    <Compile Include="MyMysql\MysqlReplaceData.cs" />
+    <Compile Include="MyMysql\MysqlSearchData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Send.cs" />
-    <Compile Include="setform.cs">
+    <Compile Include="Utils\Send.cs" />
+    <Compile Include="Form\setform.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="setform.designer.cs">
+    <Compile Include="Form\setform.designer.cs">
       <DependentUpon>setform.cs</DependentUpon>
     </Compile>
-    <Compile Include="socket\message.cs" />
-    <Compile Include="socket\socket.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="MySocket\Message.cs" />
+    <Compile Include="MySocket\MySocketServer.cs" />
+    <Compile Include="Utils\Funtion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
@@ -111,7 +111,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="setform.resx">
+    <EmbeddedResource Include="Form\setform.resx">
       <DependentUpon>setform.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

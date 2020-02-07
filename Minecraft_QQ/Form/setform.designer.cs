@@ -51,7 +51,6 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
@@ -68,6 +67,7 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.mysql_now = new System.Windows.Forms.Label();
             this.mysql_database = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.mysql_use = new System.Windows.Forms.CheckBox();
@@ -80,7 +80,6 @@
             this.mysql_port = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.mysql_b = new System.Windows.Forms.Button();
-            this.mysql_now = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -274,7 +273,6 @@
             this.groupBox3.Controls.Add(this.radioButton1);
             this.groupBox3.Controls.Add(this.radioButton2);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.checkBox6);
             this.groupBox3.Controls.Add(this.textBox4);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.button4);
@@ -320,19 +318,6 @@
             this.label5.TabIndex = 72;
             this.label5.Text = "设置服务器编码格式";
             // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Checked = true;
-            this.checkBox6.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox6.Location = new System.Drawing.Point(135, 48);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(60, 16);
-            this.checkBox6.TabIndex = 69;
-            this.checkBox6.Text = "绑定IP";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            this.checkBox6.CheckedChanged += new System.EventHandler(this.CheckBox6_CheckedChanged);
-            // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(40, 46);
@@ -356,7 +341,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(63, 20);
             this.button4.TabIndex = 66;
-            this.button4.Text = "修改端口";
+            this.button4.Text = "设置端口";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -513,10 +498,19 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "mysql设置";
             // 
-            // database_name
+            // mysql_now
+            // 
+            this.mysql_now.AutoSize = true;
+            this.mysql_now.Location = new System.Drawing.Point(7, 157);
+            this.mysql_now.Name = "mysql_now";
+            this.mysql_now.Size = new System.Drawing.Size(71, 12);
+            this.mysql_now.TabIndex = 76;
+            this.mysql_now.Text = "Mysql未连接";
+            // 
+            // mysql_database
             // 
             this.mysql_database.Location = new System.Drawing.Point(40, 128);
-            this.mysql_database.Name = "database_name";
+            this.mysql_database.Name = "mysql_database";
             this.mysql_database.Size = new System.Drawing.Size(89, 21);
             this.mysql_database.TabIndex = 75;
             this.mysql_database.Text = "minecraft_qq";
@@ -621,15 +615,6 @@
             this.mysql_b.UseVisualStyleBackColor = true;
             this.mysql_b.Click += new System.EventHandler(this.mysql_b_Click);
             // 
-            // mysql_now
-            // 
-            this.mysql_now.AutoSize = true;
-            this.mysql_now.Location = new System.Drawing.Point(7, 157);
-            this.mysql_now.Name = "mysql_now";
-            this.mysql_now.Size = new System.Drawing.Size(71, 12);
-            this.mysql_now.TabIndex = 76;
-            this.mysql_now.Text = "Mysql未连接";
-            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -688,7 +673,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button4;

@@ -1,14 +1,31 @@
-﻿using Native.Csharp.Sdk.Cqp;
+﻿using Color_yr.Minecraft_QQ.Config;
+using Color_yr.Minecraft_QQ.MyMysql;
+using Color_yr.Minecraft_QQ.MySocket;
+using Native.Csharp.Sdk.Cqp;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ
+namespace Color_yr.Minecraft_QQ.Utils
 {
-    class Utils
+    class Funtion
     {
+        public static string GBKtoUTF8(string msg)
+        {
+            try
+            {
+                byte[] srcBytes = Encoding.Default.GetBytes(msg);
+                byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
+                return Encoding.UTF8.GetString(bytes);
+            }
+            catch
+            {
+                return msg;
+            }
+        }
         public static string RemoveColorCodes(string text)
         {
             if (text.Contains("§") || text.Contains("&"))
@@ -85,17 +102,6 @@ namespace Color_yr.Minecraft_QQ
             else
                 return a.Substring(x);
         }
-        public static bool IsNumber(string str)
-        {
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (str[i] > 127)
-                    return false;
-                else
-                    return true;
-            }
-            return false;
-        }
         public static string Remove_pic(string a)
         {
             while (a.IndexOf("[CQ:image") != -1)
@@ -131,10 +137,10 @@ namespace Color_yr.Minecraft_QQ
                     player_name = player_QQ;
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(player.nick) == false)
-                        player_name = player.nick;
+                    if (string.IsNullOrWhiteSpace(player.昵称) == false)
+                        player_name = player.昵称;
                     else
-                        player_name = player.player;
+                        player_name = player.名字;
                 }
                 msg = msg.Replace(msg_QQ, "@" + player_name + "");
             }
@@ -211,7 +217,7 @@ namespace Color_yr.Minecraft_QQ
             }
             catch (Exception e)
             {
-                logs.Log_write("[ERROR][group]" + e.Message);
+                logs.LogWrite("[ERROR][group]" + e.Message);
             }
             return null;
         }
@@ -220,13 +226,11 @@ namespace Color_yr.Minecraft_QQ
             try
             {
                 if (a.Contains("title=") && a.Contains(",image"))
-                {
                     return player + "群签到：" + Get_string(a, "title=", ",image");
-                }
             }
             catch (Exception e)
             {
-                logs.Log_write("[ERROR][group]" + e.Message);
+                logs.LogWrite("[ERROR][group]" + e.Message);
             }
             return null;
         }
@@ -262,55 +266,54 @@ namespace Color_yr.Minecraft_QQ
                 return true;
             return false;
         }
-        public static Player_save_obj Get_player(long player_qq)
+        public static PlayerObj Get_player(long player_qq)
         {
-            if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(player_qq) == true)
-                return Minecraft_QQ.Playerconfig.玩家列表[player_qq];
+            if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(player_qq) == true)
+                return Minecraft_QQ.PlayerConfig.玩家列表[player_qq];
             return null;
         }
-        public static Player_save_obj Get_player_from_id(string id)
+        public static PlayerObj Get_player_from_id(string id)
         {
-            Dictionary<long, Player_save_obj>.ValueCollection valueCol = Minecraft_QQ.Playerconfig.玩家列表.Values;
-            foreach (Player_save_obj value in valueCol)
+            Dictionary<long, PlayerObj>.ValueCollection valueCol = Minecraft_QQ.PlayerConfig.玩家列表.Values;
+            foreach (PlayerObj value in valueCol)
             {
                 if (value == null)
                     return null;
-                if (value.player.ToLower() == id.ToLower())
+                if (value.名字.ToLower() == id.ToLower())
                     return value;
             }
             return null;
         }
         public static string Set_nick(string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.设置昵称, "");
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            msg = msg.Replace(Minecraft_QQ.MainConfig.管理员.设置昵称, "");
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 string nick = Get_string(msg, "]").Trim();
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                Player_save_obj player;
-                if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(qq) == true)
+                PlayerObj player;
+                if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == true)
                 {
-                    Minecraft_QQ.Playerconfig.玩家列表[qq].nick = nick;
-                    if (Minecraft_QQ.Mysql_ok == true)
-                    {
-                        new Mysql_Add_data().player(Minecraft_QQ.Playerconfig.玩家列表[qq]);
-                    }
+                    Minecraft_QQ.PlayerConfig.玩家列表[qq].昵称 = nick;
+                    if (Minecraft_QQ.MysqlOK == true)
+                        Task.Factory.StartNew(async () =>
+                        {
+                            await new MysqlAddData().PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]);
+                        });
                     else
-                    {
-                        new Config_write().Write_player();
-                    }
+                        new ConfigWrite().Player();
                 }
                 else
                 {
-                    player = new Player_save_obj()
+                    player = new PlayerObj()
                     {
-                        qq = qq,
-                        nick = nick
+                        QQ号 = qq,
+                        昵称 = nick
                     };
-                    Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
-                    new Config_write().Write_player();
+                    Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, player);
+                    new ConfigWrite().Player();
                 }
                 return "已修改玩家[" + qq + "]的昵称为：" + nick;
             }
@@ -318,46 +321,43 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string Set_player_name(long fromQQ, string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            if (Minecraft_QQ.Mainconfig.设置.可以绑定名字 == false)
-                return Minecraft_QQ.Mainconfig.消息.不能绑定文本;
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            if (Minecraft_QQ.MainConfig.设置.可以绑定名字 == false)
+                return Minecraft_QQ.MainConfig.消息.不能绑定文本;
             var player = Get_player(fromQQ);
-            if (player == null || string.IsNullOrWhiteSpace(player.player) == true)
+            if (player == null || string.IsNullOrWhiteSpace(player.名字) == true)
             {
-                string player_name = msg.Replace(Minecraft_QQ.Mainconfig.检测.玩家设置名字, "");
+                string player_name = msg.Replace(Minecraft_QQ.MainConfig.检测.玩家设置名字, "");
                 if (string.IsNullOrWhiteSpace(player_name) == true)
                     return "ID无效，请检查";
                 else
                 {
                     player_name = player_name.Trim();
 
-                    if (Minecraft_QQ.Playerconfig.禁止绑定列表.Contains(player_name.ToLower()) == true)
+                    if (Minecraft_QQ.PlayerConfig.禁止绑定列表.Contains(player_name.ToLower()) == true)
                         return "禁止绑定ID：[" + player_name + "]";
                     else if (Get_player_from_id(player_name) != null)
                         return "ID：[" + player_name + "]已经被绑定过了";
-                    if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(fromQQ) == true)
+                    if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(fromQQ) == true)
                     {
-                        player = Minecraft_QQ.Playerconfig.玩家列表[fromQQ];
-                        Minecraft_QQ.Playerconfig.玩家列表.Remove(fromQQ);
+                        player = Minecraft_QQ.PlayerConfig.玩家列表[fromQQ];
+                        Minecraft_QQ.PlayerConfig.玩家列表.Remove(fromQQ);
                     }
                     else
-                        player = new Player_save_obj();
-                    player.player = player_name;
-                    player.qq = fromQQ;
-                    Minecraft_QQ.Playerconfig.玩家列表.Add(fromQQ, player);
-                    if (Minecraft_QQ.Mysql_ok == true)
-                    {
-                        new Mysql_Add_data().player(player);
-                    }
+                        player = new PlayerObj();
+                    player.名字 = player_name;
+                    player.QQ号 = fromQQ;
+                    Minecraft_QQ.PlayerConfig.玩家列表.Add(fromQQ, player);
+                    if (Minecraft_QQ.MysqlOK == true)
+                        Task.Factory.StartNew(async () =>
+                        {
+                            await new MysqlAddData().PlayerAsync(player);
+                        });
                     else
-                    {
-                        new Config_write().Write_player();
-                    }
-                    if (Minecraft_QQ.Mainconfig.管理员.发送绑定信息QQ号 != 0)
-                    {
-                        Minecraft_QQ.Plugin.SendPrivateMessage(Minecraft_QQ.Mainconfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
-                    }
+                        new ConfigWrite().Player();
+                    if (Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号 != 0)
+                        Minecraft_QQ.Plugin.SendPrivateMessage(Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
                     return "绑定ID：[" + player_name + "]成功！";
                 }
             }
@@ -366,9 +366,9 @@ namespace Color_yr.Minecraft_QQ
         }
         public static string Mute_player(string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.禁言, "");
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            msg = msg.Replace(Minecraft_QQ.MainConfig.管理员.禁言, "");
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
@@ -376,29 +376,26 @@ namespace Color_yr.Minecraft_QQ
                 var player = Get_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
-                name = player.player;
+                name = player.名字;
             }
             else
-            {
-                name = msg.Replace(Minecraft_QQ.Mainconfig.管理员.禁言, "").Trim();
-            }
-            if (Minecraft_QQ.Playerconfig.禁言列表.Contains(name.ToLower()) == false)
-                Minecraft_QQ.Playerconfig.禁言列表.Add(name.ToLower());
-            if (Minecraft_QQ.Mysql_ok == true)
-            {
-                new Mysql_Add_data().mute(name.ToLower());
-            }
+                name = msg.Replace(Minecraft_QQ.MainConfig.管理员.禁言, "").Trim();
+            if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == false)
+                Minecraft_QQ.PlayerConfig.禁言列表.Add(name.ToLower());
+            if (Minecraft_QQ.MysqlOK == true)
+                Task.Factory.StartNew(async () =>
+                {
+                    await new MysqlAddData().MuteAsync(name.ToLower());
+                });
             else
-            {
-                new Config_write().Write_player();
-            }
+                new ConfigWrite().Player();
             return "已禁言：[" + name + "]";
         }
         public static string Unmute_player(string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.取消禁言, "");
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            msg = msg.Replace(Minecraft_QQ.MainConfig.管理员.取消禁言, "");
             string name;
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
@@ -406,29 +403,23 @@ namespace Color_yr.Minecraft_QQ
                 var player = Get_player(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
-                name = player.player;
+                name = player.名字;
             }
             else
-            {
-                name = msg.Replace(Minecraft_QQ.Mainconfig.管理员.取消禁言, "").Trim();
-            }
-            if (Minecraft_QQ.Playerconfig.禁言列表.Contains(name.ToLower()) == true)
-                Minecraft_QQ.Playerconfig.禁言列表.Remove(name.ToLower());
-            if (Minecraft_QQ.Mysql_ok == true)
-            {
-                new Mysql_remove_data().mute(name);
-            }
+                name = msg.Replace(Minecraft_QQ.MainConfig.管理员.取消禁言, "").Trim();
+            if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == true)
+                Minecraft_QQ.PlayerConfig.禁言列表.Remove(name.ToLower());
+            if (Minecraft_QQ.MysqlOK == true)
+                new MysqlRemoveData().Mute(name);
             else
-            {
-                new Config_write().Write_player();
-            }
+                new ConfigWrite().Player();
             return "已解禁：[" + name + "]";
         }
         public static string Get_Player_id(long fromQQ, string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.查询绑定名字, "");
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            msg = msg.Replace(Minecraft_QQ.MainConfig.管理员.查询绑定名字, "");
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
@@ -436,7 +427,7 @@ namespace Color_yr.Minecraft_QQ
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 else
-                    return "玩家[" + qq + "]绑定的ID为：" + player.player;
+                    return "玩家[" + qq + "]绑定的ID为：" + player.名字;
             }
             else
             {
@@ -444,47 +435,45 @@ namespace Color_yr.Minecraft_QQ
                 if (player == null)
                     return "你没有绑定ID";
                 else
-                    return "你绑定的ID为：" + player.player;
+                    return "你绑定的ID为：" + player.名字;
             }
         }
         public static string Rename_player(string msg)
         {
-            if (msg.IndexOf(Minecraft_QQ.Mainconfig.检测.检测头) == 0)
-                msg = msg.Replace(Minecraft_QQ.Mainconfig.检测.检测头, null);
-            msg = msg.Replace(Minecraft_QQ.Mainconfig.管理员.重命名, "");
+            if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
+                msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
+            msg = msg.Replace(Minecraft_QQ.MainConfig.管理员.重命名, "");
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 string player_qq = Get_string(msg, "=", "]");
                 string player_name = Get_string(msg, "]").Trim();
                 long.TryParse(player_qq, out long qq);
-                if (Minecraft_QQ.Playerconfig.玩家列表.ContainsKey(qq) == false)
+                if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == false)
                 {
-                    var player = new Player_save_obj()
+                    var player = new PlayerObj()
                     {
-                        qq = qq,
-                        player = player_name
+                        QQ号 = qq,
+                        名字 = player_name
                     };
-                    Minecraft_QQ.Playerconfig.玩家列表.Add(qq, player);
-                    if (Minecraft_QQ.Mysql_ok == true)
-                    {
-                        new Mysql_Add_data().player(player);
-                    }
+                    Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, player);
+                    if (Minecraft_QQ.MysqlOK == true)
+                        Task.Factory.StartNew(async () =>
+                        {
+                            await new MysqlAddData().PlayerAsync(player);
+                        });
                     else
-                    {
-                        new Config_write().Write_player();
-                    }
+                        new ConfigWrite().Player();
                 }
                 else
                 {
-                    Minecraft_QQ.Playerconfig.玩家列表[qq].player = player_name;
-                    if (Minecraft_QQ.Mysql_ok == true)
-                    {
-                        new Mysql_Add_data().player(Minecraft_QQ.Playerconfig.玩家列表[qq]);
-                    }
+                    Minecraft_QQ.PlayerConfig.玩家列表[qq].名字 = player_name;
+                    if (Minecraft_QQ.MysqlOK == true)
+                        Task.Factory.StartNew(async () =>
+                        {
+                            await new MysqlAddData().PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]);
+                        });
                     else
-                    {
-                        new Config_write().Write_player();
-                    }
+                        new ConfigWrite().Player();
                 }
                 return "已修改玩家[" + player_qq + "]ID为：" + player_name;
             }
@@ -494,12 +483,12 @@ namespace Color_yr.Minecraft_QQ
 
         public static string Get_mute_list()
         {
-            if (Minecraft_QQ.Playerconfig.禁言列表.Count == 0)
+            if (Minecraft_QQ.PlayerConfig.禁言列表.Count == 0)
                 return "没有禁言的玩家";
             else
             {
                 string a = "禁言的玩家：";
-                foreach (string name in Minecraft_QQ.Playerconfig.禁言列表)
+                foreach (string name in Minecraft_QQ.PlayerConfig.禁言列表)
                 {
                     a += "\n" + name;
                 }
@@ -509,12 +498,12 @@ namespace Color_yr.Minecraft_QQ
 
         public static string Get_cant_bind()
         {
-            if (Minecraft_QQ.Playerconfig.禁止绑定列表.Count == 0)
+            if (Minecraft_QQ.PlayerConfig.禁止绑定列表.Count == 0)
                 return "没有禁止绑定的ID";
             else
             {
                 string a = "禁止绑定的ID：";
-                foreach (string name in Minecraft_QQ.Playerconfig.禁止绑定列表)
+                foreach (string name in Minecraft_QQ.PlayerConfig.禁止绑定列表)
                 {
                     a += "\n" + name;
                 }
@@ -524,64 +513,64 @@ namespace Color_yr.Minecraft_QQ
 
         public static string Fix_mode_change()
         {
-            if (Minecraft_QQ.Mainconfig.设置.维护模式 == false)
+            if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                Minecraft_QQ.Mainconfig.设置.维护模式 = true;
-                new Config_write().Write_config();
-                logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已开启");
+                Minecraft_QQ.MainConfig.设置.维护模式 = true;
+                new ConfigWrite().Config();
+                logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
             else
             {
-                Minecraft_QQ.Mainconfig.设置.维护模式 = false;
-                new Config_write().Write_config();
-                logs.Log_write("[INFO][Minecraft_QQ]服务器维护模式已关闭");
+                Minecraft_QQ.MainConfig.设置.维护模式 = false;
+                new ConfigWrite().Config();
+                logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";
             }
         }
         public static string Get_online_player(long fromGroup)
         {
-            if (Minecraft_QQ.Mainconfig.设置.维护模式 == false)
+            if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (socket.ready == true)
+                if (MySocketServer.ready == true)
                 {
-                    var message = new Message_send_obj()
+                    var message = new MessageObj()
                     {
                         group = fromGroup.ToString(),
                         commder = Commder_list.ONLINE,
                         is_commder = false,
                         player = null
                     };
-                    socket.Send(message);
+                    MySocketServer.Send(message);
                     return null;
                 }
                 else
                     return "发送失败，服务器未准备好";
             }
             else
-                return Minecraft_QQ.Mainconfig.消息.维护提示文本;
+                return Minecraft_QQ.MainConfig.消息.维护提示文本;
         }
         public static string Get_online_server(long fromGroup)
         {
-            if (Minecraft_QQ.Mainconfig.设置.维护模式 == false)
+            if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (socket.ready == true)
+                if (MySocketServer.ready == true)
                 {
-                    var message = new Message_send_obj()
+                    var message = new MessageObj()
                     {
                         group = fromGroup.ToString(),
                         commder = Commder_list.SERVER,
                         is_commder = false,
                         player = null
                     };
-                    socket.Send(message);
+                    MySocketServer.Send(message);
                     return null;
                 }
                 else
                     return "发送失败，服务器未准备好";
             }
             else
-                return Minecraft_QQ.Mainconfig.消息.维护提示文本;
+                return Minecraft_QQ.MainConfig.消息.维护提示文本;
         }
         public static bool Send_command(long fromGroup, string msg, long fromQQ)
         {
@@ -589,7 +578,7 @@ namespace Color_yr.Minecraft_QQ
             {
                 if (msg.ToLower().IndexOf(value.Key) == 0)
                 {
-                    if (socket.ready == false)
+                    if (MySocketServer.ready == false)
                     {
                         Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;
@@ -597,15 +586,15 @@ namespace Color_yr.Minecraft_QQ
                     var player = Get_player(fromQQ);
                     if (player != null)
                     {
-                        if (value.Value.player_use == true || player.admin == true)
+                        if (value.Value.玩家使用 == true || player.管理员 == true)
                         {
-                            var message_send = new Message_send_obj();
+                            var message_send = new MessageObj();
                             message_send.group = fromGroup.ToString();
 
-                            string cmd = value.Value.command;
+                            string cmd = value.Value.命令;
 
                             if (cmd.IndexOf("%player_name%") != -1)
-                                cmd = cmd.Replace("%player_name%", player.player);
+                                cmd = cmd.Replace("%player_name%", player.名字);
                             if (msg.IndexOf("CQ:at,qq=") != -1 && cmd.IndexOf("%player_at%") != -1)
                             {
                                 string a = Get_string(msg, "=", "]");
@@ -616,23 +605,23 @@ namespace Color_yr.Minecraft_QQ
                                     Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
                                     return true;
                                 }
-                                cmd = cmd.Replace("%player_at%", player1.player);
+                                cmd = cmd.Replace("%player_at%", player1.名字);
                             }
 
-                            if (value.Value.parameter == true)
+                            if (value.Value.附带参数 == true)
                             {
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
                                     message_send.commder = cmd + Get_string(msg, "]");
                                 else
-                                    message_send.commder = cmd + ReplaceFirst(msg, value.Value.check, "");
+                                    message_send.commder = cmd + ReplaceFirst(msg, value.Key, "");
                             }
                             else
                                 message_send.commder = cmd;
                             message_send.is_commder = true;
-                            if (value.Value.player_send)
+                            if (value.Value.玩家发送)
                             {
-                                message_send.player = player.player;
-                                if (string.IsNullOrWhiteSpace(player.player) == true)
+                                message_send.player = player.名字;
+                                if (string.IsNullOrWhiteSpace(player.名字) == true)
                                 {
                                     Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "你未绑定ID");
                                     return true;
@@ -640,7 +629,7 @@ namespace Color_yr.Minecraft_QQ
                             }
                             else
                                 message_send.player = "后台";
-                            socket.Send(message_send);
+                            MySocketServer.Send(message_send);
                             return true;
                         }
                     }

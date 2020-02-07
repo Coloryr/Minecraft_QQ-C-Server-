@@ -1,4 +1,8 @@
-﻿using Native.Csharp.Sdk.Cqp;
+﻿using Color_yr.Minecraft_QQ.Config;
+using Color_yr.Minecraft_QQ.MyMysql;
+using Color_yr.Minecraft_QQ.MySocket;
+using Color_yr.Minecraft_QQ.Utils;
+using Native.Csharp.Sdk.Cqp;
 using Native.Csharp.Sdk.Cqp.EventArgs;
 using Newtonsoft.Json;
 using System;
@@ -11,54 +15,50 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.6.3";
-        /// <summary>
-        /// 插件启动线程
-        /// </summary>
-        private static Thread start = new Thread(Start);
+        public readonly static string vision = "2.7.0";
         /// <summary>
         /// 配置文件路径
         /// </summary>
-        public static string path { get; } = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
+        public static string Path { get; } = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Minecraft_QQ/";
         /// <summary>
         /// Mysql启用
         /// </summary>
-        public static bool Mysql_ok = false;
+        public static bool MysqlOK = false;
         /// <summary>
         /// 主群群号
         /// </summary>
-        public static long GroupSet_Main = 0;
+        public static long GroupSetMain = 0;
         /// <summary>
         /// 已经启动
         /// </summary>
-        public static bool is_start = false;
+        public static bool isStart = false;
 
         public static CQApi Plugin { get; set; }
 
         /// <summary>
         /// 主配置文件
         /// </summary>
-        public static Mainconfig_obj Mainconfig { get; set; }
+        public static MainConfig MainConfig { get; set; }
         /// <summary>
         /// 玩家储存配置
         /// </summary>
-        public static Player_obj Playerconfig { get; set; }
+        public static PlayerConfig PlayerConfig { get; set; }
         /// <summary>
         /// 群储存配置
         /// </summary>
-        public static Group_obj Groupconfig { get; set; }
+        public static GroupConfig GroupConfig { get; set; }
         /// <summary>
         /// 自动应答储存
         /// </summary>
-        public static Ask_obj Askconfig { get; set; }
+        public static AskConfig Askconfig { get; set; }
         /// <summary>
         /// 自定义指令
         /// </summary>
-        public static Command_obj Commandconfig { get; set; }
+        public static CommandConfig Commandconfig { get; set; }
 
         public static void PrivateMessage(CQPrivateMessageEventArgs e)
         {
-            if (Mainconfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(e.Message.Text) == true)
+            if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(e.Message.Text) == true)
             {
                 string message = Askconfig.自动应答列表[e.Message.Text];
                 if (string.IsNullOrWhiteSpace(message) == false)
@@ -76,15 +76,15 @@ namespace Color_yr.Minecraft_QQ
         }
         public static void reload()
         {
-            if (Directory.Exists(path) == false)
+            if (Directory.Exists(Path) == false)
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(Path);
             }
-            if (!File.Exists(path + logs.log))
+            if (!File.Exists(Path + logs.log))
             {
                 try
                 {
-                    File.WriteAllText(path + logs.log, "正在尝试创建日志文件" + Environment.NewLine);
+                    File.WriteAllText(Path + logs.log, "正在尝试创建日志文件" + Environment.NewLine);
                 }
                 catch (Exception)
                 {
@@ -93,148 +93,134 @@ namespace Color_yr.Minecraft_QQ
                 }
             }
 
-            Config_read read = new Config_read();
+            ConfigRead read = new ConfigRead();
 
-            Config_file.config = new FileInfo(path + "Mainconfig.json");
-            Config_file.player = new FileInfo(path + "Player.json");
-            Config_file.ask = new FileInfo(path + "Ask.json");
-            Config_file.command = new FileInfo(path + "Command.json");
-            Config_file.group = new FileInfo(path + "Group.json");
+            ConfigFile.主要配置文件 = new FileInfo(Path + "Mainconfig.json");
+            ConfigFile.玩家储存 = new FileInfo(Path + "Player.json");
+            ConfigFile.自动应答 = new FileInfo(Path + "Ask.json");
+            ConfigFile.自定义指令 = new FileInfo(Path + "Command.json");
+            ConfigFile.群设置 = new FileInfo(Path + "Group.json");
 
             //读取主配置文件
-            if (Config_file.config.Exists == false)
+            if (ConfigFile.主要配置文件.Exists == false)
             {
-                logs.Log_write("[Info][Config]新建主配置");
-                Mainconfig = new Mainconfig_obj();
-                File.WriteAllText(Config_file.config.FullName, JsonConvert.SerializeObject(Mainconfig, Formatting.Indented));
+                logs.LogWrite("[Info][Config]新建主配置");
+                MainConfig = new MainConfig();
+                File.WriteAllText(ConfigFile.主要配置文件.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
             }
             else
-            {
-                Mainconfig = read.Read_config();
-            }
+                MainConfig = read.ReadConfig();
 
             //读取群设置
-            if (Config_file.group.Exists == false)
+            if (ConfigFile.群设置.Exists == false)
             {
-                logs.Log_write("[Info][Config]新建群设置配置");
-                Groupconfig = new Group_obj();
-                File.WriteAllText(Config_file.group.FullName, JsonConvert.SerializeObject(Groupconfig, Formatting.Indented));
+                logs.LogWrite("[Info][Config]新建群设置配置");
+                GroupConfig = new GroupConfig();
+                File.WriteAllText(ConfigFile.群设置.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
             }
             else
-            {
-                Groupconfig = read.Read_group();
-            }
-            while (Groupconfig.群列表.Count == 0 || GroupSet_Main == 0)
+                GroupConfig = read.ReadGroup();
+            while (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
             {
                 setform frm = new setform();
                 MessageBox.Show("请设置QQ群，有且最多一个主群", "参数错误，请设置");
                 frm.ShowDialog();
-                Groupconfig = read.Read_group();
+                GroupConfig = read.ReadGroup();
             }
 
             //读自动应答消息
-            if (Config_file.ask.Exists == false)
+            if (ConfigFile.自动应答.Exists == false)
             {
-                Askconfig = new Ask_obj
+                Askconfig = new AskConfig
                 {
                     自动应答列表 = new Dictionary<string, string>
                     {
-                        { "服务器菜单", "服务器查询菜单：\r\n【" + Mainconfig.检测.检测头 + Mainconfig.检测.玩家设置名字
-                    + "】可以绑定你的游戏ID。\r\n【" + Mainconfig.检测.检测头 + Mainconfig.检测.在线玩家获取
-                    + "】可以查询服务器在线人数。\r\n【" + Mainconfig.检测.检测头 + Mainconfig.检测.服务器在线检测
-                    + "】可以查询服务器是否在运行。\r\n【" + Mainconfig.检测.检测头 + Mainconfig.检测.发送消息至服务器
+                        { "服务器菜单", "服务器查询菜单：\r\n【" + MainConfig.检测.检测头 + MainConfig.检测.玩家设置名字
+                    + "】可以绑定你的游戏ID。\r\n【" + MainConfig.检测.检测头 + MainConfig.检测.在线玩家获取
+                    + "】可以查询服务器在线人数。\r\n【" + MainConfig.检测.检测头 + MainConfig.检测.服务器在线检测
+                    + "】可以查询服务器是否在运行。\r\n【" + MainConfig.检测.检测头 + MainConfig.检测.发送消息至服务器
                     + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                     }
                 };
-                File.WriteAllText(Config_file.ask.FullName, JsonConvert.SerializeObject(Askconfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(Askconfig, Formatting.Indented));
             }
             else
-            {
-                Askconfig = read.Read_ask();
-            }
+                Askconfig = read.ReadAsk();
 
             //读取玩家数据
-            if (Mainconfig.数据库.是否启用 == true)
+            if (MainConfig.数据库.是否启用 == true)
             {
-                if (Mysql.Mysql_start() == false)
+                if (Mysql.MysqlStart() == false)
                 {
-                    Plugin.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql链接失败");
-                    Mysql_ok = false;
+                    Plugin.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql链接失败");
+                    MysqlOK = false;
                 }
                 else
                 {
                     Mysql Mysql = new Mysql();
-                    if (Playerconfig == null)
-                        Playerconfig = new Player_obj();
+                    if (PlayerConfig == null)
+                        PlayerConfig = new PlayerConfig();
                     Mysql.Load();
-                    Plugin.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]Mysql已连接");
-                    Mysql_ok = true;
+                    Plugin.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql已连接");
+                    MysqlOK = true;
                 }
             }
             else
             {
-                if (Config_file.player.Exists == false)
+                if (ConfigFile.玩家储存.Exists == false)
                 {
-                    Playerconfig = new Player_obj();
-                    File.WriteAllText(Config_file.player.FullName, JsonConvert.SerializeObject(Playerconfig, Formatting.Indented));
+                    PlayerConfig = new PlayerConfig();
+                    File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
                 }
                 else
-                {
-                    Playerconfig = read.Read_player();
-                }
+                    PlayerConfig = read.ReadPlayer();
             }
 
             //读取自定义指令
-            if (Config_file.command.Exists == false)
+            if (ConfigFile.自定义指令.Exists == false)
             {
-                Commandconfig = new Command_obj
+                Commandconfig = new CommandConfig
                 {
-                    命令列表 = new Dictionary<string, Command_save_obj>
+                    命令列表 = new Dictionary<string, CommandObj>
                     {
-                        { "插件帮助", new Command_save_obj
+                        { "插件帮助", new CommandObj
                             {
-                                check = "插件帮助",
-                                command = "qq help",
-                                player_use = false,
-                                player_send = false,
-                                parameter = true
+                                命令 = "qq help",
+                                玩家使用 = false,
+                                玩家发送 = false,
+                                附带参数 = true
                             }
                         },
-                        { "查钱", new Command_save_obj
+                        { "查钱", new CommandObj
                             {
-                                check = "查钱",
-                                command = "money %player_name%",
-                                player_use = true,
-                                player_send = false,
-                                parameter = false
+                                命令 = "money %player_name%",
+                                玩家使用 = true,
+                                玩家发送 = false,
+                                附带参数 = false
                             }
                         },
-                        { "禁言", new Command_save_obj
+                        { "禁言", new CommandObj
                             {
-                                check = "禁言",
-                                command = "mute ",
-                                player_use = false,
-                                player_send = false,
-                                parameter = true
+                                命令 = "mute ",
+                                玩家使用 = false,
+                                玩家发送 = false,
+                                附带参数 = true
                             }
                         },
-                        { "传送", new Command_save_obj
+                        { "传送", new CommandObj
                             {
-                                check = "传送",
-                                command = "tpa %player_at%",
-                                player_use = true,
-                                player_send = false,
-                                parameter = false
+                                命令 = "tpa %player_at%",
+                                玩家使用 = true,
+                                玩家发送 = false,
+                                附带参数 = false
                             }
                         },
                     }
                 };
-                File.WriteAllText(Config_file.command.FullName, JsonConvert.SerializeObject(Commandconfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(Commandconfig, Formatting.Indented));
             }
             else
-            {
-                Commandconfig = read.Read_commder();
-            }
+                Commandconfig = read.ReadCommder();
         }
         /// <summary>
         /// 插件启动
@@ -243,23 +229,19 @@ namespace Color_yr.Minecraft_QQ
         {
             reload();
 
-            socket.socket_stop();
-            socket.Start_socket();
-            is_start = true;
+            MySocketServer.ServerStop();
+            MySocketServer.StartSocket();
+            isStart = true;
 
             Send.Send_T = new Thread(Send.Send_);
             Send.Send_T.Start();
 
-            Plugin.SendGroupMessage(GroupSet_Main, "[Minecraft_QQ]已启动" + vision);
+            Plugin.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + vision);
         }
         public static void stop()
         {
-            is_start = false;
-            socket.socket_stop();
-            if (start != null && start.IsAlive)
-            {
-                start.Abort();
-            }
+            isStart = false;
+            MySocketServer.ServerStop();
         }
         /// <summary>
         /// Type=2 群消息。
@@ -272,190 +254,190 @@ namespace Color_yr.Minecraft_QQ
             long fromGroup = e.FromGroup.Id;
             long fromQQ = e.FromQQ.Id;
             string msg = e.Message.Text;
-            if (is_start == false)
+            if (isStart == false)
                 return;
-            logs.Log_write('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
-            if (Groupconfig.群列表.ContainsKey(fromGroup) == true)
+            logs.LogWrite('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
+            if (GroupConfig.群列表.ContainsKey(fromGroup) == true)
             {
-                msg = Utils.CQ_code(msg);
-                Group_save_obj list = Groupconfig.群列表[fromGroup];
+                msg = Funtion.CQ_code(msg);
+                GroupObj list = GroupConfig.群列表[fromGroup];
                 //始终发送
-                if (Mainconfig.设置.始终发送消息 == true && Mainconfig.设置.维护模式 == false && socket.ready == true && list.say == true)
+                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false && MySocketServer.ready == true && list.开启对话 == true)
                 {
-                    Player_save_obj player = Utils.Get_player(fromQQ);
-                    if (player != null && !Playerconfig.禁言列表.Contains(player.player.ToLower()) && !string.IsNullOrWhiteSpace(player.player))
+                    PlayerObj player = Funtion.Get_player(fromQQ);
+                    if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower()) && !string.IsNullOrWhiteSpace(player.名字))
                     {
-                        string send = Mainconfig.消息.发送至服务器文本;
+                        string send = MainConfig.消息.发送至服务器文本;
                         string msg_copy = msg;
-                        send = send.Replace("%player%", !Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
-                        if (Mainconfig.设置.颜色代码开关 == false)
-                            msg_copy = Utils.RemoveColorCodes(msg_copy);
+                        send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
+                        if (MainConfig.设置.颜色代码开关 == false)
+                            msg_copy = Funtion.RemoveColorCodes(msg_copy);
                         if (msg_copy.IndexOf("CQ:rich") != -1)
-                            msg_copy = Utils.Get_rich(msg_copy);
+                            msg_copy = Funtion.Get_rich(msg_copy);
                         if (msg_copy.IndexOf("CQ:sign") != -1)
-                            msg_copy = Utils.Get_sign(msg_copy, player.player);
+                            msg_copy = Funtion.Get_sign(msg_copy, player.名字);
                         else if (msg_copy.IndexOf("CQ:") != -1)
                         {
-                            msg_copy = Utils.Remove_pic(msg_copy);
-                            msg_copy = Utils.Get_from_at(msg_copy);
-                            msg_copy = Utils.CQ_code(msg_copy);
+                            msg_copy = Funtion.Remove_pic(msg_copy);
+                            msg_copy = Funtion.Get_from_at(msg_copy);
+                            msg_copy = Funtion.CQ_code(msg_copy);
                         }
                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
                         {
-                            send = send.Replace("%message%", Utils.Remove_pic(msg_copy));
-                            Message_send_obj messagelist = new Message_send_obj();
+                            send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
+                            MessageObj messagelist = new MessageObj();
                             messagelist.group = fromGroup.ToString();
                             messagelist.message = send;
                             messagelist.commder = Commder_list.SPEAK;
-                            socket.Send(messagelist);
+                            MySocketServer.Send(messagelist);
                         }
                     }
                 }
-                if (msg.IndexOf(Mainconfig.检测.检测头) == 0 && list.commder == true)
+                if (msg.IndexOf(MainConfig.检测.检测头) == 0 && list.启用命令 == true)
                 {
-                    string msg_low = Utils.ReplaceFirst(msg.ToLower(), Mainconfig.检测.检测头, "");
+                    string msg_low = Funtion.ReplaceFirst(msg.ToLower(), MainConfig.检测.检测头, "");
                     //去掉检测头
-                    msg = Utils.ReplaceFirst(msg, Mainconfig.检测.检测头, "");
-                    Player_save_obj player = Utils.Get_player(fromQQ);
+                    msg = Funtion.ReplaceFirst(msg, MainConfig.检测.检测头, "");
+                    PlayerObj player = Funtion.Get_player(fromQQ);
                     if (player != null)
                     {
-                        if (Mainconfig.设置.始终发送消息 == false && msg_low.IndexOf(Mainconfig.检测.发送消息至服务器) == 0)
+                        if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)
                         {
-                            if (list.say == false)
+                            if (list.开启对话 == false)
                             {
                                 e.FromGroup.SendGroupMessage("该群没有开启聊天功能");
                                 return;
                             }
-                            else if (Mainconfig.设置.维护模式)
+                            else if (MainConfig.设置.维护模式)
                             {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Mainconfig.消息.维护提示文本);
+                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + MainConfig.消息.维护提示文本);
                                 return;
                             }
-                            else if (socket.ready == false)
+                            else if (MySocketServer.ready == false)
                             {
                                 e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                                 return;
                             }
-                            else if (string.IsNullOrWhiteSpace(player.player))
+                            else if (string.IsNullOrWhiteSpace(player.名字))
                             {
                                 e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ)
-                                                    + "检测到你没有绑定服务器ID，发送：" + Mainconfig.检测.检测头 + Mainconfig.检测.玩家设置名字
-                                                    + "[ID]来绑定，如：" + "\n" + Mainconfig.检测.检测头 + Mainconfig.检测.玩家设置名字 + " Color_yr");
+                                                    + "检测到你没有绑定服务器ID，发送：" + MainConfig.检测.检测头 + MainConfig.检测.玩家设置名字
+                                                    + "[ID]来绑定，如：" + "\n" + MainConfig.检测.检测头 + MainConfig.检测.玩家设置名字 + " Color_yr");
                                 return;
                             }
-                            else if (Playerconfig.禁言列表.Contains(player.player.ToLower()))
+                            else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
                             {
                                 e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "你已被禁言");
                             }
                             try
                             {
-                                string send = Mainconfig.消息.发送至服务器文本;
+                                string send = MainConfig.消息.发送至服务器文本;
                                 string msg_copy = msg;
-                                send = send.Replace("%player%", !Mainconfig.设置.使用昵称发送至服务器 ? player.player : (string.IsNullOrWhiteSpace(player.nick) ? player.player : player.nick));
-                                msg_copy = msg_copy.Replace(Mainconfig.检测.发送消息至服务器, "");
-                                if (Mainconfig.设置.颜色代码开关 == false)
-                                    msg_copy = Utils.RemoveColorCodes(msg_copy);
+                                send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
+                                msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
+                                if (MainConfig.设置.颜色代码开关 == false)
+                                    msg_copy = Funtion.RemoveColorCodes(msg_copy);
                                 if (msg_copy.IndexOf("CQ:") != -1)
                                 {
-                                    msg_copy = Utils.Remove_pic(msg_copy);
-                                    msg_copy = Utils.Get_from_at(msg_copy);
-                                    msg_copy = Utils.CQ_code(msg_copy);
+                                    msg_copy = Funtion.Remove_pic(msg_copy);
+                                    msg_copy = Funtion.Get_from_at(msg_copy);
+                                    msg_copy = Funtion.CQ_code(msg_copy);
                                 }
                                 if (string.IsNullOrWhiteSpace(msg_copy) == false)
                                 {
-                                    send = send.Replace("%message%", Utils.Remove_pic(msg_copy));
-                                    Message_send_obj messagelist = new Message_send_obj();
+                                    send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
+                                    MessageObj messagelist = new MessageObj();
                                     messagelist.group = "group";
                                     messagelist.message = send;
                                     messagelist.commder = Commder_list.SPEAK;
-                                    socket.Send(messagelist);
+                                    MySocketServer.Send(messagelist);
                                 }
                                 return;
                             }
                             catch (InvalidCastException e1)
                             {
-                                logs.Log_write(e1.Message);
+                                logs.LogWrite(e1.Message);
                                 return;
                             }
                         }
-                        else if (msg_low.IndexOf(Mainconfig.管理员.禁言) == 0 && player.admin == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Mute_player(msg));
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Mute_player(msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(Mainconfig.管理员.取消禁言) == 0 && player.admin == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Unmute_player(msg));
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Unmute_player(msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(Mainconfig.管理员.查询绑定名字) == 0 && player.admin == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Get_Player_id(fromQQ, msg));
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_Player_id(fromQQ, msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(Mainconfig.管理员.重命名) == 0 && player.admin == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Rename_player(msg));
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Rename_player(msg));
                             return;
                         }
-                        else if (msg_low == Mainconfig.管理员.维护模式切换 && player.admin == true)
+                        else if (msg_low == MainConfig.管理员.维护模式切换 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Fix_mode_change());
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Fix_mode_change());
                             return;
                         }
-                        else if (msg_low == Mainconfig.管理员.获取禁言列表 && player.admin == true)
+                        else if (msg_low == MainConfig.管理员.获取禁言列表 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Get_mute_list());
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_mute_list());
                             return;
                         }
-                        else if (msg_low == Mainconfig.管理员.获取禁止绑定列表 && player.admin == true)
+                        else if (msg_low == MainConfig.管理员.获取禁止绑定列表 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Get_cant_bind());
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_cant_bind());
                             return;
                         }
-                        else if (msg_low == Mainconfig.管理员.打开菜单 && player.admin == true)
+                        else if (msg_low == MainConfig.管理员.打开菜单 && player.管理员 == true)
                         {
                             e.FromGroup.SendGroupMessage("已打开，请前往后台查看");
                             OpenSettingForm();
                             return;
                         }
-                        else if (msg_low == Mainconfig.管理员.重读配置 && player.admin == true)
+                        else if (msg_low == MainConfig.管理员.重读配置 && player.管理员 == true)
                         {
                             e.FromGroup.SendGroupMessage("开始重读配置文件");
                             reload();
                             e.FromGroup.SendGroupMessage("重读完成");
                             return;
                         }
-                        else if (msg_low.IndexOf(Mainconfig.管理员.设置昵称) == 0 && player.admin == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0 && player.管理员 == true)
                         {
-                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Set_nick(msg));
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Set_nick(msg));
                             return;
                         }
                     }
-                    if (msg_low == Mainconfig.检测.在线玩家获取)
+                    if (msg_low == MainConfig.检测.在线玩家获取)
                     {
-                        string test = Utils.Get_online_player(fromGroup);
+                        string test = Funtion.Get_online_player(fromGroup);
                         if (test != null)
                             e.FromGroup.SendGroupMessage(test);
                         return;
                     }
-                    else if (msg_low == Mainconfig.检测.服务器在线检测)
+                    else if (msg_low == MainConfig.检测.服务器在线检测)
                     {
-                        string test = Utils.Get_online_server(fromGroup);
+                        string test = Funtion.Get_online_server(fromGroup);
                         if (test != null)
                             e.FromGroup.SendGroupMessage(test);
                         return;
                     }
 
-                    else if (msg_low.IndexOf(Mainconfig.检测.玩家设置名字) == 0)
+                    else if (msg_low.IndexOf(MainConfig.检测.玩家设置名字) == 0)
                     {
-                        e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Utils.Set_player_name(fromQQ, msg));
+                        e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Set_player_name(fromQQ, msg));
                         return;
                     }
-                    else if (Utils.Send_command(fromGroup, msg, fromQQ) == true)
+                    else if (Funtion.Send_command(fromGroup, msg, fromQQ) == true)
                         return;
 
-                    else if (Mainconfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(msg_low) == true)
+                    else if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(msg_low) == true)
                     {
                         string message = Askconfig.自动应答列表[msg_low];
                         if (string.IsNullOrWhiteSpace(message) == false)
@@ -464,9 +446,9 @@ namespace Color_yr.Minecraft_QQ
                             return;
                         }
                     }
-                    else if (string.IsNullOrWhiteSpace(Mainconfig.消息.位置指令文本) == false)
+                    else if (string.IsNullOrWhiteSpace(MainConfig.消息.位置指令文本) == false)
                     {
-                        e.FromGroup.SendGroupMessage(Mainconfig.消息.位置指令文本);
+                        e.FromGroup.SendGroupMessage(MainConfig.消息.位置指令文本);
                         return;
                     }
                 }
