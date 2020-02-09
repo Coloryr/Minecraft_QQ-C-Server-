@@ -264,7 +264,7 @@ namespace Color_yr.Minecraft_QQ
                 //始终发送
                 if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false && MySocketServer.ready == true && list.开启对话 == true)
                 {
-                    PlayerObj player = Funtion.Get_player(fromQQ);
+                    PlayerObj player = Funtion.GetPlayer(fromQQ);
                     if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower()) && !string.IsNullOrWhiteSpace(player.名字))
                     {
                         string send = MainConfig.消息.发送至服务器文本;
@@ -298,7 +298,7 @@ namespace Color_yr.Minecraft_QQ
                     string msg_low = Funtion.ReplaceFirst(msg.ToLower(), MainConfig.检测.检测头, "");
                     //去掉检测头
                     msg = Funtion.ReplaceFirst(msg, MainConfig.检测.检测头, "");
-                    PlayerObj player = Funtion.Get_player(fromQQ);
+                    PlayerObj player = Funtion.GetPlayer(fromQQ);
                     if (player != null)
                     {
                         if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)

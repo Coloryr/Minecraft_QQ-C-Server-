@@ -43,7 +43,7 @@ namespace Color_yr.Minecraft_QQ.MySocket
                 {
                     if (Minecraft_QQ.MainConfig.设置.使用昵称发送至群 == true)
                     {
-                        PlayerObj player = Funtion.Get_player_from_id(message.player);
+                        PlayerObj player = Funtion.GetPlayer(message.player);
                         if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
                             message.message = message.message.Replace(message.player, player.昵称);
                     }

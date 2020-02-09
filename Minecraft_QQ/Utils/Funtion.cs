@@ -132,7 +132,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                 string msg_QQ = Get_string(msg, "[", "]");
                 string player_name;
                 long.TryParse(player_QQ, out long qq);
-                var player = Get_player(qq);
+                var player = GetPlayer(qq);
                 if (player == null)
                     player_name = player_QQ;
                 else
@@ -266,18 +266,18 @@ namespace Color_yr.Minecraft_QQ.Utils
                 return true;
             return false;
         }
-        public static PlayerObj Get_player(long player_qq)
+        public static PlayerObj GetPlayer(long qq)
         {
-            if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(player_qq) == true)
-                return Minecraft_QQ.PlayerConfig.玩家列表[player_qq];
+            if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == true)
+                return Minecraft_QQ.PlayerConfig.玩家列表[qq];
             return null;
         }
-        public static PlayerObj Get_player_from_id(string id)
+        public static PlayerObj GetPlayer(string id)
         {
             Dictionary<long, PlayerObj>.ValueCollection valueCol = Minecraft_QQ.PlayerConfig.玩家列表.Values;
             foreach (PlayerObj value in valueCol)
             {
-                if (value == null)
+                if (value == null || value.名字 == null)
                     return null;
                 if (value.名字.ToLower() == id.ToLower())
                     return value;
@@ -325,7 +325,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
             if (Minecraft_QQ.MainConfig.设置.可以绑定名字 == false)
                 return Minecraft_QQ.MainConfig.消息.不能绑定文本;
-            var player = Get_player(fromQQ);
+            var player = GetPlayer(fromQQ);
             if (player == null || string.IsNullOrWhiteSpace(player.名字) == true)
             {
                 string player_name = msg.Replace(Minecraft_QQ.MainConfig.检测.玩家设置名字, "");
@@ -337,7 +337,7 @@ namespace Color_yr.Minecraft_QQ.Utils
 
                     if (Minecraft_QQ.PlayerConfig.禁止绑定列表.Contains(player_name.ToLower()) == true)
                         return "禁止绑定ID：[" + player_name + "]";
-                    else if (Get_player_from_id(player_name) != null)
+                    else if (GetPlayer(player_name) != null)
                         return "ID：[" + player_name + "]已经被绑定过了";
                     if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(fromQQ) == true)
                     {
@@ -373,7 +373,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                var player = Get_player(qq);
+                var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.名字;
@@ -400,7 +400,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                var player = Get_player(qq);
+                var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.名字;
@@ -423,7 +423,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             if (msg.IndexOf("[CQ:at,qq=") != -1)
             {
                 long.TryParse(Get_string(msg, "=", "]"), out long qq);
-                var player = Get_player(qq);
+                var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 else
@@ -431,7 +431,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             }
             else
             {
-                var player = Get_player(fromQQ);
+                var player = GetPlayer(fromQQ);
                 if (player == null)
                     return "你没有绑定ID";
                 else
@@ -583,7 +583,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                         Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
-                    var player = Get_player(fromQQ);
+                    var player = GetPlayer(fromQQ);
                     if (player != null)
                     {
                         if (value.Value.玩家使用 == true || player.管理员 == true)
@@ -599,7 +599,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                             {
                                 string a = Get_string(msg, "=", "]");
                                 long.TryParse(a, out long qq);
-                                var player1 = Get_player(qq);
+                                var player1 = GetPlayer(qq);
                                 if (player1 == null)
                                 {
                                     Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
