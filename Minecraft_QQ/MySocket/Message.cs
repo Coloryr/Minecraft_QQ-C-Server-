@@ -62,7 +62,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     long.TryParse(message.group, out long group);
                     if (Minecraft_QQ.GroupConfig.群列表.ContainsKey(group) == true)
                     {
-                        GroupObj list = Minecraft_QQ.GroupConfig.群列表[group];
                         Send.SendList.Add(new SendObj
                         {
                             Group = group,
