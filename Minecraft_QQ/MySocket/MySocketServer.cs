@@ -142,7 +142,7 @@ namespace Color_yr.Minecraft_QQ.MySocket
         }
         private static void Close(Socket socket)
         {
-            socket.Shutdown(SocketShutdown.Both);
+            //socket.Shutdown(SocketShutdown.Both);
             socket.Close();
             clients[socket].Abort();
             clients.Remove(socket);
@@ -164,7 +164,7 @@ namespace Color_yr.Minecraft_QQ.MySocket
                             new JProperty("is_commder", info.is_commder));
                         SendData(socket, jsonData.ToString());
                     }
-                    catch (Exception e)
+                    catch
                     {
                         Close(socket);
                         GC.Collect();

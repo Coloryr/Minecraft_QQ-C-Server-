@@ -15,7 +15,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.7.0";
+        public readonly static string vision = "2.7.1";
         /// <summary>
         /// 配置文件路径
         /// </summary>
@@ -220,7 +220,7 @@ namespace Color_yr.Minecraft_QQ
                 File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(Commandconfig, Formatting.Indented));
             }
             else
-                Commandconfig = read.ReadCommder();
+                Commandconfig = read.ReadCommand();
         }
         /// <summary>
         /// 插件启动

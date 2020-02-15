@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ.Config
 {
@@ -51,6 +52,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 }
                 if (save)
                 {
+                    MessageBox.Show("Mainconfig.json配置文件读取发送错误，已经重写");
                     new ConfigWrite().Config();
                 }
                 return config;
@@ -86,6 +88,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 }
                 if (save)
                 {
+                    MessageBox.Show("Player.json配置文件读取发送错误，已经重写");
                     new ConfigWrite().Player();
                 }
                 return config;
@@ -105,6 +108,7 @@ namespace Color_yr.Minecraft_QQ.Config
                     (File.ReadAllText(ConfigFile.群设置.FullName));
                 if (config.群列表 == null)
                 {
+                    MessageBox.Show("Group.json配置文件读取发送错误，已经重写");
                     config.群列表 = new Dictionary<long, GroupObj>();
                     new ConfigWrite().Group();
                 }
@@ -142,6 +146,7 @@ namespace Color_yr.Minecraft_QQ.Config
                     + "】可以查询服务器是否在运行。\r\n【" + Minecraft_QQ.MainConfig.检测.检测头 + Minecraft_QQ.MainConfig.检测.发送消息至服务器
                     + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                     };
+                    MessageBox.Show("Ask.json配置文件读取发送错误，已经重写");
                     File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
                 return config;
@@ -152,7 +157,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 return new AskConfig();
             }
         }
-        public CommandConfig ReadCommder()
+        public CommandConfig ReadCommand()
         {
             logs.LogWrite("[INFO][Config]读取自定义指令");
             try
@@ -196,6 +201,7 @@ namespace Color_yr.Minecraft_QQ.Config
                             }
                         }
                     };
+                    MessageBox.Show("Command.json配置文件读取发送错误，已经重写");
                     File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
                 return config;
