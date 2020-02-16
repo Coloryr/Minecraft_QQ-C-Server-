@@ -532,7 +532,7 @@ namespace Color_yr.Minecraft_QQ.Utils
         {
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (MySocketServer.ready == true)
+                if (MySocketServer.isready() == true)
                 {
                     var message = new MessageObj()
                     {
@@ -554,7 +554,7 @@ namespace Color_yr.Minecraft_QQ.Utils
         {
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (MySocketServer.ready == true)
+                if (MySocketServer.isready() == true)
                 {
                     var message = new MessageObj()
                     {
@@ -578,7 +578,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             {
                 if (msg.ToLower().IndexOf(value.Key) == 0)
                 {
-                    if (MySocketServer.ready == false)
+                    if (MySocketServer.isready() == false)
                     {
                         Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;

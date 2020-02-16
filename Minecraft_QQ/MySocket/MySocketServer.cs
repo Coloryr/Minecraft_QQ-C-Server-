@@ -16,9 +16,13 @@ namespace Color_yr.Minecraft_QQ.MySocket
         private static Socket ServerSocket;
 
         public static bool start;
-        public static bool ready = false;
 
         private static Thread serverThread;
+
+        public static bool isready()
+        {
+            return clients.Count != 0;
+        }
 
         public static void StartSocket()
         {
@@ -33,7 +37,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                 serverThread = new Thread(listenClientConnect);
                 serverThread.Start();
                 start = true;
-                ready = false;
                 if (Minecraft_QQ.MainConfig.设置.发送日志到群)
                     Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + Minecraft_QQ.MainConfig.链接.地址 + ":" + Minecraft_QQ.MainConfig.链接.端口);
@@ -45,7 +48,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     "\n酷Q/Minecraft_QQ/logs.log");
                 logs.LogWrite("[ERROR][Socket]端口启动失败\n" + exception.Message);
                 start = false;
-                ready = false;
             }
         }
         private static void listenClientConnect()
@@ -65,7 +67,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     if (Minecraft_QQ.MainConfig.设置.发送日志到群)
                         Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                     logs.LogWrite("[INFO][Socket]服务器已连接");
-                    ready = true;
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
                     if (!start)
@@ -117,7 +118,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                         if (Minecraft_QQ.MainConfig.设置.发送日志到群)
                             Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开-连接丢失");
                         logs.LogWrite("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
-                        ready = false;
                         Close(socket);
                         GC.Collect();
                         return;
@@ -143,8 +143,12 @@ namespace Color_yr.Minecraft_QQ.MySocket
         private static void Close(Socket socket)
         {
             //socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
-            clients[socket].Abort();
+            if (socket != null)
+                socket.Close();
+            if (clients.ContainsKey(socket))
+            {
+                clients[socket].Abort();
+            }
             clients.Remove(socket);
         }
 
@@ -164,12 +168,11 @@ namespace Color_yr.Minecraft_QQ.MySocket
                             new JProperty("is_commder", info.is_commder));
                         SendData(socket, jsonData.ToString());
                     }
-                    catch
+                    catch(Exception e)
                     {
                         Close(socket);
                         GC.Collect();
-                        Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送");
-                        ready = false;
+                        Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送" + e.Message);
                     }
                 }
             }

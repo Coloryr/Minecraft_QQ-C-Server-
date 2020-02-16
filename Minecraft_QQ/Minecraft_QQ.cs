@@ -262,7 +262,7 @@ namespace Color_yr.Minecraft_QQ
                 msg = Funtion.CQ_code(msg);
                 GroupObj list = GroupConfig.群列表[fromGroup];
                 //始终发送
-                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false && MySocketServer.ready == true && list.开启对话 == true)
+                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false && MySocketServer.isready() == true && list.开启对话 == true)
                 {
                     PlayerObj player = Funtion.GetPlayer(fromQQ);
                     if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower()) && !string.IsNullOrWhiteSpace(player.名字))
@@ -313,7 +313,7 @@ namespace Color_yr.Minecraft_QQ
                                 e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + MainConfig.消息.维护提示文本);
                                 return;
                             }
-                            else if (MySocketServer.ready == false)
+                            else if (MySocketServer.isready() == false)
                             {
                                 e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                                 return;
