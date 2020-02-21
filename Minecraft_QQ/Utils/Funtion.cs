@@ -242,6 +242,8 @@ namespace Color_yr.Minecraft_QQ.Utils
                 a = a.Replace("&#93;", "]");
             while (a.IndexOf("&#44;") != -1)
                 a = a.Replace("&#44;", ",");
+            while (a.IndexOf("&amp;") != -1)
+                a = a.Replace("&amp;", "&");
             return a;
         }
         public static string Code_CQ(string a)
