@@ -132,9 +132,9 @@ namespace Color_yr.Minecraft_QQ
                 return;
             }
             long.TryParse(textBox6.Text, out long qq);
-            if (Minecraft_QQ.PlayerConfig.玩家列表 == null)
-                Minecraft_QQ.PlayerConfig.玩家列表 = new System.Collections.Generic.Dictionary<long, PlayerObj>();
-            if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == false)
+            if (Minecraft_QQ.PlayerConfig == null)
+                Minecraft_QQ.PlayerConfig = new PlayerConfig();
+            if (!Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq))
             {
                 PlayerObj player = new PlayerObj();
                 player.QQ号 = qq;

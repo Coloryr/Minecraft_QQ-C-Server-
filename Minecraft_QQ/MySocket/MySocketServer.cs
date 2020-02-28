@@ -132,17 +132,10 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     Thread.Sleep(10);      // 延时0.01秒后再接收客户端发送的消息
                 }
             }
-            catch (ThreadAbortException e)
-            {
-                if (Minecraft_QQ.MainConfig.设置.发送日志到群)
-                    Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开-主动断开");
-                logs.LogWrite("[INFO][Socket]连接已断开-主动断开:" + e.ToString());
-                return;
-            }
+            catch { }
         }
         private static void Close(Socket socket)
         {
-            //socket.Shutdown(SocketShutdown.Both);
             if (socket != null)
                 socket.Close();
             if (clients.ContainsKey(socket))
@@ -156,7 +149,8 @@ namespace Color_yr.Minecraft_QQ.MySocket
         {
             if (clients.Count != 0)
             {
-                foreach (Socket socket in clients.Keys)
+                var temp = new List<Socket>(clients.Keys);
+                foreach (Socket socket in temp)
                 {
                     try
                     {
@@ -168,11 +162,12 @@ namespace Color_yr.Minecraft_QQ.MySocket
                             new JProperty("is_commder", info.is_commder));
                         SendData(socket, jsonData.ToString());
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Close(socket);
                         GC.Collect();
-                        Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送" + e.Message);
+                        if (clients.Count == 0)
+                            Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
                     }
                 }
             }
