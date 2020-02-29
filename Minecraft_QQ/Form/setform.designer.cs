@@ -293,7 +293,7 @@
             this.radioButton1.Size = new System.Drawing.Size(53, 16);
             this.radioButton1.TabIndex = 70;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "UTF-8";
+            this.radioButton1.Text = "Linux";
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
@@ -302,10 +302,10 @@
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(69, 85);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 16);
+            this.radioButton2.Size = new System.Drawing.Size(65, 16);
             this.radioButton2.TabIndex = 71;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "ANSI";
+            this.radioButton2.Text = "Windows";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
@@ -314,9 +314,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(7, 70);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(113, 12);
+            this.label5.Size = new System.Drawing.Size(101, 12);
             this.label5.TabIndex = 72;
-            this.label5.Text = "设置服务器编码格式";
+            this.label5.Text = "服务器运行的系统";
             // 
             // textBox4
             // 
