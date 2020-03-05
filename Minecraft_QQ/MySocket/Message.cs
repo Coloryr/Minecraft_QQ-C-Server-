@@ -18,6 +18,12 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     temp.player = jsonData["player"].ToString();
                     temp.is_commder = false;
                 }
+                else if (jsonData["data"].ToString() == "start")
+                {
+                    temp.group = "start";
+                    temp.message = jsonData["message"].ToString();
+                    temp.is_commder = false;
+                }
             }
             catch
             {
@@ -78,7 +84,7 @@ namespace Color_yr.Minecraft_QQ.MySocket
             string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
             buff = Funtion.RemoveColorCodes(buff);
             MessageObj message = MessagetoObj(buff);
-            if (message.data == "start")
+            if (message.group == "start")
                 return message.message;
             return null;
         }

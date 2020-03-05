@@ -117,11 +117,16 @@ namespace Color_yr.Minecraft_QQ.MySocket
                         {
                             Task.Factory.StartNew(() =>
                             {
-                                if (!isCheck && MCServers.ContainsValue(socket))
+                                if (!isCheck)
                                 {
                                     var temp = Message.MessageCheck(str);
                                     if (temp != null)
+                                    {
+                                        if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                                            Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + temp + "已连接");
+                                        logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
                                         MCServers.Add(temp, socket);
+                                    }
                                     isCheck = true;
                                 }
                                 else

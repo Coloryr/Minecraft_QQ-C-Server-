@@ -34,7 +34,6 @@ namespace Color_yr.Minecraft_QQ.Utils
     /// </summary>
     public class MessageObj
     {
-        public string data;
         public string group;
         public string player;
         public string message;
