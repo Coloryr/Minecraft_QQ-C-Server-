@@ -173,7 +173,8 @@ namespace Color_yr.Minecraft_QQ.Config
                                 命令 = "qq help",
                                 玩家使用 = false,
                                 玩家发送 = false,
-                                附带参数 = true
+                                附带参数 = true,
+                                服务器使用 = null
                             }
                         },
                         { "查钱", new CommandObj
@@ -181,7 +182,8 @@ namespace Color_yr.Minecraft_QQ.Config
                                 命令 = "money %player_name%",
                                 玩家使用 = true,
                                 玩家发送 = false,
-                                附带参数 = false
+                                附带参数 = false,
+                                服务器使用 = null
                             }
                         },
                         { "禁言", new CommandObj
@@ -189,7 +191,8 @@ namespace Color_yr.Minecraft_QQ.Config
                                 命令 = "mute ",
                                 玩家使用 = false,
                                 玩家发送 = false,
-                                附带参数 = true
+                                附带参数 = true,
+                                服务器使用 = new List<string>{ "lobby" }
                             }
                         },
                         { "传送", new CommandObj
@@ -197,7 +200,8 @@ namespace Color_yr.Minecraft_QQ.Config
                                 命令 = "tpa %player_at%",
                                 玩家使用 = true,
                                 玩家发送 = false,
-                                附带参数 = false
+                                附带参数 = false,
+                                服务器使用 = new List<string>{ "sc" }
                             }
                         }
                     };

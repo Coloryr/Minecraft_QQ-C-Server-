@@ -6,12 +6,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MySocket
 {
     public class MySocketServer
     {
         public static Dictionary<Socket, Thread> clients = new Dictionary<Socket, Thread>();
+        public static Dictionary<string, Socket> MCServers = new Dictionary<string, Socket>();
 
         private static Socket ServerSocket;
 
@@ -105,13 +107,27 @@ namespace Color_yr.Minecraft_QQ.MySocket
         {
             try
             {
+                bool isCheck = false;
                 while (true)
                 {
                     try
                     {
                         string str = Receive(socket);
                         if (!str.Equals(""))
-                            Message.MessageDo(str);
+                        {
+                            Task.Factory.StartNew(() =>
+                            {
+                                if (!isCheck && MCServers.ContainsValue(socket))
+                                {
+                                    var temp = Message.MessageCheck(str);
+                                    if (temp != null)
+                                        MCServers.Add(temp, socket);
+                                    isCheck = true;
+                                }
+                                else
+                                    Message.MessageDo(str);
+                            });
+                        }
                     }
                     catch (Exception e)
                     {
@@ -145,29 +161,29 @@ namespace Color_yr.Minecraft_QQ.MySocket
             clients.Remove(socket);
         }
 
-        public static void Send(MessageObj info)
+        public static void Send(MessageObj info, List<string> servers = null)
         {
             if (clients.Count != 0)
             {
-                var temp = new List<Socket>(clients.Keys);
-                foreach (Socket socket in temp)
+
+                JObject jsonData = new JObject(
+                                new JProperty("group", info.group),
+                                new JProperty("message", info.message),
+                                new JProperty("player", info.player),
+                                new JProperty("commder", info.commder),
+                                new JProperty("is_commder", info.is_commder));
+                if (servers != null)
                 {
-                    try
+                    foreach (var temp in servers)
                     {
-                        JObject jsonData = new JObject(
-                            new JProperty("group", info.group),
-                            new JProperty("message", info.message),
-                            new JProperty("player", info.player),
-                            new JProperty("commder", info.commder),
-                            new JProperty("is_commder", info.is_commder));
-                        SendData(socket, jsonData.ToString());
+                        SendData(MCServers[temp], jsonData.ToString());
                     }
-                    catch (Exception e)
+                }
+                else
+                {
+                    foreach (Socket socket in new List<Socket>(clients.Keys))
                     {
-                        Close(socket);
-                        GC.Collect();
-                        if (clients.Count == 0)
-                            Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
+                        SendData(socket, jsonData.ToString());
                     }
                 }
             }
@@ -176,15 +192,25 @@ namespace Color_yr.Minecraft_QQ.MySocket
         }
         private static void SendData(Socket socket, string data)
         {
-            if (socket != null && data != null && !data.Equals(""))
+            try
             {
-                data = Minecraft_QQ.MainConfig.链接.数据头 + data + Minecraft_QQ.MainConfig.链接.数据尾;
-                byte[] bytes = null;
-                if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")
-                    bytes = Encoding.UTF8.GetBytes(data);
-                if (Minecraft_QQ.MainConfig.链接.编码 == "ANSI")
-                    bytes = Encoding.Default.GetBytes(data);
-                socket.Send(bytes);
+                if (socket != null && data != null && !data.Equals(""))
+                {
+                    data = Minecraft_QQ.MainConfig.链接.数据头 + data + Minecraft_QQ.MainConfig.链接.数据尾;
+                    byte[] bytes = null;
+                    if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")
+                        bytes = Encoding.UTF8.GetBytes(data);
+                    if (Minecraft_QQ.MainConfig.链接.编码 == "ANSI")
+                        bytes = Encoding.Default.GetBytes(data);
+                    socket.Send(bytes);
+                }
+            }
+            catch (Exception e)
+            {
+                Close(socket);
+                GC.Collect();
+                if (clients.Count == 0)
+                    Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
             }
         }
         public static void ServerStop()

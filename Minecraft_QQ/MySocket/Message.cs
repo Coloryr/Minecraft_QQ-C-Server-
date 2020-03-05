@@ -31,7 +31,7 @@ namespace Color_yr.Minecraft_QQ.MySocket
             int local;
             while (read.IndexOf(Minecraft_QQ.MainConfig.链接.数据头) == 0 && read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾) != -1)
             {
-                string buff = Funtion.Get_string(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
+                string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
                 buff = Funtion.RemoveColorCodes(buff);
                 MessageObj message = MessagetoObj(buff);
                 if (string.IsNullOrWhiteSpace(message.message) == true ||
@@ -72,6 +72,15 @@ namespace Color_yr.Minecraft_QQ.MySocket
                 local = read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾);
                 read = read.Substring(local + Minecraft_QQ.MainConfig.链接.数据尾.Length);
             }
+        }
+        public static string MessageCheck(string read)
+        {
+            string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
+            buff = Funtion.RemoveColorCodes(buff);
+            MessageObj message = MessagetoObj(buff);
+            if (message.data == "start")
+                return message.message;
+            return null;
         }
     }
 }

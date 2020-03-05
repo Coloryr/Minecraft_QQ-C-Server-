@@ -1,4 +1,6 @@
-﻿namespace Color_yr.Minecraft_QQ.Utils
+﻿using System.Collections.Generic;
+
+namespace Color_yr.Minecraft_QQ.Utils
 {
     class Commder_list
     {
@@ -25,12 +27,14 @@
         public bool 玩家使用 = false;
         public bool 玩家发送 = false;
         public bool 附带参数 = false;
+        public List<string> 服务器使用 = new List<string>();
     }
     /// <summary>
     /// 发送/接受数据格式
     /// </summary>
     public class MessageObj
     {
+        public string data;
         public string group;
         public string player;
         public string message;
