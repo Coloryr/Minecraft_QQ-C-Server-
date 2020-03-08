@@ -446,9 +446,9 @@ namespace Color_yr.Minecraft_QQ
                             return;
                         }
                     }
-                    else if (string.IsNullOrWhiteSpace(MainConfig.消息.位置指令文本) == false)
+                    else if (string.IsNullOrWhiteSpace(MainConfig.消息.未知指令文本) == false)
                     {
-                        e.FromGroup.SendGroupMessage(MainConfig.消息.位置指令文本);
+                        e.FromGroup.SendGroupMessage(MainConfig.消息.未知指令文本);
                         return;
                     }
                 }

@@ -142,7 +142,7 @@ namespace Color_yr.Minecraft_QQ.Config
         /// <summary>
         /// 未知的指令
         /// </summary>
-        public string 位置指令文本 { get; set; } = "未知指令";
+        public string 未知指令文本 { get; set; } = "未知指令";
         /// <summary>
         /// 禁止绑定ID
         /// </summary>
