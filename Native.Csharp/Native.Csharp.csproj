@@ -129,6 +129,7 @@
     <Compile Include="Event\Event_AppDisable.cs" />
     <Compile Include="Event\Event_AppEnable.cs" />
     <Compile Include="Event\Event_GroupMessage.cs" />
+    <Compile Include="Event\Event_MenuCall.cs" />
     <Compile Include="Event\Event_PrivateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
@@ -148,10 +149,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Minecraft_QQ.UI\Minecraft_QQ.UI.csproj">
-      <Project>{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}</Project>
-      <Name>Minecraft_QQ.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Minecraft_QQ\Minecraft_QQ.Code.csproj">
       <Project>{58af8b85-e0df-46bc-a932-81dd14c71165}</Project>
       <Name>Minecraft_QQ.Code</Name>

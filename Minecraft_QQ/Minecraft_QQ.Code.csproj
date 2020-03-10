@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Config\ConfigObj.cs" />
     <Compile Include="Config\ConfigRead.cs" />
+    <Compile Include="Config\ConfigShow.cs" />
     <Compile Include="Config\ConfigWrite.cs" />
     <Compile Include="Utils\Obj.cs" />
     <Compile Include="Utils\logs.cs" />

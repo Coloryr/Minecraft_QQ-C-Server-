@@ -2,7 +2,7 @@
 using Native.Csharp.Sdk.Cqp.Interface;
 using System.Threading.Tasks;
 
-namespace Color_yr.Minecraft_QQ.UI
+namespace Color_yr.Minecraft_QQ.Event
 {
     public class Event_MenuCall : IMenuCall
     {

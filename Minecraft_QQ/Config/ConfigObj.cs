@@ -1,6 +1,7 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Color_yr.Minecraft_QQ.Config
 {
@@ -89,6 +90,16 @@ namespace Color_yr.Minecraft_QQ.Config
         /// Mysql配置文件
         /// </summary>
         public MysqlConfig 数据库 { get; set; } = new MysqlConfig();
+
+        public override string ToString()
+        {
+            return "设置:" + 设置.ToString() + "\n"
+                + "消息:" + 消息.ToString() + "\n"
+                + "检测:" + 检测.ToString() + "\n"
+                + "管理员:" + 管理员.ToString() + "\n"
+                + "链接:" + 链接.ToString() + "\n"
+                + "数据库:" + 数据库.ToString();
+        }
     }
     public class SettingConfig
     {
@@ -128,6 +139,19 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 发送群消息间隔
         /// </summary>
         public int 发送群消息间隔 { get; set; } = 100;
+
+        public override string ToString()
+        {
+            return "自动应答开关:" + 自动应答开关 + "\n"
+                + "颜色代码开关:" + 颜色代码开关 + "\n"
+                + "维护模式:" + 维护模式 + "\n"
+                + "始终发送消息:" + 始终发送消息 + "\n"
+                + "使用昵称发送至服务器:" + 使用昵称发送至服务器 + "\n"
+                + "使用昵称发送至群:" + 使用昵称发送至群 + "\n"
+                + "可以绑定名字:" + 可以绑定名字 + "\n"
+                + "发送日志到群:" + 发送日志到群 + "\n"
+                + "发送群消息间隔:" + 发送群消息间隔;
+        }
     }
     public class MessageConfig
     {
@@ -147,6 +171,14 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 禁止绑定ID
         /// </summary>
         public string 不能绑定文本 { get; set; } = "绑定ID已关闭";
+
+        public override string ToString()
+        {
+            return "发送至服务器文本:" + 发送至服务器文本 + "\n"
+                + "维护提示文本:" + 维护提示文本 + "\n"
+                + "未知指令文本:" + 未知指令文本 + "\n"
+                + "不能绑定文本:" + 不能绑定文本;
+        }
     }
     public class CheckConfig
     {
@@ -170,6 +202,15 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 玩家发送消息
         /// </summary>
         public string 发送消息至服务器 { get; set; } = "服务器：";
+
+        public override string ToString()
+        {
+            return "检测头:" + 检测头 + "\n"
+               + "在线玩家获取:" + 在线玩家获取 + "\n"
+               + "服务器在线检测:" + 服务器在线检测 + "\n"
+               + "玩家设置名字:" + 玩家设置名字 + "\n"
+               + "发送消息至服务器:" + 发送消息至服务器;
+        }
     }
     public class AdminConfig
     {
@@ -217,6 +258,21 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 发送绑定信息QQ号
         /// </summary>
         public long 发送绑定信息QQ号 { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return "禁言:" + 禁言 + "\n"
+                + "取消禁言:" + 取消禁言 + "\n"
+                + "查询绑定名字:" + 查询绑定名字 + "\n"
+                + "重命名:" + 重命名 + "\n"
+                + "维护模式切换:" + 维护模式切换 + "\n"
+                + "重读配置:" + 重读配置 + "\n"
+                + "打开菜单:" + 打开菜单 + "\n"
+                + "设置昵称:" + 设置昵称 + "\n"
+                + "获取禁止绑定列表:" + 获取禁止绑定列表 + "\n"
+                + "获取禁言列表:" + 获取禁言列表 + "\n"
+                + "发送绑定信息QQ号:" + 发送绑定信息QQ号;
+        }
     }
     public class SocketConfig
     {
@@ -240,6 +296,15 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 数据包尾
         /// </summary>
         public string 数据尾 { get; set; } = "[End]";
+
+        public override string ToString()
+        {
+            return "地址:" + 地址 + "\n"
+                + "端口:" + 端口 + "\n"
+                + "编码:" + 编码 + "\n"
+                + "数据头:" + 数据头 + "\n"
+                + "数据尾:" + 数据尾;
+        }
     }
 
     public class MysqlConfig
@@ -268,5 +333,15 @@ namespace Color_yr.Minecraft_QQ.Config
         /// 数据库名
         /// </summary>
         public string 数据库 { get; set; } = "minecraft_qq";
+
+        public override string ToString()
+        {
+            return "地址:" + 地址 + "\n"
+                + "端口:" + 端口 + "\n"
+                + "用户名:" + 用户名 + "\n"
+                + "密码:" + 密码 + "\n"
+                + "是否启用:" + 是否启用 + "\n"
+                + "数据库:" + 数据库;
+        }
     }
 }

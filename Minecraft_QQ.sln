@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Native.Csharp.Tool", "Nativ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ.Code", "Minecraft_QQ\Minecraft_QQ.Code.csproj", "{58AF8B85-E0DF-46BC-A932-81DD14C71165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ.UI", "Minecraft_QQ.UI\Minecraft_QQ.UI.csproj", "{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,26 +84,6 @@ Global
 		{58AF8B85-E0DF-46BC-A932-81DD14C71165}.Release|x64.Build.0 = Release|Any CPU
 		{58AF8B85-E0DF-46BC-A932-81DD14C71165}.Release|x86.ActiveCfg = Release|Any CPU
 		{58AF8B85-E0DF-46BC-A932-81DD14C71165}.Release|x86.Build.0 = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|ARM.Build.0 = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|x64.Build.0 = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Debug|x86.Build.0 = Debug|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|ARM.ActiveCfg = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|ARM.Build.0 = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|ARM64.Build.0 = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|x64.ActiveCfg = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|x64.Build.0 = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|x86.ActiveCfg = Release|Any CPU
-		{4F9A6C2F-0CF4-48FF-B33F-2DCF71F0B7EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 using Color_yr.Minecraft_QQ.MyMysql;
 using Color_yr.Minecraft_QQ.MySocket;
 using Color_yr.Minecraft_QQ.Utils;
+using Minecraft_QQ.Config;
 using Native.Csharp.Sdk.Cqp;
 using Native.Csharp.Sdk.Cqp.EventArgs;
 using Newtonsoft.Json;
@@ -111,6 +112,8 @@ namespace Color_yr.Minecraft_QQ
             else
                 MainConfig = read.ReadConfig();
 
+            ConfigShow.Show(MainConfig);
+
             //读取群设置
             if (ConfigFile.群设置.Exists == false)
             {
@@ -174,7 +177,7 @@ namespace Color_yr.Minecraft_QQ
                 }
                 else
                     PlayerConfig = read.ReadPlayer();
-            }
+            };
 
             //读取自定义指令
             if (ConfigFile.自定义指令.Exists == false)
