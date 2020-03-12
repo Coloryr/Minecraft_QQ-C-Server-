@@ -66,8 +66,6 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     clients.Add(clientScoket, readThread);
 
                     GC.Collect();
-                    if (Minecraft_QQ.MainConfig.设置.发送日志到群)
-                        Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                     logs.LogWrite("[INFO][Socket]服务器已连接");
 
                     Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
@@ -123,11 +121,20 @@ namespace Color_yr.Minecraft_QQ.MySocket
                                     if (temp != null)
                                     {
                                         if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                                        {
                                             Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + temp + "已连接");
+                                        }
                                         logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
                                         if (MCServers.ContainsKey(temp))
+                                        {
                                             Close(MCServers[temp]);
+                                            MCServers.Remove(temp);
+                                        }
                                         MCServers.Add(temp, socket);
+                                    }
+                                    else if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                                    {
+                                        Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                                     }
                                     isCheck = true;
                                 }

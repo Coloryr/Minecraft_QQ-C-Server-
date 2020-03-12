@@ -318,7 +318,7 @@ namespace Color_yr.Minecraft_QQ
                             }
                             else if (MySocketServer.isready() == false)
                             {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
+                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，没有服务器链接");
                                 return;
                             }
                             else if (string.IsNullOrWhiteSpace(player.名字))
