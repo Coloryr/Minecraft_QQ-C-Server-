@@ -184,23 +184,8 @@ namespace Color_yr.Minecraft_QQ
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (textBox8.Text != null)
-            {
-                if (!Minecraft_QQ.PlayerConfig.禁止绑定列表.Contains(textBox8.Text))
-                    Minecraft_QQ.PlayerConfig.禁止绑定列表.Add(textBox8.Text.ToLower());
-                if (Minecraft_QQ.MysqlOK == true)
-                {
-                    Task.Factory.StartNew(async () =>
-                    {
-                        await new MysqlAddData().NotIDAsync(textBox8.Text.ToLower());
-                    });
-                }
-                else
-                {
-                    new ConfigWrite().Player();
-                }
-                button7.Text = "已添加";
-            }
+            Minecraft_QQ.reload();
+            button7.Text = "已重载";
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {

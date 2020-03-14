@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -145,9 +146,10 @@ namespace Color_yr.Minecraft_QQ.MySocket
                     }
                     catch (Exception e)
                     {
+                        string keys = MCServers.Where(q => q.Value == socket).Select(q => q.Key).FirstOrDefault();
                         if (Minecraft_QQ.MainConfig.设置.发送日志到群)
-                            Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开-连接丢失");
-                        logs.LogWrite("[INFO][Socket]连接已断开-连接丢失:" + e.ToString());
+                            Minecraft_QQ.Plugin.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + keys + "连接已断开");
+                        logs.LogWrite("[INFO][Socket]服务器" + keys + "连接已断开");
                         Close(socket);
                         GC.Collect();
                         return;
