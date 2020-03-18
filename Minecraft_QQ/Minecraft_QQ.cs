@@ -434,10 +434,10 @@ namespace Color_yr.Minecraft_QQ
 
                     else if (msg_low.IndexOf(MainConfig.检测.玩家设置名字) == 0)
                     {
-                        e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Set_player_name(fromQQ, msg));
+                        e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.SetPlayerName(fromQQ, msg));
                         return;
                     }
-                    else if (Funtion.Send_command(fromGroup, msg, fromQQ) == true)
+                    else if (Funtion.SendCommand(fromGroup, msg, fromQQ) == true)
                         return;
 
                     else if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(msg_low) == true)

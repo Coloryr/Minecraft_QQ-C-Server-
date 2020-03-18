@@ -321,7 +321,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             }
             return "找不到玩家";
         }
-        public static string Set_player_name(long fromQQ, string msg)
+        public static string SetPlayerName(long fromQQ, string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -574,7 +574,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             else
                 return Minecraft_QQ.MainConfig.消息.维护提示文本;
         }
-        public static bool Send_command(long fromGroup, string msg, long fromQQ)
+        public static bool SendCommand(long fromGroup, string msg, long fromQQ)
         {
             foreach (var value in Minecraft_QQ.Commandconfig.命令列表)
             {
