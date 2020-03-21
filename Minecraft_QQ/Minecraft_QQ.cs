@@ -265,14 +265,17 @@ namespace Color_yr.Minecraft_QQ
                 msg = Funtion.CQ_code(msg);
                 GroupObj list = GroupConfig.群列表[fromGroup];
                 //始终发送
-                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false && MySocketServer.isready() == true && list.开启对话 == true)
+                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false
+                    && MySocketServer.isready() == true && list.开启对话 == true)
                 {
                     PlayerObj player = Funtion.GetPlayer(fromQQ);
-                    if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower()) && !string.IsNullOrWhiteSpace(player.名字))
+                    if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower()) 
+                        && !string.IsNullOrWhiteSpace(player.名字))
                     {
                         string send = MainConfig.消息.发送至服务器文本;
                         string msg_copy = msg;
-                        send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
+                        send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ?
+                            player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
                         if (MainConfig.设置.颜色代码开关 == false)
                             msg_copy = Funtion.RemoveColorCodes(msg_copy);
                         if (msg_copy.IndexOf("CQ:rich") != -1)
@@ -302,116 +305,120 @@ namespace Color_yr.Minecraft_QQ
                     //去掉检测头
                     msg = Funtion.ReplaceFirst(msg, MainConfig.检测.检测头, "");
                     PlayerObj player = Funtion.GetPlayer(fromQQ);
-                    if (player != null)
+                    if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)
                     {
-                        if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)
+                        if (list.开启对话 == false)
                         {
-                            if (list.开启对话 == false)
-                            {
-                                e.FromGroup.SendGroupMessage("该群没有开启聊天功能");
-                                return;
-                            }
-                            else if (MainConfig.设置.维护模式)
-                            {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + MainConfig.消息.维护提示文本);
-                                return;
-                            }
-                            else if (MySocketServer.isready() == false)
-                            {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，没有服务器链接");
-                                return;
-                            }
-                            else if (string.IsNullOrWhiteSpace(player.名字))
-                            {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ)
-                                                    + "检测到你没有绑定服务器ID，发送：" + MainConfig.检测.检测头 + MainConfig.检测.玩家设置名字
-                                                    + "[ID]来绑定，如：" + "\n" + MainConfig.检测.检测头 + MainConfig.检测.玩家设置名字 + " Color_yr");
-                                return;
-                            }
-                            else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
-                            {
-                                e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "你已被禁言");
-                            }
-                            try
-                            {
-                                string send = MainConfig.消息.发送至服务器文本;
-                                string msg_copy = msg;
-                                send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
-                                msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
-                                if (MainConfig.设置.颜色代码开关 == false)
-                                    msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                                if (msg_copy.IndexOf("CQ:") != -1)
-                                {
-                                    msg_copy = Funtion.Remove_pic(msg_copy);
-                                    msg_copy = Funtion.Get_from_at(msg_copy);
-                                    msg_copy = Funtion.CQ_code(msg_copy);
-                                }
-                                if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                                {
-                                    send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
-                                    MessageObj messagelist = new MessageObj();
-                                    messagelist.group = "group";
-                                    messagelist.message = send;
-                                    messagelist.commder = Commder_list.SPEAK;
-                                    MySocketServer.Send(messagelist);
-                                }
-                                return;
-                            }
-                            catch (InvalidCastException e1)
-                            {
-                                logs.LogWrite(e1.Message);
-                                return;
-                            }
+                            e.FromGroup.SendGroupMessage("该群没有开启聊天功能");
+                            return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0 && player.管理员 == true)
+                        else if (MainConfig.设置.维护模式)
+                        {
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + MainConfig.消息.维护提示文本);
+                            return;
+                        }
+                        else if (MySocketServer.isready() == false)
+                        {
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "发送失败，没有服务器链接");
+                            return;
+                        }
+                        else if (player == null || string.IsNullOrWhiteSpace(player.名字))
+                        {
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ)
+                                                + "检测到你没有绑定服务器ID，发送：" + MainConfig.检测.检测头
+                                                + MainConfig.检测.玩家设置名字
+                                                + "[ID]来绑定，如：" + "\n" + MainConfig.检测.检测头
+                                                + MainConfig.检测.玩家设置名字 + " Color_yr");
+                            return;
+                        }
+                        else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
+                        {
+                            e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + "你已被禁言");
+                            return;
+                        }
+                        try
+                        {
+                            string send = MainConfig.消息.发送至服务器文本;
+                            string msg_copy = msg;
+                            send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字
+                                : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
+                            msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
+                            if (MainConfig.设置.颜色代码开关 == false)
+                                msg_copy = Funtion.RemoveColorCodes(msg_copy);
+                            if (msg_copy.IndexOf("CQ:") != -1)
+                            {
+                                msg_copy = Funtion.Remove_pic(msg_copy);
+                                msg_copy = Funtion.Get_from_at(msg_copy);
+                                msg_copy = Funtion.CQ_code(msg_copy);
+                            }
+                            if (string.IsNullOrWhiteSpace(msg_copy) == false)
+                            {
+                                send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
+                                MessageObj messagelist = new MessageObj();
+                                messagelist.group = "group";
+                                messagelist.message = send;
+                                messagelist.commder = Commder_list.SPEAK;
+                                MySocketServer.Send(messagelist);
+                            }
+                            return;
+                        }
+                        catch (InvalidCastException e1)
+                        {
+                            logs.LogWrite(e1.Message);
+                            return;
+                        }
+                    }
+                    else if (player != null && player.管理员 == true)
+                    {
+                        if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Mute_player(msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0 && player.管理员 == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Unmute_player(msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0 && player.管理员 == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_Player_id(fromQQ, msg));
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0 && player.管理员 == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Rename_player(msg));
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.维护模式切换 && player.管理员 == true)
+                        else if (msg_low == MainConfig.管理员.维护模式切换)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Fix_mode_change());
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.获取禁言列表 && player.管理员 == true)
+                        else if (msg_low == MainConfig.管理员.获取禁言列表)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_mute_list());
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.获取禁止绑定列表 && player.管理员 == true)
+                        else if (msg_low == MainConfig.管理员.获取禁止绑定列表)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Get_cant_bind());
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.打开菜单 && player.管理员 == true)
+                        else if (msg_low == MainConfig.管理员.打开菜单)
                         {
                             e.FromGroup.SendGroupMessage("已打开，请前往后台查看");
                             OpenSettingForm();
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.重读配置 && player.管理员 == true)
+                        else if (msg_low == MainConfig.管理员.重读配置)
                         {
                             e.FromGroup.SendGroupMessage("开始重读配置文件");
                             reload();
                             e.FromGroup.SendGroupMessage("重读完成");
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0 && player.管理员 == true)
+                        else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0)
                         {
                             e.FromGroup.SendGroupMessage(CQApi.CQCode_At(fromQQ) + Funtion.Set_nick(msg));
                             return;
