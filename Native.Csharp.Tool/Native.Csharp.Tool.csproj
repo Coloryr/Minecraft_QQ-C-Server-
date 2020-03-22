@@ -19,7 +19,6 @@
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET_45;SQLITE_STANDARD;INTEROP_VIRTUAL_TABLE;INTEROP_SESSION_EXTENSION;TRACE_SHARED;THROW_ON_DISPOSED</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>618,1591;3001;CA2213;CA2210;CA2100;IDE1006;CA1063</NoWarn>
