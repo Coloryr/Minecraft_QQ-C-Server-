@@ -450,11 +450,12 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(306, 367);
+            this.label2.Location = new System.Drawing.Point(205, 367);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 12);
             this.label2.TabIndex = 73;
             this.label2.Text = "插件版本：x.x.x";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupBox5
             // 

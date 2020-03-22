@@ -1,7 +1,6 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Color_yr.Minecraft_QQ.Config
 {

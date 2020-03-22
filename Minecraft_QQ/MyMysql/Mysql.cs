@@ -1,5 +1,6 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
+using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,7 +46,8 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         private async Task LoadPlayerAsync()
         {
             Minecraft_QQ.PlayerConfig.玩家列表.Clear();
-            DbDataReader reader = await MysqlSql("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
+            MySqlCommand cmd = new MySqlCommand("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
+            DbDataReader reader = await MysqlSql(cmd);
             while (await reader.ReadAsync())
             {
                 PlayerObj player = new PlayerObj
@@ -62,7 +64,8 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         private async Task LoadNotIDAsync()
         {
             Minecraft_QQ.PlayerConfig.禁止绑定列表.Clear();
-            DbDataReader reader = await MysqlSql("SELECT `Name` FROM " + MysqlNotIDTable);
+            MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
+            DbDataReader reader = await MysqlSql(cmd);
             if (reader != null)
                 while (await reader.ReadAsync())
                 {
@@ -75,7 +78,8 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         private async Task LoadMuteAsync()
         {
             Minecraft_QQ.PlayerConfig.禁言列表.Clear();
-            DbDataReader reader = await MysqlSql("SELECT `Name` FROM " + MysqlNotIDTable);
+            MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
+            DbDataReader reader = await MysqlSql(cmd);
             if (reader != null)
                 while (await reader.ReadAsync())
                 {
@@ -85,16 +89,15 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                 }
         }
 
-        public static async Task<DbDataReader> MysqlSql(string SQL)
+        public static async Task<DbDataReader> MysqlSql(MySqlCommand SQL)
         {
             DbDataReader temp = null;
             try
             {
                 await conn.OpenAsync();
-                MySqlCommand command = conn.CreateCommand();
-                command.CommandText = SQL;
-                await command.ExecuteNonQueryAsync();
-                temp = await command.ExecuteReaderAsync();
+                SQL.Connection = conn;
+                await SQL.ExecuteNonQueryAsync();
+                temp = await SQL.ExecuteReaderAsync();
             }
             catch (MySqlException ex)
             {

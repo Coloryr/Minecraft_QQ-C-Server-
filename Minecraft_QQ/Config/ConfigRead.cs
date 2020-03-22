@@ -59,6 +59,7 @@ namespace Color_yr.Minecraft_QQ.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
                 logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
                 return new MainConfig();
             }
@@ -95,6 +96,7 @@ namespace Color_yr.Minecraft_QQ.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
                 logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
                 return new PlayerConfig();
             }
@@ -124,6 +126,7 @@ namespace Color_yr.Minecraft_QQ.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
                 logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
                 return new GroupConfig();
             }
@@ -153,6 +156,7 @@ namespace Color_yr.Minecraft_QQ.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
                 logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
                 return new AskConfig();
             }
@@ -212,6 +216,7 @@ namespace Color_yr.Minecraft_QQ.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
                 logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
                 return new CommandConfig();
             }

@@ -412,7 +412,7 @@ namespace Color_yr.Minecraft_QQ.Utils
             if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == true)
                 Minecraft_QQ.PlayerConfig.禁言列表.Remove(name.ToLower());
             if (Minecraft_QQ.MysqlOK == true)
-                new MysqlRemoveData().Mute(name);
+                Task.Factory.StartNew(() => new MysqlRemoveData().MuteAsync(name));
             else
                 new ConfigWrite().Player();
             return "已解禁：[" + name + "]";

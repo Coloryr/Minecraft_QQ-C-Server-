@@ -1,4 +1,5 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
+using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
@@ -13,11 +14,32 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         {
             MysqlSearchData search = new MysqlSearchData();
             if (await search.PlayerAsync(player.QQ号) != null)
-                new MysqlReplaceData().player(player);
+                await new MysqlReplaceData().playerAsync(player);
             else
             {
-                string str = "INSERT INTO {0}(Name,Nick,QQ,Admiin)VALUES('{1}','{2}','{3}','{4}')";
-                await Mysql.MysqlSql(string.Format(str, Mysql.MysqlPlayerTable, Funtion.GBKtoUTF8(player.名字), Funtion.GBKtoUTF8(player.昵称), player.QQ号, player.管理员));
+                MySqlCommand cmd;
+                if (string.IsNullOrWhiteSpace(player.昵称))
+                {
+                    cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name,QQ,Admin)VALUES(@name,@qq,@admin)", Mysql.MysqlPlayerTable));
+                    cmd.Parameters.AddRange(new MySqlParameter[]
+                    {
+                    new MySqlParameter("@name", Funtion.GBKtoUTF8(player.名字)),
+                    new MySqlParameter("@admin", player.管理员),
+                    new MySqlParameter("@qq", player.QQ号)
+                    });
+                }
+                else
+                {
+                    cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name,Nick,QQ,Admin)VALUES(@name,@nick,@qq,@admin)", Mysql.MysqlPlayerTable));
+                    cmd.Parameters.AddRange(new MySqlParameter[]
+                    {
+                    new MySqlParameter("@name", Funtion.GBKtoUTF8(player.名字)),
+                    new MySqlParameter("@nick", Funtion.GBKtoUTF8(player.昵称)),
+                    new MySqlParameter("@admin", player.管理员),
+                    new MySqlParameter("@qq", player.QQ号)
+                    });
+                }
+                await Mysql.MysqlSql(cmd);
             }
         }
         /// <summary>
@@ -26,13 +48,21 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         /// <param name="name">禁止的ID</param>
         public async Task NotIDAsync(string name)
         {
-            string str = "INSERT INTO {0}(Name)VALUES('{1}')";
-            await Mysql.MysqlSql(string.Format(str, Mysql.MysqlNotIDTable, Funtion.GBKtoUTF8(name.ToLower())));
+            MySqlCommand cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name)VALUES(@name)", Mysql.MysqlNotIDTable));
+            cmd.Parameters.AddRange(new MySqlParameter[]
+            {
+                new MySqlParameter("@name", Funtion.GBKtoUTF8(name.ToLower())),
+            });
+            await Mysql.MysqlSql(cmd);
         }
         public async Task MuteAsync(string name)
         {
-            string str = "INSERT INTO {0}(Name)VALUES('{1}')";
-            await Mysql.MysqlSql(string.Format(str, Mysql.MysqlMuteTable, Funtion.GBKtoUTF8(name)));
+            MySqlCommand cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name)VALUES(@name)", Mysql.MysqlMuteTable));
+            cmd.Parameters.AddRange(new MySqlParameter[]
+            {
+                new MySqlParameter("@name", Funtion.GBKtoUTF8(name.ToLower())),
+            });
+            await Mysql.MysqlSql(cmd);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                 switch (ex.Number)
                 {
                     case 1146:
-                        string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `Nick` VARCHAR(255) NOT NULL COMMENT '昵称' , `QQ` VARCHAR(255) NOT NULL COMMENT 'QQ号' , `Admin` BOOLEAN NOT NULL COMMENT '管理员' , `CreateTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' , `UpdataTime` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT NULL COMMENT '更新时间' , PRIMARY KEY (`ID`))";
+                        string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `Nick` VARCHAR(255) NULL DEFAULT NULL COMMENT '昵称' , `QQ` VARCHAR(255) NOT NULL COMMENT 'QQ号' , `Admin` BOOLEAN NOT NULL COMMENT '管理员' , PRIMARY KEY (`ID`))";
                         MySqlCommand cmd = new MySqlCommand(mySelectQuery, Mysql.conn);
                         cmd.ExecuteNonQuery();
                         break;
@@ -59,7 +59,7 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                 switch (ex.Number)
                 {
                     case 1146:
-                        string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `CreateTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' , `UpdataTime` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT NULL COMMENT '更新时间' , PRIMARY KEY (`ID`))";
+                        string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , PRIMARY KEY (`ID`))";
                         MySqlCommand cmd = new MySqlCommand(mySelectQuery, Mysql.conn);
                         cmd.ExecuteNonQuery();
                         break;
