@@ -50,7 +50,7 @@ namespace Color_yr.Minecraft_QQ
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            label2.Text = "插件版本：" + Minecraft_QQ.vision;
+            label2.Text = "插件版本：" + Minecraft_QQ.Version;
             textBox5.Text = Minecraft_QQ.MainConfig.链接.端口.ToString();
             textBox4.Text = Minecraft_QQ.MainConfig.链接.地址;
             if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")

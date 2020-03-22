@@ -16,7 +16,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class Minecraft_QQ
     {
-        public readonly static string vision = "2.7.3-edit6";
+        public const string Version = "2.7.3.6";
         /// <summary>
         /// 配置文件路径
         /// </summary>
@@ -239,7 +239,7 @@ namespace Color_yr.Minecraft_QQ
             Send.Send_T = new Thread(Send.Send_);
             Send.Send_T.Start();
 
-            Plugin.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + vision);
+            Plugin.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + Version);
         }
         public static void stop()
         {
