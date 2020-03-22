@@ -14,7 +14,7 @@ namespace Color_yr.Minecraft_QQ.MyMysql
             { 
                 new MySqlParameter("@qq", qq)
             });
-            var item = await Mysql.MysqlSql(cmd);
+            var item = await Mysql.MysqlSql(cmd, true);
             if (item != null && item.HasRows)
             {
                 player.名字 = item.GetString(0);
@@ -23,6 +23,8 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                 player.管理员 = item.GetBoolean(2);
                 item.Close();
             }
+            item.Close();
+            await Mysql.conn.CloseAsync();
             return player;
         }
     }

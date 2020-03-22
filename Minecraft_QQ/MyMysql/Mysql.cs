@@ -47,25 +47,30 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         {
             Minecraft_QQ.PlayerConfig.玩家列表.Clear();
             MySqlCommand cmd = new MySqlCommand("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
-            DbDataReader reader = await MysqlSql(cmd);
+            DbDataReader reader = await MysqlSql(cmd, true);
             while (await reader.ReadAsync())
             {
                 PlayerObj player = new PlayerObj
                 {
                     名字 = reader.GetString(0),
-                    昵称 = reader.GetString(1),
                     管理员 = reader.GetBoolean(2),
                 };
+                if (!reader.IsDBNull(1))
+                {
+                    player.昵称 = reader.GetString(1);
+                }
                 long.TryParse(reader.GetString(3), out player.QQ号);
-                Minecraft_QQ.PlayerConfig.玩家列表.Add(player.QQ号, player);
+                if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(player.QQ号) == false)
+                    Minecraft_QQ.PlayerConfig.玩家列表.Add(player.QQ号, player);
             }
             reader.Close();
+            await conn.CloseAsync();
         }
         private async Task LoadNotIDAsync()
         {
             Minecraft_QQ.PlayerConfig.禁止绑定列表.Clear();
             MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
-            DbDataReader reader = await MysqlSql(cmd);
+            DbDataReader reader = await MysqlSql(cmd, true);
             if (reader != null)
                 while (await reader.ReadAsync())
                 {
@@ -74,12 +79,13 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                             Minecraft_QQ.PlayerConfig.禁止绑定列表.Add(reader.GetString(0).ToLower());
                 }
             reader.Close();
+            await conn.CloseAsync();
         }
         private async Task LoadMuteAsync()
         {
             Minecraft_QQ.PlayerConfig.禁言列表.Clear();
             MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
-            DbDataReader reader = await MysqlSql(cmd);
+            DbDataReader reader = await MysqlSql(cmd, true);
             if (reader != null)
                 while (await reader.ReadAsync())
                 {
@@ -87,23 +93,27 @@ namespace Color_yr.Minecraft_QQ.MyMysql
                         if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(reader.GetString(0).ToLower()) == false)
                             Minecraft_QQ.PlayerConfig.禁言列表.Add(reader.GetString(0).ToLower());
                 }
+            reader.Close();
+            await conn.CloseAsync();
         }
 
-        public static async Task<DbDataReader> MysqlSql(MySqlCommand SQL)
+        public static async Task<DbDataReader> MysqlSql(MySqlCommand SQL, bool needRead = false)
         {
             DbDataReader temp = null;
             try
             {
                 await conn.OpenAsync();
                 SQL.Connection = conn;
-                await SQL.ExecuteNonQueryAsync();
                 temp = await SQL.ExecuteReaderAsync();
+                if (!needRead)
+                {
+                    await conn.CloseAsync();
+                }
             }
             catch (MySqlException ex)
             {
                 logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
-            await conn.CloseAsync();
             return temp;
         }
     }
