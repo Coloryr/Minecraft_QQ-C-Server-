@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ.Event
     {
         public void AppDisable(object sender, CQAppDisableEventArgs e)
         {
-            Task.Factory.StartNew(() => Minecraft_QQ.stop());
+            IMinecraft_QQ.Stop();
         }
     }
 }

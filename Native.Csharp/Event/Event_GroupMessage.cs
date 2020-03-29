@@ -8,7 +8,7 @@ namespace Color_yr.Minecraft_QQ.Event
     {
         public void GroupMessage(object sender, CQGroupMessageEventArgs e)
         {
-            Task.Factory.StartNew(() => Minecraft_QQ.GroupMessage(e));
+            IMinecraft_QQ.RGroupMessage(e.FromGroup.Id, e.FromQQ.Id, e.Message.ToSendString());
         }
     }
 }

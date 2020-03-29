@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Color_yr.Minecraft_QQ.MySocket
 {
-    class Message
+    internal class Message
     {
         public static MessageObj MessagetoObj(string read)
         {

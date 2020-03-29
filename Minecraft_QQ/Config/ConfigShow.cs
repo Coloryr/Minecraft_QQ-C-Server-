@@ -1,8 +1,8 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
 
-namespace Minecraft_QQ.Config
+namespace Color_yr.Minecraft_QQ.Config
 {
-    class ConfigShow
+    internal class ConfigShow
     {
         public static void Show(dynamic obj)
         {

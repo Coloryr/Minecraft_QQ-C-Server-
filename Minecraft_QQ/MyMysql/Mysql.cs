@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class Mysql
+    internal class Mysql
     {
         public static MySqlConnection conn;
 

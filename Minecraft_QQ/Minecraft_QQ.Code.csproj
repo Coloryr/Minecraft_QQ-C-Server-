@@ -103,6 +103,7 @@
     <Compile Include="Form\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IMinecraft_QQ.cs" />
     <Compile Include="Utils\Obj.cs" />
     <Compile Include="Utils\logs.cs" />
     <Compile Include="Minecraft_QQ.cs" />

@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class MysqlAddTable
+    internal class MysqlAddTable
     {
         /// <summary>
         /// 添加玩家列表

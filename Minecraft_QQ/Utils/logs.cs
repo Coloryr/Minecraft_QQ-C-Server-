@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Color_yr.Minecraft_QQ.Utils
 {
-    public class logs
+    internal class logs
     {
         public static string log = "logs.log";
         private static object obj = new object();

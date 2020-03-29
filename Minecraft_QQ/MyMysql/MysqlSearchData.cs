@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class MysqlSearchData
+    internal class MysqlSearchData
     {
         public async Task<PlayerObj> PlayerAsync(long qq)
         {

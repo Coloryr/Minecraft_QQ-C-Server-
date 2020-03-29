@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
-[assembly: AssemblyVersion(Color_yr.Minecraft_QQ.Minecraft_QQ.Version)]
-[assembly: AssemblyFileVersion(Color_yr.Minecraft_QQ.Minecraft_QQ.Version)]
+[assembly: AssemblyVersion(Color_yr.Minecraft_QQ.IMinecraft_QQ.Version)]
+[assembly: AssemblyFileVersion(Color_yr.Minecraft_QQ.IMinecraft_QQ.Version)]

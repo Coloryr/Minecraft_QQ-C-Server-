@@ -4,12 +4,12 @@ using System.Threading;
 
 namespace Color_yr.Minecraft_QQ.Utils
 {
-    public class SendObj
+    internal class SendObj
     {
         public long Group { get; set; }
         public string Message { get; set; }
     }
-    class Send
+    internal class Send
     {
         public static Thread Send_T;
         public static List<SendObj> SendList { get; set; } = new List<SendObj>() { };
@@ -38,7 +38,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                         if (string.IsNullOrWhiteSpace(b) == false)
                         {
                             b = b.Substring(0, b.Length - 1);
-                            Minecraft_QQ.Plugin.SendGroupMessage(group, b);
+                            IMinecraft_QQ.SendGroupMessage(group, b);
                         }
                     }
                 }

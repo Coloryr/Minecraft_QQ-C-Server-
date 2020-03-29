@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ.Config
 {
-    class ConfigRead
+    internal class ConfigRead
     {
         /// <summary>
         /// 读取主要配置文件

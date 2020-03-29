@@ -2,7 +2,7 @@
 
 namespace Color_yr.Minecraft_QQ.Utils
 {
-    class Commder_list
+    internal class Commder_list
     {
         public static readonly string SPEAK = "speak";
         public static readonly string ONLINE = "online";
@@ -11,7 +11,7 @@ namespace Color_yr.Minecraft_QQ.Utils
     /// <summary>
     /// 玩家数据储存格式
     /// </summary>
-    public class PlayerObj
+    internal class PlayerObj
     {
         public string 名字;
         public string 昵称;
@@ -21,7 +21,7 @@ namespace Color_yr.Minecraft_QQ.Utils
     /// <summary>
     /// 服务器命令储存格式
     /// </summary>
-    public class CommandObj
+    internal class CommandObj
     {
         public string 命令;
         public bool 玩家使用 = false;
@@ -32,7 +32,7 @@ namespace Color_yr.Minecraft_QQ.Utils
     /// <summary>
     /// 发送/接受数据格式
     /// </summary>
-    public class MessageObj
+    internal class MessageObj
     {
         public string group;
         public string player;
@@ -43,7 +43,7 @@ namespace Color_yr.Minecraft_QQ.Utils
     /// <summary>
     /// 群储存格式
     /// </summary>
-    public class GroupObj
+    internal class GroupObj
     {
         public string 群号;
         public bool 启用命令 = false;

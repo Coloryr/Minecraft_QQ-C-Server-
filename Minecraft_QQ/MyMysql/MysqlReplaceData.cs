@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class MysqlReplaceData
+    internal class MysqlReplaceData
     {
         public async Task playerAsync(PlayerObj player)
         {

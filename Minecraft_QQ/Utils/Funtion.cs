@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ.Utils
 {
-    class Funtion
+    internal class Funtion
     {
         public static string GBKtoUTF8(string msg)
         {
@@ -359,7 +359,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                     else
                         new ConfigWrite().Player();
                     if (Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号 != 0)
-                        Minecraft_QQ.Plugin.SendPrivateMessage(Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
+                        IMinecraft_QQ.SendPrivateMessage(Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
                     return "绑定ID：[" + player_name + "]成功！";
                 }
             }
@@ -582,7 +582,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                 {
                     if (MySocketServer.isready() == false)
                     {
-                        Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
+                        IMinecraft_QQ.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
                     bool haveserver = false;
@@ -605,7 +605,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                     }
                     if (!haveserver)
                     {
-                        Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，对应的服务器未连接");
+                        IMinecraft_QQ.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "发送失败，对应的服务器未连接");
                     }
                     var player = GetPlayer(fromQQ);
                     if (player != null)
@@ -626,7 +626,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                                 var player1 = GetPlayer(qq);
                                 if (player1 == null)
                                 {
-                                    Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
+                                    IMinecraft_QQ.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
                                     return true;
                                 }
                                 cmd = cmd.Replace("%player_at%", player1.名字);
@@ -647,7 +647,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                                 messageSend.player = player.名字;
                                 if (string.IsNullOrWhiteSpace(player.名字) == true)
                                 {
-                                    Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "你未绑定ID");
+                                    IMinecraft_QQ.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "你未绑定ID");
                                     return true;
                                 }
                             }
@@ -659,7 +659,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                     }
                     else
                     {
-                        Minecraft_QQ.Plugin.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "你未绑定ID");
+                        IMinecraft_QQ.SendGroupMessage(fromGroup, CQApi.CQCode_At(fromQQ) + "你未绑定ID");
                         return true;
                     }
                 }

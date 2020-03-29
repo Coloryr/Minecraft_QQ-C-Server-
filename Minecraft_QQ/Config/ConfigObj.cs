@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Color_yr.Minecraft_QQ.Config
 {
-    class ConfigFile
+    internal class ConfigFile
     {
         /// <summary>
         /// 主要配置文件
@@ -27,7 +27,7 @@ namespace Color_yr.Minecraft_QQ.Config
         /// </summary>
         public static FileInfo 群设置 { get; set; }
     }
-    public class PlayerConfig
+    internal class PlayerConfig
     {
         /// <summary>
         /// 禁止绑定数据储存
@@ -42,28 +42,28 @@ namespace Color_yr.Minecraft_QQ.Config
         /// </summary>
         public Dictionary<long, PlayerObj> 玩家列表 { get; set; } = new Dictionary<long, PlayerObj> { };
     }
-    public class CommandConfig
+    internal class CommandConfig
     {
         /// <summary>
         /// 服务器指令数据储存
         /// </summary>
         public Dictionary<string, CommandObj> 命令列表 { get; set; } = new Dictionary<string, CommandObj> { };
     }
-    public class GroupConfig
+    internal class GroupConfig
     {
         /// <summary>
         /// 设置的群数据储存
         /// </summary>
         public Dictionary<long, GroupObj> 群列表 { get; set; } = new Dictionary<long, GroupObj> { };
     }
-    public class AskConfig
+    internal class AskConfig
     {
         /// <summary>
         /// 自动应答存储
         /// </summary>
         public Dictionary<string, string> 自动应答列表 { get; set; } = new Dictionary<string, string> { };
     }
-    public class MainConfig
+    internal class MainConfig
     {
         /// <summary>
         /// 设置
@@ -100,7 +100,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 + "数据库:" + 数据库.ToString();
         }
     }
-    public class SettingConfig
+    internal class SettingConfig
     {
         /// <summary>
         /// 自动应答-开关
@@ -152,7 +152,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 + "发送群消息间隔:" + 发送群消息间隔;
         }
     }
-    public class MessageConfig
+    internal class MessageConfig
     {
         /// <summary>
         /// 发送至服务器的文本
@@ -179,7 +179,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 + "不能绑定文本:" + 不能绑定文本;
         }
     }
-    public class CheckConfig
+    internal class CheckConfig
     {
         /// <summary>
         /// 检测头
@@ -211,7 +211,7 @@ namespace Color_yr.Minecraft_QQ.Config
                + "发送消息至服务器:" + 发送消息至服务器;
         }
     }
-    public class AdminConfig
+    internal class AdminConfig
     {
         /// <summary>
         /// 禁言玩家
@@ -273,7 +273,7 @@ namespace Color_yr.Minecraft_QQ.Config
                 + "发送绑定信息QQ号:" + 发送绑定信息QQ号;
         }
     }
-    public class SocketConfig
+    internal class SocketConfig
     {
         /// <summary>
         /// 地址
@@ -306,7 +306,7 @@ namespace Color_yr.Minecraft_QQ.Config
         }
     }
 
-    public class MysqlConfig
+    internal class MysqlConfig
     {
         /// <summary>
         /// 地址

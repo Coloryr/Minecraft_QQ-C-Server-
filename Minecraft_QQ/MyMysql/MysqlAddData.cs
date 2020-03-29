@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class MysqlAddData
+    internal class MysqlAddData
     {
         /// <summary>
         /// 添加玩家

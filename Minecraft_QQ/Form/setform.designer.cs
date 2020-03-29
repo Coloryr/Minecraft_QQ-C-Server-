@@ -1,6 +1,6 @@
 ﻿namespace Color_yr.Minecraft_QQ
 {
-    partial class setform
+    internal partial class setform
     {
         /// <summary>
         /// Required designer variable.

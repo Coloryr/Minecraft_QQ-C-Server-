@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Color_yr.Minecraft_QQ.MyMysql
 {
-    class MysqlRemoveData
+    internal class MysqlRemoveData
     {
         public async Task MuteAsync(string name)
         {

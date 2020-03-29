@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Color_yr.Minecraft_QQ.Config
 {
-    class ConfigWrite
+    internal class ConfigWrite
     {
         public void Config()
         {
