@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="Check" TargetType="CheckBox">
+        <Setter Property="Background" Value="#FFFFFFFF"/>
+        <Setter Property="ScrollViewer.Background" Value="#FFFFFFFF"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Height}">
+                            <Rectangle x:Name="CheckBoxRectangle" Fill="#CC5EBDD3" Opacity="0.3" Width="15" Height="15"/>
+                            <Rectangle x:Name="CheckBoxRectangleOut" Stroke="#CC5EBDD3" StrokeThickness="1" Width="15" Height="15"/>
+                        </Grid>
+                        <TextBlock Grid.Column="1" Text="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" Background="#99898989" Foreground="#FFFFFFFF" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="CheckBoxRectangle" Property="Fill" Value="#CC5EBDD3"/>
+                            <Setter TargetName="CheckBoxRectangle" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="CheckBoxRectangle" Property="Fill" Value="#445EBDD3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

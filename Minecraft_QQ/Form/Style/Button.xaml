@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="Button" TargetType="Button">
+        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!--定义圆角外边框-->
+                    <Border Name="gridborder" BorderBrush="#FFFF0000" BorderThickness="1" CornerRadius="3">
+                        <Border.Background>
+                            <!--定义圆角外边框背景-->
+                            <LinearGradientBrush StartPoint="0 1" EndPoint="0 0">
+                                <GradientStop Color="#AAFF0000" Offset="0.2"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="true">
+                            <Setter TargetName="gridborder" Property="Background" Value="#AA898989"/>
+                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="gridborder" Property="Background" Value="#44898989"/>
+                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#445EBDD3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
