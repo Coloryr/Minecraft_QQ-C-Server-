@@ -263,10 +263,7 @@ namespace Color_yr.Minecraft_QQ
                     if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower())
                         && !string.IsNullOrWhiteSpace(player.名字))
                     {
-                        string send = MainConfig.消息.发送至服务器文本;
                         string msg_copy = msg;
-                        send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ?
-                            player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
                         if (MainConfig.设置.颜色代码开关 == false)
                             msg_copy = Funtion.RemoveColorCodes(msg_copy);
                         if (msg_copy.IndexOf("CQ:rich") != -1)
@@ -281,10 +278,12 @@ namespace Color_yr.Minecraft_QQ
                         }
                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
                         {
-                            send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
                             MessageObj messagelist = new MessageObj();
                             messagelist.group = fromGroup.ToString();
-                            messagelist.message = send;
+                            messagelist.message = Funtion.Remove_pic(msg_copy);
+                            messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ? 
+                                player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? 
+                                player.名字 : player.昵称);
                             messagelist.commder = Commder_list.SPEAK;
                             MySocketServer.Send(messagelist);
                         }
@@ -329,10 +328,7 @@ namespace Color_yr.Minecraft_QQ
                         }
                         try
                         {
-                            string send = MainConfig.消息.发送至服务器文本;
                             string msg_copy = msg;
-                            send = send.Replace("%player%", !MainConfig.设置.使用昵称发送至服务器 ? player.名字
-                                : (string.IsNullOrWhiteSpace(player.昵称) ? player.名字 : player.昵称));
                             msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
                             if (MainConfig.设置.颜色代码开关 == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
@@ -344,10 +340,12 @@ namespace Color_yr.Minecraft_QQ
                             }
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
-                                send = send.Replace("%message%", Funtion.Remove_pic(msg_copy));
                                 MessageObj messagelist = new MessageObj();
                                 messagelist.group = "group";
-                                messagelist.message = send;
+                                messagelist.message = Funtion.Remove_pic(msg_copy);
+                                messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ? 
+                                    player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? 
+                                    player.名字 : player.昵称);
                                 messagelist.commder = Commder_list.SPEAK;
                                 MySocketServer.Send(messagelist);
                             }

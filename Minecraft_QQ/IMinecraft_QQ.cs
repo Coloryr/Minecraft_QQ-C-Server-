@@ -5,7 +5,7 @@ namespace Color_yr.Minecraft_QQ
 {
     public class IMinecraft_QQ
     {
-        public const string Version = "2.7.3.6";
+        public const string Version = "2.7.4.0";
         public static CQApi api { get; set; }
         public static void Start()
         {

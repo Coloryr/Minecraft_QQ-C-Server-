@@ -155,10 +155,6 @@ namespace Color_yr.Minecraft_QQ.Config
     internal class MessageConfig
     {
         /// <summary>
-        /// 发送至服务器的文本
-        /// </summary>
-        public string 发送至服务器文本 { get; set; } = "%player%:%message%";
-        /// <summary>
         /// 维护时发送的文本
         /// </summary>
         public string 维护提示文本 { get; set; } = "服务器正在维护，请等待维护结束！";
@@ -173,8 +169,7 @@ namespace Color_yr.Minecraft_QQ.Config
 
         public override string ToString()
         {
-            return "发送至服务器文本:" + 发送至服务器文本 + "\n"
-                + "维护提示文本:" + 维护提示文本 + "\n"
+            return "维护提示文本:" + 维护提示文本 + "\n"
                 + "未知指令文本:" + 未知指令文本 + "\n"
                 + "不能绑定文本:" + 不能绑定文本;
         }
