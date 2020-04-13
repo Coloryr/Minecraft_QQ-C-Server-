@@ -3504,7 +3504,7 @@ namespace System.Data.SQLite
             UnsafeNativeMethods.xSessionFilter xFilter;
 
             xFilter = new UnsafeNativeMethods.xSessionFilter(
-                delegate(IntPtr context, IntPtr pTblName)
+                delegate (IntPtr context, IntPtr pTblName)
             {
                 try
                 {
@@ -3571,7 +3571,7 @@ namespace System.Data.SQLite
             UnsafeNativeMethods.xSessionConflict xConflict;
 
             xConflict = new UnsafeNativeMethods.xSessionConflict(
-                delegate(IntPtr context,
+                delegate (IntPtr context,
                          SQLiteChangeSetConflictType type,
                          IntPtr iterator)
             {

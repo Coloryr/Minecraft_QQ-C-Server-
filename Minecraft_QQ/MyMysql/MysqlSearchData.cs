@@ -10,8 +10,8 @@ namespace Color_yr.Minecraft_QQ.MyMysql
         {
             PlayerObj player = null;
             MySqlCommand cmd = new MySqlCommand(string.Format("SELECT `Name`,`Nick`,`Admin` FROM {0} WHERE QQ=@qq", Mysql.MysqlPlayerTable));
-            cmd.Parameters.AddRange(new MySqlParameter[] 
-            { 
+            cmd.Parameters.AddRange(new MySqlParameter[]
+            {
                 new MySqlParameter("@qq", qq)
             });
             var item = await Mysql.MysqlSql(cmd, true);

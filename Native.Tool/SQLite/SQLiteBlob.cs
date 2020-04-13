@@ -360,8 +360,8 @@ namespace System.Data.SQLite
         private void CheckDisposed() /* throw */
         {
 #if THROW_ON_DISPOSED
-        if (disposed)
-            throw new ObjectDisposedException(typeof(SQLiteBlob).Name);
+            if (disposed)
+                throw new ObjectDisposedException(typeof(SQLiteBlob).Name);
 #endif
         }
 

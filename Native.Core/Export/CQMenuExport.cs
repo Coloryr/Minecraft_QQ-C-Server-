@@ -36,21 +36,12 @@ namespace Native.App.Export
 		private static void ResolveBackcall ()	
 		{	
 			/*	
-			 * Name: 设置A	
-			 * Function: _menuA	
+			 * Name: 打开设置	
+			 * Function: _menu	
 			 */	
-			if (AppData.UnityContainer.IsRegistered<IMenuCall> ("设置A"))	
+			if (AppData.UnityContainer.IsRegistered<IMenuCall> ("打开设置"))	
 			{	
-				Menu_menuAHandler += AppData.UnityContainer.Resolve<IMenuCall> ("设置A").MenuCall;	
-			}	
-			
-			/*	
-			 * Name: 设置B	
-			 * Function: _menuB	
-			 */	
-			if (AppData.UnityContainer.IsRegistered<IMenuCall> ("设置B"))	
-			{	
-				Menu_menuBHandler += AppData.UnityContainer.Resolve<IMenuCall> ("设置B").MenuCall;	
+				Menu_menuHandler += AppData.UnityContainer.Resolve<IMenuCall> ("打开设置").MenuCall;	
 			}	
 			
 		}	
@@ -58,33 +49,17 @@ namespace Native.App.Export
 		
 		#region --导出方法--	
 		/*	
-		 * Name: 设置A	
-		 * Function: _menuA	
+		 * Name: 打开设置	
+		 * Function: _menu	
 		 */	
-		public static event EventHandler<CQMenuCallEventArgs> Menu_menuAHandler;	
-		[DllExport (ExportName = "_menuA", CallingConvention = CallingConvention.StdCall)]	
-		public static int Menu_menuA ()	
+		public static event EventHandler<CQMenuCallEventArgs> Menu_menuHandler;	
+		[DllExport (ExportName = "_menu", CallingConvention = CallingConvention.StdCall)]	
+		public static int Menu_menu ()	
 		{	
-			if (Menu_menuAHandler != null)	
+			if (Menu_menuHandler != null)	
 			{	
-				CQMenuCallEventArgs args = new CQMenuCallEventArgs (AppData.CQApi, AppData.CQLog, "设置A", "_menuA");	
-				Menu_menuAHandler (typeof (CQMenuExport), args);	
-			}	
-			return 0;	
-		}	
-		
-		/*	
-		 * Name: 设置B	
-		 * Function: _menuB	
-		 */	
-		public static event EventHandler<CQMenuCallEventArgs> Menu_menuBHandler;	
-		[DllExport (ExportName = "_menuB", CallingConvention = CallingConvention.StdCall)]	
-		public static int Menu_menuB ()	
-		{	
-			if (Menu_menuBHandler != null)	
-			{	
-				CQMenuCallEventArgs args = new CQMenuCallEventArgs (AppData.CQApi, AppData.CQLog, "设置B", "_menuB");	
-				Menu_menuBHandler (typeof (CQMenuExport), args);	
+				CQMenuCallEventArgs args = new CQMenuCallEventArgs (AppData.CQApi, AppData.CQLog, "打开设置", "_menu");	
+				Menu_menuHandler (typeof (CQMenuExport), args);	
 			}	
 			return 0;	
 		}	

@@ -8,7 +8,6 @@
 namespace System.Data.SQLite
 {
     using System;
-    using System.Data.Common;
     using System.Diagnostics;
     using System.Globalization;
     using System.Threading;

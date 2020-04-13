@@ -1,6 +1,5 @@
 ﻿using Color_yr.Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
-using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Windows.Forms;

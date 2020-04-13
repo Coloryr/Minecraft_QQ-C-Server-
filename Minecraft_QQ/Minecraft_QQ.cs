@@ -281,8 +281,8 @@ namespace Color_yr.Minecraft_QQ
                             MessageObj messagelist = new MessageObj();
                             messagelist.group = fromGroup.ToString();
                             messagelist.message = Funtion.Remove_pic(msg_copy);
-                            messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ? 
-                                player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? 
+                            messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
+                                player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ?
                                 player.名字 : player.昵称);
                             messagelist.commder = Commder_list.SPEAK;
                             MySocketServer.Send(messagelist);
@@ -343,8 +343,8 @@ namespace Color_yr.Minecraft_QQ
                                 MessageObj messagelist = new MessageObj();
                                 messagelist.group = "group";
                                 messagelist.message = Funtion.Remove_pic(msg_copy);
-                                messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ? 
-                                    player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ? 
+                                messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
+                                    player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ?
                                     player.名字 : player.昵称);
                                 messagelist.commder = Commder_list.SPEAK;
                                 MySocketServer.Send(messagelist);
