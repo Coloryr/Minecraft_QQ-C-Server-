@@ -126,12 +126,6 @@
     <Compile Include="Utils\Funtion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
-      <Project>{797eaebc-4d5b-4eef-87f4-a508fda2cb6a}</Project>
-      <Name>Native.Csharp.Sdk</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -183,6 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Form\Minecraft_QQ.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Native.Sdk\Native.Sdk.csproj">
+      <Project>{d7a958b3-79d9-49f8-8bb4-9619bab6ecba}</Project>
+      <Name>Native.Sdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

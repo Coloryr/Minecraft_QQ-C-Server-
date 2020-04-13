@@ -50,6 +50,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                 sb.Replace("§k", string.Empty);
                 sb.Replace("§n", string.Empty);
                 sb.Replace("§m", string.Empty);
+                sb.Replace("§l", string.Empty);
                 sb.Replace("&0", string.Empty);
                 sb.Replace("&1", string.Empty);
                 sb.Replace("&2", string.Empty);
@@ -70,6 +71,7 @@ namespace Color_yr.Minecraft_QQ.Utils
                 sb.Replace("&k", string.Empty);
                 sb.Replace("&n", string.Empty);
                 sb.Replace("&m", string.Empty);
+                sb.Replace("&l", string.Empty);
                 return sb.ToString();
             }
             else
