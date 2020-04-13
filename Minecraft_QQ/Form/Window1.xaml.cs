@@ -1,12 +1,11 @@
-﻿using MahApps.Metro.Controls;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Minecraft_QQ.Form
 {
     /// <summary>
     /// Window1.xaml 的交互逻辑
     /// </summary>
-    public partial class Window1 : MetroWindow
+    public partial class Window1 : Window
     {
         public Window1()
         {

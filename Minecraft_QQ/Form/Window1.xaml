@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow
+﻿<Window
     x:Class="Minecraft_QQ.Form.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -10,13 +10,9 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BLue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="Style/ListView.xaml"/>
                 <ResourceDictionary Source="Style/Button.xaml"/>
+                <ResourceDictionary Source="Style/TabControl.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -27,7 +23,7 @@
             </Image.Effect>
         </Image>
         <TabControl Margin="0,0,0,0" Background="#00000000">
-            <TabItem Header="群设置" BorderBrush="#CC00B3FF">
+            <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
                     <ListView Margin="10,10,160,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="QQList">
@@ -49,32 +45,31 @@
                     <Button Margin ="592,332,10,10" Content="添加" Style="{DynamicResource Button}" FontSize="20"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="服务器设置">
+            <TabItem Header="服务器设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="指令设置">
+            <TabItem Header="指令设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="玩家管理">
+            <TabItem Header="玩家管理" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="自动应答">
+            <TabItem Header="自动应答" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="服务器指令">
+            <TabItem Header="服务器指令" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
 
                 </Grid>
             </TabItem>
-            <Button Content="Button" Height="100" Width="75"/>
         </TabControl>
     </Grid>
-</controls:MetroWindow>
+</Window>
