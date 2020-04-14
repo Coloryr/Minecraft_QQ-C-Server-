@@ -67,8 +67,16 @@ namespace Minecraft_QQ
         /// </summary>
         public static void OpenSettingForm()
         {
-            setform frm = new setform();
-            frm.ShowDialog();
+            //setform frm = new setform();
+            //frm.ShowDialog();
+            try
+            {
+                new Window1().Show();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
         public static void reload()
         {

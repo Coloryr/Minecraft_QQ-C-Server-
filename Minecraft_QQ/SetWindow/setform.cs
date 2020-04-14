@@ -4,6 +4,7 @@ using Minecraft_QQ.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace Minecraft_QQ.SetWindow
 {
@@ -267,7 +268,7 @@ namespace Minecraft_QQ.SetWindow
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new Window1().ShowDialog();
+
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Minecraft_QQ
         }
         public static void Menu()
         {
-            Task.Factory.StartNew(() => Minecraft_QQ.OpenSettingForm());
+            //Task.Factory.StartNew(() => );
+            Minecraft_QQ.OpenSettingForm();
         }
         public static void SendGroupMessage(long group, string message)
         {

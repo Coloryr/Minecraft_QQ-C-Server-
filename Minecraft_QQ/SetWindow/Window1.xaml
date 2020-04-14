@@ -28,10 +28,10 @@
                               Name="QQList">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding 群号}"/>
-                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding 启用命令}"/>
-                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding 开启对话}"/>
-                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding 主群}"/>
+                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding value.群号}"/>
+                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding value.启用命令}"/>
+                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding value.开启对话}"/>
+                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding value.主群}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
