@@ -1,8 +1,8 @@
-﻿using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Utils;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Color_yr.Minecraft_QQ.Config
+namespace Minecraft_QQ.Config
 {
     internal class ConfigFile
     {

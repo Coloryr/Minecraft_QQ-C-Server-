@@ -1,7 +1,7 @@
-﻿using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Utils;
 using Newtonsoft.Json.Linq;
 
-namespace Color_yr.Minecraft_QQ.MySocket
+namespace Minecraft_QQ.MySocket
 {
     internal class Message
     {

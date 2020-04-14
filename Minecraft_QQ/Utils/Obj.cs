@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Color_yr.Minecraft_QQ.Utils
+namespace Minecraft_QQ.Utils
 {
     internal class Commder_list
     {

@@ -1,10 +1,10 @@
-﻿using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ.MyMysql
+namespace Minecraft_QQ.MyMysql
 {
     internal class Mysql
     {

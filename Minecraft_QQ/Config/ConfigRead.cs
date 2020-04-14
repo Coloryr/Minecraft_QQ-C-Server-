@@ -1,11 +1,11 @@
-﻿using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ.Config
+namespace Minecraft_QQ.Config
 {
     internal class ConfigRead
     {

@@ -1,6 +1,6 @@
-﻿using Color_yr.Minecraft_QQ.Config;
-using Color_yr.Minecraft_QQ.MyMysql;
-using Color_yr.Minecraft_QQ.MySocket;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.MyMysql;
+using Minecraft_QQ.MySocket;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ.Utils
+namespace Minecraft_QQ.Utils
 {
     internal class Funtion
     {

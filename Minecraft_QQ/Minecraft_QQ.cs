@@ -1,7 +1,8 @@
-﻿using Color_yr.Minecraft_QQ.Config;
-using Color_yr.Minecraft_QQ.MyMysql;
-using Color_yr.Minecraft_QQ.MySocket;
-using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.MyMysql;
+using Minecraft_QQ.MySocket;
+using Minecraft_QQ.Utils;
+using Minecraft_QQ.SetWindow;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ
+namespace Minecraft_QQ
 {
     internal class Minecraft_QQ
     {
@@ -282,8 +283,8 @@ namespace Color_yr.Minecraft_QQ
                             messagelist.group = fromGroup.ToString();
                             messagelist.message = Funtion.Remove_pic(msg_copy);
                             messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
-                                player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ?
-                                player.名字 : player.昵称);
+                                player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
+                                player.名字 : player.昵称;
                             messagelist.commder = Commder_list.SPEAK;
                             MySocketServer.Send(messagelist);
                         }
@@ -344,8 +345,8 @@ namespace Color_yr.Minecraft_QQ
                                 messagelist.group = "group";
                                 messagelist.message = Funtion.Remove_pic(msg_copy);
                                 messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
-                                    player.名字 : (string.IsNullOrWhiteSpace(player.昵称) ?
-                                    player.名字 : player.昵称);
+                                    player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
+                                    player.名字 : player.昵称;
                                 messagelist.commder = Commder_list.SPEAK;
                                 MySocketServer.Send(messagelist);
                             }

@@ -1,7 +1,7 @@
 ﻿using Native.Sdk.Cqp;
 using System.Threading.Tasks;
 
-namespace Color_yr.Minecraft_QQ
+namespace Minecraft_QQ
 {
     public class IMinecraft_QQ
     {

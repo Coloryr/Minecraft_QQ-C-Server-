@@ -15,7 +15,8 @@
                             <Rectangle x:Name="CheckBoxRectangle" Fill="#CC5EBDD3" Opacity="0.3" Width="15" Height="15"/>
                             <Rectangle x:Name="CheckBoxRectangleOut" Stroke="#CC5EBDD3" StrokeThickness="1" Width="15" Height="15"/>
                         </Grid>
-                        <TextBlock Grid.Column="1" Text="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" Background="#99898989" Foreground="#FFFFFFFF" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Background="#00898989" Foreground="Black" VerticalAlignment="Center" Margin="2,0,0,0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">

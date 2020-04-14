@@ -1,4 +1,4 @@
-﻿using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Color_yr.Minecraft_QQ.MySocket
+namespace Minecraft_QQ.MySocket
 {
     internal class MySocketServer
     {

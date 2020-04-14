@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ.Config
+namespace Minecraft_QQ.Config
 {
     internal class ConfigWrite
     {

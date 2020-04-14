@@ -1,4 +1,4 @@
-﻿namespace Color_yr.Minecraft_QQ
+﻿namespace Minecraft_QQ.SetWindow
 {
     internal partial class setform
     {
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(setform));
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -78,6 +77,7 @@
             this.mysql_port = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.mysql_b = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -163,6 +163,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.button5);
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.button7);
@@ -596,6 +597,16 @@
             this.mysql_b.UseVisualStyleBackColor = true;
             this.mysql_b.Click += new System.EventHandler(this.mysql_b_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(75, 109);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(63, 20);
+            this.button2.TabIndex = 70;
+            this.button2.Text = "重载配置";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -609,7 +620,6 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label14);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "setform";
@@ -682,5 +692,6 @@
         private System.Windows.Forms.TextBox mysql_database;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label mysql_now;
+        private System.Windows.Forms.Button button2;
     }
 }

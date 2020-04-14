@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Minecraft_QQ.Form.SetWPF
+namespace Minecraft_QQ.SetWindow
 {
     class SetTran
     {

@@ -1,0 +1,32 @@
+﻿<Window x:Class="Minecraft_QQ.SetWindow.QQSet"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="QQSet" Height="90" Width="220" ResizeMode="NoResize" Background="Transparent">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style/Button.xaml"/>
+                <ResourceDictionary Source="Style/Label.xaml"/>
+                <ResourceDictionary Source="Style/TextBox.xaml"/>
+                <ResourceDictionary Source="Style/CheckBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Label Content="群号" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
+        <TextBox Margin="44,10,10,0" Height="20" TextWrapping="Wrap" Text="{Binding GroupObj.群号}" 
+                 VerticalAlignment="Top"
+                 Style="{DynamicResource TextBox}" Foreground="Black" Background="#225EBDD3"/>
+        <CheckBox Content="主群" HorizontalAlignment="Left" Margin="150,35,0,0" VerticalAlignment="Top"
+                  Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.主群}"/>
+        <CheckBox Content="启用命令" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"
+            Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.启用命令}"/>
+        <CheckBox Content="开启对话" HorizontalAlignment="Left" Margin="80,35,0,0" VerticalAlignment="Top"
+            Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.开启对话}"/>
+
+    </Grid>
+</Window>

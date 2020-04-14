@@ -1,11 +1,11 @@
-﻿using Color_yr.Minecraft_QQ.Config;
-using Color_yr.Minecraft_QQ.MyMysql;
-using Color_yr.Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.MyMysql;
+using Minecraft_QQ.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Color_yr.Minecraft_QQ
+namespace Minecraft_QQ.SetWindow
 {
     internal partial class setform : Form
     {
@@ -263,6 +263,11 @@ namespace Color_yr.Minecraft_QQ
         private void mysql_use_CheckedChanged(object sender, EventArgs e)
         {
             Minecraft_QQ.MainConfig.数据库.是否启用 = mysql_use.Checked;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new Window1().ShowDialog();
         }
     }
 }

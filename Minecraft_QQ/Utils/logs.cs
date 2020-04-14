@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Color_yr.Minecraft_QQ.Utils
+namespace Minecraft_QQ.Utils
 {
     internal class logs
     {

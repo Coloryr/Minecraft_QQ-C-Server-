@@ -1,4 +1,4 @@
-﻿using Color_yr.Minecraft_QQ;
+﻿using Minecraft_QQ;
 using Native.Core.Domain;
 using Native.Sdk.Cqp.EventArgs;
 using Native.Sdk.Cqp.Interface;
@@ -6,10 +6,10 @@ using Unity;
 
 namespace Native.Core
 {
-	/// <summary>
-	/// 酷Q应用主入口类
-	/// </summary>
-	public class CQMain
+    /// <summary>
+    /// 酷Q应用主入口类
+    /// </summary>
+    public class CQMain
 	{
 		/// <summary>
 		/// 在应用被加载时将调用此方法进行事件注册, 请在此方法里向 <see cref="IUnityContainer"/> 容器中注册需要使用的事件
