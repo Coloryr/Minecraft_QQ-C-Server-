@@ -160,6 +160,13 @@ namespace Minecraft_QQ
                 {
                     IMinecraft_QQ.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql链接失败");
                     MysqlOK = false;
+                    if (ConfigFile.玩家储存.Exists == false)
+                    {
+                        PlayerConfig = new PlayerConfig();
+                        File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
+                    }
+                    else
+                        PlayerConfig = read.ReadPlayer();
                 }
                 else
                 {

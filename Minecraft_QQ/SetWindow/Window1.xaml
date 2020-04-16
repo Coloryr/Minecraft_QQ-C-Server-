@@ -22,16 +22,16 @@
             </Image.Effect>
         </Image>
         <TabControl Margin="0,0,0,0" Background="#00000000">
-            <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}">
+            <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}" >
                 <Grid>
                     <ListView Margin="10,10,160,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="QQList">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding value.群号}"/>
-                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding value.启用命令}"/>
-                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding value.开启对话}"/>
-                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding value.主群}"/>
+                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding group}"/>
+                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding command}"/>
+                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding say}"/>
+                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding main}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>

@@ -45,9 +45,9 @@ namespace Minecraft_QQ.Utils
     /// </summary>
     internal class GroupObj
     {
-        public string 群号;
-        public bool 启用命令 = false;
-        public bool 开启对话 = false;
-        public bool 主群 = false;
+        public string 群号 { get; set; }
+        public bool 启用命令 { get; set; }
+        public bool 开启对话 { get; set; }
+        public bool 主群 { get; set; }
     }
 }
