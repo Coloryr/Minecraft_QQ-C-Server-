@@ -38,7 +38,7 @@ namespace Minecraft_QQ.Utils
                         if (string.IsNullOrWhiteSpace(b) == false)
                         {
                             b = b.Substring(0, b.Length - 1);
-                            IMinecraft_QQ.SendGroupMessage(group, b);
+                            IMinecraft_QQ.SGroupMessage(group, b);
                         }
                     }
                 }

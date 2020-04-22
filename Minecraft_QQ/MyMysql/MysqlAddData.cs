@@ -14,7 +14,7 @@ namespace Minecraft_QQ.MyMysql
         {
             MysqlSearchData search = new MysqlSearchData();
             if (await search.PlayerAsync(player.QQ号) != null)
-                await new MysqlReplaceData().playerAsync(player);
+                await new MysqlReplaceData().PlayerAsync(player);
             else
             {
                 MySqlCommand cmd;

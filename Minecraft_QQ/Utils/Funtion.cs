@@ -103,7 +103,7 @@ namespace Minecraft_QQ.Utils
             else
                 return a.Substring(x);
         }
-        public static string Remove_pic(string a)
+        public static string RemovePic(string a)
         {
             while (a.IndexOf("[CQ:image") != -1)
             {
@@ -125,7 +125,7 @@ namespace Minecraft_QQ.Utils
             }
             return a;
         }
-        public static string Get_from_at(string msg)
+        public static string GetFromAt(string msg)
         {
             while (msg.IndexOf("CQ:at,qq=") != -1)
             {
@@ -150,7 +150,7 @@ namespace Minecraft_QQ.Utils
             msg = msg.Replace("[", "").Replace("]", "");
             return msg;
         }
-        public static string Get_rich(string a)
+        public static string GetRich(string a)
         {
             try
             {
@@ -201,7 +201,7 @@ namespace Minecraft_QQ.Utils
                 else if (a.Contains(",text=") && a.Contains("条转发消息]"))
                 {
                     string text = "转发消息";
-                    foreach (var line in CQ_code(GetString(a, ",text=")).Split(' '))
+                    foreach (var line in CQtoCode(GetString(a, ",text=")).Split(' '))
                     {
                         if (line.Contains(@"&amp;gt;"))
                         {
@@ -222,7 +222,7 @@ namespace Minecraft_QQ.Utils
             }
             return null;
         }
-        public static string Get_sign(string a, string player)
+        public static string GetSign(string a, string player)
         {
             try
             {
@@ -235,7 +235,7 @@ namespace Minecraft_QQ.Utils
             }
             return null;
         }
-        public static string CQ_code(string a)
+        public static string CQtoCode(string a)
         {
             while (a.IndexOf("&#91;") != -1)
                 a = a.Replace("&#91;", "[");
@@ -247,7 +247,7 @@ namespace Minecraft_QQ.Utils
                 a = a.Replace("&amp;", "&");
             return a;
         }
-        public static string Code_CQ(string a)
+        public static string CodetoCQ(string a)
         {
             while (a.IndexOf("[") != -1)
                 a = a.Replace("[", "&#91;");
@@ -257,7 +257,7 @@ namespace Minecraft_QQ.Utils
                 a = a.Replace(",", "&#44;");
             return a;
         }
-        public static bool Key_is_ok(KeyEventArgs e)
+        public static bool KeyIsOk(KeyEventArgs e)
         {
             if (e.Control == true)          //按下了ctrl
                 if (e.KeyData == Keys.V || e.KeyData == Keys.C)
@@ -287,7 +287,7 @@ namespace Minecraft_QQ.Utils
             }
             return null;
         }
-        public static string Set_nick(string msg)
+        public static string SetNick(string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -360,14 +360,14 @@ namespace Minecraft_QQ.Utils
                     else
                         new ConfigWrite().Player();
                     if (Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号 != 0)
-                        IMinecraft_QQ.SendPrivateMessage(Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
+                        IMinecraft_QQ.SPrivateMessage(Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
                     return "绑定ID：[" + player_name + "]成功！";
                 }
             }
             else
                 return "你已经绑定ID了，请找腐竹更改";
         }
-        public static string Mute_player(string msg)
+        public static string MutePlayer(string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -394,7 +394,7 @@ namespace Minecraft_QQ.Utils
                 new ConfigWrite().Player();
             return "已禁言：[" + name + "]";
         }
-        public static string Unmute_player(string msg)
+        public static string UnmutePlayer(string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -418,7 +418,7 @@ namespace Minecraft_QQ.Utils
                 new ConfigWrite().Player();
             return "已解禁：[" + name + "]";
         }
-        public static string Get_Player_id(long fromQQ, string msg)
+        public static string GetPlayerID(long fromQQ, string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -441,7 +441,7 @@ namespace Minecraft_QQ.Utils
                     return "你绑定的ID为：" + player.名字;
             }
         }
-        public static string Rename_player(string msg)
+        public static string RenamePlayer(string msg)
         {
             if (msg.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
                 msg = msg.Replace(Minecraft_QQ.MainConfig.检测.检测头, null);
@@ -484,7 +484,7 @@ namespace Minecraft_QQ.Utils
                 return "玩家错误，请检查";
         }
 
-        public static string Get_mute_list()
+        public static string GetMuteList()
         {
             if (Minecraft_QQ.PlayerConfig.禁言列表.Count == 0)
                 return "没有禁言的玩家";
@@ -499,7 +499,7 @@ namespace Minecraft_QQ.Utils
             }
         }
 
-        public static string Get_cant_bind()
+        public static string GetCantBind()
         {
             if (Minecraft_QQ.PlayerConfig.禁止绑定列表.Count == 0)
                 return "没有禁止绑定的ID";
@@ -514,7 +514,7 @@ namespace Minecraft_QQ.Utils
             }
         }
 
-        public static string Fix_mode_change()
+        public static string FixModeChange()
         {
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
@@ -531,16 +531,16 @@ namespace Minecraft_QQ.Utils
                 return "服务器维护模式已关闭";
             }
         }
-        public static string Get_online_player(long fromGroup)
+        public static string GetOnlinePlayer(long fromGroup)
         {
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (MySocketServer.isready() == true)
+                if (MySocketServer.IsReady() == true)
                 {
                     var message = new MessageObj()
                     {
                         group = fromGroup.ToString(),
-                        commder = Commder_list.ONLINE,
+                        commder = CommderList.ONLINE,
                         is_commder = false,
                         player = null
                     };
@@ -553,16 +553,16 @@ namespace Minecraft_QQ.Utils
             else
                 return Minecraft_QQ.MainConfig.消息.维护提示文本;
         }
-        public static string Get_online_server(long fromGroup)
+        public static string GetOnlineServer(long fromGroup)
         {
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
-                if (MySocketServer.isready() == true)
+                if (MySocketServer.IsReady() == true)
                 {
                     var message = new MessageObj()
                     {
                         group = fromGroup.ToString(),
-                        commder = Commder_list.SERVER,
+                        commder = CommderList.SERVER,
                         is_commder = false,
                         player = null
                     };
@@ -581,9 +581,9 @@ namespace Minecraft_QQ.Utils
             {
                 if (msg.ToLower().IndexOf(value.Key) == 0)
                 {
-                    if (MySocketServer.isready() == false)
+                    if (MySocketServer.IsReady() == false)
                     {
-                        IMinecraft_QQ.SendGroupMessage(fromGroup, IMinecraft_QQ.Code_At(fromQQ) + "发送失败，服务器未准备好");
+                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
                     bool haveserver = false;
@@ -606,7 +606,7 @@ namespace Minecraft_QQ.Utils
                     }
                     if (!haveserver)
                     {
-                        IMinecraft_QQ.SendGroupMessage(fromGroup, IMinecraft_QQ.Code_At(fromQQ) + "发送失败，对应的服务器未连接");
+                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，对应的服务器未连接");
                     }
                     var player = GetPlayer(fromQQ);
                     if (player != null)
@@ -627,7 +627,7 @@ namespace Minecraft_QQ.Utils
                                 var player1 = GetPlayer(qq);
                                 if (player1 == null)
                                 {
-                                    IMinecraft_QQ.SendGroupMessage(fromGroup, IMinecraft_QQ.Code_At(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
+                                    IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
                                     return true;
                                 }
                                 cmd = cmd.Replace("%player_at%", player1.名字);
@@ -648,7 +648,7 @@ namespace Minecraft_QQ.Utils
                                 messageSend.player = player.名字;
                                 if (string.IsNullOrWhiteSpace(player.名字) == true)
                                 {
-                                    IMinecraft_QQ.SendGroupMessage(fromGroup, IMinecraft_QQ.Code_At(fromQQ) + "你未绑定ID");
+                                    IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
                                     return true;
                                 }
                             }
@@ -660,7 +660,7 @@ namespace Minecraft_QQ.Utils
                     }
                     else
                     {
-                        IMinecraft_QQ.SendGroupMessage(fromGroup, IMinecraft_QQ.Code_At(fromQQ) + "你未绑定ID");
+                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
                         return true;
                     }
                 }

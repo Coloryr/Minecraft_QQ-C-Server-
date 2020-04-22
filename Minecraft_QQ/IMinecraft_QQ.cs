@@ -6,27 +6,27 @@ namespace Minecraft_QQ
     public class IMinecraft_QQ
     {
         public const string Version = "2.7.5.0";
-        public static CQApi api { get; set; }
+        public static CQApi Api { get; set; }
         public static void Start()
         {
             Task.Factory.StartNew(() => Minecraft_QQ.Start());
         }
         public static void Stop()
         {
-            Task.Factory.StartNew(() => Minecraft_QQ.stop());
+            Task.Factory.StartNew(() => Minecraft_QQ.Stop());
         }
         public static void Menu()
         {
             //Task.Factory.StartNew(() => );
             Minecraft_QQ.OpenSettingForm();
         }
-        public static void SendGroupMessage(long group, string message)
+        public static void SGroupMessage(long group, string message)
         {
-            api.SendGroupMessage(group, message);
+            Api.SendGroupMessage(group, message);
         }
-        public static void SendPrivateMessage(long user, string message)
+        public static void SPrivateMessage(long user, string message)
         {
-            api.SendPrivateMessage(user, message);
+            Api.SendPrivateMessage(user, message);
         }
         public static void RGroupMessage(long group, long user, string message)
         {
@@ -37,7 +37,7 @@ namespace Minecraft_QQ
             Task.Factory.StartNew(() => Minecraft_QQ.PrivateMessage(user, message));
         }
 
-        public static string Code_At(long user)
+        public static string CodeAt(long user)
         {
             return CQApi.CQCode_At(user).ToSendString();
         }

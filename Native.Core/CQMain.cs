@@ -56,7 +56,7 @@ namespace Native.Core
 	{
 		public void AppEnable(object sender, CQAppEnableEventArgs e)
 		{
-			IMinecraft_QQ.api = AppData.CQApi;
+			IMinecraft_QQ.Api = AppData.CQApi;
 			IMinecraft_QQ.Start();
 		}
 	}

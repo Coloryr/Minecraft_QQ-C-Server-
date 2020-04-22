@@ -185,7 +185,7 @@ namespace Minecraft_QQ.SetWindow
 
         private void button7_Click(object sender, EventArgs e)
         {
-            Minecraft_QQ.reload();
+            Minecraft_QQ.Reload();
             button7.Text = "已重载";
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

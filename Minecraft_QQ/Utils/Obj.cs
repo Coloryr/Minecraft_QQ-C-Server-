@@ -2,7 +2,7 @@
 
 namespace Minecraft_QQ.Utils
 {
-    internal class Commder_list
+    internal class CommderList
     {
         public static readonly string SPEAK = "speak";
         public static readonly string ONLINE = "online";

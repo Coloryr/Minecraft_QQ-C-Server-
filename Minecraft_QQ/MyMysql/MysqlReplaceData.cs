@@ -6,7 +6,7 @@ namespace Minecraft_QQ.MyMysql
 {
     internal class MysqlReplaceData
     {
-        public async Task playerAsync(PlayerObj player)
+        public async Task PlayerAsync(PlayerObj player)
         {
             try
             {
