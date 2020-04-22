@@ -13,16 +13,18 @@
                                 <GradientStop Color="#AAFF0000" Offset="0.2"/>
                             </LinearGradientBrush>
                         </Border.Background>
-                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="data" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="true">
                             <Setter TargetName="gridborder" Property="Background" Value="#00000000"/>
                             <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
+                            <Setter TargetName="data" Property="Foreground" Value="#FFFFFFFF"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="gridborder" Property="Background" Value="#00000000"/>
                             <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
+                            <Setter TargetName="data" Property="Foreground" Value="#FF818181"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

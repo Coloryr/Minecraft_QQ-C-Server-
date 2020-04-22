@@ -70,14 +70,12 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="删除" Click="DeleteQQ"/>
-                                <MenuItem Header="修改" Click="ChangeQQ"/>
-                                <MenuItem Header="添加" Click="AddQQ"/>
+                                <MenuItem Header="断开连接" Click="ScoketD"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <Button x:Name="SocketRE_Copy" Content="关闭端口" Margin="95,346,559,10" IsDefault="True" Style="{DynamicResource Button}"
-                        FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketRE_Copy_Click"/>
+                    <Button x:Name="SocketST" Content="关闭端口" Margin="95,346,559,10" IsDefault="True" Style="{DynamicResource Button}"
+                        FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="指令设置" Background="Transparent" Style="{DynamicResource TabItem}">

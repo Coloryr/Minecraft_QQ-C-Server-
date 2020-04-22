@@ -66,7 +66,6 @@ namespace Minecraft_QQ.MySocket
                     Socket clientScoket = ServerSocket.Accept();
                     var readThread = new Thread(ReceiveData);
                     readThread.Start(clientScoket);
-                    Minecraft_QQ.SetWindow?.InitServerList();
                     Clients.Add(clientScoket, readThread);
                     GC.Collect();
                     Thread.Sleep(1000);                          
@@ -126,7 +125,7 @@ namespace Minecraft_QQ.MySocket
                                     logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
                                     if (MCServers.ContainsKey(temp))
                                     {
-                                        Close(MCServers[temp]);
+                                        Close(MCServers[temp], true);
                                         MCServers.Remove(temp);
                                     }
                                     MCServers.Add(temp, socket);
@@ -136,6 +135,7 @@ namespace Minecraft_QQ.MySocket
                                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                                 }
                                 isCheck = true;
+                                Minecraft_QQ.SetWindow?.InitServerList();
                             }
                             else
                                 Message.MessageDo(str);
@@ -148,7 +148,7 @@ namespace Minecraft_QQ.MySocket
                     if (Minecraft_QQ.MainConfig.设置.发送日志到群)
                         IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + keys + "连接已断开");
                     logs.LogWrite("[INFO][Socket]服务器" + keys + "连接已断开");
-                    Close(socket);
+                    Close(socket, true);
                     GC.Collect();
                     return;
                 }
@@ -156,13 +156,13 @@ namespace Minecraft_QQ.MySocket
                 if (!Start)
                 {
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "线程已关闭");
-                    Close(socket);
+                    Close(socket, true);
                     return;
                 }
                 Thread.Sleep(10);      // 延时0.01秒后再接收客户端发送的消息
             }
         }
-        private static void Close(Socket socket)
+        private static void Close(Socket socket, bool re)
         {
             if (socket != null)
                 socket.Close();
@@ -171,7 +171,22 @@ namespace Minecraft_QQ.MySocket
                 Clients[socket].Abort();
             }
             Clients.Remove(socket);
-            Minecraft_QQ.SetWindow?.InitServerList();
+            if (re)
+                Minecraft_QQ.SetWindow?.InitServerList();
+        }
+        public static void Close(string name)
+        {
+            if (MCServers.ContainsKey(name))
+            {
+                var temp = MCServers[name];
+                temp.Close();
+                if (Clients.ContainsKey(temp))
+                {
+                    Clients[temp].Abort();
+                }
+                Clients.Remove(temp);
+                Minecraft_QQ.SetWindow?.InitServerList();
+            }
         }
 
         public static void Send(MessageObj info, List<string> servers = null)
@@ -220,7 +235,7 @@ namespace Minecraft_QQ.MySocket
             }
             catch (Exception e)
             {
-                Close(socket);
+                Close(socket, true);
                 GC.Collect();
                 if (Clients.Count == 0)
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
@@ -228,9 +243,10 @@ namespace Minecraft_QQ.MySocket
         }
         public static void ServerStop()
         {
-            foreach (var item in Clients)
+            var temp = new Dictionary<Socket, Thread>(Clients);
+            foreach (var item in temp)
             {
-                Close(item.Key);
+                Close(item.Key, false);
                 if (item.Value != null)
                 {
                     item.Value.Abort();
@@ -246,6 +262,7 @@ namespace Minecraft_QQ.MySocket
                 ServerThread.Abort();
                 ServerThread = null;
             }
+            Start = false;
         }
     }
 }
