@@ -1,16 +1,21 @@
-﻿<Window
+﻿<controls:MetroWindow
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     x:Class="Minecraft_QQ.SetWindow.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-        Title="Minecraft_QQ" Height="450" Width="760" Icon="/Minecraft_QQ;component/img/icon.ico" ResizeMode="NoResize">
+        Title="Minecraft_QQ" Height="450" Width="746" Icon="/Minecraft_QQ;component/img/icon.ico" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/ListView.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml"/>
                 <ResourceDictionary Source="Style/Button.xaml"/>
+                <ResourceDictionary Source="Style/ListView.xaml"/>
                 <ResourceDictionary Source="Style/TabControl.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -18,36 +23,52 @@
     <Grid>
         <Image Source="/Minecraft_QQ;component/img/Minecraft_QQ.jpg">
             <Image.Effect>
-                <BlurEffect Radius="10"/>
+                <BlurEffect Radius="8"/>
             </Image.Effect>
         </Image>
         <TabControl Margin="0,0,0,0" Background="#00000000">
             <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}" >
                 <Grid>
-                    <ListView Margin="10,10,160,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                    <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="QQList">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding group}"/>
-                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding command}"/>
-                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding say}"/>
-                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding main}"/>
+                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding 群号}"/>
+                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding 启用命令}"/>
+                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding 开启对话}"/>
+                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding 主群}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="删除" Click="DeleteQQ"/>
                                 <MenuItem Header="修改" Click="ChangeQQ"/>
+                                <MenuItem Header="添加" Click="AddQQ"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <Button Margin ="593,332,10,10" Content="添加" Style="{DynamicResource Button}" 
-                            FontSize="20" Click="Button_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="服务器设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-
+                    <ListView Margin="220,10,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                              Name="ServerList">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding 群号}"/>
+                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding 启用命令}"/>
+                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding 开启对话}"/>
+                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding 主群}"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="删除" Click="DeleteQQ"/>
+                                <MenuItem Header="修改" Click="ChangeQQ"/>
+                                <MenuItem Header="添加" Click="AddQQ"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem Header="指令设置" Background="Transparent" Style="{DynamicResource TabItem}">
@@ -71,5 +92,9 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button Content="保存" Margin="660,5,10,391" IsDefault="True" Style="{DynamicResource Button}"
+                    FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="launchButton_Click"/>
+        <Button Content="重载" Margin="585,5,85,391" IsDefault="True" Style="{DynamicResource Button}"
+                    FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5"/>
     </Grid>
-</Window>
+</controls:MetroWindow>

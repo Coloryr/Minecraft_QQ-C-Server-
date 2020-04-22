@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="QQSet" Height="90" Width="220" ResizeMode="NoResize" Background="Transparent">
+        Title="QQSet" Height="90" Width="220" ResizeMode="NoResize" Background="White">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,15 +18,15 @@
     <Grid>
         <Label Content="群号" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
-        <TextBox Margin="44,10,10,0" Height="20" TextWrapping="Wrap" Text="{Binding GroupObj.群号}" 
+        <TextBox Margin="44,10,10,0" Height="20" TextWrapping="Wrap" Text="{Binding Obj.群号}" 
                  VerticalAlignment="Top"
                  Style="{DynamicResource TextBox}" Foreground="Black" Background="#225EBDD3"/>
         <CheckBox Content="主群" HorizontalAlignment="Left" Margin="150,35,0,0" VerticalAlignment="Top"
-                  Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.主群}"/>
+                  Style="{DynamicResource Check}" IsChecked="{Binding Obj.主群}"/>
         <CheckBox Content="启用命令" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"
-            Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.启用命令}"/>
+            Style="{DynamicResource Check}" IsChecked="{Binding Obj.启用命令}"/>
         <CheckBox Content="开启对话" HorizontalAlignment="Left" Margin="80,35,0,0" VerticalAlignment="Top"
-            Style="{DynamicResource Check}" IsChecked="{Binding GroupObj.开启对话}"/>
+            Style="{DynamicResource Check}" IsChecked="{Binding Obj.开启对话}"/>
 
     </Grid>
 </Window>

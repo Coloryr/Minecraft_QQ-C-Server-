@@ -43,11 +43,22 @@ namespace Minecraft_QQ.Utils
     /// <summary>
     /// 群储存格式
     /// </summary>
-    internal class GroupObj
+    public class GroupObj
     {
         public string 群号 { get; set; }
         public bool 启用命令 { get; set; }
         public bool 开启对话 { get; set; }
         public bool 主群 { get; set; }
+
+        public GroupObj Clone()
+        {
+            return new GroupObj
+            {
+                群号 = 群号,
+                启用命令 = 启用命令,
+                开启对话 = 开启对话,
+                主群 = 主群
+            };
+        }
     }
 }

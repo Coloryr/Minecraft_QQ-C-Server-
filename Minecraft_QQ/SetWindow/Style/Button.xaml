@@ -6,7 +6,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <!--定义圆角外边框-->
-                    <Border Name="gridborder" BorderBrush="#FFFF0000" BorderThickness="1" CornerRadius="3">
+                    <Border Name="gridborder" BorderBrush="#007ACC" BorderThickness="1" CornerRadius="3">
                         <Border.Background>
                             <!--定义圆角外边框背景-->
                             <LinearGradientBrush StartPoint="0 1" EndPoint="0 0">
@@ -17,12 +17,12 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="true">
-                            <Setter TargetName="gridborder" Property="Background" Value="#AA898989"/>
-                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
+                            <Setter TargetName="gridborder" Property="Background" Value="#00000000"/>
+                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#007ACC"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="gridborder" Property="Background" Value="#44898989"/>
-                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#445EBDD3"/>
+                            <Setter TargetName="gridborder" Property="Background" Value="#00000000"/>
+                            <Setter TargetName="gridborder" Property="BorderBrush" Value="#007ACC"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

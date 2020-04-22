@@ -97,7 +97,7 @@
                                     <ContentPresenter x:Name="HeaderContent" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
                                                        ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                       RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      TextBlock.Foreground ="White" TextBlock.FontSize="20"/>
+                                                      TextBlock.Foreground ="White" TextBlock.FontSize="16"/>
                                 </Border>
                             </Grid>
                         </Border>

@@ -1,5 +1,9 @@
 ﻿using Minecraft_QQ.Utils;
+using System;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
+
 namespace Minecraft_QQ.SetWindow
 {
     /// <summary>
@@ -7,20 +11,14 @@ namespace Minecraft_QQ.SetWindow
     /// </summary>
     public partial class QQSet : Window
     {
-        internal GroupObj Obj { get; set; }
+        public GroupObj Obj { get; set; }
         internal QQSet(GroupObj Obj = null)
         {
             if (Obj == null)
                 Obj = new GroupObj();
             this.Obj = Obj;
             DataContext = this;
-            Loaded += QQSet_Loaded;
             InitializeComponent();
-        }
-
-        private void QQSet_Loaded(object sender, RoutedEventArgs e)
-        {
-            new SetTran(this);
         }
 
         internal GroupObj Set()
