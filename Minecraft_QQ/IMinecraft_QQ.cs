@@ -13,11 +13,10 @@ namespace Minecraft_QQ
         }
         public static void Stop()
         {
-            Task.Factory.StartNew(() => Minecraft_QQ.Stop());
+            Minecraft_QQ.Stop();
         }
         public static void Menu()
         {
-            //Task.Factory.StartNew(() => );
             Minecraft_QQ.OpenSettingForm();
         }
         public static void SGroupMessage(long group, string message)

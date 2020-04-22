@@ -1,6 +1,5 @@
-﻿using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Minecraft_QQ.Config;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.MySocket;
 using Minecraft_QQ.Utils;
 using System.Windows;
 
@@ -9,14 +8,21 @@ namespace Minecraft_QQ.SetWindow
     /// <summary>
     /// Window1.xaml 的交互逻辑
     /// </summary>
-    public partial class Window1 : MetroWindow
+    public partial class Window1 : Window
     {
+        class Server 
+        {
+            public string Name { get; set; }
+            public string Addr { get; set; }
+        }
         public Window1()
         {
+            Closed += MetroWindow_Closed;
             InitializeComponent();
-            Init();
+            InitQQList();
+            InitServerList();
         }
-        private void Init()
+        private void InitQQList()
         {
             var list = Minecraft_QQ.GroupConfig.群列表.Values;
             QQList.Items.Clear();
@@ -26,18 +32,51 @@ namespace Minecraft_QQ.SetWindow
             }
         }
 
-        private async void ChangeQQ(object sender, RoutedEventArgs e)
+        public void InitServerList()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                IP.Text = Minecraft_QQ.MainConfig.链接.地址;
+                Port.Text = Minecraft_QQ.MainConfig.链接.端口.ToString();
+                if (!MySocketServer.Start)
+                {
+                    State.Content = "未就绪";
+                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = true;
+                }
+                else if (MySocketServer.Start && !MySocketServer.IsReady())
+                {
+                    State.Content = "等待连接";
+                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                }
+                else if (MySocketServer.IsReady())
+                {
+                    State.Content = "运行中";
+                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                }
+                ServerList.Items.Clear();
+                foreach (var item in MySocketServer.MCServers)
+                {
+                    ServerList.Items.Add(new Server
+                    {
+                        Name = item.Key,
+                        Addr = item.Value.RemoteEndPoint.ToString()
+                    });
+                }
+            });
+        }
+
+        private void ChangeQQ(object sender, RoutedEventArgs e)
         {
             var item = ((GroupObj) QQList.SelectedItem).Clone();
             item = new QQSet(item).Set();
             bool ok = long.TryParse(item.群号, out long group);
             if (!ok)
             {
-                await this.ShowMessageAsync("修改失败", "请检查你修改后的群号");
+                MessageBox.Show("修改失败", "请检查你修改后的群号");
                 return;
             }
             Minecraft_QQ.GroupConfig.群列表[group] = item;
-            Init();
+            InitQQList();
         }
 
         private void DeleteQQ(object sender, RoutedEventArgs e)
@@ -45,31 +84,71 @@ namespace Minecraft_QQ.SetWindow
             var item = ((GroupObj)QQList.SelectedItem).Clone();
             long.TryParse(item.群号, out long group);
             Minecraft_QQ.GroupConfig.群列表.Remove(group);
-            Init();
+            InitQQList();
         }
 
-        private async void AddQQ(object sender, RoutedEventArgs e)
+        private void AddQQ(object sender, RoutedEventArgs e)
         {
             var item = new QQSet().Set();
             bool ok = long.TryParse(item.群号, out long group);
             if (!ok)
             {
-                await this.ShowMessageAsync("添加失败","请检查你写的群号");
+                MessageBox.Show("添加失败","请检查你写的群号");
                 return;
             }
             Minecraft_QQ.GroupConfig.群列表.Add(group, item);
-            Init();
+            InitQQList();
         }
 
-        private async void launchButton_Click(object sender, RoutedEventArgs e)
+        private void Click(object sender, RoutedEventArgs e)
         {
+            if (!int.TryParse(Port.Text, out int port))
+            {
+                MessageBox.Show("保存失败", "端口设置不为数字");
+                return;
+            }
+            else if (port < 0 || port > 65535)
+            {
+                MessageBox.Show("保存失败", "端口设置范围超出");
+                return;
+            }
+            Minecraft_QQ.MainConfig.链接.地址 = IP.Text;
+            Minecraft_QQ.MainConfig.链接.端口 = port;
             new ConfigWrite().Group();
-            await this.ShowMessageAsync("已保存", "群设置已经保存");
+            new ConfigWrite().Config();
+            MessageBox.Show("已保存", "群设置已经保存");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new ConfigRead().ReadGroup();
+            Minecraft_QQ.Reload();
+            MessageBox.Show("已重读", "配置文件已重载");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            IP.Text = "127.0.0.1";
+        }
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            IP.Text = "0.0.0.0";
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            MySocketServer.ServerStop();
+            MySocketServer.StartServer();
+        }
+
+        private void MetroWindow_Closed(object sender, System.EventArgs e)
+        {
+            Minecraft_QQ.CloseSetWindow();
+        }
+
+        private void SocketRE_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            MySocketServer.ServerStop();
+            IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
         }
     }
 }

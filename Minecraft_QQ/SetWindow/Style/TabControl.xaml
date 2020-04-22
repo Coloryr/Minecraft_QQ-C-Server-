@@ -65,7 +65,7 @@
                                         Property="Cursor"
                                         Value="Hand" />
                             <Setter Property="BorderBrush"
-                                        Value="#007ACC" />
+                                        Value="#CC5EBDD3" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -78,7 +78,7 @@
                             <Setter Property="Panel.ZIndex"
                                         Value="1" />
                             <Setter Property="BorderBrush"
-                                        Value="#007ACC" />
+                                        Value="#CC5EBDD3" />
                             <Setter Property="Foreground"
                                         Value="White" />
                             <Setter Property="Background"

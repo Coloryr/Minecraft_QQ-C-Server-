@@ -20,13 +20,18 @@ namespace Minecraft_QQ.MySocket
         private static Thread ServerThread;
 
         public static bool Start;
+        private static void SetState(bool st)
+        {
+            Start = st;
+            Minecraft_QQ.SetWindow?.InitServerList();
+        }
 
         public static bool IsReady()
         {
             return Clients.Count != 0;
         }
 
-        public static void StartSocket()
+        public static void StartServer()
         {
             try
             {
@@ -38,7 +43,7 @@ namespace Minecraft_QQ.MySocket
 
                 ServerThread = new Thread(ListenClientConnect);
                 ServerThread.Start();
-                Start = true;
+                SetState(true);
                 if (Minecraft_QQ.MainConfig.设置.发送日志到群)
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + Minecraft_QQ.MainConfig.链接.地址 + ":" + Minecraft_QQ.MainConfig.链接.端口);
@@ -49,7 +54,7 @@ namespace Minecraft_QQ.MySocket
                 IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]启动失败，请看日志" +
                     "\n酷Q/Minecraft_QQ/logs.log");
                 logs.LogWrite("[ERROR][Socket]端口启动失败\n" + exception.Message);
-                Start = false;
+                SetState(false);
             }
         }
         private static void ListenClientConnect()
@@ -59,16 +64,12 @@ namespace Minecraft_QQ.MySocket
                 while (true)
                 {
                     Socket clientScoket = ServerSocket.Accept();
-
                     var readThread = new Thread(ReceiveData);
-                    readThread.Start(clientScoket);                   // 在新的线程中接收客户端信息
-
+                    readThread.Start(clientScoket);
+                    Minecraft_QQ.SetWindow?.InitServerList();
                     Clients.Add(clientScoket, readThread);
-
                     GC.Collect();
-                    logs.LogWrite("[INFO][Socket]服务器已连接");
-
-                    Thread.Sleep(1000);                            // 延时1秒后，接收连接请求
+                    Thread.Sleep(1000);                          
                     if (!Start)
                     {
                         if (ServerSocket != null)
@@ -170,6 +171,7 @@ namespace Minecraft_QQ.MySocket
                 Clients[socket].Abort();
             }
             Clients.Remove(socket);
+            Minecraft_QQ.SetWindow?.InitServerList();
         }
 
         public static void Send(MessageObj info, List<string> servers = null)

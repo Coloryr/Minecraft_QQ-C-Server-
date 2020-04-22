@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace Minecraft_QQ
 {
@@ -51,6 +52,18 @@ namespace Minecraft_QQ
         /// </summary>
         public static CommandConfig Commandconfig { get; set; }
 
+        public static Window1 SetWindow { get; private set; }
+
+        public static void CloseSetWindow()
+        {
+            Task.Factory.StartNew(() => SetWindow = null);
+        }
+
+        /// <summary>
+        /// 接受私聊消息
+        /// </summary>
+        /// <param name="FromQQ">QQ号</param>
+        /// <param name="message">消息</param>
         public static void PrivateMessage(long FromQQ, string message)
         {
             if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(message) == true)
@@ -71,13 +84,19 @@ namespace Minecraft_QQ
             //frm.ShowDialog();
             try
             {
-                new Window1().Show();
+                if (SetWindow == null)
+                    SetWindow = new Window1();
+                SetWindow.Show();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
         }
+
+        /// <summary>
+        /// 重载配置
+        /// </summary>
         public static void Reload()
         {
             if (Directory.Exists(Path) == false)
@@ -243,7 +262,7 @@ namespace Minecraft_QQ
             Reload();
 
             MySocketServer.ServerStop();
-            MySocketServer.StartSocket();
+            MySocketServer.StartServer();
             IsStart = true;
 
             Send.Send_T = new Thread(Send.Send_);
