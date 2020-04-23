@@ -110,7 +110,7 @@ namespace Minecraft_QQ
         /// <summary>
         /// 重载配置
         /// </summary>
-        public static void Reload()
+        public static async void Reload()
         {
             if (Directory.Exists(Path) == false)
             {
@@ -181,7 +181,7 @@ namespace Minecraft_QQ
             //读取玩家数据
             if (MainConfig.数据库.是否启用 == true)
             {
-                Mysql.MysqlStart();
+                await Mysql.MysqlStartAsync();
                 if (MysqlOK == false)
                 {
                     IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql链接失败");

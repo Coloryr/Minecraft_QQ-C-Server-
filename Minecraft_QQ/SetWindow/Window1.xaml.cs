@@ -489,12 +489,12 @@ namespace Minecraft_QQ.SetWindow
             Minecraft_QQ.MainConfig.数据库.密码 = MysqlPassword.Password;
         }
 
-        private void MysqlConnect_Click(object sender, RoutedEventArgs e)
+        private async void MysqlConnect_Click(object sender, RoutedEventArgs e)
         {
             if (Minecraft_QQ.MysqlOK)
                 Mysql.MysqlStop();
             else
-                Mysql.MysqlStart();
+                await Mysql.MysqlStartAsync();
             InitMysql();
         }
     }

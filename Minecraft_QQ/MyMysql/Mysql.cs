@@ -15,22 +15,25 @@ namespace Minecraft_QQ.MyMysql
         public static string MysqlNotIDTable = "minecraft_qq_notid";
         public static string MysqlMuteTable = "minecraft_qq_mute";
 
-        public static void MysqlStart()
+        public static async Task MysqlStartAsync()
         {
-            string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
+            await Task.Factory.StartNew(() =>
+            {
+                string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
                 Minecraft_QQ.MainConfig.数据库.地址, Minecraft_QQ.MainConfig.数据库.端口, Minecraft_QQ.MainConfig.数据库.用户名,
                 Minecraft_QQ.MainConfig.数据库.密码, Minecraft_QQ.MainConfig.数据库.数据库);
-            conn = new MySqlConnection(ConnectString);
-            if (conn == null)
-            {
-                MessageBox.Show("Mysql错误\n" + ConnectString);
-            }
-            MysqlAddTable table = new MysqlAddTable();
+                conn = new MySqlConnection(ConnectString);
+                if (conn == null)
+                {
+                    MessageBox.Show("Mysql错误\n" + ConnectString);
+                }
+                MysqlAddTable table = new MysqlAddTable();
 
-            if (table.AddPlayerTable(MysqlPlayerTable) == false) return;
-            if (table.AddOneTable(MysqlNotIDTable) == false) return;
-            if (table.AddOneTable(MysqlMuteTable) == false) return;
-            Minecraft_QQ.MysqlOK = true;
+                if (table.AddPlayerTable(MysqlPlayerTable) == false) return;
+                if (table.AddOneTable(MysqlNotIDTable) == false) return;
+                if (table.AddOneTable(MysqlMuteTable) == false) return;
+                Minecraft_QQ.MysqlOK = true;
+            });
         }
 
         public static void MysqlStop()
