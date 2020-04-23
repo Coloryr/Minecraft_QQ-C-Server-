@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:MythicMobs_edit.WPF.Style">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type Thumb}" x:Key="SliderThumbStyle">
         <Setter Property="Template">
             <Setter.Value>
@@ -19,7 +18,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="RepeatButton" x:Key="Slider_DecreaseRepeatBtnStyle">
+    <Style TargetType="{x:Type RepeatButton}" x:Key="Slider_DecreaseRepeatBtnStyle">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">

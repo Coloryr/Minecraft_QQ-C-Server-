@@ -4,6 +4,11 @@ using System.IO;
 
 namespace Minecraft_QQ.Config
 {
+    public enum Code
+    { 
+        ANSI,
+        UTF8
+    }
     internal class ConfigFile
     {
         /// <summary>
@@ -100,7 +105,7 @@ namespace Minecraft_QQ.Config
                 + "数据库:" + 数据库.ToString();
         }
     }
-    internal class SettingConfig
+    public class SettingConfig
     {
         /// <summary>
         /// 自动应答-开关
@@ -133,7 +138,7 @@ namespace Minecraft_QQ.Config
         /// <summary>
         /// 发送日志消息到群
         /// </summary>
-        public bool 发送日志到群 { get; set; } = true;
+        public bool 发送日志到主群 { get; set; } = true;
         /// <summary>
         /// 发送群消息间隔
         /// </summary>
@@ -148,7 +153,7 @@ namespace Minecraft_QQ.Config
                 + "使用昵称发送至服务器:" + 使用昵称发送至服务器 + "\n"
                 + "使用昵称发送至群:" + 使用昵称发送至群 + "\n"
                 + "可以绑定名字:" + 可以绑定名字 + "\n"
-                + "发送日志到群:" + 发送日志到群 + "\n"
+                + "发送日志到群:" + 发送日志到主群 + "\n"
                 + "发送群消息间隔:" + 发送群消息间隔;
         }
     }
@@ -174,7 +179,7 @@ namespace Minecraft_QQ.Config
                 + "不能绑定文本:" + 不能绑定文本;
         }
     }
-    internal class CheckConfig
+    public class CheckConfig
     {
         /// <summary>
         /// 检测头
@@ -206,7 +211,7 @@ namespace Minecraft_QQ.Config
                + "发送消息至服务器:" + 发送消息至服务器;
         }
     }
-    internal class AdminConfig
+    public class AdminConfig
     {
         /// <summary>
         /// 禁言玩家
@@ -281,7 +286,7 @@ namespace Minecraft_QQ.Config
         /// <summary>
         /// 编码类型
         /// </summary>
-        public string 编码 { get; set; } = "ANSI";
+        public Code 编码 { get; set; } = Code.ANSI;
         /// <summary>
         /// 数据包头
         /// </summary>

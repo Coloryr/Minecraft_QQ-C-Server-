@@ -54,7 +54,7 @@ namespace Minecraft_QQ.SetWindow
             label2.Text = "插件版本：" + IMinecraft_QQ.Version;
             textBox5.Text = Minecraft_QQ.MainConfig.链接.端口.ToString();
             textBox4.Text = Minecraft_QQ.MainConfig.链接.地址;
-            if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")
+            if (Minecraft_QQ.MainConfig.链接.编码 == Code.UTF8)
             {
                 radioButton1.Checked = true;
                 radioButton2.Checked = false;
@@ -80,7 +80,7 @@ namespace Minecraft_QQ.SetWindow
             checkBox9.Checked = Minecraft_QQ.MainConfig.设置.使用昵称发送至服务器;
             checkBox10.Checked = Minecraft_QQ.MainConfig.设置.使用昵称发送至群;
             checkBox11.Checked = Minecraft_QQ.MainConfig.设置.可以绑定名字;
-            checkBox12.Checked = Minecraft_QQ.MainConfig.设置.发送日志到群;
+            checkBox12.Checked = Minecraft_QQ.MainConfig.设置.发送日志到主群;
 
             mysql_ip.Text = Minecraft_QQ.MainConfig.数据库.地址;
             mysql_port.Text = Minecraft_QQ.MainConfig.数据库.端口.ToString();
@@ -190,12 +190,12 @@ namespace Minecraft_QQ.SetWindow
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            Minecraft_QQ.MainConfig.链接.编码 = "UTF-8";
+            Minecraft_QQ.MainConfig.链接.编码 = Code.UTF8;
             new ConfigWrite().Config();
         }
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            Minecraft_QQ.MainConfig.链接.编码 = "ANSI";
+            Minecraft_QQ.MainConfig.链接.编码 = Code.ANSI;
             new ConfigWrite().Config();
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -236,7 +236,7 @@ namespace Minecraft_QQ.SetWindow
         }
         private void checkBox12_CheckedChanged(object sender, EventArgs e)
         {
-            Minecraft_QQ.MainConfig.设置.发送日志到群 = checkBox12.Checked;
+            Minecraft_QQ.MainConfig.设置.发送日志到主群 = checkBox12.Checked;
             new ConfigWrite().Config();
         }
         private void mysql_b_Click(object sender, EventArgs e)

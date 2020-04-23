@@ -1,7 +1,9 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.MySocket;
 using Minecraft_QQ.Utils;
+using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Minecraft_QQ.SetWindow
 {
@@ -18,9 +20,18 @@ namespace Minecraft_QQ.SetWindow
         public Window1()
         {
             Closed += MetroWindow_Closed;
+            KeyDown += Window_KeyDown;
             InitializeComponent();
             InitQQList();
             InitServerList();
+            DataContext = Minecraft_QQ.MainConfig;
+        }
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                Click(null, null);
+            }
         }
         private void InitQQList()
         {
@@ -36,8 +47,6 @@ namespace Minecraft_QQ.SetWindow
         {
             Dispatcher.Invoke(() =>
             {
-                IP.Text = Minecraft_QQ.MainConfig.链接.地址;
-                Port.Text = Minecraft_QQ.MainConfig.链接.端口.ToString();
                 ServerList.Items.Clear();
                 if (!MySocketServer.Start)
                 {
@@ -122,11 +131,9 @@ namespace Minecraft_QQ.SetWindow
                 MessageBox.Show("端口设置范围超出", "保存失败");
                 return;
             }
-            Minecraft_QQ.MainConfig.链接.地址 = IP.Text;
-            Minecraft_QQ.MainConfig.链接.端口 = port;
             new ConfigWrite().Group();
             new ConfigWrite().Config();
-            MessageBox.Show("群设置已经保存", "已保存");
+            MessageBox.Show("配置已经保存", "已保存");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -179,6 +186,20 @@ namespace Minecraft_QQ.SetWindow
             var item = (Server)ServerList.SelectedItem;
             MySocketServer.Close(item.Name);
             InitServerList();
+        }
+
+        private void C_Click(object sender, RoutedEventArgs e)
+        {
+            if (ANSIC.IsChecked == true)
+            {
+                UTF8C.IsChecked = false;
+                Minecraft_QQ.MainConfig.链接.编码 = Code.ANSI;
+            }
+            else if(UTF8C.IsChecked == true)
+            {
+                ANSIC.IsChecked = false;
+                Minecraft_QQ.MainConfig.链接.编码 = Code.UTF8;
+            }
         }
     }
 }

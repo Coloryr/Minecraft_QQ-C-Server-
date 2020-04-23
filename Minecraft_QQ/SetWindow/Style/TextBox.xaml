@@ -1,9 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:MythicMobs_edit.WPF.Style">
-    <Style x:Key="TextBox" TargetType="TextBox">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ContextMenu.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <ContextMenu x:Key="TextBoxContextMenu">
+        <MenuItem Command="ApplicationCommands.Cut"/>
+        <MenuItem Command="ApplicationCommands.Copy"/>
+        <MenuItem Command="ApplicationCommands.Paste"/>
+    </ContextMenu>
+    <Style x:Name="TextBox" TargetType="{x:Type TextBox}">
         <Setter Property="BorderBrush" Value="#CC5EBDD3"/>
         <Setter Property="Background" Value="#44898989"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="ContextMenu" Value="{DynamicResource TextBoxContextMenu}"/>
     </Style>
 </ResourceDictionary>

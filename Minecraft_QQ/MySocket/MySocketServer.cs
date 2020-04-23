@@ -1,4 +1,5 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace Minecraft_QQ.MySocket
                 ServerThread = new Thread(ListenClientConnect);
                 ServerThread.Start();
                 SetState(true);
-                if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + Minecraft_QQ.MainConfig.链接.地址 + ":" + Minecraft_QQ.MainConfig.链接.端口);
                 logs.LogWrite("[INFO][Socket]端口已启动");
@@ -93,9 +94,9 @@ namespace Minecraft_QQ.MySocket
                 bytes = new byte[len];
                 int receiveNumber = socket.Receive(bytes);
 
-                if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")
+                if (Minecraft_QQ.MainConfig.链接.编码 == Code.UTF8)
                     data = Encoding.UTF8.GetString(bytes, 0, receiveNumber);
-                if (Minecraft_QQ.MainConfig.链接.编码 == "ANSI")
+                else
                     data = Encoding.Default.GetString(bytes, 0, receiveNumber);
             }
             return data;
@@ -118,7 +119,7 @@ namespace Minecraft_QQ.MySocket
                                 var temp = Message.MessageCheck(str);
                                 if (temp != null)
                                 {
-                                    if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                                    if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                                     {
                                         IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + temp + "已连接");
                                     }
@@ -130,7 +131,7 @@ namespace Minecraft_QQ.MySocket
                                     }
                                     MCServers.Add(temp, socket);
                                 }
-                                else if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                                else if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                                 {
                                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                                 }
@@ -145,7 +146,7 @@ namespace Minecraft_QQ.MySocket
                 catch (Exception e)
                 {
                     string keys = MCServers.Where(q => q.Value == socket).Select(q => q.Key).FirstOrDefault();
-                    if (Minecraft_QQ.MainConfig.设置.发送日志到群)
+                    if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                         IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + keys + "连接已断开");
                     logs.LogWrite("[INFO][Socket]服务器" + keys + "连接已断开");
                     Close(socket, true);
@@ -226,9 +227,9 @@ namespace Minecraft_QQ.MySocket
                 {
                     data = Minecraft_QQ.MainConfig.链接.数据头 + data + Minecraft_QQ.MainConfig.链接.数据尾;
                     byte[] bytes = null;
-                    if (Minecraft_QQ.MainConfig.链接.编码 == "UTF-8")
+                    if (Minecraft_QQ.MainConfig.链接.编码 == Code.UTF8)
                         bytes = Encoding.UTF8.GetBytes(data);
-                    if (Minecraft_QQ.MainConfig.链接.编码 == "ANSI")
+                    else
                         bytes = Encoding.Default.GetBytes(data);
                     socket.Send(bytes);
                 }

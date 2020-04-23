@@ -5,7 +5,7 @@ namespace Minecraft_QQ
 {
     public class IMinecraft_QQ
     {
-        public const string Version = "2.7.5.0";
+        public const string Version = "2.8.0.0";
         public static CQApi Api { get; set; }
         public static void Start()
         {

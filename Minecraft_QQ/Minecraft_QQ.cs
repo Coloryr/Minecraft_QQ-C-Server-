@@ -85,8 +85,14 @@ namespace Minecraft_QQ
             try
             {
                 if (SetWindow == null)
+                {
                     SetWindow = new Window1();
-                SetWindow.Show();
+                    SetWindow.Show();
+                }
+                else
+                {
+                    SetWindow.Activate();
+                }
             }
             catch (Exception e)
             {
@@ -149,7 +155,7 @@ namespace Minecraft_QQ
             {
                 setform frm = new setform();
                 MessageBox.Show("请设置QQ群，有且最多一个主群", "参数错误，请设置");
-                frm.ShowDialog();
+                OpenSettingForm();
                 GroupConfig = read.ReadGroup();
             }
 

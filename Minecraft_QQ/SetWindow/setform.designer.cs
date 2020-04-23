@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(setform));
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -36,6 +37,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -77,7 +79,6 @@
             this.mysql_port = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.mysql_b = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -177,6 +178,16 @@
             this.groupBox2.Size = new System.Drawing.Size(201, 137);
             this.groupBox2.TabIndex = 70;
             this.groupBox2.TabStop = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(75, 109);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(63, 20);
+            this.button2.TabIndex = 70;
+            this.button2.Text = "重载配置";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button5
             // 
@@ -597,16 +608,6 @@
             this.mysql_b.UseVisualStyleBackColor = true;
             this.mysql_b.Click += new System.EventHandler(this.mysql_b_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(75, 109);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(63, 20);
-            this.button2.TabIndex = 70;
-            this.button2.Text = "重载配置";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // setform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -620,6 +621,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label14);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "setform";
