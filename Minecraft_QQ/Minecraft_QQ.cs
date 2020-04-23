@@ -80,25 +80,31 @@ namespace Minecraft_QQ
         /// </summary>
         public static void OpenSettingForm()
         {
-            try
+            Thread th = new Thread(new ThreadStart(delegate ()
             {
-                if (SetWindow == null)
+                try
                 {
-                    SetWindow = new Window1();
-                    SetWindow.Show();
+                    if (SetWindow == null)
+                    {
+                        SetWindow = new Window1();
+                        SetWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        SetWindow.Activate();
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    SetWindow.Activate();
+                    MessageBox.Show(e.Message);
+                    MessageBox.Show("新版UI不支持，使用旧版UI");
+                    setform frm = new setform();
+                    frm.ShowDialog();
                 }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                MessageBox.Show("新版UI不支持，使用旧版UI");
-                setform frm = new setform();
-                frm.ShowDialog();
-            }
+            }));
+            th.TrySetApartmentState(ApartmentState.STA);
+            th.Start();
+            th.Join();
         }
 
         /// <summary>
@@ -152,13 +158,6 @@ namespace Minecraft_QQ
             }
             else
                 GroupConfig = read.ReadGroup();
-            while (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
-            {
-                setform frm = new setform();
-                MessageBox.Show("请设置QQ群，有且最多一个主群", "参数错误，请设置");
-                OpenSettingForm();
-                GroupConfig = read.ReadGroup();
-            }
 
             //读自动应答消息
             if (ConfigFile.自动应答.Exists == false)
@@ -259,6 +258,13 @@ namespace Minecraft_QQ
             }
             else
                 CommandConfig = read.ReadCommand();
+
+            while (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
+            {
+                MessageBox.Show("请设置QQ群，有且最多一个主群", "参数错误，请设置");
+                OpenSettingForm();
+                GroupConfig = read.ReadGroup();
+            }
         }
         /// <summary>
         /// 插件启动
@@ -279,6 +285,8 @@ namespace Minecraft_QQ
         public static void Stop()
         {
             IsStart = false;
+            SetWindow.Close();
+            SetWindow = null;
             MySocketServer.ServerStop();
         }
         /// <summary>

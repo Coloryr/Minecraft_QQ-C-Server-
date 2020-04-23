@@ -159,17 +159,17 @@ namespace Minecraft_QQ.SetWindow
             MysqlPassword.Password = Minecraft_QQ.MainConfig.数据库.密码;
             if (Minecraft_QQ.MysqlOK)
             {
-                MysqlState.Content = "未连接";
-                MysqlConnect.Content = "连接";
-                MysqlIP.IsEnabled = MysqlPort.IsEnabled = MysqlUser.IsEnabled =
-                    MysqlPassword.IsEnabled = MysqlDataBase.IsEnabled = true;
-            }
-            else
-            {
                 MysqlState.Content = "已连接";
                 MysqlConnect.Content = "断开";
                 MysqlIP.IsEnabled = MysqlPort.IsEnabled = MysqlUser.IsEnabled =
                     MysqlPassword.IsEnabled = MysqlDataBase.IsEnabled = false;
+            }
+            else
+            {
+                MysqlState.Content = "未连接";
+                MysqlConnect.Content = "连接";
+                MysqlIP.IsEnabled = MysqlPort.IsEnabled = MysqlUser.IsEnabled =
+                    MysqlPassword.IsEnabled = MysqlDataBase.IsEnabled = true;
             }
         }
 
