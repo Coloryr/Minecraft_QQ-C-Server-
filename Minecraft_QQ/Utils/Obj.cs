@@ -11,34 +11,34 @@ namespace Minecraft_QQ.Utils
     /// <summary>
     /// 玩家数据储存格式
     /// </summary>
-    internal class PlayerObj
+    public class PlayerObj
     {
-        public string 名字;
-        public string 昵称;
-        public long QQ号 = 0;
-        public bool 管理员 = false;
+        public string 名字 { get; set; }
+        public string 昵称 { get; set; }
+        public long QQ号 { get; set; }
+        public bool 管理员 { get; set; }
     }
     /// <summary>
     /// 服务器命令储存格式
     /// </summary>
     internal class CommandObj
     {
-        public string 命令;
-        public bool 玩家使用 = false;
-        public bool 玩家发送 = false;
-        public bool 附带参数 = false;
-        public List<string> 服务器使用 = new List<string>();
+        public string 命令 { get; set; }
+        public bool 玩家使用 { get; set; }
+        public bool 玩家发送 { get; set; }
+        public bool 附带参数 { get; set; }
+        public List<string> 服务器使用 { get; set; } = new List<string>();
     }
     /// <summary>
     /// 发送/接受数据格式
     /// </summary>
     internal class MessageObj
     {
-        public string group;
-        public string player;
-        public string message;
-        public string commder;
-        public bool is_commder = false;
+        public string group { get; set; }
+        public string player { get; set; }
+        public string message { get; set; }
+        public string commder { get; set; }
+        public bool is_commder { get; set; }
     }
     /// <summary>
     /// 群储存格式

@@ -46,11 +46,11 @@ namespace Minecraft_QQ
         /// <summary>
         /// 自动应答储存
         /// </summary>
-        public static AskConfig Askconfig { get; set; }
+        public static AskConfig AskConfig { get; set; }
         /// <summary>
         /// 自定义指令
         /// </summary>
-        public static CommandConfig Commandconfig { get; set; }
+        public static CommandConfig CommandConfig { get; set; }
 
         public static Window1 SetWindow { get; private set; }
 
@@ -66,9 +66,9 @@ namespace Minecraft_QQ
         /// <param name="message">消息</param>
         public static void PrivateMessage(long FromQQ, string message)
         {
-            if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(message) == true)
+            if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(message) == true)
             {
-                string message1 = Askconfig.自动应答列表[message];
+                string message1 = AskConfig.自动应答列表[message];
                 if (string.IsNullOrWhiteSpace(message1) != false)
                     return;
                 IMinecraft_QQ.SPrivateMessage(FromQQ, message1);
@@ -80,8 +80,6 @@ namespace Minecraft_QQ
         /// </summary>
         public static void OpenSettingForm()
         {
-            //setform frm = new setform();
-            //frm.ShowDialog();
             try
             {
                 if (SetWindow == null)
@@ -97,6 +95,9 @@ namespace Minecraft_QQ
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                MessageBox.Show("新版UI不支持，使用旧版UI");
+                setform frm = new setform();
+                frm.ShowDialog();
             }
         }
 
@@ -162,7 +163,7 @@ namespace Minecraft_QQ
             //读自动应答消息
             if (ConfigFile.自动应答.Exists == false)
             {
-                Askconfig = new AskConfig
+                AskConfig = new AskConfig
                 {
                     自动应答列表 = new Dictionary<string, string>
                     {
@@ -173,18 +174,18 @@ namespace Minecraft_QQ
                     + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                     }
                 };
-                File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(Askconfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(AskConfig, Formatting.Indented));
             }
             else
-                Askconfig = read.ReadAsk();
+                AskConfig = read.ReadAsk();
 
             //读取玩家数据
             if (MainConfig.数据库.是否启用 == true)
             {
-                if (Mysql.MysqlStart() == false)
+                Mysql.MysqlStart();
+                if (MysqlOK == false)
                 {
                     IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql链接失败");
-                    MysqlOK = false;
                     if (ConfigFile.玩家储存.Exists == false)
                     {
                         PlayerConfig = new PlayerConfig();
@@ -200,7 +201,6 @@ namespace Minecraft_QQ
                         PlayerConfig = new PlayerConfig();
                     Mysql.Load();
                     IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql已连接");
-                    MysqlOK = true;
                 }
             }
             else
@@ -217,7 +217,7 @@ namespace Minecraft_QQ
             //读取自定义指令
             if (ConfigFile.自定义指令.Exists == false)
             {
-                Commandconfig = new CommandConfig
+                CommandConfig = new CommandConfig
                 {
                     命令列表 = new Dictionary<string, CommandObj>
                     {
@@ -255,10 +255,10 @@ namespace Minecraft_QQ
                         },
                     }
                 };
-                File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(Commandconfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(CommandConfig, Formatting.Indented));
             }
             else
-                Commandconfig = read.ReadCommand();
+                CommandConfig = read.ReadCommand();
         }
         /// <summary>
         /// 插件启动
@@ -477,9 +477,9 @@ namespace Minecraft_QQ
                     else if (Funtion.SendCommand(fromGroup, msg, fromQQ) == true)
                         return;
 
-                    else if (MainConfig.设置.自动应答开关 && Askconfig.自动应答列表.ContainsKey(msg_low) == true)
+                    else if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(msg_low) == true)
                     {
-                        string message = Askconfig.自动应答列表[msg_low];
+                        string message = AskConfig.自动应答列表[msg_low];
                         if (string.IsNullOrWhiteSpace(message) == false)
                         {
                             IMinecraft_QQ.SGroupMessage(fromGroup, message);

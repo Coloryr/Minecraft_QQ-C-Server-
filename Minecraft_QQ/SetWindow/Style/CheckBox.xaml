@@ -12,8 +12,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Height="{TemplateBinding Height}">
-                            <Rectangle x:Name="CheckBoxRectangle" Fill="#225EBDD3" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}" Opacity="0.3" Margin="0,2,0,0" />
-                            <Rectangle x:Name="CheckBoxRectangleOut" Stroke="#CC5EBDD3" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}" StrokeThickness="1" Margin="0,2,0,0"/>
+                            <Rectangle x:Name="CheckBoxRectangle" Fill="#225EBDD3" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}" Opacity="0.3" Margin="0,0,0,0" />
+                            <Rectangle x:Name="CheckBoxRectangleOut" Stroke="#CC5EBDD3" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}" StrokeThickness="1" Margin="0,0,0,0"/>
                         </Grid>
                         <TextBlock Grid.Column="1" Text="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" 
                                    Foreground="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Margin="2,-1,0,0"/>

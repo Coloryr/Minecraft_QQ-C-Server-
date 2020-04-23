@@ -1,5 +1,6 @@
 ﻿using Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace Minecraft_QQ.MyMysql
         public static string MysqlNotIDTable = "minecraft_qq_notid";
         public static string MysqlMuteTable = "minecraft_qq_mute";
 
-        public static bool MysqlStart()
+        public static void MysqlStart()
         {
             string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
                 Minecraft_QQ.MainConfig.数据库.地址, Minecraft_QQ.MainConfig.数据库.端口, Minecraft_QQ.MainConfig.数据库.用户名,
@@ -26,10 +27,17 @@ namespace Minecraft_QQ.MyMysql
             }
             MysqlAddTable table = new MysqlAddTable();
 
-            if (table.AddPlayerTable(MysqlPlayerTable) == false) return false;
-            if (table.AddOneTable(MysqlNotIDTable) == false) return false;
-            if (table.AddOneTable(MysqlMuteTable) == false) return false;
-            return true;
+            if (table.AddPlayerTable(MysqlPlayerTable) == false) return;
+            if (table.AddOneTable(MysqlNotIDTable) == false) return;
+            if (table.AddOneTable(MysqlMuteTable) == false) return;
+            Minecraft_QQ.MysqlOK = true;
+        }
+
+        public static void MysqlStop()
+        {
+            if (conn.State != ConnectionState.Broken)
+                conn.Close();
+            Minecraft_QQ.MysqlOK = false;
         }
 
         public void Load()
@@ -58,7 +66,8 @@ namespace Minecraft_QQ.MyMysql
                 {
                     player.昵称 = reader.GetString(1);
                 }
-                long.TryParse(reader.GetString(3), out player.QQ号);
+                long.TryParse(reader.GetString(3), out long temp);
+                player.QQ号 = temp;
                 if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(player.QQ号) == false)
                     Minecraft_QQ.PlayerConfig.玩家列表.Add(player.QQ号, player);
             }

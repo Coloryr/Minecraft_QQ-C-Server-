@@ -59,7 +59,7 @@
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="#FFD6D6D6"/>
+                            <Setter Property="Foreground" Value="#FFCDCDCD"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter Property="Foreground" Value="White"/>

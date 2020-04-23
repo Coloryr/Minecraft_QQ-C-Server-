@@ -18,7 +18,7 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="gridborder" Property="Background" Value="#00000000"/>
                             <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
-                            <Setter TargetName="data" Property="Foreground" Value="#FF818181"/>
+                            <Setter TargetName="data" Property="Foreground" Value="#FFCDCDCD"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

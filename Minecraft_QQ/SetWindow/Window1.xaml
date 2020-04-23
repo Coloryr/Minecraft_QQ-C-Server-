@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Style/ListView.xaml"/>
                 <ResourceDictionary Source="Style/TextBox.xaml"/>
                 <ResourceDictionary Source="Style/TabControl.xaml"/>
+                <ResourceDictionary Source="Style/PasswordBox.xaml"/>
                 <ResourceDictionary Source="Style/GroupBox.xaml"/>
                 <ResourceDictionary Source="Style/RadioButton.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -86,7 +87,7 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="断开连接" Click="ScoketD"/>
+                                <MenuItem Header="断开连接" Click="SocketD"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -196,15 +197,17 @@
                         x:Name="PlayerList">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="QQ号" Width="150" DisplayMemberBinding="{Binding 名字}"/>
-                                <GridViewColumn Header="玩家名字" Width="150" DisplayMemberBinding="{Binding 昵称}"/>
-                                <GridViewColumn Header="昵称" Width="150" DisplayMemberBinding="{Binding QQ号}"/>
+                                <GridViewColumn Header="QQ号" Width="120" DisplayMemberBinding="{Binding QQ号}"/>
+                                <GridViewColumn Header="玩家名字" Width="150" DisplayMemberBinding="{Binding 名字}"/>
+                                <GridViewColumn Header="昵称" Width="150" DisplayMemberBinding="{Binding 昵称}"/>
                                 <GridViewColumn Header="管理员" Width="90" DisplayMemberBinding="{Binding 管理员}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="断开连接" Click="ScoketD"/>
+                                <MenuItem Header="删除玩家" Click="PlayerD"/>
+                                <MenuItem Header="修改玩家" Click="PlayerC"/>
+                                <MenuItem Header="添加玩家" Click="PlayerA"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -217,7 +220,8 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="断开连接" Click="ScoketD"/>
+                                <MenuItem Header="删除" Click="NoIDD"/>
+                                <MenuItem Header="添加" Click="NoIDA"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -230,7 +234,8 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="断开连接" Click="ScoketD"/>
+                                <MenuItem Header="删除" Click="MuteDD"/>
+                                <MenuItem Header="添加" Click="MuteDA"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -239,16 +244,72 @@
             </TabItem>
             <TabItem Header="自动应答" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
+                    <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                        x:Name="MessageList">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="检测" Width="120" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="回复" Width="560" DisplayMemberBinding="{Binding Addr}"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="删除回复" Click="MessageD"/>
+                                <MenuItem Header="修改回复" Click="MessageC"/>
+                                <MenuItem Header="添加回复" Click="MessageA"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
 
                 </Grid>
             </TabItem>
             <TabItem Header="服务器指令" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
+                    <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                        x:Name="CommandList">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="检测" Width="120" DisplayMemberBinding="{Binding Check}"/>
+                                <GridViewColumn Header="指令" Width="130" DisplayMemberBinding="{Binding Command}"/>
+                                <GridViewColumn Header="玩家使用" Width="80" DisplayMemberBinding="{Binding Use}"/>
+                                <GridViewColumn Header="玩家发送" Width="80" DisplayMemberBinding="{Binding Send}"/>
+                                <GridViewColumn Header="附带参数" Width="80" DisplayMemberBinding="{Binding Pr}"/>
+                                <GridViewColumn Header="服务器使用" Width="200" DisplayMemberBinding="{Binding Server}"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="删除指令" Click="CommandD"/>
+                                <MenuItem Header="修改指令" Click="CommandC"/>
+                                <MenuItem Header="添加指令" Click="CommandA"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
 
                 </Grid>
             </TabItem>
             <TabItem Header="数据库" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
+                    <Label Content="地址" Style="{DynamicResource Label}" Margin="10,10,686,341"/>
+                    <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="57,13,519,344" FontSize="16"
+                             Text="{Binding 数据库.地址}"/>
+                    <Label Content="端口" Style="{DynamicResource Label}" Margin="10,43,686,308"/>
+                    <TextBox x:Name="MysqlPort" TextWrapping="Wrap" Margin="57,46,519,311" FontSize="16"
+                             Text="{Binding 数据库.端口}"/>
+                    <Label Content="用户" Style="{DynamicResource Label}" Margin="10,76,686,275"/>
+                    <TextBox x:Name="MysqlUser" TextWrapping="Wrap" Margin="57,79,519,278" FontSize="16"
+                             Text="{Binding 数据库.用户名}"/>
+                    <Label Content="密码" Style="{DynamicResource Label}" Margin="10,109,686,242"/>
+                    <PasswordBox x:Name="MysqlPassword" Margin="57,112,519,245" FontSize="16" PasswordChanged="MysqlPassword_PasswordChanged"/>
+                    <Label Content="数据库" Style="{DynamicResource Label}" Margin="10,142,670,209"/>
+                    <TextBox x:Name="MysqlDataBase" Margin="73,145,519,212" FontSize="16" TextWrapping="Wrap" Text="{Binding 数据库.数据库}"/>
+                    <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,175,670,176"/>
+                    <Label Name="MysqlState" Content="未知" Style="{DynamicResource Label}" Margin="68,175,519,176"/>
+                    <Button x:Name="MysqlConnect" Content="连接" Margin="10,346,644,10" IsDefault="True" Style="{DynamicResource Button}"
+                            FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click"/>
+                    <CheckBox Content="启用" Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="10,217,670,143"
+                              IsChecked="{Binding 数据库.是否启用}"/>
+
 
                 </Grid>
             </TabItem>

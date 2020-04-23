@@ -577,7 +577,7 @@ namespace Minecraft_QQ.Utils
         }
         public static bool SendCommand(long fromGroup, string msg, long fromQQ)
         {
-            foreach (var value in Minecraft_QQ.Commandconfig.命令列表)
+            foreach (var value in Minecraft_QQ.CommandConfig.命令列表)
             {
                 if (msg.ToLower().IndexOf(value.Key) == 0)
                 {

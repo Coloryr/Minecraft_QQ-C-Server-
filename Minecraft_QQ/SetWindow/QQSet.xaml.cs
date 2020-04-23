@@ -1,8 +1,5 @@
 ﻿using Minecraft_QQ.Utils;
-using System;
-using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace Minecraft_QQ.SetWindow
 {

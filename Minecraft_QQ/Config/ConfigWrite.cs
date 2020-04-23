@@ -68,5 +68,11 @@ namespace Minecraft_QQ.Config
                 }
             }
         }
+        public void All()
+        {
+            Config();
+            Group();
+            Player();
+        }
     }
 }

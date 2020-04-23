@@ -88,6 +88,18 @@
     <Compile Include="Config\ConfigRead.cs" />
     <Compile Include="Config\ConfigShow.cs" />
     <Compile Include="Config\ConfigWrite.cs" />
+    <Compile Include="SetWindow\CommandSet.xaml.cs">
+      <DependentUpon>CommandSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SetWindow\IDSet.xaml.cs">
+      <DependentUpon>IDSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SetWindow\MessageSet.xaml.cs">
+      <DependentUpon>MessageSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SetWindow\PlayerSet.xaml.cs">
+      <DependentUpon>PlayerSet.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetWindow\QQSet.xaml.cs">
       <DependentUpon>QQSet.xaml</DependentUpon>
     </Compile>
@@ -126,6 +138,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="SetWindow\CommandSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\IDSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\MessageSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\PlayerSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SetWindow\QQSet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +183,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SetWindow\Style\ListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\Style\PasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

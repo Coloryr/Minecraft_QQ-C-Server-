@@ -248,17 +248,16 @@ namespace Minecraft_QQ.SetWindow
             Minecraft_QQ.MainConfig.数据库.密码 = mysql_password.Text;
             Minecraft_QQ.MainConfig.数据库.数据库 = mysql_database.Text;
             new ConfigWrite().Config();
-            if (Mysql.MysqlStart() == false)
+            Mysql.MysqlStart();
+            if (Minecraft_QQ.MysqlOK == false)
             {
                 mysql_now.Text = "Mysql无法连接";
                 mysql_use.Checked = false;
-                Minecraft_QQ.MysqlOK = false;
             }
             else
             {
                 mysql_now.Text = "Mysql已连接";
                 mysql_use.Checked = true;
-                Minecraft_QQ.MysqlOK = true;
             }
         }
         private void mysql_use_CheckedChanged(object sender, EventArgs e)

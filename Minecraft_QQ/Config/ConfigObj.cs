@@ -37,7 +37,7 @@ namespace Minecraft_QQ.Config
         /// <summary>
         /// 禁止绑定数据储存
         /// </summary>
-        public List<string> 禁止绑定列表 { get; set; } = new List<string> { "Color_yr" };
+        public List<string> 禁止绑定列表 { get; set; } = new List<string> { };
         /// <summary>
         /// 禁言数据存储
         /// </summary>
