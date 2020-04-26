@@ -61,15 +61,13 @@
                     <Label Content="端口" Style="{DynamicResource Label}" Margin="10,75,686,276"/>
                     <TextBox x:Name="Port" TextWrapping="Wrap" Margin="57,78,519,279" FontSize="16"
                              Text="{Binding 链接.端口}"/>
-                    <Button x:Name="SocketRE" Content="重启端口" Margin="10,346,644,10" IsDefault="True" Style="{DynamicResource Button}"
-                            FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click_2"/>
                     <Label Content="状态：" Style="{DynamicResource Label}" Margin="11,198,674,153"/>
                     <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="64,198,517,153"/>
                     <RadioButton Content="ANSI" Margin="10,108,621,249" Style="{DynamicResource RadioButton_Left}" 
-                                 IsChecked="True" Name="ANSIC" Click="C_Click"/>
+                                 IsChecked="True" Name="ANSIC" Checked="C_Click"/>
                     <RadioButton Content="UTF-8" Margin="112,108,519,249" Style="{DynamicResource RadioButton_Right}" 
-                                 IsChecked="False" Name="UTF8C" Click="C_Click"/>
-                    <Button x:Name="SocketST" Content="关闭端口" Margin="99,346,555,10" IsDefault="True" Style="{DynamicResource Button}"
+                                 IsChecked="False" Name="UTF8C" Checked="C_Click"/>
+                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,346,644,10" IsDefault="True" Style="{DynamicResource Button}"
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click"/>
                     <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,132,669,219"/>
                     <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,135,518,222" FontSize="16"

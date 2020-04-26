@@ -19,7 +19,7 @@ namespace Minecraft_QQ.MyMysql
             }
             catch (MySqlException ex)
             {
-                logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+                Logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
             }
             Mysql.conn.Close();
         }

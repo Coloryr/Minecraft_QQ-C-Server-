@@ -14,7 +14,7 @@ namespace Minecraft_QQ.Config
         /// </summary>
         public MainConfig ReadConfig()
         {
-            logs.LogWrite("[INFO][Config]读取主配置");
+            Logs.LogWrite("[INFO][Config]读取主配置");
             try
             {
                 var config = JsonConvert.DeserializeObject<MainConfig>
@@ -59,14 +59,14 @@ namespace Minecraft_QQ.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
-                logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
+                MessageBox.Show("快去检查你的Mainconfig.json文件语法，用的是json就要遵守语法！", "你配置文件爆了");
+                Logs.LogError(e);
                 return new MainConfig();
             }
         }
         public PlayerConfig ReadPlayer()
         {
-            logs.LogWrite("[INFO][Config]读取玩家配置");
+            Logs.LogWrite("[INFO][Config]读取玩家配置");
             try
             {
                 var config = JsonConvert.DeserializeObject<PlayerConfig>
@@ -96,14 +96,14 @@ namespace Minecraft_QQ.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
-                logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
+                MessageBox.Show("快去检查你的Player.json文件语法，用的是json就要遵守语法！", "你配置文件爆了");
+                Logs.LogError(e);
                 return new PlayerConfig();
             }
         }
         public GroupConfig ReadGroup()
         {
-            logs.LogWrite("[INFO][Config]读取群设置");
+            Logs.LogWrite("[INFO][Config]读取群设置");
             try
             {
                 var config = JsonConvert.DeserializeObject<GroupConfig>
@@ -126,14 +126,14 @@ namespace Minecraft_QQ.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
-                logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
+                MessageBox.Show("快去检查你的Group.json文件语法，用的是json就要遵守语法！", "你配置文件爆了");
+                Logs.LogError(e);
                 return new GroupConfig();
             }
         }
         public AskConfig ReadAsk()
         {
-            logs.LogWrite("[INFO][Config]读取自定义应答");
+            Logs.LogWrite("[INFO][Config]读取自定义应答");
             try
             {
                 var config = JsonConvert.DeserializeObject<AskConfig>
@@ -156,14 +156,14 @@ namespace Minecraft_QQ.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
-                logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
+                MessageBox.Show("快去检查你的Ask.json文件语法，用的是json就要遵守语法！", "你配置文件爆了");
+                Logs.LogError(e);
                 return new AskConfig();
             }
         }
         public CommandConfig ReadCommand()
         {
-            logs.LogWrite("[INFO][Config]读取自定义指令");
+            Logs.LogWrite("[INFO][Config]读取自定义指令");
             try
             {
                 var config = JsonConvert.DeserializeObject<CommandConfig>
@@ -216,8 +216,8 @@ namespace Minecraft_QQ.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show("你配置文件爆了", "快去检查你的配置文件语法，用的是json就要遵守语法！");
-                logs.LogWrite("[ERROR][Config]配置文件读取错误：" + e.Message);
+                MessageBox.Show("快去检查你的Command.json文件语法，用的是json就要遵守语法！", "你配置文件爆了");
+                Logs.LogError(e);
                 return new CommandConfig();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
+using System;
 using System.Threading.Tasks;
 
 namespace Minecraft_QQ.MyMysql
@@ -20,9 +21,9 @@ namespace Minecraft_QQ.MyMysql
                 });
                 await Mysql.MysqlSql(cmd);
             }
-            catch (MySqlException ex)
+            catch (Exception e)
             {
-                logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+                Logs.LogError(e);
             }
             Mysql.conn.Close();
         }

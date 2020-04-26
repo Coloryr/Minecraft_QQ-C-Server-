@@ -96,10 +96,16 @@ namespace Minecraft_QQ
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
-                    MessageBox.Show("新版UI不支持，使用旧版UI");
+                    Logs.LogError(e);
+                    MessageBox.Show("新版UI发生错误，使用旧版UI");
                     setform frm = new setform();
                     frm.ShowDialog();
+                }
+                finally
+                {
+                    if (SetWindow != null)
+                        SetWindow.Close();
+                    SetWindow = null;
                 }
             }));
             th.TrySetApartmentState(ApartmentState.STA);
@@ -116,13 +122,13 @@ namespace Minecraft_QQ
             {
                 Directory.CreateDirectory(Path);
             }
-            if (!File.Exists(Path + logs.log))
+            if (!File.Exists(Path + Logs.log))
             {
                 try
                 {
-                    File.WriteAllText(Path + logs.log, "正在尝试创建日志文件" + Environment.NewLine);
+                    File.WriteAllText(Path + Logs.log, "正在尝试创建日志文件" + Environment.NewLine);
                 }
-                catch (Exception)
+                catch
                 {
                     MessageBox.Show("[Minecraft_QQ]日志文件创建失败");
                     return;
@@ -140,7 +146,7 @@ namespace Minecraft_QQ
             //读取主配置文件
             if (ConfigFile.主要配置文件.Exists == false)
             {
-                logs.LogWrite("[Info][Config]新建主配置");
+                Logs.LogWrite("[Info][Config]新建主配置");
                 MainConfig = new MainConfig();
                 File.WriteAllText(ConfigFile.主要配置文件.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
             }
@@ -152,7 +158,7 @@ namespace Minecraft_QQ
             //读取群设置
             if (ConfigFile.群设置.Exists == false)
             {
-                logs.LogWrite("[Info][Config]新建群设置配置");
+                Logs.LogWrite("[Info][Config]新建群设置配置");
                 GroupConfig = new GroupConfig();
                 File.WriteAllText(ConfigFile.群设置.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
             }
@@ -277,8 +283,8 @@ namespace Minecraft_QQ
             MySocketServer.StartServer();
             IsStart = true;
 
-            Send.Send_T = new Thread(Send.Send_);
-            Send.Send_T.Start();
+            Send.SendT = new Thread(Send.SendToGroup);
+            Send.SendT.Start();
 
             IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
         }
@@ -299,7 +305,7 @@ namespace Minecraft_QQ
         {
             if (IsStart == false)
                 return;
-            logs.LogWrite('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
+            Logs.LogWrite('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
             if (GroupConfig.群列表.ContainsKey(fromGroup) == true)
             {
                 msg = Funtion.CQtoCode(msg);
@@ -400,9 +406,9 @@ namespace Minecraft_QQ
                             }
                             return;
                         }
-                        catch (InvalidCastException e1)
+                        catch (Exception e)
                         {
-                            logs.LogWrite(e1.Message);
+                            Logs.LogError(e);
                             return;
                         }
                     }

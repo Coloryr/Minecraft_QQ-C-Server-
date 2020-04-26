@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Minecraft_QQ.Utils;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,69 +11,44 @@ namespace Minecraft_QQ.Config
     {
         public void Config()
         {
-            try
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    File.WriteAllText(ConfigFile.主要配置文件.FullName,
-                    JsonConvert.SerializeObject(Minecraft_QQ.MainConfig, Formatting.Indented));
-                });
-            }
-            catch (Exception)
-            {
-                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
-                    "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    File.Delete(ConfigFile.主要配置文件.FullName);
-                    Config();
-                }
-            }
+            Save(ConfigFile.主要配置文件.FullName, Minecraft_QQ.MainConfig);
         }
         public void Group()
         {
-            try
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    File.WriteAllText(ConfigFile.群设置.FullName,
-                    JsonConvert.SerializeObject(Minecraft_QQ.GroupConfig, Formatting.Indented));
-                });
-            }
-            catch (Exception)
-            {
-                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
-                     "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    File.Delete(ConfigFile.群设置.FullName);
-                    Group();
-                }
-            }
+            Save(ConfigFile.群设置.FullName, Minecraft_QQ.GroupConfig);
         }
         public void Player()
         {
-            try
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    File.WriteAllText(ConfigFile.玩家储存.FullName,
-                    JsonConvert.SerializeObject(Minecraft_QQ.PlayerConfig, Formatting.Indented));
-                });
-            }
-            catch (Exception)
-            {
-                if (MessageBox.Show("配置文件在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
-                     "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    File.Delete(ConfigFile.玩家储存.FullName);
-                    Player();
-                }
-            }
+            Save(ConfigFile.玩家储存.FullName, Minecraft_QQ.PlayerConfig);
         }
         public void All()
         {
             Config();
             Group();
             Player();
+        }
+
+        private void Save(string FileName, object obj)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    File.WriteAllText(FileName,
+                    JsonConvert.SerializeObject(obj, Formatting.Indented));
+
+                }
+                catch (Exception e)
+                {
+                    Logs.LogError(e);
+                    if (MessageBox.Show("配置" + FileName + "在写入时发发生了错误，是否要删除原来的配置文件再新生成一个？",
+                         "配置文件错误", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        File.Delete(FileName);
+                        Save(FileName, obj);
+                    }
+                }
+            });
         }
     }
 }

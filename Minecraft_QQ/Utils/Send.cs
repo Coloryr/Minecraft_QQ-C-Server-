@@ -11,12 +11,11 @@ namespace Minecraft_QQ.Utils
     }
     internal class Send
     {
-        public static Thread Send_T;
+        public static Thread SendT;
         public static List<SendObj> SendList { get; set; } = new List<SendObj>() { };
 
-        public static void Send_()
-        {
-            logs.LogWrite("线程启动");
+        public static void SendToGroup()
+        {;
             while (true)
             {
                 if (SendList.Count != 0)

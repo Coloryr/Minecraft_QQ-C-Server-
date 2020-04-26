@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Minecraft_QQ.Utils
 {
-    internal class logs
+    internal class Logs
     {
         public static string log = "logs.log";
         private static object obj = new object();
@@ -25,6 +25,11 @@ namespace Minecraft_QQ.Utils
             {
 
             }
+        }
+
+        public static void LogError(Exception e)
+        {
+            Logs.LogWrite("[ERROR]" + e.Message + "\n" + e.StackTrace);
         }
     }
 }

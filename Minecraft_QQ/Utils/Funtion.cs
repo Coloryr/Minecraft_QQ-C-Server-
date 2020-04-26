@@ -218,7 +218,7 @@ namespace Minecraft_QQ.Utils
             }
             catch (Exception e)
             {
-                logs.LogWrite("[ERROR][group]" + e.Message);
+                Logs.LogError(e);
             }
             return null;
         }
@@ -231,7 +231,7 @@ namespace Minecraft_QQ.Utils
             }
             catch (Exception e)
             {
-                logs.LogWrite("[ERROR][group]" + e.Message);
+                Logs.LogError(e);
             }
             return null;
         }
@@ -520,14 +520,14 @@ namespace Minecraft_QQ.Utils
             {
                 Minecraft_QQ.MainConfig.设置.维护模式 = true;
                 new ConfigWrite().Config();
-                logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已开启");
+                Logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已开启");
                 return "服务器维护模式已开启";
             }
             else
             {
                 Minecraft_QQ.MainConfig.设置.维护模式 = false;
                 new ConfigWrite().Config();
-                logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已关闭");
+                Logs.LogWrite("[INFO][Minecraft_QQ]服务器维护模式已关闭");
                 return "服务器维护模式已关闭";
             }
         }

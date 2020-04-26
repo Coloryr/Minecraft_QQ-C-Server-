@@ -29,10 +29,14 @@ namespace Minecraft_QQ.SetWindow
 
             public List<string> ServerS = new List<string>();
         }
+
+        private bool IsLoad;
+
         public Window1()
         {
             Closed += MetroWindow_Closed;
             KeyDown += Window_KeyDown;
+            IsLoad = true;
             InitializeComponent();
             InitQQList();
             InitServerList();
@@ -41,6 +45,8 @@ namespace Minecraft_QQ.SetWindow
             InitCommandList();
             InitMysql();
             DataContext = Minecraft_QQ.MainConfig;
+            IsLoad = false;
+            C_Click(null, null);
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -260,13 +266,6 @@ namespace Minecraft_QQ.SetWindow
             IP.Text = "0.0.0.0";
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            MySocketServer.ServerStop();
-            MySocketServer.StartServer();
-            InitServerList();
-        }
-
         private void MetroWindow_Closed(object sender, System.EventArgs e)
         {
             Minecraft_QQ.CloseSetWindow();
@@ -289,7 +288,7 @@ namespace Minecraft_QQ.SetWindow
             InitServerList();
         }
         private void SocketD(object sender, RoutedEventArgs e)
-        {
+        { 
             foreach (var item in ServerList.SelectedItems)
             {
                 var temp = (Server)item;
@@ -472,6 +471,8 @@ namespace Minecraft_QQ.SetWindow
 
         private void C_Click(object sender, RoutedEventArgs e)
         {
+            if (IsLoad)
+                return;
             if (ANSIC.IsChecked == true)
             {
                 UTF8C.IsChecked = false;

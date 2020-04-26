@@ -24,7 +24,7 @@
                             <Setter Property="Background" Value="#005EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Opacity" Value="0.6"></Setter>
+                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" TargetName="grid" ></Setter>
@@ -59,7 +59,7 @@
                             <Setter Property="Background" Value="#005EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Opacity" Value="0.6"></Setter>
+                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" TargetName="grid" ></Setter>
@@ -94,7 +94,7 @@
                             <Setter Property="Background" Value="#005EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Opacity" Value="0.6"></Setter>
+                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" TargetName="grid" ></Setter>
