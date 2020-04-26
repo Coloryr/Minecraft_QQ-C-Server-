@@ -9,6 +9,14 @@ namespace Minecraft_QQ.Config
 {
     internal class ConfigWrite
     {
+        public void Ask()
+        {
+            Save(ConfigFile.自动应答.FullName, Minecraft_QQ.AskConfig);
+        }
+        public void Command()
+        {
+            Save(ConfigFile.自定义指令.FullName, Minecraft_QQ.CommandConfig);
+        }
         public void Config()
         {
             Save(ConfigFile.主要配置文件.FullName, Minecraft_QQ.MainConfig);
@@ -23,6 +31,8 @@ namespace Minecraft_QQ.Config
         }
         public void All()
         {
+            Ask();
+            Command();
             Config();
             Group();
             Player();
