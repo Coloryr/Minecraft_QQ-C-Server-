@@ -69,7 +69,7 @@ namespace Minecraft_QQ.MySocket
                     readThread.Start(clientScoket);
                     Clients.Add(clientScoket, readThread);
                     GC.Collect();
-                    Thread.Sleep(1000);                          
+                    Thread.Sleep(1000);
                     if (!Start)
                     {
                         if (ServerSocket != null)
@@ -78,7 +78,7 @@ namespace Minecraft_QQ.MySocket
                     }
                 }
             }
-            catch (ThreadAbortException)
+            catch (Exception)
             {
                 return;
             }
