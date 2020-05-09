@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minecraft_QQ.SetWindow"
         mc:Ignorable="d"
-        Title="消息设置" Height="180" Width="300" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/img/icon.ico">
+        Title="消息设置" Height="180" Width="300" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

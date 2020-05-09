@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Native.Sdk", "Native.Sdk\Na
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Native.Core", "Native.Core\Native.Core.csproj", "{C03C5BB7-91D0-4894-AAF9-127090DFAD91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ.Code", "Minecraft_QQ\Minecraft_QQ.Code.csproj", "{58AF8B85-E0DF-46BC-A932-81DD14C71165}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ", "Minecraft_QQ\Minecraft_QQ.csproj", "{58AF8B85-E0DF-46BC-A932-81DD14C71165}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

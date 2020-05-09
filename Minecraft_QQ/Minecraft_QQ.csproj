@@ -92,6 +92,11 @@
     <Compile Include="Config\ConfigRead.cs" />
     <Compile Include="Config\ConfigShow.cs" />
     <Compile Include="Config\ConfigWrite.cs" />
+    <Compile Include="Properties\Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="SetWindow\CommandSet.xaml.cs">
       <DependentUpon>CommandSet.xaml</DependentUpon>
     </Compile>
@@ -137,6 +142,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SetWindow\setform.resx">
       <DependentUpon>setform.cs</DependentUpon>
     </EmbeddedResource>
@@ -221,10 +230,11 @@
       <Name>Native.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="img\icon.ico" />
     <Resource Include="img\Minecraft_QQ.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Properties\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -99,9 +99,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Minecraft_QQ\Minecraft_QQ.Code.csproj">
+    <ProjectReference Include="..\Minecraft_QQ\Minecraft_QQ.csproj">
       <Project>{58af8b85-e0df-46bc-a932-81dd14c71165}</Project>
-      <Name>Minecraft_QQ.Code</Name>
+      <Name>Minecraft_QQ</Name>
     </ProjectReference>
     <ProjectReference Include="..\Native.Sdk\Native.Sdk.csproj">
       <Project>{d7a958b3-79d9-49f8-8bb4-9619bab6ecba}</Project>

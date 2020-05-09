@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-         Title="服务器指令设置" Height="149.25" Width="343.5" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/img/icon.ico">
+         Title="服务器指令设置" Height="149.25" Width="343.5" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

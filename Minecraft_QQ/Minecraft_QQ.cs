@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Drawing;
+using Minecraft_QQ.Properties;
 
 namespace Minecraft_QQ
 {
@@ -291,7 +292,7 @@ namespace Minecraft_QQ
             try
             {
                 notifyIcon = new NotifyIcon();
-                notifyIcon.Icon = new Icon(System.Windows.Application.GetResourceStream(new Uri("/Minecraft_QQ;component/img/icon.ico", UriKind.Relative)).Stream);
+                notifyIcon.Icon = Resource1.icon;
                 notifyIcon.Visible = true;
                 notifyIcon.MouseClick += NotifyIcon_MouseClick;
                 notifyIcon.BalloonTipText = "已启动";
