@@ -10,11 +10,13 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Minecraft_QQ
 {
     internal class Minecraft_QQ
     {
+        public static NotifyIcon notifyIcon;
         /// <summary>
         /// 配置文件路径
         /// </summary>
@@ -286,13 +288,36 @@ namespace Minecraft_QQ
             Send.SendT = new Thread(Send.SendToGroup);
             Send.SendT.Start();
 
+            try
+            {
+                notifyIcon = new NotifyIcon();
+                notifyIcon.Icon = new Icon(System.Windows.Application.GetResourceStream(new Uri("/Minecraft_QQ;component/img/icon.ico", UriKind.Relative)).Stream);
+                notifyIcon.Visible = true;
+                notifyIcon.MouseClick += NotifyIcon_MouseClick;
+                notifyIcon.BalloonTipText = "已启动";
+                notifyIcon.ShowBalloonTip(1000);
+            }
+            catch
+            {
+                MessageBox.Show("错误");
+            }
+            
             IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
         }
+
+        private static void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            OpenSettingForm();
+        }
+
         public static void Stop()
         {
             IsStart = false;
-            SetWindow.Close();
-            SetWindow = null;
+            if (SetWindow != null)
+            {
+                SetWindow.Close();
+                CloseSetWindow();
+            }
             MySocketServer.ServerStop();
         }
         /// <summary>

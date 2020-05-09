@@ -18,7 +18,7 @@
         <Label Content="QQ号" Margin="10,6,162,91" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
         <TextBox Margin="52,11,10,94" TextWrapping="Wrap" Text="{Binding PlayerObj.QQ号}" Foreground="Black" Background="#225EBDD3"/>
-        <CheckBox Content="管理员" Margin="10,98,154,10"
+        <CheckBox Content="管理员" Margin="10,98,154,10" Name="Admin_C"
                   Style="{DynamicResource Check}" IsChecked="{Binding PlayerObj.管理员}"/>
         <Label Content="名字" Margin="13,36,167,61" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>

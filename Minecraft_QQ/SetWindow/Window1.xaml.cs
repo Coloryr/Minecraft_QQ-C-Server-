@@ -3,6 +3,7 @@ using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
 using Minecraft_QQ.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,7 +19,7 @@ namespace Minecraft_QQ.SetWindow
             public string Name { get; set; }
             public string Addr { get; set; }
         }
-        public class CommandOBJ 
+        public class CommandOBJ
         {
             public string Check { get; set; }
             public string Command { get; set; }
@@ -191,8 +192,8 @@ namespace Minecraft_QQ.SetWindow
             {
                 return;
             }
-            else if(!long.TryParse(item.群号, out group))
-            { 
+            else if (!long.TryParse(item.群号, out group))
+            {
                 MessageBox.Show("请检查你修改后的群号", "修改失败");
                 return;
             }
@@ -205,7 +206,7 @@ namespace Minecraft_QQ.SetWindow
         {
             if (QQList.SelectedItems.Count == 0)
                 return;
-            foreach(var item in QQList.SelectedItems)
+            foreach (var item in QQList.SelectedItems)
             {
                 var temp = (GroupObj)item;
                 long.TryParse(temp.群号, out long group);
@@ -288,7 +289,7 @@ namespace Minecraft_QQ.SetWindow
             InitServerList();
         }
         private void SocketD(object sender, RoutedEventArgs e)
-        { 
+        {
             foreach (var item in ServerList.SelectedItems)
             {
                 var temp = (Server)item;
@@ -478,7 +479,7 @@ namespace Minecraft_QQ.SetWindow
                 UTF8C.IsChecked = false;
                 Minecraft_QQ.MainConfig.链接.编码 = Code.ANSI;
             }
-            else if(UTF8C.IsChecked == true)
+            else if (UTF8C.IsChecked == true)
             {
                 ANSIC.IsChecked = false;
                 Minecraft_QQ.MainConfig.链接.编码 = Code.UTF8;
@@ -497,6 +498,55 @@ namespace Minecraft_QQ.SetWindow
             else
                 await Mysql.MysqlStartAsync();
             InitMysql();
+        }
+
+        private void Turnto(PlayerObj obj)
+        {
+            PlayerList.SelectedItem = obj;
+        }
+
+        private void SearchQQ_(object sender, RoutedEventArgs e)
+        {
+            var set = new PlayerSet(null).Set();
+            bool ok = string.IsNullOrWhiteSpace(set.名字)
+                && string.IsNullOrWhiteSpace(set.昵称)
+                && set.QQ号 == 0;
+            bool haveName;
+            bool haveNick;
+            if (ok)
+            {
+                MessageBox.Show("请输入要搜索的内容", "选择内容空");
+                return;
+            }
+            haveName = string.IsNullOrWhiteSpace(set.名字);
+            haveNick = string.IsNullOrWhiteSpace(set.昵称);
+
+            foreach (var item in Minecraft_QQ.PlayerConfig.玩家列表)
+            {
+                if (item.Key == set.QQ号)
+                {
+                    Turnto(item.Value);
+                    return;
+                }
+                else if (haveName)
+                {
+                    if (item.Value.名字.Contains(set.名字) || set.名字.Contains(item.Value.名字))
+                    {
+                        Turnto(item.Value);
+                        return;
+                    }
+                }
+                else if (haveNick)
+                {
+                    if (item.Value.昵称.Contains(set.昵称) || set.昵称.Contains(item.Value.昵称))
+                    {
+                        Turnto(item.Value);
+                        return;
+                    }
+                }
+            }
+            MessageBox.Show("请输入要搜索的内容", "选择内容空");
+            return;
         }
     }
 }

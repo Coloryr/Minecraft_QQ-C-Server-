@@ -206,6 +206,7 @@
                                 <MenuItem Header="删除玩家" Click="PlayerD"/>
                                 <MenuItem Header="修改玩家" Click="PlayerC"/>
                                 <MenuItem Header="添加玩家" Click="PlayerA"/>
+                                <MenuItem Header="搜索玩家" Click="SearchQQ_"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>

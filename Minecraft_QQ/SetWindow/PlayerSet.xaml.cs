@@ -9,13 +9,17 @@ namespace Minecraft_QQ.SetWindow
     public partial class PlayerSet : Window
     {
         public PlayerObj PlayerObj { get; set; }
-        public PlayerSet(PlayerObj PlayerObj = null)
+        public PlayerSet(PlayerObj PlayerObj = null, bool admin = true)
         {
             InitializeComponent();
             if (PlayerObj == null)
                 PlayerObj = new PlayerObj();
             this.PlayerObj = PlayerObj;
             DataContext = this;
+            if (admin == false)
+            {
+                Admin_C.Visibility = Visibility.Collapsed;
+            }
         }
 
         public PlayerObj Set()
