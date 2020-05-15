@@ -92,6 +92,7 @@
     <Compile Include="Config\ConfigRead.cs" />
     <Compile Include="Config\ConfigShow.cs" />
     <Compile Include="Config\ConfigWrite.cs" />
+    <Compile Include="Config\ServerObj.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,6 +112,9 @@
     </Compile>
     <Compile Include="SetWindow\QQSet.xaml.cs">
       <DependentUpon>QQSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SetWindow\ServerSet.xaml.cs">
+      <DependentUpon>ServerSet.xaml</DependentUpon>
     </Compile>
     <Compile Include="SetWindow\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
@@ -168,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SetWindow\QQSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\ServerSet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

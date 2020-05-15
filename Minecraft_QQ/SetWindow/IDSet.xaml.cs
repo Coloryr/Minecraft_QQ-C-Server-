@@ -8,10 +8,14 @@ namespace Minecraft_QQ.SetWindow
     public partial class IDSet : Window
     {
         public string ID { get; set; }
-        public IDSet()
+        public IDSet(string ID = null)
         {
             InitializeComponent();
             DataContext = this;
+            if (ID != null)
+            {
+                this.ID = ID;
+            }
         }
         public string Set()
         {

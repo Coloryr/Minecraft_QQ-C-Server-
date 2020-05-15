@@ -2,6 +2,7 @@
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
 using Minecraft_QQ.Utils;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,6 +15,11 @@ namespace Minecraft_QQ.SetWindow
     /// </summary>
     public partial class Window1 : Window
     {
+        private bool isGet;
+        private Server GetServer;
+        private bool IsLoad;
+        public delegate void ServerConfigEvent(Server server, string config);
+        public event ServerConfigEvent ServerConfigEventCall;
         public class Server
         {
             public string Name { get; set; }
@@ -31,7 +37,16 @@ namespace Minecraft_QQ.SetWindow
             public List<string> ServerS = new List<string>();
         }
 
-        private bool IsLoad;
+        public void ServerConfigEventCall_(Server server, string config)
+        {
+            if (!isGet)
+                return;
+            if (GetServer != server)
+                return;
+            var temp = JsonConvert.DeserializeObject<ConfigOBJ>(config);
+            new ServerSet(temp).Set();
+            MySocketServer.
+        }
 
         public Window1()
         {
@@ -48,6 +63,7 @@ namespace Minecraft_QQ.SetWindow
             DataContext = Minecraft_QQ.MainConfig;
             IsLoad = false;
             C_Click(null, null);
+            ServerConfigEventCall += ServerConfigEventCall_;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -288,6 +304,13 @@ namespace Minecraft_QQ.SetWindow
             }
             InitServerList();
         }
+        private void SocketE(object sender, RoutedEventArgs e)
+        {
+            if (ServerList.SelectedItem == null)
+                return;
+            var item = (Server)ServerList.SelectedItem;
+            
+        }
         private void SocketD(object sender, RoutedEventArgs e)
         {
             foreach (var item in ServerList.SelectedItems)
@@ -342,6 +365,17 @@ namespace Minecraft_QQ.SetWindow
             }
             InitPlayerList();
         }
+        private void NoIDE(object sender, RoutedEventArgs e)
+        {
+            if (NoIDList.SelectedItem != null)
+            {
+                var item = (string)NoIDList.SelectedItem;
+                Minecraft_QQ.PlayerConfig.禁止绑定列表.Remove(item);
+                item = new IDSet(item).Set();
+                Minecraft_QQ.PlayerConfig.禁止绑定列表.Add(item);
+            }
+            InitPlayerList();
+        }
         private void NoIDA(object sender, RoutedEventArgs e)
         {
             var item = new IDSet().Set();
@@ -362,6 +396,17 @@ namespace Minecraft_QQ.SetWindow
             foreach (var item in MuteList.SelectedItems)
             {
                 Minecraft_QQ.PlayerConfig.禁言列表.Remove((string)item);
+            }
+            InitPlayerList();
+        }
+        private void MuteDE(object sender, RoutedEventArgs e)
+        {
+            if (MuteList.SelectedItem != null)
+            {
+                var item = (string)MuteList.SelectedItem;
+                Minecraft_QQ.PlayerConfig.禁言列表.Remove(item);
+                item = new IDSet(item).Set();
+                Minecraft_QQ.PlayerConfig.禁言列表.Add(item);
             }
             InitPlayerList();
         }

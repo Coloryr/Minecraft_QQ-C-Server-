@@ -1,4 +1,10 @@
-﻿namespace Native.Sdk.Cqp.Enum
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Native.Sdk.Cqp.Enum
 {
     /// <summary>
     /// 指示分享音乐时使用的分享卡片样式

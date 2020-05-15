@@ -98,8 +98,8 @@ namespace System.Data.SQLite
         private void CheckDisposed() /* throw */
         {
 #if THROW_ON_DISPOSED
-            if (disposed)
-                throw new ObjectDisposedException(typeof(SQLiteBackup).Name);
+        if (disposed)
+            throw new ObjectDisposedException(typeof(SQLiteBackup).Name);
 #endif
         }
 

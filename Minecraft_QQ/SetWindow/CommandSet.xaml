@@ -38,6 +38,7 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="删除" Click="Delete"/>
+                    <MenuItem Header="修改" Click="Edit"/>
                     <MenuItem Header="添加" Click="Add"/>
                 </ContextMenu>
             </ListView.ContextMenu>

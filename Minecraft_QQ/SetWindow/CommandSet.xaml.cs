@@ -46,6 +46,14 @@ namespace Minecraft_QQ.SetWindow
             Re();
         }
 
+        private void Edit(object sender, RoutedEventArgs e)
+        {
+            if (ServerList.SelectedItem != null)
+            {
+                ServerList.SelectedItem = new IDSet((string)ServerList.SelectedItem).Set();
+            }
+        }
+
         public Window1.CommandOBJ Set()
         {
             ShowDialog();

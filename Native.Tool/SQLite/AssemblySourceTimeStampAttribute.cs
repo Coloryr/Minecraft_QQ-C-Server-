@@ -5,6 +5,8 @@
  * Released to the public domain, use at your own risk!
  ********************************************************/
 
+using System;
+
 namespace System.Data.SQLite
 {
     /// <summary>

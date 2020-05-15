@@ -7,17 +7,17 @@
 
 namespace System.Data.SQLite
 {
-    using System.Data.Common;
+  using System.Data.Common;
 
-    public sealed partial class SQLiteConnection
+  public sealed partial class SQLiteConnection
+  {
+    /// <summary>
+    /// Returns the <see cref="SQLiteFactory" /> instance.
+    /// </summary>
+    protected override DbProviderFactory DbProviderFactory
     {
-        /// <summary>
-        /// Returns the <see cref="SQLiteFactory" /> instance.
-        /// </summary>
-        protected override DbProviderFactory DbProviderFactory
-        {
-            get { return SQLiteFactory.Instance; }
-        }
+      get { return SQLiteFactory.Instance; }
     }
+  }
 }
 

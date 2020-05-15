@@ -85,6 +85,7 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="编辑配置" Click="SocketE"/>
                                 <MenuItem Header="断开连接" Click="SocketD"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
@@ -220,6 +221,7 @@
                         <ListView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="删除" Click="NoIDD"/>
+                                <MenuItem Header="修改" Click="NoIDE"/>
                                 <MenuItem Header="添加" Click="NoIDA"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
@@ -234,6 +236,7 @@
                         <ListView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="删除" Click="MuteDD"/>
+                                <MenuItem Header="修改" Click="MuteDE"/>
                                 <MenuItem Header="添加" Click="MuteDA"/>
                             </ContextMenu>
                         </ListView.ContextMenu>

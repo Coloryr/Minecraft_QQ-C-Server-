@@ -1,0 +1,12 @@
+﻿<Window x:Class="Minecraft_QQ.SetWindow.ServerSet"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Minecraft_QQ.SetWindow"
+        mc:Ignorable="d"
+        Title="服务器配置文件" Height="521" Width="861" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
+    <Grid>
+
+    </Grid>
+</Window>
