@@ -95,6 +95,10 @@ namespace Minecraft_QQ.Utils
             if (c != null)
             {
                 y = a.IndexOf(c, x);
+                if (a[y - 1] == '"')
+                {
+                    y = a.IndexOf(c, y + 1);
+                }
                 if (y - x <= 0)
                     return a;
                 else
@@ -537,11 +541,10 @@ namespace Minecraft_QQ.Utils
             {
                 if (MySocketServer.IsReady() == true)
                 {
-                    var message = new MessageObj()
+                    var message = new TranObj()
                     {
                         group = fromGroup.ToString(),
-                        commder = CommderList.ONLINE,
-                        is_commder = false,
+                        command = CommderList.ONLINE,
                         player = null
                     };
                     MySocketServer.Send(message);
@@ -559,12 +562,10 @@ namespace Minecraft_QQ.Utils
             {
                 if (MySocketServer.IsReady() == true)
                 {
-                    var message = new MessageObj()
+                    var message = new TranObj()
                     {
                         group = fromGroup.ToString(),
-                        commder = CommderList.SERVER,
-                        is_commder = false,
-                        player = null
+                        command = CommderList.SERVER,
                     };
                     MySocketServer.Send(message);
                     return null;
@@ -613,7 +614,7 @@ namespace Minecraft_QQ.Utils
                     {
                         if (value.Value.玩家使用 == true || player.管理员 == true)
                         {
-                            var messageSend = new MessageObj();
+                            var messageSend = new TranObj();
                             messageSend.group = fromGroup.ToString();
 
                             string cmd = value.Value.命令;
@@ -636,13 +637,13 @@ namespace Minecraft_QQ.Utils
                             if (value.Value.附带参数 == true)
                             {
                                 if (msg.IndexOf("CQ:at,qq=") != -1 && msg.IndexOf("]") != -1)
-                                    messageSend.commder = cmd + GetString(msg, "]");
+                                    messageSend.command = cmd + GetString(msg, "]");
                                 else
-                                    messageSend.commder = cmd + ReplaceFirst(msg, value.Key, "");
+                                    messageSend.command = cmd + ReplaceFirst(msg, value.Key, "");
                             }
                             else
-                                messageSend.commder = cmd;
-                            messageSend.is_commder = true;
+                                messageSend.command = cmd;
+                            messageSend.isCommand = true;
                             if (value.Value.玩家发送)
                             {
                                 messageSend.player = player.名字;

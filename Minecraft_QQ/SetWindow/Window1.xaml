@@ -61,19 +61,15 @@
                     <Label Content="端口" Style="{DynamicResource Label}" Margin="10,75,686,276"/>
                     <TextBox x:Name="Port" TextWrapping="Wrap" Margin="57,78,519,279" FontSize="16"
                              Text="{Binding 链接.端口}"/>
-                    <Label Content="状态：" Style="{DynamicResource Label}" Margin="11,198,674,153"/>
-                    <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="64,198,517,153"/>
-                    <RadioButton Content="ANSI" Margin="10,108,621,249" Style="{DynamicResource RadioButton_Left}" 
-                                 IsChecked="{Binding 链接.编码,ConverterParameter=0}" Name="ANSIC"/>
-                    <RadioButton Content="UTF-8" Margin="112,108,519,249" Style="{DynamicResource RadioButton_Right}" 
-                                 IsChecked="{Binding 链接.编码,ConverterParameter=1}" Name="UTF8C"/>
+                    <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,174,675,177"/>
+                    <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,174,518,177"/>
                     <Button x:Name="SocketST" Content="关闭端口" Margin="10,346,644,10" IsDefault="True" Style="{DynamicResource Button}"
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click"/>
-                    <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,132,669,219"/>
-                    <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,135,518,222" FontSize="16"
+                    <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,108,669,243"/>
+                    <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,112,518,245" FontSize="16"
                              Text="{Binding 链接.数据头}"/>
-                    <Label Content="数据尾" Style="{DynamicResource Label}" Margin="11,165,669,186"/>
-                    <TextBox x:Name="End" TextWrapping="Wrap" Margin="74,168,518,189" FontSize="16"
+                    <Label Content="数据尾" Style="{DynamicResource Label}" Margin="10,141,669,210"/>
+                    <TextBox x:Name="End" TextWrapping="Wrap" Margin="74,143,518,214" FontSize="16"
                              Text="{Binding 链接.数据尾}"/>
                     <ListView Margin="224,10,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="ServerList">
@@ -96,51 +92,51 @@
                 <Grid>
                     <GroupBox Header="检测设置" Margin="10,10,487,183" Foreground="White" BorderBrush="White">
                         <Grid>
-                            <Label Content="检测头" Style="{DynamicResource Label}" Margin="10,3,169,123"/>
+                            <Label Content="检测头" Style="{DynamicResource Label}" Margin="1,3,162,123"/>
                             <TextBox TextWrapping="Wrap" Margin="75,7,10,0" FontSize="16"
                                      Text="{Binding 检测.检测头}" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="在线人数" Style="{DynamicResource Label}" Margin="1,34,162,92"/>
+                            <Label Content="在线人数" Style="{DynamicResource Label}" Margin="1,33,162,93"/>
                             <TextBox TextWrapping="Wrap" Margin="75,38,10,0" FontSize="16"
                                      Text="{Binding 检测.在线玩家获取}" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="在线状态" Style="{DynamicResource Label}" Margin="1,65,162,62"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,69,10,0" FontSize="16"
+                            <Label Content="在线状态" Style="{DynamicResource Label}" Margin="1,63,162,64"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,68,10,0" FontSize="16"
                                      Text="{Binding 检测.服务器在线检测}" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="绑定名字" Style="{DynamicResource Label}" Margin="1,96,162,31"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,99,10,0" FontSize="16"
+                            <Label Content="绑定名字" Style="{DynamicResource Label}" Margin="1,92,162,35"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,97,10,0" FontSize="16"
                                      Text="{Binding 检测.玩家设置名字}" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="发送消息" Style="{DynamicResource Label}" Margin="1,126,162,1"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,129,10,0" FontSize="16"
+                            <Label Content="发送消息" Style="{DynamicResource Label}" Margin="1,121,162,6"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,126,10,0" FontSize="16"
                                      Text="{Binding 检测.发送消息至服务器}" Height="22" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="管理指令" Margin="249,10,248,10" Foreground="White" BorderBrush="White">
                         <Grid>
-                            <Label Content="禁言" Style="{DynamicResource Label}" Margin="17,3,178,296"/>
+                            <Label Content="禁言" Style="{DynamicResource Label}" Margin="1,3,162,296"/>
                             <TextBox TextWrapping="Wrap" Margin="75,7,10,300" FontSize="16"
                                      Text="{Binding 管理员.禁言}"/>
-                            <Label Content="取消禁言" Style="{DynamicResource Label}" Margin="1,34,162,265"/>
+                            <Label Content="取消禁言" Style="{DynamicResource Label}" Margin="1,33,162,266"/>
                             <TextBox TextWrapping="Wrap" Margin="75,38,10,269" FontSize="16"
                                      Text="{Binding 管理员.取消禁言}"/>
-                            <Label Content="查询名字" Style="{DynamicResource Label}" Margin="1,65,162,235"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,69,10,238" FontSize="16"
+                            <Label Content="查询名字" Style="{DynamicResource Label}" Margin="1,63,162,237"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,68,10,239" FontSize="16"
                                      Text="{Binding 管理员.查询绑定名字}"/>
-                            <Label Content="重命名" Style="{DynamicResource Label}" Margin="9,96,170,204"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,99,10,208" FontSize="16"
+                            <Label Content="重命名" Style="{DynamicResource Label}" Margin="1,92,162,208"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,97,10,210" FontSize="16"
                                      Text="{Binding 管理员.重命名}"/>
-                            <Label Content="维护切换" Style="{DynamicResource Label}" Margin="1,126,162,174"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,129,10,178" FontSize="16"
+                            <Label Content="维护切换" Style="{DynamicResource Label}" Margin="1,121,162,179"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,126,10,181" FontSize="16"
                                      Text="{Binding 管理员.维护模式切换}"/>
-                            <Label Content="重读配置" Style="{DynamicResource Label}" Margin="1,156,162,144"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,159,10,148" FontSize="16"
+                            <Label Content="重读配置" Style="{DynamicResource Label}" Margin="1,150,162,150"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,155,10,152" FontSize="16"
                                      Text="{Binding 管理员.重读配置}"/>
-                            <Label Content="打开菜单" Style="{DynamicResource Label}" Margin="1,186,162,114"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,189,10,118" FontSize="16"
+                            <Label Content="打开菜单" Style="{DynamicResource Label}" Margin="1,179,162,122"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,184,10,123" FontSize="16"
                                      Text="{Binding 管理员.打开菜单}"/>
-                            <Label Content="设置昵称" Style="{DynamicResource Label}" Margin="1,216,162,84"/>
-                            <TextBox TextWrapping="Wrap" Margin="75,219,10,88" FontSize="16"
+                            <Label Content="设置昵称" Style="{DynamicResource Label}" Margin="1,207,162,93"/>
+                            <TextBox TextWrapping="Wrap" Margin="75,211,10,96" FontSize="16"
                                      Text="{Binding 管理员.设置昵称}"/>
-                            <Label Content="发送QQ号" Style="{DynamicResource Label}" Margin="1,246,152,54"/>
-                            <TextBox TextWrapping="Wrap" Margin="10,275,75,32" FontSize="16"
+                            <Label Content="发送QQ号" Style="{DynamicResource Label}" Margin="1,236,152,64"/>
+                            <TextBox TextWrapping="Wrap" Margin="36,265,49,42" FontSize="16"
                                      Text="{Binding 管理员.发送绑定信息QQ号}"/>
                         </Grid>
                     </GroupBox>

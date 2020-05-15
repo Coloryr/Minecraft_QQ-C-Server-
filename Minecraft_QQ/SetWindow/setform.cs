@@ -52,16 +52,6 @@ namespace Minecraft_QQ.SetWindow
             label2.Text = "插件版本：" + IMinecraft_QQ.Version;
             textBox5.Text = Minecraft_QQ.MainConfig.链接.端口.ToString();
             textBox4.Text = Minecraft_QQ.MainConfig.链接.地址;
-            if (Minecraft_QQ.MainConfig.链接.编码 == Code.UTF8)
-            {
-                radioButton1.Checked = true;
-                radioButton2.Checked = false;
-            }
-            else
-            {
-                radioButton1.Checked = false;
-                radioButton2.Checked = true;
-            }
             checkBox2.Checked = Minecraft_QQ.MainConfig.设置.自动应答开关;
             checkBox4.Checked = Minecraft_QQ.MainConfig.设置.始终发送消息;
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
@@ -185,16 +175,6 @@ namespace Minecraft_QQ.SetWindow
         {
             Minecraft_QQ.Reload();
             button7.Text = "已重载";
-        }
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            Minecraft_QQ.MainConfig.链接.编码 = Code.UTF8;
-            new ConfigWrite().Config();
-        }
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            Minecraft_QQ.MainConfig.链接.编码 = Code.ANSI;
-            new ConfigWrite().Config();
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {

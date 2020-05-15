@@ -1,4 +1,5 @@
 ﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.SetWindow;
 using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 
@@ -23,48 +24,59 @@ namespace Minecraft_QQ.MySocket
     }
     internal class Message
     {
-        public static void MessageDo(string read)
+        public static void MessageDo(string server, string read)
         {
             int local;
             while (read.IndexOf(Minecraft_QQ.MainConfig.链接.数据头) == 0 && read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾) != -1)
             {
                 string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
                 var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
-                if (string.IsNullOrWhiteSpace(message.message) == true ||
-                    string.IsNullOrWhiteSpace(message.player) == true)
+                if (string.IsNullOrWhiteSpace(message.data))
                     return;
-                if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
-                    return;
-                if (message.group == DataType.group)
+                switch (message.data)
                 {
-                    if (Minecraft_QQ.MainConfig.设置.使用昵称发送至群 == true)
-                    {
-                        PlayerObj player = Funtion.GetPlayer(message.player);
-                        if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
-                            message.message = message.message.Replace(message.player, player.昵称);
-                    }
-                    foreach (var item in Minecraft_QQ.GroupConfig.群列表)
-                    {
-                        if (item.Value.开启对话 == true)
-                            Send.SendList.Add(new SendObj
-                            {
-                                Group = item.Key,
-                                Message = message.message
-                            });
-                    }
-                }
-                else
-                {
-                    long.TryParse(message.group, out long group);
-                    if (Minecraft_QQ.GroupConfig.群列表.ContainsKey(group) == true)
-                    {
-                        Send.SendList.Add(new SendObj
+                    case DataType.data:
+                        if (string.IsNullOrWhiteSpace(message.message) == true ||
+                            string.IsNullOrWhiteSpace(message.player) == true)
+                            return;
+                        if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
+                            return;
+                        if (message.group == DataType.group)
                         {
-                            Group = group,
-                            Message = message.message
-                        });
-                    }
+                            if (Minecraft_QQ.MainConfig.设置.使用昵称发送至群 == true)
+                            {
+                                PlayerObj player = Funtion.GetPlayer(message.player);
+                                if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
+                                    message.message = message.message.Replace(message.player, player.昵称);
+                            }
+                            foreach (var item in Minecraft_QQ.GroupConfig.群列表)
+                            {
+                                if (item.Value.开启对话 == true)
+                                    Send.SendList.Add(new SendObj
+                                    {
+                                        Group = item.Key,
+                                        Message = message.message
+                                    });
+                            }
+                        }
+                        else
+                        {
+                            long.TryParse(message.group, out long group);
+                            if (Minecraft_QQ.GroupConfig.群列表.ContainsKey(group) == true)
+                            {
+                                Send.SendList.Add(new SendObj
+                                {
+                                    Group = group,
+                                    Message = message.message
+                                });
+                            }
+                        }
+                        break;
+                    case DataType.config:
+                        Minecraft_QQ.SetWindow?.ServerConfig(server, message.message);
+                        break;
                 }
+
                 local = read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾);
                 read = read.Substring(local + Minecraft_QQ.MainConfig.链接.数据尾.Length);
             }
@@ -73,7 +85,7 @@ namespace Minecraft_QQ.MySocket
         {
             string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
             var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
-            if (message.group == DataType.start)
+            if (message.data == DataType.start)
                 return message.message;
             return null;
         }

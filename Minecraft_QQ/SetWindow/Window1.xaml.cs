@@ -2,6 +2,7 @@
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -15,9 +16,6 @@ namespace Minecraft_QQ.SetWindow
     {
         private bool isGet;
         private Server GetServer;
-        private bool IsLoad;
-        public delegate void ServerConfigEvent(Server server, string config);
-        public event ServerConfigEvent ServerConfigEventCall;
         public class Server
         {
             public string Name { get; set; }
@@ -34,32 +32,35 @@ namespace Minecraft_QQ.SetWindow
 
             public List<string> ServerS = new List<string>();
         }
-
-        public void ServerConfigEventCall_(Server server, string config)
+        public void SetClose()
         {
-            if (!isGet)
+            Dispatcher.Invoke(()=>Close());
+        }
+        public void ServerConfig(string server, string config)
+        {
+            if (isGet)
                 return;
-            if (GetServer != server)
+            if (GetServer.Name != server)
                 return;
+            isGet = true;
             var temp = JsonConvert.DeserializeObject<ConfigOBJ>(config);
-            new ServerSet(temp).Set();
+            Dispatcher.Invoke(() => temp = new ServerSet(temp).Set());
             var temp1 = new TranObj
             {
-                isCommand = false,
                 command = DataType.set,
                 message = JsonConvert.SerializeObject(temp)
             };
             MySocketServer.Send(temp1, new List<string>
             {
-                server.Name
+                server
             });
+            isGet = false;
         }
 
         public Window1()
         {
             Closed += MetroWindow_Closed;
             KeyDown += Window_KeyDown;
-            IsLoad = true;
             InitializeComponent();
             InitQQList();
             InitServerList();
@@ -68,14 +69,13 @@ namespace Minecraft_QQ.SetWindow
             InitCommandList();
             InitMysql();
             DataContext = Minecraft_QQ.MainConfig;
-            IsLoad = false;
-            ServerConfigEventCall += ServerConfigEventCall_;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
             {
                 Click(null, null);
+                e.Handled = true;
             }
         }
         private void InitQQList()
@@ -240,12 +240,11 @@ namespace Minecraft_QQ.SetWindow
         private void AddQQ(object sender, RoutedEventArgs e)
         {
             var item = new QQSet().Set();
-            long group = 0;
             if (string.IsNullOrWhiteSpace(item.群号))
             {
                 return;
             }
-            if (!long.TryParse(item.群号, out group))
+            if (!long.TryParse(item.群号, out long group))
             {
                 MessageBox.Show("群号错误", "添加失败");
                 return;
@@ -314,8 +313,15 @@ namespace Minecraft_QQ.SetWindow
         {
             if (ServerList.SelectedItem == null)
                 return;
-            var item = (Server)ServerList.SelectedItem;
-
+            GetServer = (Server)ServerList.SelectedItem;
+            MySocketServer.Send(new TranObj
+            {
+                command = DataType.config
+            },
+            new List<string>
+            {
+                GetServer.Name
+            });
         }
         private void SocketD(object sender, RoutedEventArgs e)
         {

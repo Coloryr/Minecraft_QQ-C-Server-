@@ -3,11 +3,6 @@ using System.IO;
 
 namespace Minecraft_QQ.Config
 {
-    public enum Code
-    {
-        ANSI = 0,
-        UTF8 = 1
-    }
     internal class ConfigFile
     {
         /// <summary>
@@ -283,10 +278,6 @@ namespace Minecraft_QQ.Config
         /// </summary>
         public int 端口 { get; set; } = 25555;
         /// <summary>
-        /// 编码类型
-        /// </summary>
-        public Code 编码 { get; set; } = Code.ANSI;
-        /// <summary>
         /// 数据包头
         /// </summary>
         public string 数据头 { get; set; } = "[Head]";
@@ -299,7 +290,6 @@ namespace Minecraft_QQ.Config
         {
             return "地址:" + 地址 + "\n"
                 + "端口:" + 端口 + "\n"
-                + "编码:" + 编码 + "\n"
                 + "数据头:" + 数据头 + "\n"
                 + "数据尾:" + 数据尾;
         }

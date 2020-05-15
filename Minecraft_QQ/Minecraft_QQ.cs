@@ -56,9 +56,12 @@ namespace Minecraft_QQ
 
         public static Window1 SetWindow { get; private set; }
 
+        private static bool isOpen;
+
         public static void CloseSetWindow()
         {
             Task.Factory.StartNew(() => SetWindow = null);
+            isOpen = false;
         }
 
         /// <summary>
@@ -82,10 +85,13 @@ namespace Minecraft_QQ
         /// </summary>
         public static void OpenSettingForm()
         {
+            if (isOpen)
+                return;
             Thread th = new Thread(new ThreadStart(delegate ()
             {
                 try
                 {
+                    isOpen = true;
                     if (SetWindow == null)
                     {
                         SetWindow = new Window1();
@@ -295,6 +301,7 @@ namespace Minecraft_QQ
                 notifyIcon.Visible = true;
                 notifyIcon.BalloonTipText = "已启动";
                 notifyIcon.ShowBalloonTip(1000);
+                notifyIcon.MouseDoubleClick += NotifyIcon_Click;
             }
             catch
             {
@@ -305,14 +312,21 @@ namespace Minecraft_QQ
             OpenSettingForm();
 
         }
+
+        private static void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            OpenSettingForm();
+        }
+
         public static void Stop()
         {
             IsStart = false;
+            notifyIcon.Dispose();
             if (SetWindow != null)
             {
-                SetWindow.Close();
-                CloseSetWindow();
+                SetWindow.SetClose();
             }
+            CloseSetWindow();
             MySocketServer.ServerStop();
         }
         /// <summary>
@@ -353,13 +367,15 @@ namespace Minecraft_QQ
                         }
                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
                         {
-                            MessageObj messagelist = new MessageObj();
-                            messagelist.group = fromGroup.ToString();
-                            messagelist.message = Funtion.RemovePic(msg_copy);
-                            messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
+                            var messagelist = new TranObj()
+                            {
+                                group = fromGroup.ToString(),
+                                message = Funtion.RemovePic(msg_copy),
+                                player = !MainConfig.设置.使用昵称发送至服务器 ?
                                 player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
-                                player.名字 : player.昵称;
-                            messagelist.commder = CommderList.SPEAK;
+                                player.名字 : player.昵称,
+                                command = CommderList.SPEAK
+                            };
                             MySocketServer.Send(messagelist);
                         }
                     }
@@ -415,13 +431,15 @@ namespace Minecraft_QQ
                             }
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
-                                MessageObj messagelist = new MessageObj();
-                                messagelist.group = "group";
-                                messagelist.message = Funtion.RemovePic(msg_copy);
-                                messagelist.player = !MainConfig.设置.使用昵称发送至服务器 ?
+                                var messagelist = new TranObj()
+                                {
+                                    group = DataType.group,
+                                    message = Funtion.RemovePic(msg_copy),
+                                    player = !MainConfig.设置.使用昵称发送至服务器 ?
                                     player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
-                                    player.名字 : player.昵称;
-                                messagelist.commder = CommderList.SPEAK;
+                                    player.名字 : player.昵称,
+                                    command = CommderList.SPEAK
+                                };
                                 MySocketServer.Send(messagelist);
                             }
                             return;
