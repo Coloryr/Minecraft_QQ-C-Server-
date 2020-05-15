@@ -1,10 +1,8 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
-using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -45,7 +43,16 @@ namespace Minecraft_QQ.SetWindow
                 return;
             var temp = JsonConvert.DeserializeObject<ConfigOBJ>(config);
             new ServerSet(temp).Set();
-            MySocketServer.
+            var temp1 = new TranObj
+            {
+                isCommand = false,
+                command = DataType.set,
+                message = JsonConvert.SerializeObject(temp)
+            };
+            MySocketServer.Send(temp1, new List<string>
+            {
+                server.Name
+            });
         }
 
         public Window1()
@@ -62,7 +69,6 @@ namespace Minecraft_QQ.SetWindow
             InitMysql();
             DataContext = Minecraft_QQ.MainConfig;
             IsLoad = false;
-            C_Click(null, null);
             ServerConfigEventCall += ServerConfigEventCall_;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -309,7 +315,7 @@ namespace Minecraft_QQ.SetWindow
             if (ServerList.SelectedItem == null)
                 return;
             var item = (Server)ServerList.SelectedItem;
-            
+
         }
         private void SocketD(object sender, RoutedEventArgs e)
         {
@@ -513,22 +519,6 @@ namespace Minecraft_QQ.SetWindow
                 服务器使用 = item.ServerS
             });
             InitCommandList();
-        }
-
-        private void C_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsLoad)
-                return;
-            if (ANSIC.IsChecked == true)
-            {
-                UTF8C.IsChecked = false;
-                Minecraft_QQ.MainConfig.链接.编码 = Code.ANSI;
-            }
-            else if (UTF8C.IsChecked == true)
-            {
-                ANSIC.IsChecked = false;
-                Minecraft_QQ.MainConfig.链接.编码 = Code.UTF8;
-            }
         }
 
         private void MysqlPassword_PasswordChanged(object sender, RoutedEventArgs e)

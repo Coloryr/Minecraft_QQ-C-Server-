@@ -1,10 +1,8 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.MyMysql;
-using Minecraft_QQ.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace Minecraft_QQ.SetWindow
 {

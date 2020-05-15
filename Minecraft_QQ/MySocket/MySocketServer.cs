@@ -1,6 +1,6 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.Utils;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,7 +116,7 @@ namespace Minecraft_QQ.MySocket
                         {
                             if (!isCheck)
                             {
-                                var temp = Message.MessageCheck(str);
+                                var temp = Message.StartCheck(str);
                                 if (temp != null)
                                 {
                                     if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
@@ -187,29 +187,24 @@ namespace Minecraft_QQ.MySocket
             }
         }
 
-        public static void Send(MessageObj info, List<string> servers = null)
+        public static void Send(TranObj info, List<string> servers = null)
         {
             if (Clients.Count != 0)
             {
 
-                JObject jsonData = new JObject(
-                                new JProperty("group", info.group),
-                                new JProperty("message", info.message),
-                                new JProperty("player", info.player),
-                                new JProperty("commder", info.commder),
-                                new JProperty("is_commder", info.is_commder));
+                var data = JsonConvert.SerializeObject(info);
                 if (servers != null)
                 {
                     foreach (var temp in servers)
                     {
-                        SendData(MCServers[temp], jsonData.ToString());
+                        SendData(MCServers[temp], data);
                     }
                 }
                 else
                 {
                     foreach (Socket socket in new List<Socket>(Clients.Keys))
                     {
-                        SendData(socket, jsonData.ToString());
+                        SendData(socket, data);
                     }
                 }
             }

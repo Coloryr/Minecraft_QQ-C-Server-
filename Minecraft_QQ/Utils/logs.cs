@@ -29,7 +29,12 @@ namespace Minecraft_QQ.Utils
 
         public static void LogError(Exception e)
         {
-            Logs.LogWrite("[ERROR]" + e.Message + "\n" + e.StackTrace);
+            LogWrite("[ERROR]" + e.Message + "\n" + e.StackTrace);
+        }
+
+        public static void LogError(string e)
+        {
+            LogWrite("[ERROR]" + e);
         }
     }
 }

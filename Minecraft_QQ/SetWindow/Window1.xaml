@@ -64,9 +64,9 @@
                     <Label Content="状态：" Style="{DynamicResource Label}" Margin="11,198,674,153"/>
                     <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="64,198,517,153"/>
                     <RadioButton Content="ANSI" Margin="10,108,621,249" Style="{DynamicResource RadioButton_Left}" 
-                                 IsChecked="True" Name="ANSIC" Checked="C_Click"/>
+                                 IsChecked="{Binding 链接.编码,ConverterParameter=0}" Name="ANSIC"/>
                     <RadioButton Content="UTF-8" Margin="112,108,519,249" Style="{DynamicResource RadioButton_Right}" 
-                                 IsChecked="False" Name="UTF8C" Checked="C_Click"/>
+                                 IsChecked="{Binding 链接.编码,ConverterParameter=1}" Name="UTF8C"/>
                     <Button x:Name="SocketST" Content="关闭端口" Margin="10,346,644,10" IsDefault="True" Style="{DynamicResource Button}"
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click"/>
                     <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,132,669,219"/>

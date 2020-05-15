@@ -1,13 +1,12 @@
-﻿using Minecraft_QQ.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Minecraft_QQ.Config
 {
     public enum Code
-    { 
-        ANSI,
-        UTF8
+    {
+        ANSI = 0,
+        UTF8 = 1
     }
     internal class ConfigFile
     {
@@ -341,6 +340,48 @@ namespace Minecraft_QQ.Config
                 + "密码:" + 密码 + "\n"
                 + "是否启用:" + 是否启用 + "\n"
                 + "数据库:" + 数据库;
+        }
+    }
+    /// <summary>
+    /// 玩家数据储存格式
+    /// </summary>
+    public class PlayerObj
+    {
+        public string 名字 { get; set; }
+        public string 昵称 { get; set; }
+        public long QQ号 { get; set; }
+        public bool 管理员 { get; set; }
+    }
+    /// <summary>
+    /// 服务器命令储存格式
+    /// </summary>
+    internal class CommandObj
+    {
+        public string 命令 { get; set; }
+        public bool 玩家使用 { get; set; }
+        public bool 玩家发送 { get; set; }
+        public bool 附带参数 { get; set; }
+        public List<string> 服务器使用 { get; set; } = new List<string>();
+    }
+    /// <summary>
+    /// 群储存格式
+    /// </summary>
+    public class GroupObj
+    {
+        public string 群号 { get; set; }
+        public bool 启用命令 { get; set; }
+        public bool 开启对话 { get; set; }
+        public bool 主群 { get; set; }
+
+        public GroupObj Clone()
+        {
+            return new GroupObj
+            {
+                群号 = 群号,
+                启用命令 = 启用命令,
+                开启对话 = 开启对话,
+                主群 = 主群
+            };
         }
     }
 }

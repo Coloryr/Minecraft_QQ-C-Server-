@@ -93,6 +93,7 @@
     <Compile Include="Config\ConfigShow.cs" />
     <Compile Include="Config\ConfigWrite.cs" />
     <Compile Include="Config\ServerObj.cs" />
+    <Compile Include="MySocket\TranObj.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -120,7 +121,6 @@
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Compile Include="IMinecraft_QQ.cs" />
-    <Compile Include="Utils\Obj.cs" />
     <Compile Include="Utils\logs.cs" />
     <Compile Include="Minecraft_QQ.cs" />
     <Compile Include="MyMysql\Mysql.cs" />

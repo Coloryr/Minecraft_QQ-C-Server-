@@ -1,17 +1,16 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
-using Minecraft_QQ.Utils;
+using Minecraft_QQ.Properties;
 using Minecraft_QQ.SetWindow;
+using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.Drawing;
-using Minecraft_QQ.Properties;
+using System.Windows.Forms;
 
 namespace Minecraft_QQ
 {
@@ -301,7 +300,7 @@ namespace Minecraft_QQ
             {
                 MessageBox.Show("错误");
             }
-            
+
             IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
             OpenSettingForm();
 

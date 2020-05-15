@@ -1,4 +1,5 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.Utils;
 using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 

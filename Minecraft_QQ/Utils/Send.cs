@@ -15,7 +15,8 @@ namespace Minecraft_QQ.Utils
         public static List<SendObj> SendList { get; set; } = new List<SendObj>() { };
 
         public static void SendToGroup()
-        {;
+        {
+            ;
             while (true)
             {
                 if (SendList.Count != 0)

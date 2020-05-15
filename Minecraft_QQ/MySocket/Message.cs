@@ -1,51 +1,41 @@
-﻿using Minecraft_QQ.Utils;
-using Newtonsoft.Json.Linq;
+﻿using Minecraft_QQ.Config;
+using Minecraft_QQ.Utils;
+using Newtonsoft.Json;
 
 namespace Minecraft_QQ.MySocket
 {
+    public class DataType
+    {
+        public const string data = "data";
+        public const string group = "group";
+        public const string start = "start";
+        public const string pause = "pause";
+        public const string config = "config";
+        public const string message = "message";
+        public const string player = "player";
+        public const string set = "set";
+    }
+    internal class CommderList
+    {
+        public static readonly string SPEAK = "speak";
+        public static readonly string ONLINE = "online";
+        public static readonly string SERVER = "server";
+    }
     internal class Message
     {
-        public static MessageObj MessagetoObj(string read)
-        {
-            MessageObj temp = new MessageObj();
-            try
-            {
-                JObject jsonData = JObject.Parse(read);
-                if (jsonData["data"].ToString() == "data")
-                {
-                    temp.group = jsonData["group"].ToString();
-                    temp.message = jsonData["message"].ToString();
-                    temp.player = jsonData["player"].ToString();
-                    temp.is_commder = false;
-                }
-                else if (jsonData["data"].ToString() == "start")
-                {
-                    temp.group = "start";
-                    temp.message = jsonData["message"].ToString();
-                    temp.is_commder = false;
-                }
-            }
-            catch
-            {
-                temp.player = "没有玩家";
-            }
-            return temp;
-        }
-
         public static void MessageDo(string read)
         {
             int local;
             while (read.IndexOf(Minecraft_QQ.MainConfig.链接.数据头) == 0 && read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾) != -1)
             {
                 string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
-                buff = Funtion.RemoveColorCodes(buff);
-                MessageObj message = MessagetoObj(buff);
+                var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
                 if (string.IsNullOrWhiteSpace(message.message) == true ||
                     string.IsNullOrWhiteSpace(message.player) == true)
                     return;
                 if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
                     return;
-                if (message.is_commder == false && message.group == "group")
+                if (message.group == DataType.group)
                 {
                     if (Minecraft_QQ.MainConfig.设置.使用昵称发送至群 == true)
                     {
@@ -79,12 +69,11 @@ namespace Minecraft_QQ.MySocket
                 read = read.Substring(local + Minecraft_QQ.MainConfig.链接.数据尾.Length);
             }
         }
-        public static string MessageCheck(string read)
+        public static string StartCheck(string read)
         {
             string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
-            buff = Funtion.RemoveColorCodes(buff);
-            MessageObj message = MessagetoObj(buff);
-            if (message.group == "start")
+            var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
+            if (message.group == DataType.start)
                 return message.message;
             return null;
         }
