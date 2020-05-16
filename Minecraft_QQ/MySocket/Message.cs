@@ -1,5 +1,4 @@
 ﻿using Minecraft_QQ.Config;
-using Minecraft_QQ.SetWindow;
 using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 

@@ -2,7 +2,6 @@
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -34,7 +33,7 @@ namespace Minecraft_QQ.SetWindow
         }
         public void SetClose()
         {
-            Dispatcher.Invoke(()=>Close());
+            Dispatcher.Invoke(() => Close());
         }
         public void ServerConfig(string server, string config)
         {

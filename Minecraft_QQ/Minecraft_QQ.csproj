@@ -114,6 +114,9 @@
     <Compile Include="SetWindow\QQSet.xaml.cs">
       <DependentUpon>QQSet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SetWindow\ServerName.xaml.cs">
+      <DependentUpon>ServerName.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetWindow\ServerSet.xaml.cs">
       <DependentUpon>ServerSet.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SetWindow\QQSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetWindow\ServerName.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

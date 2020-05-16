@@ -321,12 +321,19 @@ namespace Minecraft_QQ
         public static void Stop()
         {
             IsStart = false;
-            notifyIcon.Dispose();
-            if (SetWindow != null)
+            Thread th = new Thread(new ThreadStart(delegate ()
             {
-                SetWindow.SetClose();
-            }
-            CloseSetWindow();
+                notifyIcon.Visible = false;
+                notifyIcon.Dispose();
+                if (SetWindow != null)
+                {
+                    SetWindow.SetClose();
+                }
+                CloseSetWindow();
+            }));
+            th.TrySetApartmentState(ApartmentState.STA);
+            th.Start();
+            th.Join();
             MySocketServer.ServerStop();
         }
         /// <summary>
