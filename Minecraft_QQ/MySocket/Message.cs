@@ -46,7 +46,7 @@ namespace Minecraft_QQ.MySocket
                             {
                                 PlayerObj player = Funtion.GetPlayer(message.player);
                                 if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
-                                    message.message = message.message.Replace(message.player, player.昵称);
+                                    message.message = Utils.Funtion.ReplaceFirst(message.message, message.player, player.昵称);
                             }
                             foreach (var item in Minecraft_QQ.GroupConfig.群列表)
                             {
