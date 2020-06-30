@@ -102,6 +102,7 @@
     <Compile Include="SetWindow\CommandSet.xaml.cs">
       <DependentUpon>CommandSet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SetWindow\DataObj.cs" />
     <Compile Include="SetWindow\IDSet.xaml.cs">
       <DependentUpon>IDSet.xaml</DependentUpon>
     </Compile>

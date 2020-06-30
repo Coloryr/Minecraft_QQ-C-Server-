@@ -7,13 +7,13 @@ namespace Minecraft_QQ.SetWindow
     /// </summary>
     public partial class CommandSet : Window
     {
-        public Window1.CommandOBJ Command { get; set; }
-        public CommandSet(Window1.CommandOBJ Command = null)
+        public CommandOBJ Command { get; set; }
+        public CommandSet(CommandOBJ Command = null)
         {
             InitializeComponent();
             if (Command == null)
             {
-                Command = new Window1.CommandOBJ();
+                Command = new CommandOBJ();
             }
             this.Command = Command;
             DataContext = this;
@@ -54,7 +54,7 @@ namespace Minecraft_QQ.SetWindow
             }
         }
 
-        public Window1.CommandOBJ Set()
+        public CommandOBJ Set()
         {
             ShowDialog();
             return Command;

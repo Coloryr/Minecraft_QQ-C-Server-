@@ -41,7 +41,7 @@ namespace Minecraft_QQ.SetWindow
             ServerNameList.Items.Clear();
             foreach (var item in Config.Servers)
             {
-                ServerNameList.Items.Add(new Window1.Server
+                ServerNameList.Items.Add(new Server
                 {
                     Name = item.Key,
                     Addr = item.Value
@@ -95,7 +95,7 @@ namespace Minecraft_QQ.SetWindow
         {
             if (ServerNameList.SelectedItem == null)
                 return;
-            var item = (Window1.Server)ServerNameList.SelectedItem;
+            var item = (Server)ServerNameList.SelectedItem;
             Config.Servers.Remove(item.Name);
             item = new ServerName(item).Set();
             Config.Servers.Add(item.Name, item.Addr);
@@ -105,7 +105,7 @@ namespace Minecraft_QQ.SetWindow
         {
             foreach (var item in ServerNameList.SelectedItems)
             {
-                var temp = (Window1.Server)item;
+                var temp = (Server)item;
                 Config.Servers.Remove(temp.Name);
             }
             Re();

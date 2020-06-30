@@ -7,18 +7,18 @@ namespace Minecraft_QQ.SetWindow
     /// </summary>
     public partial class MessageSet : Window
     {
-        public Window1.Server Server { get; set; }
-        public MessageSet(Window1.Server Server = null)
+        public Server Server { get; set; }
+        public MessageSet(Server Server = null)
         {
             InitializeComponent();
             if (Server == null)
             {
-                Server = new Window1.Server();
+                Server = new Server();
             }
             this.Server = Server;
             DataContext = this;
         }
-        public Window1.Server Set()
+        public Server Set()
         {
             ShowDialog();
             return Server;

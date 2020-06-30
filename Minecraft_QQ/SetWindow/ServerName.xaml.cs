@@ -7,17 +7,17 @@ namespace Minecraft_QQ.SetWindow
     /// </summary>
     public partial class ServerName : Window
     {
-        public Window1.Server Obj { get; set; }
-        public ServerName(Window1.Server Obj = null)
+        public Server Obj { get; set; }
+        public ServerName(Server Obj = null)
         {
             InitializeComponent();
             if (Obj == null)
-                this.Obj = new Window1.Server();
+                this.Obj = new Server();
             else
                 this.Obj = Obj;
-            DataContext = Obj;
+            DataContext = this.Obj;
         }
-        public Window1.Server Set()
+        public Server Set()
         {
             ShowDialog();
             return Obj;
