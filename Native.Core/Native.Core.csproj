@@ -146,8 +146,10 @@ move "$(TargetDir)app.json" "$(TargetDir)$(TargetName)"
     <Error Condition="!Exists('..\packages\Fody.6.2.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.0\build\Fody.targets'))" />
   </Target>
   <ImportGroup Label=".NET DllExport">
-    <Import Project="$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets" Condition="Exists('$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets')" Label="8337224c9ad9e356" />
     <Import Project="..\packages\Fody.6.2.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.0\build\Fody.targets')" />
+  </ImportGroup>
+  <ImportGroup Label=".NET DllExport">
+    <Import Project="$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets" Condition="Exists('$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets')" Label="8337224c9ad9e356" />
   </ImportGroup>
   <Target Name="DllExportRestorePkg" BeforeTargets="PrepareForBuild">
     <Warning Condition="!Exists('$(SolutionDir)DllExport.bat')" Text="We can't find 'DllExport.bat' in '$(SolutionDir)' - https://github.com/3F/DllExport" />

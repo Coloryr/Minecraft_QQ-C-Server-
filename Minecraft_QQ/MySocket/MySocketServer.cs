@@ -117,7 +117,7 @@ namespace Minecraft_QQ.MySocket
                                 }
                                 Logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
                                 if (MCServers.ContainsKey(temp))
-                                {
+                                { 
                                     Close(MCServers[temp], true);
                                     MCServers.Remove(temp);
                                 }

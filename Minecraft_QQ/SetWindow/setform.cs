@@ -217,7 +217,7 @@ namespace Minecraft_QQ.SetWindow
             Minecraft_QQ.MainConfig.设置.发送日志到主群 = checkBox12.Checked;
             new ConfigWrite().Config();
         }
-        private async void mysql_b_Click(object sender, EventArgs e)
+        private void mysql_b_Click(object sender, EventArgs e)
         {
             Minecraft_QQ.MainConfig.数据库.地址 = mysql_ip.Text;
             int.TryParse(mysql_port.Text, out int a);
@@ -226,7 +226,7 @@ namespace Minecraft_QQ.SetWindow
             Minecraft_QQ.MainConfig.数据库.密码 = mysql_password.Text;
             Minecraft_QQ.MainConfig.数据库.数据库 = mysql_database.Text;
             new ConfigWrite().Config();
-            await Mysql.MysqlStartAsync();
+            Mysql.MysqlStart();
             if (Minecraft_QQ.MysqlOK == false)
             {
                 mysql_now.Text = "Mysql无法连接";
