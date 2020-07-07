@@ -355,35 +355,38 @@ namespace Minecraft_QQ
                 if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false
                     && MySocketServer.IsReady() == true && list.开启对话 == true)
                 {
-                    PlayerObj player = Funtion.GetPlayer(fromQQ);
-                    if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower())
-                        && !string.IsNullOrWhiteSpace(player.名字))
+                    if (!MainConfig.设置.不发送指令到服务器 || msg.IndexOf(MainConfig.检测.检测头) != 0)
                     {
-                        string msg_copy = msg;
-                        if (MainConfig.设置.颜色代码开关 == false)
-                            msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                        if (msg_copy.IndexOf("CQ:rich") != -1)
-                            msg_copy = Funtion.GetRich(msg_copy);
-                        if (msg_copy.IndexOf("CQ:sign") != -1)
-                            msg_copy = Funtion.GetSign(msg_copy, player.名字);
-                        else if (msg_copy.IndexOf("CQ:") != -1)
+                        PlayerObj player = Funtion.GetPlayer(fromQQ);
+                        if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower())
+                            && !string.IsNullOrWhiteSpace(player.名字))
                         {
-                            msg_copy = Funtion.RemovePic(msg_copy);
-                            msg_copy = Funtion.GetFromAt(msg_copy);
-                            msg_copy = Funtion.CQtoCode(msg_copy);
-                        }
-                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                        {
-                            var messagelist = new TranObj()
+                            string msg_copy = msg;
+                            if (MainConfig.设置.颜色代码开关 == false)
+                                msg_copy = Funtion.RemoveColorCodes(msg_copy);
+                            if (msg_copy.IndexOf("CQ:rich") != -1)
+                                msg_copy = Funtion.GetRich(msg_copy);
+                            if (msg_copy.IndexOf("CQ:sign") != -1)
+                                msg_copy = Funtion.GetSign(msg_copy, player.名字);
+                            else if (msg_copy.IndexOf("CQ:") != -1)
                             {
-                                group = fromGroup.ToString(),
-                                message = Funtion.RemovePic(msg_copy),
-                                player = !MainConfig.设置.使用昵称发送至服务器 ?
-                                player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
-                                player.名字 : player.昵称,
-                                command = CommderList.SPEAK
-                            };
-                            MySocketServer.Send(messagelist);
+                                msg_copy = Funtion.RemovePic(msg_copy);
+                                msg_copy = Funtion.GetFromAt(msg_copy);
+                                msg_copy = Funtion.CQtoCode(msg_copy);
+                            }
+                            if (string.IsNullOrWhiteSpace(msg_copy) == false)
+                            {
+                                var messagelist = new TranObj()
+                                {
+                                    group = fromGroup.ToString(),
+                                    message = Funtion.RemovePic(msg_copy),
+                                    player = !MainConfig.设置.使用昵称发送至服务器 ?
+                                    player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
+                                    player.名字 : player.昵称,
+                                    command = CommderList.SPEAK
+                                };
+                                MySocketServer.Send(messagelist);
+                            }
                         }
                     }
                 }

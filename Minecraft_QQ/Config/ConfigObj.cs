@@ -134,6 +134,10 @@ namespace Minecraft_QQ.Config
         /// </summary>
         public bool 发送日志到主群 { get; set; } = true;
         /// <summary>
+        /// 不发送指令到服务器
+        /// </summary>
+        public bool 不发送指令到服务器 { get; set; } = false;
+        /// <summary>
         /// 发送群消息间隔
         /// </summary>
         public int 发送群消息间隔 { get; set; } = 100;

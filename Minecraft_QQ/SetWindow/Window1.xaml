@@ -179,8 +179,11 @@
                             <CheckBox Content="发送日志到主群"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="89,76,0,50"
                                       IsChecked="{Binding 设置.发送日志到主群}"/>
-                            <Label Content="发送消息间隔" Style="{DynamicResource Label}" Margin="2,100,130,16"/>
-                            <TextBox TextWrapping="Wrap" Margin="107,103,10,0" FontSize="16"
+                            <CheckBox Content="不发送指令到服务器"
+                                      Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,94,0,24"
+                                      IsChecked="{Binding 设置.不发送指令到服务器}"/>
+                            <Label Content="发送消息间隔" Style="{DynamicResource Label}" Margin="2,116,130,0"/>
+                            <TextBox TextWrapping="Wrap" Margin="107,119,10,0" FontSize="16"
                                      Text="{Binding 设置.发送群消息间隔}" Height="22" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
