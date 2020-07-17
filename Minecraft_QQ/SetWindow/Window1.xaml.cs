@@ -96,14 +96,17 @@ namespace Minecraft_QQ.SetWindow
                     SocketST.Content = "关闭端口";
                     IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
                 }
-                foreach (var item in MySocketServer.MCServers)
+                lock (MySocketServer.lock1)
                 {
-                    if (item.Value.Connected)
-                        ServerList.Items.Add(new Server
-                        {
-                            Name = item.Key,
-                            Addr = item.Value.RemoteEndPoint.ToString()
-                        });
+                    foreach (var item in MySocketServer.MCServers)
+                    {
+                        if (item.Value.Connected)
+                            ServerList.Items.Add(new Server
+                            {
+                                Name = item.Key,
+                                Addr = item.Value.RemoteEndPoint.ToString()
+                            });
+                    }
                 }
             });
         }
