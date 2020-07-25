@@ -263,6 +263,8 @@ namespace Minecraft_QQ.SetWindow
         {
             Minecraft_QQ.Reload();
             MessageBox.Show("配置文件已重载", "已重读");
+            Close();
+            Minecraft_QQ.OpenSettingForm();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
