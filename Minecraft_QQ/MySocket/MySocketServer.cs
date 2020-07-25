@@ -86,15 +86,22 @@ namespace Minecraft_QQ.MySocket
         }
         private static string Receive(Socket socket)
         {
-            byte[] bytes;
-            while (socket.Available <= 0)
+            try
             {
-                Thread.Sleep(10);
-            }
-            bytes = new byte[socket.Available];
-            int receiveNumber = socket.Receive(bytes);
+                byte[] bytes;
+                while (socket.Available <= 0)
+                {
+                    Thread.Sleep(10);
+                }
+                bytes = new byte[socket.Available];
+                int receiveNumber = socket.Receive(bytes);
 
-            return Encoding.UTF8.GetString(bytes, 0, receiveNumber);
+                return Encoding.UTF8.GetString(bytes, 0, receiveNumber);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static void ReceiveData(dynamic socket)
@@ -106,39 +113,39 @@ namespace Minecraft_QQ.MySocket
                 try
                 {
                     string str = Receive(socket);
-                    Task.Factory.StartNew(() =>
+                    if (str == null)
+                        return;
+                    if (!isCheck)
                     {
-                        if (!isCheck)
+                        var temp = Message.StartCheck(str);
+                        if (temp != null)
                         {
-                            var temp = Message.StartCheck(str);
-                            if (temp != null)
+                            if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                             {
-                                if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
-                                {
-                                    IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + temp + "已连接");
-                                }
-                                Logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
-                                lock (lock1)
-                                {
-                                    if (MCServers.ContainsKey(temp))
-                                    {
-                                        Close(MCServers[temp], true);
-                                        MCServers.Remove(temp);
-                                    }
-                                    MCServers.Add(temp, socket);
-                                }
-                                name = temp;
+                                IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + temp + "已连接");
                             }
-                            else if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
+                            Logs.LogWrite("[INFO][Socket]服务器" + temp + "已连接");
+                            lock (lock1)
                             {
-                                IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
+                                if (MCServers.ContainsKey(temp))
+                                {
+                                    Close(MCServers[temp]);
+                                    MCServers.Remove(temp);
+                                }
+                                MCServers.Add(temp, socket);
                             }
-                            isCheck = true;
                             Minecraft_QQ.SetWindow?.InitServerList();
+                            name = temp;
                         }
-                        else
-                            Message.MessageDo(name, str);
-                    });
+                        else if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
+                        {
+                            IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
+                        }
+                        isCheck = true;
+                        Minecraft_QQ.SetWindow?.InitServerList();
+                    }
+                    else
+                        Message.MessageDo(name, str);
                 }
                 catch (Exception e)
                 {
@@ -150,7 +157,8 @@ namespace Minecraft_QQ.MySocket
                     if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
                         IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + keys + "异常断开");
                     Logs.LogError(e);
-                    Close(socket, true);
+                    Close(socket);
+                    Minecraft_QQ.SetWindow?.InitServerList();
                     GC.Collect();
                     return;
                 }
@@ -164,12 +172,13 @@ namespace Minecraft_QQ.MySocket
                     }
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "服务器" + keys + "连接已断开");
                     Logs.LogWrite("[INFO][Socket]服务器" + keys + "连接已断开");
-                    Close(socket, true);
+                    Close(socket);
+                    Minecraft_QQ.SetWindow?.InitServerList();
                     return;
                 }
             }
         }
-        private static void Close(Socket socket, bool re)
+        private static void Close(Socket socket)
         {
             if (socket != null)
                 socket.Close();
@@ -178,8 +187,6 @@ namespace Minecraft_QQ.MySocket
                 Clients[socket].Abort();
             }
             Clients.Remove(socket);
-            if (re)
-                Minecraft_QQ.SetWindow?.InitServerList();
         }
         public static void Close(string name)
         {
@@ -188,7 +195,7 @@ namespace Minecraft_QQ.MySocket
                 if (MCServers.ContainsKey(name))
                 {
                     var temp = MCServers[name];
-                    Close(temp, false);
+                    Close(temp);
                     MCServers.Remove(name);
                 }
             }
@@ -231,7 +238,8 @@ namespace Minecraft_QQ.MySocket
             catch (Exception e)
             {
                 Logs.LogError(e);
-                Close(socket, true);
+                Close(socket);
+                Minecraft_QQ.SetWindow?.InitServerList();
                 GC.Collect();
                 if (Clients.Count == 0)
                     IMinecraft_QQ.SGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
@@ -242,7 +250,7 @@ namespace Minecraft_QQ.MySocket
             var temp = new Dictionary<Socket, Thread>(Clients);
             foreach (var item in temp)
             {
-                Close(item.Key, false);
+                Close(item.Key);
                 if (item.Value != null)
                 {
                     item.Value.Abort();
