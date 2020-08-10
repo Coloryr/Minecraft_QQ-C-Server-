@@ -85,6 +85,7 @@ namespace Minecraft_QQ.MySocket
                             RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                         }
                         IsCheck = true;
+                        MySocketServer.AddServer(Name, this);
                         IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                     }
                     else

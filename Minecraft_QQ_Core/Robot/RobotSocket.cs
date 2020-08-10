@@ -83,7 +83,7 @@ namespace Minecraft_QQ.Robot
                                 data = Encoding.UTF8.GetString(data)
                             });
                         }
-                        else if (Socket.Poll(1000, SelectMode.SelectRead))
+                        else if (Socket.Poll(-1, SelectMode.SelectRead))
                         {
                             Logs.LogOut("机器人连接中断");
                             IsConnect = false;

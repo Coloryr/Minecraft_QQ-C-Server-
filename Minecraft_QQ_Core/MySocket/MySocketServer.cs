@@ -149,8 +149,14 @@ namespace Minecraft_QQ.MySocket
         public static void AddServer(string name, ReceiveThread receive)
         {
             if (MCServers.ContainsKey(name))
+            {
                 MCServers[name].Stop();
-            MCServers[name] = receive;
+                MCServers[name] = receive;
+            }
+            else
+            {
+                MCServers.Add(name, receive);
+            }
         }
         public static void ServerStop()
         {
