@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Minecraft_QQ.Robot;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Minecraft_QQ.Robot;
 
 namespace Minecraft_QQ.Utils
 {

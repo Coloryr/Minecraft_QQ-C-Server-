@@ -1,12 +1,9 @@
 ﻿using Minecraft_QQ.Robot;
 using Minecraft_QQ.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ.MySocket
 {

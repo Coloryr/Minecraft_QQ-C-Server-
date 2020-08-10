@@ -130,7 +130,7 @@ namespace Minecraft_QQ.Utils
                     {
                         return obj["prompt"].ToString() + "\n" + "链接：" + obj["meta"]["news"]["jumpUrl"].ToString();
                     }
-                    
+
                 }
                 else if (a.StartsWith("<?xml"))
                 {
@@ -356,7 +356,7 @@ namespace Minecraft_QQ.Utils
         }
         public static string RenamePlayer(List<string> msg)
         {
-            if(msg.Count != 3)
+            if (msg.Count != 3)
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {

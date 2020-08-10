@@ -187,7 +187,7 @@ namespace Minecraft_QQ
                                     名字 = "Color_yr",
                                     昵称 = "Color_yr",
                                     管理员 = true
-                                } 
+                                }
                             }
                         },
                         禁止绑定列表 = new List<string> { "Color_yr" },
@@ -448,7 +448,7 @@ namespace Minecraft_QQ
                             List<string> lists = new List<string>();
                             lists.Add("at:" + fromQQ);
                             lists.Add(Funtion.FixModeChange());
-                            RobotSocket.SendGroupMessage(fromGroup,lists);
+                            RobotSocket.SendGroupMessage(fromGroup, lists);
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.获取禁言列表)
