@@ -5,7 +5,6 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Minecraft_QQ.MyMysql
 {
@@ -25,7 +24,7 @@ namespace Minecraft_QQ.MyMysql
             conn = new MySqlConnection(ConnectString);
             if (conn == null)
             {
-                MessageBox.Show("Mysql错误\n" + ConnectString);
+                IMinecraft_QQ.ShowMessageCall.Invoke("Mysql错误\n" + ConnectString);
             }
             MysqlAddTable table = new MysqlAddTable();
 

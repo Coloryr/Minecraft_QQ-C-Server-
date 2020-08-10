@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Minecraft_QQ.Robot;
 
 namespace Minecraft_QQ.Utils
 {
@@ -11,12 +12,13 @@ namespace Minecraft_QQ.Utils
     }
     internal class Send
     {
-        public static Thread SendT;
+        private static Thread SendT;
+        private static bool Run;
         public static List<SendObj> SendList { get; set; } = new List<SendObj>() { };
 
         public static void SendToGroup()
         {
-            while (true)
+            while (Run)
             {
                 if (SendList.Count != 0)
                 {
@@ -37,13 +39,24 @@ namespace Minecraft_QQ.Utils
                         if (have)
                         {
                             b = b.Substring(0, b.Length - 1);
-                            IMinecraft_QQ.SGroupMessage(group, b);
+                            RobotSocket.SendGroupMessage(group, b);
                         }
                         SendList.RemoveAll(a => a.Group == group);
                     }
                 }
                 Thread.Sleep(Minecraft_QQ.MainConfig.设置.发送群消息间隔);
             }
+        }
+        public static void Start()
+        {
+            Run = true;
+            SendT = new Thread(SendToGroup);
+            SendT.Start();
+        }
+
+        public static void Stop()
+        {
+            Run = false;
         }
     }
 }

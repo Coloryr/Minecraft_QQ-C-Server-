@@ -8,7 +8,7 @@ namespace Minecraft_QQ.Utils
         public static string log = "logs.log";
         private static object obj = new object();
 
-        public static void LogWrite(string a)
+        private static void LogWrite(string a)
         {
             try
             {
@@ -18,6 +18,7 @@ namespace Minecraft_QQ.Utils
                     string year = date.ToShortDateString().ToString();
                     string time = date.ToLongTimeString().ToString();
                     string write = "[" + year + "]" + "[" + time + "]" + a;
+                    IMinecraft_QQ.LogCall?.Invoke(write);
                     File.AppendAllText(Minecraft_QQ.Path + log, write + Environment.NewLine);
                 }
             }
@@ -29,12 +30,17 @@ namespace Minecraft_QQ.Utils
 
         public static void LogError(Exception e)
         {
-            LogWrite("[ERROR]" + e.Message + "\n" + e.StackTrace);
+            LogWrite("[Error]" + e.Message + "\n" + e.StackTrace);
         }
 
         public static void LogError(string e)
         {
-            LogWrite("[ERROR]" + e);
+            LogWrite("[Error]" + e);
+        }
+
+        internal static void LogOut(string v)
+        {
+            LogWrite("[Info]" + v);
         }
     }
 }

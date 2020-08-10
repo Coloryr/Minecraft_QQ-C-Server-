@@ -20,6 +20,9 @@ namespace Minecraft_QQ
 
         public delegate void Gui(GuiFun dofun);
         public static Gui GuiCall;
+
+        public delegate void Log(string message);
+        public static Log LogCall;
         public static void Start()
         {
             Task.Factory.StartNew(() => Minecraft_QQ.Start());
@@ -27,27 +30,6 @@ namespace Minecraft_QQ
         public static void Stop()
         {
             Minecraft_QQ.Stop();
-        }
-        public static void SGroupMessage(long group, string message)
-        {
-            Api.SendGroupMessage(group, message);
-        }
-        public static void SPrivateMessage(long user, string message)
-        {
-            Api.SendPrivateMessage(user, message);
-        }
-        public static void RGroupMessage(long group, long user, string message)
-        {
-            Task.Factory.StartNew(() => Minecraft_QQ.GroupMessage(group, user, message));
-        }
-        public static void RPrivateMessage(long user, string message)
-        {
-            Task.Factory.StartNew(() => Minecraft_QQ.PrivateMessage(user, message));
-        }
-
-        public static string CodeAt(long user)
-        {
-            return CQApi.CQCode_At(user).ToSendString();
         }
     }
 }

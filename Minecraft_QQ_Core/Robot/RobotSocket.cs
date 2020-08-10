@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Minecraft_QQ.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ_Core.Robot
+namespace Minecraft_QQ.Robot
 {
     class RobotSocket
     {
@@ -70,7 +72,7 @@ namespace Minecraft_QQ_Core.Robot
                     }
                     catch (Exception e)
                     {
-                        ServerMain.LogError(e);
+                        Logs.LogError(e);
                     }
                 }
             });
@@ -105,7 +107,7 @@ namespace Minecraft_QQ_Core.Robot
                         }
                         else if (Socket.Poll(1000, SelectMode.SelectRead))
                         {
-                            ServerMain.LogOut("机器人连接中断");
+                            Logs.LogOut("机器人连接中断");
                             IsConnect = false;
                         }
                         else if (QueueSend.TryTake(out Send))
@@ -116,32 +118,18 @@ namespace Minecraft_QQ_Core.Robot
                     }
                     catch (Exception e)
                     {
-                        ServerMain.LogError("机器人连接失败");
-                        ServerMain.LogError(e);
+                        Logs.LogError("机器人连接失败");
+                        Logs.LogError(e);
                         IsConnect = false;
-                        ServerMain.LogError("机器人20秒后重连");
+                        Logs.LogError("机器人20秒后重连");
                         Thread.Sleep(20000);
-                        ServerMain.LogError("机器人重连中");
+                        Logs.LogError("机器人重连中");
                     }
                 }
             });
             ReadThread.Start();
             IsRun = true;
-            ReadTest();
         }
-
-        private static void ReadTest()
-        {
-            while (true)
-            {
-                while (!IsConnect)
-                {
-                    Thread.Sleep(500);
-                }
-                SendGroupMessage(571239090, Console.ReadLine());
-            }
-        }
-
         private static void ReConnect()
         {
             if (Socket != null)
@@ -158,13 +146,13 @@ namespace Minecraft_QQ_Core.Robot
 
                 QueueRead.Clear();
                 QueueSend.Clear();
-                ServerMain.LogOut("机器人已连接");
+                Logs.LogOut("机器人已连接");
                 IsConnect = true;
             }
             catch (Exception e)
             {
-                ServerMain.LogError("机器人连接失败");
-                ServerMain.LogError(e);
+                Logs.LogError("机器人连接失败");
+                Logs.LogError(e);
             }
         }
         public static void SendGroupMessage(long id, string message)
@@ -199,11 +187,11 @@ namespace Minecraft_QQ_Core.Robot
         }
         public static void Stop()
         {
-            ServerMain.LogOut("机器人正在断开");
+            Logs.LogOut("机器人正在断开");
             IsRun = false;
             if (Socket != null)
                 Socket.Close();
-            ServerMain.LogOut("机器人已断开");
+            Logs.LogOut("机器人已断开");
         }
     }
 }

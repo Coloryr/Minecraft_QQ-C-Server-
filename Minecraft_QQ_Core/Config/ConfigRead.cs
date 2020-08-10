@@ -13,7 +13,7 @@ namespace Minecraft_QQ.Config
         /// </summary>
         public MainConfig ReadConfig()
         {
-            Logs.LogWrite("[INFO][Config]读取主配置");
+            Logs.LogOut("[Config]读取主配置");
             try
             {
                 var config = JsonConvert.DeserializeObject<MainConfig>
@@ -65,7 +65,7 @@ namespace Minecraft_QQ.Config
         }
         public PlayerConfig ReadPlayer()
         {
-            Logs.LogWrite("[INFO][Config]读取玩家配置");
+            Logs.LogOut("[Config]读取玩家配置");
             try
             {
                 var config = JsonConvert.DeserializeObject<PlayerConfig>
@@ -102,7 +102,7 @@ namespace Minecraft_QQ.Config
         }
         public GroupConfig ReadGroup()
         {
-            Logs.LogWrite("[INFO][Config]读取群设置");
+            Logs.LogOut("[Config]读取群设置");
             try
             {
                 var config = JsonConvert.DeserializeObject<GroupConfig>
@@ -132,7 +132,7 @@ namespace Minecraft_QQ.Config
         }
         public AskConfig ReadAsk()
         {
-            Logs.LogWrite("[INFO][Config]读取自定义应答");
+            Logs.LogOut("[Config]读取自定义应答");
             try
             {
                 var config = JsonConvert.DeserializeObject<AskConfig>
@@ -162,7 +162,7 @@ namespace Minecraft_QQ.Config
         }
         public CommandConfig ReadCommand()
         {
-            Logs.LogWrite("[INFO][Config]读取自定义指令");
+            Logs.LogOut("[Config]读取自定义指令");
             try
             {
                 var config = JsonConvert.DeserializeObject<CommandConfig>

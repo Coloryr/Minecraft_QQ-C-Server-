@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ_Core.Robot
+namespace Minecraft_QQ.Robot
 {
     class PackStart
     {
@@ -16,7 +16,7 @@ namespace Minecraft_QQ_Core.Robot
         public long id { get; set; }
         public long fid { get; set; }
         public string name { get; set; }
-        public string message { get; set; }
+        public List<string> message { get; set; }
     }
 
     class SendGroupMessagePack
@@ -40,14 +40,14 @@ namespace Minecraft_QQ_Core.Robot
         public long id { get; set; }
         public long fid { get; set; }
         public string name { get; set; }
-        public string message { get; set; }
+        public List<string> message { get; set; }
         public int time { get; set; }
     }
     class FriendMessageEventPack
     {
         public long id { get; set; }
         public string name { get; set; }
-        public string message { get; set; }
+        public List<string> message { get; set; }
         public int time { get; set; }
     }
     class SendGroupImagePack

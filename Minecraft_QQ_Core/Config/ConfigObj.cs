@@ -236,10 +236,6 @@ namespace Minecraft_QQ.Config
         /// </summary>
         public string 重读配置 { get; set; } = "重读文件";
         /// <summary>
-        /// 打开菜单
-        /// </summary>
-        public string 打开菜单 { get; set; } = "打开菜单";
-        /// <summary>
         /// 昵称
         /// </summary>
         public string 设置昵称 { get; set; } = "昵称：";

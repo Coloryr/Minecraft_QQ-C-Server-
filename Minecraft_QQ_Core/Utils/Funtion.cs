@@ -106,53 +106,6 @@ namespace Minecraft_QQ.Utils
             else
                 return a.Substring(x);
         }
-        public static string RemovePic(string a)
-        {
-            while (a.IndexOf("[CQ:image") != -1)
-            {
-                string b = GetString(a, "[", "]");
-                a = a.Replace(b, "");
-                a = a.Replace("[]", "&#91;图片&#93;");
-            }
-            while (a.IndexOf("[CQ:face") != -1)
-            {
-                string b = GetString(a, "[", "]");
-                a = a.Replace(b, "");
-                a = a.Replace("[]", "&#91;表情&#93;");
-            }
-            while (a.IndexOf("[CQ:emoji") != -1)
-            {
-                string b = GetString(a, "[", "]");
-                a = a.Replace(b, "");
-                a = a.Replace("[]", "&#91;表情&#93;");
-            }
-            return a;
-        }
-        public static string GetFromAt(string msg)
-        {
-            while (msg.IndexOf("CQ:at,qq=") != -1)
-            {
-                string player_QQ = GetString(msg, "=", "]");
-                string msg_QQ = GetString(msg, "[", "]");
-                string player_name;
-                long.TryParse(player_QQ, out long qq);
-                var player = GetPlayer(qq);
-                if (player == null)
-                    player_name = player_QQ;
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(player.昵称) == false)
-                        player_name = player.昵称;
-                    else
-                        player_name = player.名字;
-                }
-                msg = msg.Replace(msg_QQ, "@" + player_name + "");
-            }
-            if (msg.IndexOf("CQ:at,qq=all") != -1)
-                msg.Replace("CQ:at,qq=all", "@全体人员");
-            msg = msg.Replace("[", "").Replace("]", "");
-            return msg;
-        }
         public static string GetRich(string a)
         {
             try
@@ -549,7 +502,7 @@ namespace Minecraft_QQ.Utils
                 {
                     if (MySocketServer.IsReady() == false)
                     {
-                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，服务器未准备好");
+                        RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，服务器未准备好");
                         return true;
                     }
                     bool haveserver = false;
@@ -572,7 +525,7 @@ namespace Minecraft_QQ.Utils
                     }
                     if (!haveserver)
                     {
-                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，对应的服务器未连接");
+                        RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，对应的服务器未连接");
                     }
                     var player = GetPlayer(fromQQ);
                     if (player != null)
@@ -593,7 +546,7 @@ namespace Minecraft_QQ.Utils
                                 var player1 = GetPlayer(qq);
                                 if (player1 == null)
                                 {
-                                    IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
+                                    RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "错误，玩家：" + a + "没有绑定ID");
                                     return true;
                                 }
                                 cmd = cmd.Replace("%player_at%", player1.名字);
@@ -614,7 +567,7 @@ namespace Minecraft_QQ.Utils
                                 messageSend.player = player.名字;
                                 if (string.IsNullOrWhiteSpace(player.名字) == true)
                                 {
-                                    IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
+                                    RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
                                     return true;
                                 }
                             }
@@ -626,7 +579,7 @@ namespace Minecraft_QQ.Utils
                     }
                     else
                     {
-                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
+                        RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你未绑定ID");
                         return true;
                     }
                 }

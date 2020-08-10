@@ -1,6 +1,7 @@
 ﻿using Minecraft_QQ.Config;
 using Minecraft_QQ.MyMysql;
 using Minecraft_QQ.MySocket;
+using Minecraft_QQ.Robot;
 using Minecraft_QQ.Utils;
 using Newtonsoft.Json;
 using System;
@@ -100,7 +101,7 @@ namespace Minecraft_QQ
             //读取主配置文件
             if (ConfigFile.主要配置文件.Exists == false)
             {
-                Logs.LogWrite("[Info][Config]新建主配置");
+                Logs.LogOut("[Config]新建主配置");
                 MainConfig = new MainConfig();
                 File.WriteAllText(ConfigFile.主要配置文件.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
             }
@@ -112,7 +113,7 @@ namespace Minecraft_QQ
             //读取群设置
             if (ConfigFile.群设置.Exists == false)
             {
-                Logs.LogWrite("[Info][Config]新建群设置配置");
+                Logs.LogOut("[Config]新建群设置配置");
                 GroupConfig = new GroupConfig();
                 File.WriteAllText(ConfigFile.群设置.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
             }
@@ -144,7 +145,7 @@ namespace Minecraft_QQ
                 Mysql.MysqlStart();
                 if (MysqlOK == false)
                 {
-                    IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql链接失败");
+                    Logs.LogOut("[Mysql]Mysql链接失败");
                     if (ConfigFile.玩家储存.Exists == false)
                     {
                         PlayerConfig = new PlayerConfig();
@@ -159,7 +160,7 @@ namespace Minecraft_QQ
                     if (PlayerConfig == null)
                         PlayerConfig = new PlayerConfig();
                     Mysql.Load();
-                    IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]Mysql已连接");
+                    Logs.LogOut("[Mysql]Mysql已连接");
                 }
             }
             else
@@ -236,14 +237,13 @@ namespace Minecraft_QQ
         {
             Reload();
 
+            RobotSocket.Start();
             MySocketServer.ServerStop();
             MySocketServer.StartServer();
+            Send.Start();
             IsStart = true;
 
-            Send.SendT = new Thread(Send.SendToGroup);
-            Send.SendT.Start();
-
-            IMinecraft_QQ.SGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
+            RobotSocket.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
 
         }
 
@@ -263,10 +263,9 @@ namespace Minecraft_QQ
         {
             if (IsStart == false)
                 return;
-            Logs.LogWrite('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
+            Logs.LogOut('[' + fromGroup + ']' + "[QQ:" + fromQQ + "]:" + msg);
             if (GroupConfig.群列表.ContainsKey(fromGroup) == true)
             {
-                msg = Funtion.CQtoCode(msg);
                 GroupObj list = GroupConfig.群列表[fromGroup];
                 //始终发送
                 if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false
@@ -281,22 +280,12 @@ namespace Minecraft_QQ
                             string msg_copy = msg;
                             if (MainConfig.设置.颜色代码开关 == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                            if (msg_copy.IndexOf("CQ:rich") != -1)
-                                msg_copy = Funtion.GetRich(msg_copy);
-                            if (msg_copy.IndexOf("CQ:sign") != -1)
-                                msg_copy = Funtion.GetSign(msg_copy, player.名字);
-                            else if (msg_copy.IndexOf("CQ:") != -1)
-                            {
-                                msg_copy = Funtion.RemovePic(msg_copy);
-                                msg_copy = Funtion.GetFromAt(msg_copy);
-                                msg_copy = Funtion.CQtoCode(msg_copy);
-                            }
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
                                 var messagelist = new TranObj()
                                 {
                                     group = fromGroup.ToString(),
-                                    message = Funtion.RemovePic(msg_copy),
+                                    message = msg_copy,
                                     player = !MainConfig.设置.使用昵称发送至服务器 ?
                                     player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
                                     player.名字 : player.昵称,
@@ -317,22 +306,22 @@ namespace Minecraft_QQ
                     {
                         if (list.开启对话 == false)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, "该群没有开启聊天功能");
+                            RobotSocket.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
                             return;
                         }
                         else if (MainConfig.设置.维护模式)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + MainConfig.消息.维护提示文本);
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + MainConfig.消息.维护提示文本);
                             return;
                         }
                         else if (MySocketServer.IsReady() == false)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，没有服务器链接");
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "发送失败，没有服务器链接");
                             return;
                         }
                         else if (player == null || string.IsNullOrWhiteSpace(player.名字))
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ)
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ)
                                                 + "检测到你没有绑定服务器ID，发送：" + MainConfig.检测.检测头
                                                 + MainConfig.检测.玩家设置名字
                                                 + "[ID]来绑定，如：" + "\n" + MainConfig.检测.检测头
@@ -341,7 +330,7 @@ namespace Minecraft_QQ
                         }
                         else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你已被禁言");
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + "你已被禁言");
                             return;
                         }
                         try
@@ -350,18 +339,12 @@ namespace Minecraft_QQ
                             msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
                             if (MainConfig.设置.颜色代码开关 == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                            if (msg_copy.IndexOf("CQ:") != -1)
-                            {
-                                msg_copy = Funtion.RemovePic(msg_copy);
-                                msg_copy = Funtion.GetFromAt(msg_copy);
-                                msg_copy = Funtion.CQtoCode(msg_copy);
-                            }
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
                                 var messagelist = new TranObj()
                                 {
                                     group = DataType.group,
-                                    message = Funtion.RemovePic(msg_copy),
+                                    message = msg_copy,
                                     player = !MainConfig.设置.使用昵称发送至服务器 ?
                                     player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
                                     player.名字 : player.昵称,
@@ -381,55 +364,49 @@ namespace Minecraft_QQ
                     {
                         if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.MutePlayer(msg));
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.MutePlayer(msg));
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.UnmutePlayer(msg));
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.UnmutePlayer(msg));
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetPlayerID(fromQQ, msg));
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetPlayerID(fromQQ, msg));
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.RenamePlayer(msg));
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.RenamePlayer(msg));
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.维护模式切换)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.FixModeChange());
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.FixModeChange());
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.获取禁言列表)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetMuteList());
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetMuteList());
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.获取禁止绑定列表)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetCantBind());
-                            return;
-                        }
-                        else if (msg_low == MainConfig.管理员.打开菜单)
-                        {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, "已打开，请前往后台查看");
-                            OpenSettingForm();
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.GetCantBind());
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.重读配置)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, "开始重读配置文件");
+                            RobotSocket.SendGroupMessage(fromGroup, "开始重读配置文件");
                             Reload();
-                            IMinecraft_QQ.SGroupMessage(fromGroup, "重读完成");
+                            RobotSocket.SendGroupMessage(fromGroup, "重读完成");
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.SetNick(msg));
+                            RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.SetNick(msg));
                             return;
                         }
                     }
@@ -437,20 +414,20 @@ namespace Minecraft_QQ
                     {
                         string test = Funtion.GetOnlinePlayer(fromGroup);
                         if (test != null)
-                            IMinecraft_QQ.SGroupMessage(fromGroup, test);
+                            RobotSocket.SendGroupMessage(fromGroup, test);
                         return;
                     }
                     else if (msg_low == MainConfig.检测.服务器在线检测)
                     {
                         string test = Funtion.GetOnlineServer(fromGroup);
                         if (test != null)
-                            IMinecraft_QQ.SGroupMessage(fromGroup, test);
+                            RobotSocket.SendGroupMessage(fromGroup, test);
                         return;
                     }
 
                     else if (msg_low.IndexOf(MainConfig.检测.玩家设置名字) == 0)
                     {
-                        IMinecraft_QQ.SGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.SetPlayerName(fromQQ, msg));
+                        RobotSocket.SendGroupMessage(fromGroup, IMinecraft_QQ.CodeAt(fromQQ) + Funtion.SetPlayerName(fromQQ, msg));
                         return;
                     }
                     else if (Funtion.SendCommand(fromGroup, msg, fromQQ) == true)
@@ -461,13 +438,13 @@ namespace Minecraft_QQ
                         string message = AskConfig.自动应答列表[msg_low];
                         if (string.IsNullOrWhiteSpace(message) == false)
                         {
-                            IMinecraft_QQ.SGroupMessage(fromGroup, message);
+                            RobotSocket.SendGroupMessage(fromGroup, message);
                             return;
                         }
                     }
                     else if (string.IsNullOrWhiteSpace(MainConfig.消息.未知指令文本) == false)
                     {
-                        IMinecraft_QQ.SGroupMessage(fromGroup, MainConfig.消息.未知指令文本);
+                        RobotSocket.SendGroupMessage(fromGroup, MainConfig.消息.未知指令文本);
                         return;
                     }
                 }
