@@ -87,6 +87,8 @@ namespace Minecraft_QQ.Robot
                         {
                             Logs.LogOut("机器人连接中断");
                             IsConnect = false;
+                            Logs.LogError("机器人10秒后重连");
+                            Thread.Sleep(10000);
                         }
                         else if (QueueSend.TryTake(out Send))
                         {
@@ -99,8 +101,8 @@ namespace Minecraft_QQ.Robot
                         Logs.LogError("机器人连接失败");
                         Logs.LogError(e);
                         IsConnect = false;
-                        Logs.LogError("机器人20秒后重连");
-                        Thread.Sleep(20000);
+                        Logs.LogError("机器人10秒后重连");
+                        Thread.Sleep(10000);
                         Logs.LogError("机器人重连中");
                     }
                 }
