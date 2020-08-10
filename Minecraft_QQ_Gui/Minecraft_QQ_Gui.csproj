@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\build_out\gui</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="4.1.0" />
+    <PackageReference Include="Fody" Version="6.2.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Minecraft_QQ_Core\Minecraft_QQ_Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SetWindow\CommandSet.xaml.cs">
+      <DependentUpon>CommandSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\IDSet.xaml.cs">
+      <DependentUpon>IDSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\MessageSet.xaml.cs">
+      <DependentUpon>MessageSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\PlayerSet.xaml.cs">
+      <DependentUpon>PlayerSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\QQSet.xaml.cs">
+      <DependentUpon>QQSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\ServerName.xaml.cs">
+      <DependentUpon>ServerName.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\ServerSet.xaml.cs">
+      <DependentUpon>ServerSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="SetWindow\CommandSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\IDSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\MessageSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\PlayerSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\QQSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\ServerName.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\ServerSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>
