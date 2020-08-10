@@ -22,18 +22,13 @@ namespace Minecraft_QQ.Robot
     class SendGroupMessagePack
     {
         public long id { get; set; }
-        public string message { get; set; }
-    }
-    class SendFriendMessagePack
-    {
-        public long id { get; set; }
-        public string message { get; set; }
+        public List<string> message { get; set; }
     }
     class SendGroupPrivateMessagePack
     {
         public long id { get; set; }
         public long fid { get; set; }
-        public string message { get; set; }
+        public List<string> message { get; set; }
     }
     class TempMessageEventPack
     {
@@ -49,40 +44,5 @@ namespace Minecraft_QQ.Robot
         public string name { get; set; }
         public List<string> message { get; set; }
         public int time { get; set; }
-    }
-    class SendGroupImagePack
-    {
-        public long id { get; set; }
-        public string img { get; set; }
-    }
-    class SendGroupPrivateImagePack
-    {
-        public long id { get; set; }
-        public long fid { get; set; }
-        public string img { get; set; }
-    }
-    class SendFriendImagePack
-    {
-        public long id { get; set; }
-        public string img { get; set; }
-    }
-    class GroupMuteAll
-    {
-        public long id { get; set; }
-    }
-    class GroupUnmuteAll
-    {
-        public long id { get; set; }
-    }
-    class SetGroupMemberCard
-    {
-        public long id { get; set; }
-        public long fid { get; set; }
-        public string card { get; set; }
-    }
-    class SetGroupName
-    {
-        public long id { get; set; }
-        public string name { get; set; }
     }
 }

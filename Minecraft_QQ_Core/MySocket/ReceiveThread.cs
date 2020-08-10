@@ -1,4 +1,5 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ.Robot;
+using Minecraft_QQ.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace Minecraft_QQ.MySocket
                             {
                                 RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "已连接");
                             }
-                            Logs.LogWrite("[INFO][Socket]服务器" + Name + "已连接");
+                            Logs.LogOut("[Socket]服务器" + Name + "已连接");
                             IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                         }
                         else if (Minecraft_QQ.MainConfig.设置.发送日志到主群)

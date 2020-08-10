@@ -11,6 +11,11 @@ namespace Minecraft_QQ
         public const string Version = "3.0.0.0";
 
         public static bool Run;
+        public static bool IsStop;
+        /// <summary>
+        /// 已经启动
+        /// </summary>
+        public static bool IsStart = false;
 
         public delegate void ShowMessage(string message);
         public static ShowMessage ShowMessageCall;

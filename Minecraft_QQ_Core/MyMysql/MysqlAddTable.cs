@@ -31,7 +31,7 @@ namespace Minecraft_QQ.MyMysql
                         cmd.ExecuteNonQuery();
                         break;
                     default:
-                        Logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+                        Logs.LogError("[Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                         Mysql.conn.Close();
                         return false;
                 }
@@ -64,7 +64,7 @@ namespace Minecraft_QQ.MyMysql
                         cmd.ExecuteNonQuery();
                         break;
                     default:
-                        Logs.LogWrite("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+                        Logs.LogOut("[ERROR][Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
                         Mysql.conn.Close();
                         return false;
                 }

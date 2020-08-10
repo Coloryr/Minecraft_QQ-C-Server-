@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Minecraft_QQ_Core\Minecraft_QQ_Core.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(OutDir)Minecraft_QQ_Cmd.deps.json" />
+  </Target>
+
 </Project>

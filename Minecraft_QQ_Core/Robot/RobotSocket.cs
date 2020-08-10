@@ -23,9 +23,9 @@ namespace Minecraft_QQ.Robot
         private static ConcurrentBag<byte[]> QueueSend;
         private static PackStart PackStart = new PackStart
         {
-            Name = "ColoryrSDK",
+            Name = "Minecraft_QQ",
             Reg = new List<byte>()
-            { 49, 50, 51 }
+            { 49 }
         };
         public static void Start()
         {
@@ -44,27 +44,7 @@ namespace Minecraft_QQ.Robot
                             {
                                 case 49:
                                     var pack = JsonConvert.DeserializeObject<GroupMessageEventPack>(task.data);
-                                    Console.WriteLine("id = " + pack.id);
-                                    Console.WriteLine("fid = " + pack.fid);
-                                    Console.WriteLine("name = " + pack.name);
-                                    Console.WriteLine("message = " + pack.message);
-                                    Console.WriteLine();
-                                    break;
-                                case 50:
-                                    var pack1 = JsonConvert.DeserializeObject<TempMessageEventPack>(task.data);
-                                    Console.WriteLine("id = " + pack1.id);
-                                    Console.WriteLine("fid = " + pack1.fid);
-                                    Console.WriteLine("name = " + pack1.name);
-                                    Console.WriteLine("message = " + pack1.message);
-                                    Console.WriteLine();
-                                    break;
-                                case 51:
-                                    var pack2 = JsonConvert.DeserializeObject<FriendMessageEventPack>(task.data);
-                                    Console.WriteLine("id = " + pack2.id);
-                                    Console.WriteLine("time = " + pack2.time);
-                                    Console.WriteLine("name = " + pack2.name);
-                                    Console.WriteLine("message = " + pack2.message);
-                                    Console.WriteLine();
+                                    Minecraft_QQ.GroupMessage(pack.id, pack.fid, pack.message);
                                     break;
                             }
                         }
@@ -157,32 +137,17 @@ namespace Minecraft_QQ.Robot
         }
         public static void SendGroupMessage(long id, string message)
         {
+            SendGroupMessage(id, new List<string>() { message });
+        }
+        public static void SendGroupMessage(long id, List<string> message)
+        {
             var data = BuildPack.Build(new SendGroupMessagePack { id = id, message = message }, 52);
             QueueSend.Add(data);
         }
         public static void SendGroupPrivateMessage(long id, long fid, string message)
         {
-            var data = BuildPack.Build(new SendGroupPrivateMessagePack { id = id, fid = fid, message = message }, 53);
-            QueueSend.Add(data);
-        }
-        public static void SendFriendMessage(long id, string message)
-        {
-            var data = BuildPack.Build(new SendFriendMessagePack { id = id, message = message }, 54);
-            QueueSend.Add(data);
-        }
-        public static void SendGroupImage(long id, string img)
-        {
-            var data = BuildPack.Build(new SendGroupImagePack { id = id, img = img }, 61);
-            QueueSend.Add(data);
-        }
-        public static void SendGroupPrivateImage(long id, long fid, string img)
-        {
-            var data = BuildPack.Build(new SendGroupPrivateImagePack { id = id, fid = fid, img = img }, 62);
-            QueueSend.Add(data);
-        }
-        public static void SendFriendImage(long id, string img)
-        {
-            var data = BuildPack.Build(new SendFriendImagePack { id = id, img = img }, 63);
+            var data = BuildPack.Build(new SendGroupPrivateMessagePack
+            { id = id, fid = fid, message = new List<string>() { message } }, 53);
             QueueSend.Add(data);
         }
         public static void Stop()
