@@ -204,15 +204,15 @@ namespace Minecraft_QQ.Utils
         }
         public static string SetNick(List<string> msg)
         {
-            if (msg.Count != 3)
+            if (msg.Count != 5)
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", "]"), out long qq);
+                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
                 PlayerObj player;
                 if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == true)
                 {
-                    Minecraft_QQ.PlayerConfig.玩家列表[qq].昵称 = msg[2].Trim();
+                    Minecraft_QQ.PlayerConfig.玩家列表[qq].昵称 = msg[3].Trim();
                     if (Minecraft_QQ.MysqlOK == true)
                         Task.Factory.StartNew(async () =>
                         {
@@ -226,12 +226,12 @@ namespace Minecraft_QQ.Utils
                     player = new PlayerObj()
                     {
                         QQ号 = qq,
-                        昵称 = msg[2].Trim()
+                        昵称 = msg[3].Trim()
                     };
                     Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, player);
                     new ConfigWrite().Player();
                 }
-                return "已修改玩家[" + qq + "]的昵称为：" + msg[2].Trim();
+                return "已修改玩家[" + qq + "]的昵称为：" + msg[3].Trim();
             }
             else
                 return "找不到玩家";
@@ -251,8 +251,8 @@ namespace Minecraft_QQ.Utils
                 string player_name = data.Replace(Minecraft_QQ.MainConfig.检测.玩家设置名字, "");
                 string check = player_name.Trim();
                 if (string.IsNullOrWhiteSpace(player_name) ||
-                    check.StartsWith("id:") ||
-                    check.StartsWith("id："))
+                    check.StartsWith("id:") || check.StartsWith("id：") ||
+                      check.StartsWith("id "))
                     return "ID无效，请检查";
                 else
                 {
@@ -289,19 +289,22 @@ namespace Minecraft_QQ.Utils
         }
         public static string MutePlayer(List<string> msg)
         {
-            if (msg.Count > 2)
+            if (msg.Count > 4)
                 return "错误的参数";
             string name;
-            if (msg.Count == 2 && msg[2].IndexOf("[mirai:at:") != -1)
+            if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", "]"), out long qq);
+                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.名字;
             }
             else
-                name = msg[0].Replace(Minecraft_QQ.MainConfig.管理员.禁言, "").Trim();
+            {
+                name = msg[2].Replace(Minecraft_QQ.MainConfig.管理员.禁言, "").Trim();
+                name = ReplaceFirst(name, Minecraft_QQ.MainConfig.检测.检测头, "");
+            }
             if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == false)
                 Minecraft_QQ.PlayerConfig.禁言列表.Add(name.ToLower());
             if (Minecraft_QQ.MysqlOK == true)
@@ -315,19 +318,22 @@ namespace Minecraft_QQ.Utils
         }
         public static string UnmutePlayer(List<string> msg)
         {
-            if (msg.Count > 2)
+            if (msg.Count > 4)
                 return "错误的参数";
             string name;
-            if (msg.Count == 2 && msg[2].IndexOf("[mirai:at:") != -1)
+            if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", "]"), out long qq);
+                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
                 name = player.名字;
             }
             else
-                name = msg[0].Replace(Minecraft_QQ.MainConfig.管理员.取消禁言, "").Trim();
+            {
+                name = msg[2].Replace(Minecraft_QQ.MainConfig.管理员.禁言, "").Trim();
+                name = ReplaceFirst(name, Minecraft_QQ.MainConfig.检测.检测头, "");
+            }
             if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == true)
                 Minecraft_QQ.PlayerConfig.禁言列表.Remove(name.ToLower());
             if (Minecraft_QQ.MysqlOK == true)
@@ -338,11 +344,24 @@ namespace Minecraft_QQ.Utils
         }
         public static string GetPlayerID(List<string> msg)
         {
-            if (msg.Count != 2)
+            if (msg.Count > 4)
                 return "错误的参数";
-            if (msg.IndexOf("[mirai:at:") != -1)
+            if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", "]"), out long qq);
+                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
+                var player = GetPlayer(qq);
+                if (player == null)
+                    return "玩家[" + qq + "]未绑定ID";
+                else
+                    return "玩家[" + qq + "]绑定的ID为：" + player.名字;
+            }
+            else if (msg.Count == 3)
+            {
+                string data = msg[2].Replace(Minecraft_QQ.MainConfig.管理员.查询绑定名字, "");
+                if (long.TryParse(data.Remove(0, 1), out long qq) == false)
+                {
+                    return "无效的QQ号";
+                }
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
@@ -351,16 +370,16 @@ namespace Minecraft_QQ.Utils
             }
             else
             {
-                return "你需要@一个人来查询";
+                return "你需要@一个人或者输入它的QQ号来查询";
             }
         }
         public static string RenamePlayer(List<string> msg)
         {
-            if (msg.Count != 3)
+            if (msg.Count != 5)
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", "]"), out long qq);
+                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
                 if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == false)
                 {
                     var player = new PlayerObj()
@@ -379,7 +398,7 @@ namespace Minecraft_QQ.Utils
                 }
                 else
                 {
-                    Minecraft_QQ.PlayerConfig.玩家列表[qq].名字 = msg[2].Trim();
+                    Minecraft_QQ.PlayerConfig.玩家列表[qq].名字 = msg[3].Trim();
                     if (Minecraft_QQ.MysqlOK == true)
                         Task.Factory.StartNew(async () =>
                         {
@@ -388,7 +407,7 @@ namespace Minecraft_QQ.Utils
                     else
                         new ConfigWrite().Player();
                 }
-                return "已修改玩家[" + qq + "]ID为：" + msg[2].Trim();
+                return "已修改玩家[" + qq + "]ID为：" + msg[3].Trim();
             }
             else
                 return "玩家错误，请检查";
