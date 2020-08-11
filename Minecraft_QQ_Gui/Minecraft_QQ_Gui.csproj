@@ -12,11 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Color_yr.ico" />
-    <None Remove="Minecraft_QQ.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Costura.Fody" Version="4.1.0" />
     <PackageReference Include="Fody" Version="6.2.4">
       <PrivateAssets>all</PrivateAssets>
