@@ -1,8 +1,8 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace Minecraft_QQ.MyMysql
+namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlAddTable
     {

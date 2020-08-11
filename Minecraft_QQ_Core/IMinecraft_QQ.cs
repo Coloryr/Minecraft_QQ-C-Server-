@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Minecraft_QQ
+namespace Minecraft_QQ_Core
 {
     public enum GuiFun
     {

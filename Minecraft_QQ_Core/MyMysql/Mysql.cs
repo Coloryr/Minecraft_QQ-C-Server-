@@ -1,14 +1,14 @@
-﻿using Minecraft_QQ.Config;
-using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.Utils;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ.MyMysql
+namespace Minecraft_QQ_Core.MyMysql
 {
-    internal class Mysql
+    public class Mysql
     {
         public static MySqlConnection conn;
 

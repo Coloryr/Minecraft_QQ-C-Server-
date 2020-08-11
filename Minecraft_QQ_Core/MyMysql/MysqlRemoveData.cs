@@ -1,8 +1,8 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ.MyMysql
+namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlRemoveData
     {

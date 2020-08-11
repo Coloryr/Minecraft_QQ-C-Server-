@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Minecraft_QQ.Robot
+namespace Minecraft_QQ_Core.Robot
 {
     class PackStart
     {

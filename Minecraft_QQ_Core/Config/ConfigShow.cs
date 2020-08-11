@@ -1,6 +1,6 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 
-namespace Minecraft_QQ.Config
+namespace Minecraft_QQ_Core.Config
 {
     internal class ConfigShow
     {

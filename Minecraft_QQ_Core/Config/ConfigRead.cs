@@ -1,10 +1,12 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core;
+using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Minecraft_QQ.Config
+namespace Minecraft_QQ_Core.Config
 {
     internal class ConfigRead
     {

@@ -12,15 +12,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Color_yr.ico" />
+    <None Remove="Minecraft_QQ.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Costura.Fody" Version="4.1.0" />
     <PackageReference Include="Fody" Version="6.2.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NotifyIconWpf" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Minecraft_QQ_Core\Minecraft_QQ_Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Color_yr.ico" />
+    <Resource Include="Minecraft_QQ.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,9 +56,6 @@
     </Compile>
     <Compile Update="SetWindow\ServerSet.xaml.cs">
       <DependentUpon>ServerSet.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="SetWindow\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -73,5 +82,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(OutDir)Minecraft_QQ_Gui.deps.json" />
+  </Target>
 
 </Project>

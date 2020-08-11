@@ -13,6 +13,8 @@ namespace Minecraft_QQ_Gui
     /// </summary>
     public partial class App : Application
     {
-        public static NotifyIcon notifyIcon;
+        public static System.Windows.Forms.NotifyIcon notifyIcon;
+
+
     }
 }

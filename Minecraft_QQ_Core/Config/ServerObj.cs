@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Minecraft_QQ.Config
+namespace Minecraft_QQ_Core.Config
 {
     public class ConfigOBJ
     {

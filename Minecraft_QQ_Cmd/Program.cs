@@ -1,4 +1,4 @@
-﻿using Minecraft_QQ;
+﻿using Minecraft_QQ_Core;
 using System;
 using System.Threading;
 

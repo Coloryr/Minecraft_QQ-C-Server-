@@ -4,17 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="服务器配置文件" Height="557" Width="968" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
+        Title="服务器配置文件" Height="557" Width="968" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/CheckBox.xaml"/>
-                <ResourceDictionary Source="Style/Label.xaml"/>
-                <ResourceDictionary Source="Style/TextBox.xaml"/>
-                <ResourceDictionary Source="Style/RadioButton.xaml"/>
-                <ResourceDictionary Source="Style/GroupBox.xaml"/>
-                <ResourceDictionary Source="Style/ListView.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <Style x:Key="ListViewStyle1" TargetType="{x:Type ListView}">
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>

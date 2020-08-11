@@ -1,8 +1,8 @@
-﻿using Minecraft_QQ.Config;
-using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 
-namespace Minecraft_QQ.MySocket
+namespace Minecraft_QQ_Core.MySocket
 {
     public class DataType
     {

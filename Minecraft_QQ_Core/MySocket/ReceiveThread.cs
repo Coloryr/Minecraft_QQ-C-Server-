@@ -1,13 +1,13 @@
-﻿using Minecraft_QQ.Robot;
-using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Robot;
+using Minecraft_QQ_Core.Utils;
 using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Minecraft_QQ.MySocket
+namespace Minecraft_QQ_Core.MySocket
 {
-    class ReceiveThread
+    public class ReceiveThread
     {
         public string Name { get; private set; }
         public Socket Socket { get; private set; }

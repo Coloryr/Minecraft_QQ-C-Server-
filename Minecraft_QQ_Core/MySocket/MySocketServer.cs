@@ -1,5 +1,5 @@
-﻿using Minecraft_QQ.Robot;
-using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Robot;
+using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Minecraft_QQ.MySocket
+namespace Minecraft_QQ_Core.MySocket
 {
-    internal class MySocketServer
+    public class MySocketServer
     {
         public static Dictionary<string, ReceiveThread> MCServers = new Dictionary<string, ReceiveThread>();
 

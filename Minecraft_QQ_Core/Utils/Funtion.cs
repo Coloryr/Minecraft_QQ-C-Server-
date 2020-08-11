@@ -1,7 +1,7 @@
-﻿using Minecraft_QQ.Config;
-using Minecraft_QQ.MyMysql;
-using Minecraft_QQ.MySocket;
-using Minecraft_QQ.Robot;
+﻿using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.MyMysql;
+using Minecraft_QQ_Core.MySocket;
+using Minecraft_QQ_Core.Robot;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Minecraft_QQ.Utils
+namespace Minecraft_QQ_Core.Utils
 {
     internal class Funtion
     {

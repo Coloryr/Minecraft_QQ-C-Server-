@@ -5,8 +5,8 @@
     <Platforms>x64</Platforms>
     <SignAssembly>false</SignAssembly>
     <Version>3.0.0.0</Version>
-    <AssemblyName>Minecraft_QQ</AssemblyName>
-    <RootNamespace>Minecraft_QQ</RootNamespace>
+    <AssemblyName>Minecraft_QQ_Core</AssemblyName>
+    <RootNamespace>Minecraft_QQ_Core</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

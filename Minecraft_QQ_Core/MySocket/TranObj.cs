@@ -1,6 +1,6 @@
-﻿namespace Minecraft_QQ.MySocket
+﻿namespace Minecraft_QQ_Core.MySocket
 {
-    class TranObj
+    public class TranObj
     {
         public string group { get; set; }
         public string message { get; set; }

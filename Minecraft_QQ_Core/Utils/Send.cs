@@ -1,9 +1,9 @@
-﻿using Minecraft_QQ.Robot;
+﻿using Minecraft_QQ_Core.Robot;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Minecraft_QQ.Utils
+namespace Minecraft_QQ_Core.Utils
 {
     internal class SendObj
     {

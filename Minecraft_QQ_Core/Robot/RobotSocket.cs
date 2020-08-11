@@ -1,4 +1,4 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Minecraft_QQ.Robot
+namespace Minecraft_QQ_Core.Robot
 {
     class RobotSocket
     {

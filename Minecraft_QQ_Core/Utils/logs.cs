@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Minecraft_QQ.Utils
+namespace Minecraft_QQ_Core.Utils
 {
     internal class Logs
     {

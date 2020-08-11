@@ -1,8 +1,8 @@
-﻿using Minecraft_QQ.Config;
+﻿using Minecraft_QQ_Core.Config;
 using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ.MyMysql
+namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlSearchData
     {

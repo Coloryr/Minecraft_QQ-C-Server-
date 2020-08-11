@@ -1,4 +1,4 @@
-﻿using Minecraft_QQ.Config;
+﻿using Minecraft_QQ_Core.Config;
 using System.Windows;
 
 namespace Minecraft_QQ_Gui.SetWindow

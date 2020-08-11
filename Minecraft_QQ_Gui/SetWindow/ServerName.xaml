@@ -3,24 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Minecraft_QQ.SetWindow"
         mc:Ignorable="d"
-       Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/Label.xaml"/>
-                <ResourceDictionary Source="Style/TextBox.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+       Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
-        <Label Content="名字" Margin="6,6,171,38" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
-        <TextBox Margin="52,11,10,41" TextWrapping="Wrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3"/>
-        <Label Content="别名" Margin="6,31,171,13" 
-            Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
-        <TextBox Margin="52,36,10,17" TextWrapping="Wrap" Text="{Binding Addr}" Foreground="Black" Background="#225EBDD3"/>
+        <Label Content="名字" Margin="6,6,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="43"/>
+        <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3" Height="18"
+                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
+        <Label Content="别名" Margin="6,31,0,0" 
+            Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="41"/>
+        <TextBox Margin="52,34,0,0" TextWrapping="Wrap" Text="{Binding Addr}" Foreground="Black" Background="#225EBDD3" Height="18" 
+                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
 
     </Grid>
 </Window>

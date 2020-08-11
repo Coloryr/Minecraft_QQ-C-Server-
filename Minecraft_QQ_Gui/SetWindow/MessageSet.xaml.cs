@@ -1,6 +1,6 @@
-﻿using Minecraft_QQ_Gui.Windows;
+﻿using System.Windows;
 
-namespace Minecraft_QQ.SetWindow
+namespace Minecraft_QQ_Gui.SetWindow
 {
     /// <summary>
     /// MessageSet.xaml 的交互逻辑

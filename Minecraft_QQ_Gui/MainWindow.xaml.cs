@@ -1,10 +1,12 @@
-﻿using Minecraft_QQ.Config;
-using Minecraft_QQ.MyMysql;
-using Minecraft_QQ.MySocket;
+﻿using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.MyMysql;
+using Minecraft_QQ_Core.MySocket;
+using Minecraft_QQ_Gui.SetWindow;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using Minecraft_QQ_Core;
 
 namespace Minecraft_QQ_Gui
 {
@@ -15,10 +17,6 @@ namespace Minecraft_QQ_Gui
     {
         private bool isGet;
         private Server GetServer;
-        public void SetClose()
-        {
-            Dispatcher.Invoke(() => Close());
-        }
         public void ServerConfig(string server, string config)
         {
             if (isGet)
@@ -42,8 +40,6 @@ namespace Minecraft_QQ_Gui
 
         public MainWindow()
         {
-            Closed += MetroWindow_Closed;
-            KeyDown += Window_KeyDown;
             InitializeComponent();
             InitQQList();
             InitServerList();
@@ -100,11 +96,11 @@ namespace Minecraft_QQ_Gui
                 {
                     foreach (var item in MySocketServer.MCServers)
                     {
-                        if (item.Value.Connected)
+                        if (item.Value.Socket.Connected)
                             ServerList.Items.Add(new Server
                             {
                                 Name = item.Key,
-                                Addr = item.Value.RemoteEndPoint.ToString()
+                                Addr = item.Value.Socket.RemoteEndPoint.ToString()
                             });
                     }
                 }
@@ -264,7 +260,7 @@ namespace Minecraft_QQ_Gui
             Minecraft_QQ.Reload();
             MessageBox.Show("配置文件已重载", "已重读");
             Close();
-            Minecraft_QQ.OpenSettingForm();
+            //Minecraft_QQ.OpenSettingForm();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -274,11 +270,6 @@ namespace Minecraft_QQ_Gui
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             IP.Text = "0.0.0.0";
-        }
-
-        private void MetroWindow_Closed(object sender, System.EventArgs e)
-        {
-            Minecraft_QQ.CloseSetWindow();
         }
 
         private void SocketST_Click(object sender, RoutedEventArgs e)
@@ -576,6 +567,17 @@ namespace Minecraft_QQ_Gui
             }
             MessageBox.Show("请输入要搜索的内容", "选择内容空");
             return;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var res = MessageBox.Show("你确定要关闭本窗口吗?", "关闭窗口", MessageBoxButton.YesNo);
+            if (res == MessageBoxResult.Yes)
+            {
+
+            }
+            else
+                e.Cancel = true;
         }
     }
 }

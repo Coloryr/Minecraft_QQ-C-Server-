@@ -3,27 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Minecraft_QQ.SetWindow"
         mc:Ignorable="d"
-        Title="消息设置" Height="180" Width="300" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ;component/Properties/icon.ico">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/Button.xaml"/>
-                <ResourceDictionary Source="Style/Label.xaml"/>
-                <ResourceDictionary Source="Style/TextBox.xaml"/>
-                <ResourceDictionary Source="Style/CheckBox.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+        Title="消息设置" Height="180" Width="300" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
-        <Label Content="检测" Margin="10,6,247,120" 
+        <Label Content="检测" Margin="10,6,0,134" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" Width="37"/>
+        <TextBox Margin="52,11,0,0" TextWrapping="Wrap" Text="{Binding Server.Name}" Foreground="Black" 
+                 Background="#225EBDD3" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
+        <Label Content="回复" Margin="10,31,253,110" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
-        <TextBox Margin="52,11,10,123" TextWrapping="Wrap" Text="{Binding Server.Name}" Foreground="Black" Background="#225EBDD3"/>
-        <Label Content="回复" Margin="10,31,247,95" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
-        <TextBox Margin="52,37,10,10" TextWrapping="Wrap" Text="{Binding Server.Addr}" Foreground="Black" Background="#225EBDD3"
-                 AcceptsReturn="True"/>
+        <TextBox Margin="52,37,0,0" TextWrapping="Wrap" Text="{Binding Server.Addr}" Foreground="Black" Background="#225EBDD3"
+                 AcceptsReturn="True" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
 
     </Grid>
 </Window>

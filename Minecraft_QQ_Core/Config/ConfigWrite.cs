@@ -1,12 +1,12 @@
-﻿using Minecraft_QQ.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ.Config
+namespace Minecraft_QQ_Core.Config
 {
-    internal class ConfigWrite
+    public class ConfigWrite
     {
         public void Ask()
         {
