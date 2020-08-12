@@ -4,12 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="QQ群设置" Height="90" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
+        Title="QQ群设置" Height="95" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
         <Label Content="群号" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
         <TextBox Margin="44,10,0,0" TextWrapping="Wrap" Text="{Binding Obj.群号}" Foreground="Black" 
-                 Background="#225EBDD3" HorizontalAlignment="Left" Width="166" Height="18" VerticalAlignment="Top"/>
+                 Background="#225EBDD3" HorizontalAlignment="Left" Width="150" Height="20" VerticalAlignment="Top"/>
         <CheckBox Content="主群" Margin="150,35,0,0"
                   Style="{DynamicResource Check}" IsChecked="{Binding Obj.主群}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="44"/>
         <CheckBox Content="启用命令" Margin="10,35,0,0"

@@ -15,6 +15,7 @@ namespace Minecraft_QQ_Gui
     public partial class App : Application
     {
         public static System.Windows.Forms.NotifyIcon notifyIcon;
+        public static MainWindow MainWindow_;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -22,6 +23,34 @@ namespace Minecraft_QQ_Gui
             notifyIcon.Visible = true;
             notifyIcon.Click += NotifyIcon_Click;
             IMinecraft_QQ.Start();
+            IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
+            {
+                MessageBox.Show(data);
+            });
+            IMinecraft_QQ.ServerConfigCall = new IMinecraft_QQ.ServerConfig((string key, string value) =>
+            {
+                MainWindow_?.ServerConfig(key, value);
+            });
+            IMinecraft_QQ.GuiCall = new IMinecraft_QQ.Gui((GuiFun fun) =>
+            {
+                switch (fun)
+                {
+                    case GuiFun.ServerList:
+                        MainWindow_?.InitServerList();
+                        break;
+                }
+            });
+            IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log((string data) =>
+            {
+                MainWindow_?.AddLog(data);
+            });
+
+        }
+
+        public static void Stop()
+        {
+            MainWindow_ = null;
+            IMinecraft_QQ.Stop();
         }
 
         private void NotifyIcon_Click(object sender, EventArgs e)

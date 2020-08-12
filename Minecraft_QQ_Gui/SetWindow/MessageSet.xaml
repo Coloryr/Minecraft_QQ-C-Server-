@@ -4,14 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="消息设置" Height="180" Width="300" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
+        Title="消息设置" Height="205" Width="315" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
-        <Label Content="检测" Margin="10,6,0,134" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" Width="37"/>
+        <Label Content="检测" Margin="10,6,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox Margin="52,11,0,0" TextWrapping="Wrap" Text="{Binding Server.Name}" Foreground="Black" 
-                 Background="#225EBDD3" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
-        <Label Content="回复" Margin="10,31,253,110" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989"/>
+                 Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
+        <Label Content="回复" Margin="10,31,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <TextBox Margin="52,37,0,0" TextWrapping="Wrap" Text="{Binding Server.Addr}" Foreground="Black" Background="#225EBDD3"
                  AcceptsReturn="True" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
 

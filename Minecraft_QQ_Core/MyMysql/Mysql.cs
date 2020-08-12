@@ -36,6 +36,8 @@ namespace Minecraft_QQ_Core.MyMysql
 
         public static void MysqlStop()
         {
+            if (conn == null)
+                return;
             if (conn.State != ConnectionState.Broken)
                 conn.Close();
             Minecraft_QQ.MysqlOK = false;

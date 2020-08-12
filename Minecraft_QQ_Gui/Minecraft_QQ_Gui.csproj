@@ -5,10 +5,11 @@
     <TargetFramework>net5.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>x64</Platforms>
+    <ApplicationIcon>Color_yr.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutputPath>..\build_out\gui</OutputPath>
+    <OutputPath>..\build_out\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

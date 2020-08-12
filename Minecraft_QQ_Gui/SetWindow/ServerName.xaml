@@ -8,11 +8,11 @@
     <Grid>
         <Label Content="名字" Margin="6,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="43"/>
-        <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3" Height="18"
+        <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3" Height="20"
                  VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
         <Label Content="别名" Margin="6,31,0,0" 
             Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="41"/>
-        <TextBox Margin="52,34,0,0" TextWrapping="Wrap" Text="{Binding Addr}" Foreground="Black" Background="#225EBDD3" Height="18" 
+        <TextBox Margin="52,34,0,0" TextWrapping="Wrap" Text="{Binding Addr}" Foreground="Black" Background="#225EBDD3" Height="20" 
                  VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
 
     </Grid>

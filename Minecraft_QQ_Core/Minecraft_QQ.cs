@@ -288,6 +288,8 @@ namespace Minecraft_QQ_Core
             IMinecraft_QQ.IsStart = false;
             MySocketServer.ServerStop();
             Mysql.MysqlStop();
+            RobotSocket.Stop();
+            Send.Stop();
         }
         /// <summary>
         /// Type=2 群消息。

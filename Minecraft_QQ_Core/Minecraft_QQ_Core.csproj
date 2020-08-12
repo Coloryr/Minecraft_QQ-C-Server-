@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutputPath>..\build_out\core</OutputPath>
+    <OutputPath>..\build_out\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

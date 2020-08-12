@@ -17,6 +17,16 @@ namespace Minecraft_QQ_Gui
     {
         private bool isGet;
         private Server GetServer;
+
+        public void AddLog(string logs)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                log.Text += logs + "\n";
+                if (log.Text.Length > 1000000)
+                    log.Text = "";
+            });
+        }
         public void ServerConfig(string server, string config)
         {
             if (isGet)
@@ -48,6 +58,7 @@ namespace Minecraft_QQ_Gui
             InitCommandList();
             InitMysql();
             DataContext = Minecraft_QQ.MainConfig;
+            App.MainWindow_ = this;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -192,7 +203,7 @@ namespace Minecraft_QQ_Gui
             long.TryParse(item.群号, out long oldgroup);
             item = new QQSet(item).Set();
             long group;
-            if (!string.IsNullOrWhiteSpace(item.群号))
+            if (string.IsNullOrWhiteSpace(item.群号))
             {
                 return;
             }
@@ -571,10 +582,10 @@ namespace Minecraft_QQ_Gui
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var res = MessageBox.Show("你确定要关闭本窗口吗?", "关闭窗口", MessageBoxButton.YesNo);
+            var res = MessageBox.Show("你确定要关闭Minecraft_QQ吗?", "关闭窗口", MessageBoxButton.YesNo);
             if (res == MessageBoxResult.Yes)
             {
-
+                App.Stop();
             }
             else
                 e.Cancel = true;

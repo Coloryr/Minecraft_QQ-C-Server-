@@ -4,22 +4,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="玩家设置" Height="151.083" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
+        Title="玩家设置" Height="140" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
         <Label Content="QQ号" Margin="10,6,0,0" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-        <TextBox Margin="52,11,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.QQ号}" 
-                 Foreground="Black" Background="#225EBDD3" HorizontalAlignment="Left" Width="158" Height="18" VerticalAlignment="Top"/>
-        <CheckBox Content="管理员" Margin="10,93,0,0" Name="Admin_C"
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
+        <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.QQ号}" 
+                 Foreground="Black" Background="#225EBDD3" HorizontalAlignment="Left" Width="140" Height="18" VerticalAlignment="Top"/>
+        <CheckBox Content="管理员" Margin="10,82,0,0" Name="Admin_C"
                   Style="{DynamicResource Check}" IsChecked="{Binding PlayerObj.管理员}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="56"/>
-        <Label Content="名字" Margin="13,36,0,0" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
-        <TextBox Margin="52,40,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.名字}" Foreground="Black" Height="18"
-                 Background="#225EBDD3" HorizontalAlignment="Left" Width="158" VerticalAlignment="Top"/>
-        <Label Content="昵称" Margin="13,66,0,0" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left" Width="39"/>
-        <TextBox Margin="52,70,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.昵称}" Foreground="Black" Height="18"
-                 Background="#225EBDD3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
+        <Label Content="名字" Margin="14,31,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
+        <TextBox Margin="52,35,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.名字}" Foreground="Black" Height="18"
+                 Background="#225EBDD3" HorizontalAlignment="Left" Width="140" VerticalAlignment="Top"/>
+        <Label Content="昵称" Margin="12,55,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38"/>
+        <TextBox Margin="52,59,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.昵称}" Foreground="Black" Height="18"
+                 Background="#225EBDD3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140"/>
 
     </Grid>
 </Window>

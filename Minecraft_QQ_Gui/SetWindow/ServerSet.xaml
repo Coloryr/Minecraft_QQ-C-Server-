@@ -106,7 +106,7 @@
                 <Label Content="指令延迟" Style="{DynamicResource Label}" Margin="193,193,0,0" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.CommandDelay}" Margin="260,197,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
+                         Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="服务器别名" Margin="10,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="378">

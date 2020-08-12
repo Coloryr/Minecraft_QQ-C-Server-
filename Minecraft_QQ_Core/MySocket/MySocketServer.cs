@@ -172,7 +172,6 @@ namespace Minecraft_QQ_Core.MySocket
             }
             if (ServerThread != null)
             {
-                ServerThread.Abort();
                 ServerThread = null;
             }
             Start = false;
