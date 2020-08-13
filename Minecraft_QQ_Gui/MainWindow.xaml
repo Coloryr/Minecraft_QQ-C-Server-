@@ -128,10 +128,10 @@
                                      Text="{Binding 消息.维护提示文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                             <Label Content="未知指令文本" Style="{DynamicResource Label}" Margin="10,112,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
                             <TextBox TextWrapping="Wrap" Margin="10,146,10,0" FontSize="16"
-                                Text="{Binding 消息.未知指令文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                                     Text="{Binding 消息.未知指令文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                             <Label Content="不能绑定文本" Style="{DynamicResource Label}" Margin="10,221,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
                             <TextBox TextWrapping="Wrap" Margin="10,255,10,4" FontSize="16"
-                                Text="{Binding 消息.不能绑定文本}" AcceptsReturn="True"/>
+                                     Text="{Binding 消息.不能绑定文本}" AcceptsReturn="True"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="选择设置" Margin="9,185,0,0" Foreground="White" BorderBrush="White" Height="193" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">

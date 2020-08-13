@@ -238,7 +238,7 @@ namespace Minecraft_QQ_Core.Utils
         }
         public static string SetPlayerName(long group, long fromQQ, List<string> msg)
         {
-            if (msg.Count != 2)
+            if (msg.Count != 3)
                 return "错误的参数";
             string data = msg[1];
             if (data.IndexOf(Minecraft_QQ.MainConfig.检测.检测头) == 0)
@@ -281,6 +281,7 @@ namespace Minecraft_QQ_Core.Utils
                         new ConfigWrite().Player();
                     if (Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号 != 0)
                         RobotSocket.SendGroupPrivateMessage(group, Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
+                    IMinecraft_QQ.GuiCall?.Invoke(GuiFun.PlayerList);
                     return "绑定ID：[" + player_name + "]成功！";
                 }
             }

@@ -4,7 +4,7 @@ namespace Minecraft_QQ_Core
 {
     public enum GuiFun
     {
-        ServerList
+        ServerList, PlayerList
     }
     public class IMinecraft_QQ
     {

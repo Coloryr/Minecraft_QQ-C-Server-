@@ -33,12 +33,18 @@ namespace Minecraft_QQ_Gui
             });
             IMinecraft_QQ.GuiCall = new IMinecraft_QQ.Gui((GuiFun fun) =>
             {
-                switch (fun)
+                Dispatcher.Invoke(() =>
                 {
-                    case GuiFun.ServerList:
-                        MainWindow_?.InitServerList();
-                        break;
-                }
+                    switch (fun)
+                    {
+                        case GuiFun.ServerList:
+                            MainWindow_?.InitServerList();
+                            break;
+                        case GuiFun.PlayerList:
+                            MainWindow_?.InitPlayerList();
+                            break;
+                    }
+                });
             });
             IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log((string data) =>
             {
@@ -50,6 +56,7 @@ namespace Minecraft_QQ_Gui
         public static void Stop()
         {
             MainWindow_ = null;
+            notifyIcon.Dispose();
             IMinecraft_QQ.Stop();
         }
 

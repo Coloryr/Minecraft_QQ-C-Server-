@@ -80,42 +80,39 @@ namespace Minecraft_QQ_Gui
 
         public void InitServerList()
         {
-            Dispatcher.Invoke(() =>
+            ServerList.Items.Clear();
+            if (!MySocketServer.Start)
             {
-                ServerList.Items.Clear();
-                if (!MySocketServer.Start)
+                State.Content = "未就绪";
+                SocketST.Content = "启动端口";
+                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = true;
+                return;
+            }
+            else if (MySocketServer.Start && !MySocketServer.IsReady())
+            {
+                State.Content = "等待连接";
+                SocketST.Content = "关闭端口";
+                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                return;
+            }
+            else if (MySocketServer.IsReady())
+            {
+                State.Content = "运行中";
+                SocketST.Content = "关闭端口";
+                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+            }
+            lock (MySocketServer.lock1)
+            {
+                foreach (var item in MySocketServer.MCServers)
                 {
-                    State.Content = "未就绪";
-                    SocketST.Content = "启动端口";
-                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = true;
-                    return;
+                    if (item.Value.Socket.Connected)
+                        ServerList.Items.Add(new Server
+                        {
+                            Name = item.Key,
+                            Addr = item.Value.Socket.RemoteEndPoint.ToString()
+                        });
                 }
-                else if (MySocketServer.Start && !MySocketServer.IsReady())
-                {
-                    State.Content = "等待连接";
-                    SocketST.Content = "关闭端口";
-                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
-                    return;
-                }
-                else if (MySocketServer.IsReady())
-                {
-                    State.Content = "运行中";
-                    SocketST.Content = "关闭端口";
-                    IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
-                }
-                lock (MySocketServer.lock1)
-                {
-                    foreach (var item in MySocketServer.MCServers)
-                    {
-                        if (item.Value.Socket.Connected)
-                            ServerList.Items.Add(new Server
-                            {
-                                Name = item.Key,
-                                Addr = item.Value.Socket.RemoteEndPoint.ToString()
-                            });
-                    }
-                }
-            });
+            }
         }
         private void InitMessageList()
         {
@@ -129,7 +126,7 @@ namespace Minecraft_QQ_Gui
                 });
             }
         }
-        private void InitPlayerList()
+        public void InitPlayerList()
         {
             var list = Minecraft_QQ.PlayerConfig.玩家列表.Values;
             PlayerList.Items.Clear();
@@ -270,8 +267,7 @@ namespace Minecraft_QQ_Gui
         {
             Minecraft_QQ.Reload();
             MessageBox.Show("配置文件已重载", "已重读");
-            Close();
-            //Minecraft_QQ.OpenSettingForm();
+            DataContext = Minecraft_QQ.MainConfig;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
