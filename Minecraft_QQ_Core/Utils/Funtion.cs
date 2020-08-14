@@ -169,7 +169,7 @@ namespace Minecraft_QQ_Core.Utils
             {
                 Logs.LogError(e);
             }
-            return null;
+            return a;
         }
         public static string GetSign(string a, string player)
         {

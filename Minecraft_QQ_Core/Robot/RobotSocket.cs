@@ -63,6 +63,7 @@ namespace Minecraft_QQ_Core.Robot
                 }
                 DoThread.Start();
                 byte[] Send;
+                int time =0 ;
                 while (IsRun)
                 {
                     try
@@ -83,17 +84,22 @@ namespace Minecraft_QQ_Core.Robot
                                 data = Encoding.UTF8.GetString(data)
                             });
                         }
-                        else if (Socket.Poll(2000, SelectMode.SelectRead))
+                        else if (time >= 20)
                         {
-                            Logs.LogOut("机器人连接中断");
-                            IsConnect = false;
-                            Logs.LogError("机器人10秒后重连");
-                            Thread.Sleep(10000);
+                            time = 0;
+                            if (Socket.Poll(2000, SelectMode.SelectRead))
+                            {
+                                Logs.LogOut("机器人连接中断");
+                                IsConnect = false;
+                                Logs.LogError("机器人10秒后重连");
+                                Thread.Sleep(10000);
+                            }
                         }
                         else if (QueueSend.TryTake(out Send))
                         {
                             Socket.Send(Send);
                         }
+                        time++;
                         Thread.Sleep(50);
                     }
                     catch (Exception e)
@@ -114,26 +120,18 @@ namespace Minecraft_QQ_Core.Robot
         {
             if (Socket != null)
                 Socket.Close();
-            try
-            {
-                Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                Socket.Connect(IPAddress.Parse("127.0.0.1"), 23333);
+            Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            Socket.Connect(IPAddress.Parse("127.0.0.1"), 23333);
 
-                var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(PackStart) + " ");
-                data[data.Length - 1] = 0;
+            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(PackStart) + " ");
+            data[data.Length - 1] = 0;
 
-                Socket.Send(data);
+            Socket.Send(data);
 
-                QueueRead.Clear();
-                QueueSend.Clear();
-                Logs.LogOut("机器人已连接");
-                IsConnect = true;
-            }
-            catch (Exception e)
-            {
-                Logs.LogError("机器人连接失败");
-                Logs.LogError(e);
-            }
+            QueueRead.Clear();
+            QueueSend.Clear();
+            Logs.LogOut("机器人已连接");
+            IsConnect = true;
         }
         public static void SendGroupMessage(long id, string message)
         {
