@@ -23,7 +23,7 @@ namespace Minecraft_QQ_Gui
             Dispatcher.Invoke(() =>
             {
                 log.Text += logs + "\n";
-                if (log.Text.Length > 1000000)
+                if (log.Text.Length > 100000)
                     log.Text = "";
             });
         }
