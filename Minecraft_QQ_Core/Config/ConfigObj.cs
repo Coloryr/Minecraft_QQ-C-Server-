@@ -88,6 +88,10 @@ namespace Minecraft_QQ_Core.Config
         /// Mysql配置文件
         /// </summary>
         public MysqlConfig 数据库 { get; set; } = new MysqlConfig();
+        /// <summary>
+        /// 机器人设定
+        /// </summary>
+        public SettingRobot 机器人设置 { get; set; } = new SettingRobot();
 
         public override string ToString()
         {
@@ -96,9 +100,26 @@ namespace Minecraft_QQ_Core.Config
                 + "检测:" + 检测.ToString() + "\n"
                 + "管理员:" + 管理员.ToString() + "\n"
                 + "链接:" + 链接.ToString() + "\n"
-                + "数据库:" + 数据库.ToString();
+                + "数据库:" + 数据库.ToString() + "\n"
+                + "机器人设置:" + 机器人设置.ToString();
         }
     }
+
+    public class SettingRobot
+    {
+        public string 地址 { get; set; } = "127.0.0.1";
+        public int 端口 { get; set; } = 23333;
+        public int 自动重连延迟 { get; set; } = 10000;
+        public bool 检查是否断开 { get; set; } = true;
+        public override string ToString()
+        {
+            return "地址:" + 地址.ToString() + "\n"
+                + "端口:" + 端口.ToString() + "\n"
+                + "自动重连延迟:" + 自动重连延迟.ToString() + "\n"
+                + "检查是否断开:" + 检查是否断开.ToString();
+        }
+    }
+
     public class SettingConfig
     {
         /// <summary>

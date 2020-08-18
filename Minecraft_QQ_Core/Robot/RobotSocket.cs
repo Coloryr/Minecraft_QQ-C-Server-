@@ -87,12 +87,13 @@ namespace Minecraft_QQ_Core.Robot
                         else if (time >= 20)
                         {
                             time = 0;
-                            if (Socket.Poll(2000, SelectMode.SelectRead))
+                            if (Minecraft_QQ.MainConfig.机器人设置.检查是否断开 && Socket.Poll(2000, SelectMode.SelectRead))
                             {
                                 Logs.LogOut("机器人连接中断");
                                 IsConnect = false;
-                                Logs.LogError("机器人10秒后重连");
-                                Thread.Sleep(10000);
+                                Logs.LogError("机器人" + Minecraft_QQ.MainConfig.机器人设置.自动重连延迟 + "毫秒后重连");
+                                Thread.Sleep(Minecraft_QQ.MainConfig.机器人设置.自动重连延迟);
+                                Logs.LogError("机器人重连中");
                             }
                         }
                         else if (QueueSend.TryTake(out Send))
@@ -107,8 +108,8 @@ namespace Minecraft_QQ_Core.Robot
                         Logs.LogError("机器人连接失败");
                         Logs.LogError(e);
                         IsConnect = false;
-                        Logs.LogError("机器人10秒后重连");
-                        Thread.Sleep(10000);
+                        Logs.LogError("机器人" + Minecraft_QQ.MainConfig.机器人设置.自动重连延迟 + "毫秒后重连");
+                        Thread.Sleep(Minecraft_QQ.MainConfig.机器人设置.自动重连延迟);
                         Logs.LogError("机器人重连中");
                     }
                 }
@@ -121,7 +122,8 @@ namespace Minecraft_QQ_Core.Robot
             if (Socket != null)
                 Socket.Close();
             Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            Socket.Connect(IPAddress.Parse("127.0.0.1"), 23333);
+            Socket.Connect(IPAddress.Parse(Minecraft_QQ.MainConfig.机器人设置.地址),
+                Minecraft_QQ.MainConfig.机器人设置.端口);
 
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(PackStart) + " ");
             data[data.Length - 1] = 0;

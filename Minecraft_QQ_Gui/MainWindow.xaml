@@ -93,7 +93,7 @@
                                      Text="{Binding 检测.发送消息至服务器}" Height="22" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="管理指令" Margin="248,5,0,0" Foreground="White" BorderBrush="White" Height="373" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
+                    <GroupBox Header="管理指令" Margin="248,5,0,0" Foreground="White" BorderBrush="White" Height="269" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <Label Content="禁言" Style="{DynamicResource Label}" Margin="17,3,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="0,9,5,0" FontSize="16"
@@ -166,6 +166,22 @@
                             <Label Content="发送消息间隔" Style="{DynamicResource Label}" Margin="2,128,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="106"/>
                             <TextBox TextWrapping="Wrap" Margin="112,134,0,0" FontSize="16"
                                      Text="{Binding 设置.发送群消息间隔}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="机器人设定" Margin="248,272,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
+                        <Grid>
+                            <Label Content="地址" Style="{DynamicResource Label}" Margin="2,0,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBox TextWrapping="Wrap" Margin="49,4,0,0" FontSize="16"
+                                     Text="{Binding 机器人设置.地址}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99"/>
+                            <Label Content="端口" Style="{DynamicResource Label}" Margin="2,29,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBox TextWrapping="Wrap" Margin="49,32,0,0" FontSize="16"
+                                Text="{Binding 机器人设置.端口}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
+                            <Label Content="延迟" Style="{DynamicResource Label}" Margin="120,28,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBox TextWrapping="Wrap" Margin="167,32,0,0" FontSize="16"
+                                Text="{Binding 机器人设置.自动重连延迟}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65"/>
+                            <CheckBox Content="检测断开" Height="22"
+                                Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,4,2,0"
+                                IsChecked="{Binding 机器人设置.检查是否断开}" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
