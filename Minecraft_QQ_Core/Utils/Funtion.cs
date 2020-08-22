@@ -115,7 +115,7 @@ namespace Minecraft_QQ_Core.Utils
                 if (a.StartsWith("{"))
                 {
                     int index = a.LastIndexOf("}");
-                    a = a.Substring(0, index);
+                    a = a.Substring(0, index + 1);
                     var obj = JObject.Parse(a);
                     string app = obj["app"].ToString();
                     if (app == "com.tencent.qq.checkin")
@@ -135,7 +135,7 @@ namespace Minecraft_QQ_Core.Utils
                 else if (a.StartsWith("<?xml"))
                 {
                     int index = a.LastIndexOf(">");
-                    a = a.Substring(0, index);
+                    a = a.Substring(0, index + 1);
                     XmlDocument doc = new XmlDocument();
                     doc.LoadXml(a);
                     if (a.Contains("发起投票"))
