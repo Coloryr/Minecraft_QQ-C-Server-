@@ -27,8 +27,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="img\Minecraft_QQ.jpg" />
-  </ItemGroup>
-
 </Project>

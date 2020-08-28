@@ -107,6 +107,7 @@ namespace Minecraft_QQ_Core.Config
 
     public class SettingRobot
     {
+        public long QQ机器人账户 { get; set; } = 123456789;
         public string 地址 { get; set; } = "127.0.0.1";
         public int 端口 { get; set; } = 23333;
         public int 自动重连延迟 { get; set; } = 10000;

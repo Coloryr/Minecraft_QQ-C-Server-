@@ -6,7 +6,7 @@
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.0.0.1";
+        public const string Version = "3.1.0.0";
 
         public static bool Run;
         public static bool IsStop;

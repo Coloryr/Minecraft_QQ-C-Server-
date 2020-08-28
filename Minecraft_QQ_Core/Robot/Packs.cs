@@ -2,12 +2,16 @@
 
 namespace Minecraft_QQ_Core.Robot
 {
+    abstract class PackBase
+    {
+        public long qq { get; set; }
+    }
     class PackStart
     {
         public string Name { get; set; }
         public List<byte> Reg { get; set; }
     }
-    class GroupMessageEventPack
+    class GroupMessageEventPack: PackBase
     {
         public long id { get; set; }
         public long fid { get; set; }
@@ -15,18 +19,18 @@ namespace Minecraft_QQ_Core.Robot
         public List<string> message { get; set; }
     }
 
-    class SendGroupMessagePack
+    class SendGroupMessagePack : PackBase
     {
         public long id { get; set; }
         public List<string> message { get; set; }
     }
-    class SendGroupPrivateMessagePack
+    class SendGroupPrivateMessagePack : PackBase
     {
         public long id { get; set; }
         public long fid { get; set; }
         public List<string> message { get; set; }
     }
-    class TempMessageEventPack
+    class TempMessageEventPack : PackBase
     {
         public long id { get; set; }
         public long fid { get; set; }
@@ -34,7 +38,7 @@ namespace Minecraft_QQ_Core.Robot
         public List<string> message { get; set; }
         public int time { get; set; }
     }
-    class FriendMessageEventPack
+    class FriendMessageEventPack : PackBase
     {
         public long id { get; set; }
         public string name { get; set; }

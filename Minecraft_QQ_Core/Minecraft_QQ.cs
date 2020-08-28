@@ -338,9 +338,9 @@ namespace Minecraft_QQ_Core
                 }
                 if (msg.IndexOf(MainConfig.检测.检测头) == 0 && list.启用命令 == true)
                 {
-                    string msg_low = Funtion.ReplaceFirst(msg.ToLower(), MainConfig.检测.检测头, "");
                     //去掉检测头
                     msg = Funtion.ReplaceFirst(msg, MainConfig.检测.检测头, "");
+                    string msg_low = msg.ToLower();
                     PlayerObj player = Funtion.GetPlayer(fromQQ);
                     if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)
                     {
