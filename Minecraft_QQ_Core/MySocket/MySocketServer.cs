@@ -12,7 +12,7 @@ namespace Minecraft_QQ_Core.MySocket
 {
     public class MySocketServer
     {
-        public static Dictionary<string, ReceiveThread> MCServers = new Dictionary<string, ReceiveThread>();
+        public static Dictionary<string, MCServerSocket> MCServers = new Dictionary<string, MCServerSocket>();
 
         public static object lock1 = new object();
 
@@ -64,7 +64,7 @@ namespace Minecraft_QQ_Core.MySocket
                 while (true)
                 {
                     Socket clientScoket = ServerSocket.Accept();
-                    new ReceiveThread().Start(clientScoket);
+                    new MCServerSocket().Start(clientScoket);
                     GC.Collect();
                     Thread.Sleep(1000);
                     if (!Start)
@@ -117,7 +117,7 @@ namespace Minecraft_QQ_Core.MySocket
                 }
                 else
                 {
-                    foreach (ReceiveThread socket in new List<ReceiveThread>(MCServers.Values))
+                    foreach (MCServerSocket socket in new List<MCServerSocket>(MCServers.Values))
                     {
                         SendData(socket, data);
                     }
@@ -126,7 +126,7 @@ namespace Minecraft_QQ_Core.MySocket
             else
                 RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器未连接，无法发送");
         }
-        private static void SendData(ReceiveThread Client, string data)
+        private static void SendData(MCServerSocket Client, string data)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace Minecraft_QQ_Core.MySocket
                     RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
             }
         }
-        public static void AddServer(string name, ReceiveThread receive)
+        public static void AddServer(string name, MCServerSocket receive)
         {
             if (MCServers.ContainsKey(name))
             {
@@ -160,7 +160,7 @@ namespace Minecraft_QQ_Core.MySocket
         }
         public static void ServerStop()
         {
-            var temp = new Dictionary<string, ReceiveThread>(MCServers);
+            var temp = new Dictionary<string, MCServerSocket>(MCServers);
             foreach (var item in temp.Values)
             {
                 item.Stop();

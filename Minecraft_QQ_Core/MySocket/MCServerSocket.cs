@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Minecraft_QQ_Core.MySocket
 {
-    public class ReceiveThread
+    public class MCServerSocket
     {
         public string Name { get; private set; }
         public Socket Socket { get; private set; }
@@ -37,10 +37,10 @@ namespace Minecraft_QQ_Core.MySocket
                 {
                     Thread.Sleep(10);
                     count++;
-                    if (count >= 100)
+                    if (Minecraft_QQ.MainConfig.链接.检测断开 && count >= 1000)
                     {
                         count = 0;
-                        if (Socket.Poll(1000, SelectMode.SelectRead))
+                        if (Socket.Poll(10000, SelectMode.SelectRead))
                         {
                             RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
                             Stop();

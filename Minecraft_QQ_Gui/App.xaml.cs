@@ -17,12 +17,11 @@ namespace Minecraft_QQ_Gui
         public static System.Windows.Forms.NotifyIcon notifyIcon;
         public static MainWindow MainWindow_;
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             notifyIcon = new System.Windows.Forms.NotifyIcon();
             notifyIcon.Visible = true;
             notifyIcon.Click += NotifyIcon_Click;
-            IMinecraft_QQ.Start();
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
             {
                 MessageBox.Show(data);
@@ -50,7 +49,7 @@ namespace Minecraft_QQ_Gui
             {
                 MainWindow_?.AddLog(data);
             });
-
+            await IMinecraft_QQ.Start();
         }
 
         public static void Stop()

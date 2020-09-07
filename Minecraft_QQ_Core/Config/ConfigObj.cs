@@ -117,7 +117,8 @@ namespace Minecraft_QQ_Core.Config
             return "地址:" + 地址.ToString() + "\n"
                 + "端口:" + 端口.ToString() + "\n"
                 + "自动重连延迟:" + 自动重连延迟.ToString() + "\n"
-                + "检查是否断开:" + 检查是否断开.ToString();
+                + "检查是否断开:" + 检查是否断开.ToString() + "\n"
+                + "QQ机器人账户:" + QQ机器人账户.ToString();
         }
     }
 
@@ -307,12 +308,15 @@ namespace Minecraft_QQ_Core.Config
         /// </summary>
         public string 数据尾 { get; set; } = "[End]";
 
+        public bool 检测断开 { get; set; } = false;
+
         public override string ToString()
         {
             return "地址:" + 地址 + "\n"
                 + "端口:" + 端口 + "\n"
                 + "数据头:" + 数据头 + "\n"
-                + "数据尾:" + 数据尾;
+                + "数据尾:" + 数据尾 + "\n"
+                + "检测断开:" + 检测断开;
         }
     }
 

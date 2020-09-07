@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>x64</Platforms>
     <SignAssembly>false</SignAssembly>
-    <Version>3.0.0.0</Version>
+    <Version>3.2.0.0</Version>
     <AssemblyName>Minecraft_QQ_Core</AssemblyName>
     <RootNamespace>Minecraft_QQ_Core</RootNamespace>
   </PropertyGroup>

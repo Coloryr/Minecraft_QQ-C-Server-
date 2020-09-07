@@ -55,6 +55,9 @@
                     <Label Content="数据尾" Style="{DynamicResource Label}" Margin="10,141,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="59"/>
                     <TextBox x:Name="End" TextWrapping="Wrap" Margin="74,146,0,0" FontSize="16" Height="22"
                              Text="{Binding 链接.数据尾}" HorizontalAlignment="Left" Width="145" VerticalAlignment="Top"/>
+                    <CheckBox Content="检测断开" Height="22"
+                                Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="8,208,0,0"
+                                IsChecked="{Binding 链接.检测断开}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                     <ListView Margin="224,10,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="ServerList">
                         <ListView.View>
@@ -288,7 +291,14 @@
             </TabItem>
             <TabItem Header="其他" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="373" VerticalAlignment="Top">
+                    <GroupBox Header="机器人账户设置" Margin="5,308,0,0" HorizontalAlignment="Left" Width="193" Height="70" VerticalAlignment="Top">
+                        <Grid>
+                            <Label Content="账户" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
+                            <TextBox x:Name="QQ" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"
+                             Text="{Binding 机器人设置.QQ机器人账户}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="306" VerticalAlignment="Top">
                         <Grid>
                             <Label Content="地址" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
                             <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"
@@ -306,8 +316,8 @@
                             <TextBox x:Name="MysqlDataBase" Margin="63,137,0,0" FontSize="16" TextWrapping="Wrap" Text="{Binding 数据库.数据库}" Height="22" HorizontalAlignment="Left" Width="124" VerticalAlignment="Top"/>
                             <Label Content="状态：" Style="{DynamicResource Label}" Margin="0,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
                             <Label x:Name="MysqlState" Content="未知" Style="{DynamicResource Label}" Margin="58,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="129"/>
-                            <Button x:Name="MysqlConnect" Content="连接" Margin="10,248,0,0" IsDefault="True" Style="{DynamicResource Button}"
-                            FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
+                            <Button x:Name="MysqlConnect" Content="连接" Margin="114,193,0,0" IsDefault="True" Style="{DynamicResource Button}"
+                            FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click" HorizontalAlignment="Left" Width="70" Height="25" VerticalAlignment="Top"/>
                             <CheckBox Content="启用" Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="5,198,0,0"
                               IsChecked="{Binding 数据库.是否启用}" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="64"/>
 
