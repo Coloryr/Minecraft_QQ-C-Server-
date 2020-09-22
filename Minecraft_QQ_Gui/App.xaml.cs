@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -50,6 +51,7 @@ namespace Minecraft_QQ_Gui
                 MainWindow_?.AddLog(data);
             });
             await IMinecraft_QQ.Start();
+            Thread.Sleep(2000);
         }
 
         public static void Stop()
