@@ -3,30 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ_Core", "Minecraft_QQ_Core\Minecraft_QQ_Core.csproj", "{98F9345E-7FA8-4A57-BDEC-136110D3D244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Core", "Minecraft_QQ_Core\Minecraft_QQ_Core.csproj", "{98F9345E-7FA8-4A57-BDEC-136110D3D244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ_Gui", "Minecraft_QQ_Gui\Minecraft_QQ_Gui.csproj", "{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Gui", "Minecraft_QQ_Gui\Minecraft_QQ_Gui.csproj", "{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ_Cmd", "Minecraft_QQ_Cmd\Minecraft_QQ_Cmd.csproj", "{006009D2-0A65-4ABF-B061-2E8ACB104975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Cmd", "Minecraft_QQ_Cmd\Minecraft_QQ_Cmd.csproj", "{006009D2-0A65-4ABF-B061-2E8ACB104975}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Release|x64 = Release|x64
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Debug|x64.ActiveCfg = Debug|x64
-		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Debug|x64.Build.0 = Debug|x64
-		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Release|x64.ActiveCfg = Release|x64
-		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Release|x64.Build.0 = Release|x64
-		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Debug|x64.ActiveCfg = Debug|x64
-		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Debug|x64.Build.0 = Debug|x64
-		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Release|x64.ActiveCfg = Release|x64
-		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Release|x64.Build.0 = Release|x64
-		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Debug|x64.ActiveCfg = Debug|x64
-		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Debug|x64.Build.0 = Debug|x64
-		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|x64.ActiveCfg = Release|x64
-		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|x64.Build.0 = Release|x64
+		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F9345E-7FA8-4A57-BDEC-136110D3D244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
