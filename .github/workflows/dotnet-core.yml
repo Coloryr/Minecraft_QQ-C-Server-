@@ -9,13 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: 设置.NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100
-    - name: Install dependencies
+    - name: 更新依赖
       run: dotnet restore
-    - name: Build
+    - name: 构建
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: 更新构建文件
+      uses: actions/upload-artifact@v2
+      with:
+        name: "Minecraft_QQ_All"
+        path: build_out
