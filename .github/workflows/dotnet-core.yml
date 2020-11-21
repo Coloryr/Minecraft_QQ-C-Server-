@@ -16,7 +16,7 @@ jobs:
     - name: 更新依赖
       run: dotnet restore
     - name: 构建
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build
     - name: 更新构建文件
       uses: actions/upload-artifact@v2
       with:
