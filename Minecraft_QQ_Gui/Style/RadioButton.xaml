@@ -3,9 +3,9 @@
     <Style x:Key="RadioButton_Left" TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
         <Setter Property="Padding" Value="0"></Setter>
-        <Setter Property="FontSize" Value="16"></Setter>
+        <!--<Setter Property="FontSize" Value="16"></Setter>-->
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Height" Value="auto"></Setter>
         <Setter Property="SnapsToDevicePixels" Value="true"></Setter>
@@ -13,12 +13,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <Grid x:Name="grid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ClipToBounds="True" >
+                        <Rectangle Width="20"/>
                         <Rectangle x:Name="ButtonStock"  Fill="{TemplateBinding Background}" Stroke="#FF5EBDD3"  RadiusX="2" RadiusY="2" Margin="0,0,-5,0" StrokeThickness="1"/>
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
+                            <Setter Property="Background" Value="#AA5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
                             <Setter Property="Background" Value="#005EBDD3"></Setter>
@@ -38,9 +39,9 @@
     <Style x:Key="RadioButton_Middle" TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
         <Setter Property="Padding" Value="0"></Setter>
-        <Setter Property="FontSize" Value="16"></Setter>
+        <!--<Setter Property="FontSize" Value="16"></Setter>-->
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Height" Value="auto"></Setter>
         <Setter Property="SnapsToDevicePixels" Value="true"></Setter>
@@ -48,12 +49,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <Grid x:Name="grid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ClipToBounds="True" >
-                        <Rectangle x:Name="ButtonStock"  Fill="{TemplateBinding Background}" Stroke="#FF5EBDD3"  RadiusX="0" RadiusY="0" Margin="0,0,0,0" StrokeThickness="1"/>
-                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        <Rectangle Width="20"/>
+                        <Rectangle x:Name="ButtonStock" Fill="{TemplateBinding Background}" Stroke="#FF5EBDD3"  RadiusX="0" RadiusY="0" Margin="0,0,0,0" StrokeThickness="1"/>
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                          Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
+                            <Setter Property="Background" Value="#AA5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
                             <Setter Property="Background" Value="#005EBDD3"></Setter>
@@ -73,9 +76,9 @@
     <Style x:Key="RadioButton_Right" TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
         <Setter Property="Padding" Value="0"></Setter>
-        <Setter Property="FontSize" Value="16"></Setter>
+        <!--<Setter Property="FontSize" Value="16"></Setter>-->
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Height" Value="auto"></Setter>
         <Setter Property="SnapsToDevicePixels" Value="true"></Setter>
@@ -83,12 +86,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <Grid x:Name="grid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ClipToBounds="True" >
+                        <Rectangle Width="20"/>
                         <Rectangle x:Name="ButtonStock"  Fill="{TemplateBinding Background}" Stroke="#FF5EBDD3"  RadiusX="2" RadiusY="2" Margin="-5,0,0,0" StrokeThickness="1"/>
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" Value="#FF5EBDD3"></Setter>
+                            <Setter Property="Background" Value="#AA5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
                             <Setter Property="Background" Value="#005EBDD3"></Setter>

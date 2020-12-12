@@ -11,7 +11,7 @@
     </Window.Background>
     <Grid>
         <TabControl Margin="0,0,0,0" Background="#00000000">
-            <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}" >
+            <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
                     <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="QQList">
@@ -38,16 +38,16 @@
                     <Label Content="地址" Style="{DynamicResource Label}" Margin="10,10,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="45"/>
                     <TextBox Name="IP" TextWrapping="Wrap" Margin="57,14,0,0" FontSize="16"
                              Text="{Binding 链接.地址}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
-                    <Button x:Name="Local" Content="本地用" Margin="10,45,0,0" IsDefault="True" Style="{DynamicResource Button}"
+                    <Button x:Name="Local" Content="本地用" Margin="10,45,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="89"/>
-                    <Button x:Name="Out" Content="映射用" Margin="129,45,0,0" IsDefault="True" Style="{DynamicResource Button}"
+                    <Button x:Name="Out" Content="映射用" Margin="129,45,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click_3" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90"/>
                     <Label Content="端口" Style="{DynamicResource Label}" Margin="10,75,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
                     <TextBox x:Name="Port" TextWrapping="Wrap" Margin="57,78,0,0" FontSize="16" Height="22"
                              Text="{Binding 链接.端口}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
                     <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
                     <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="156"/>
-                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,312,0,0" IsDefault="True" Style="{DynamicResource Button}"
+                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,312,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
                     <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,108,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="59"/>
                     <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,113,0,0" FontSize="16"
@@ -316,7 +316,7 @@
                             <TextBox x:Name="MysqlDataBase" Margin="63,137,0,0" FontSize="16" TextWrapping="Wrap" Text="{Binding 数据库.数据库}" Height="22" HorizontalAlignment="Left" Width="124" VerticalAlignment="Top"/>
                             <Label Content="状态：" Style="{DynamicResource Label}" Margin="0,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
                             <Label x:Name="MysqlState" Content="未知" Style="{DynamicResource Label}" Margin="58,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="129"/>
-                            <Button x:Name="MysqlConnect" Content="连接" Margin="114,193,0,0" IsDefault="True" Style="{DynamicResource Button}"
+                            <Button x:Name="MysqlConnect" Content="连接" Margin="114,193,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click" HorizontalAlignment="Left" Width="70" Height="25" VerticalAlignment="Top"/>
                             <CheckBox Content="启用" Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="5,198,0,0"
                               IsChecked="{Binding 数据库.是否启用}" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="64"/>
@@ -332,9 +332,9 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="保存" Margin="0,5,10,0" IsDefault="True" Style="{DynamicResource Button}"
+        <Button Content="保存" Margin="0,5,10,0" IsDefault="True"
                 FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Click" HorizontalAlignment="Right" Width="66" Height="29" VerticalAlignment="Top"/>
-        <Button Content="重载" Margin="0,5,75,0" IsDefault="True" Style="{DynamicResource Button}"
+        <Button Content="重载" Margin="0,5,75,0" IsDefault="True"
                 FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
 
 

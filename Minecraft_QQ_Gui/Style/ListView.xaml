@@ -83,7 +83,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
                         <GridViewRowPresenter VerticalAlignment="Center" TextBlock.Foreground="#FFFFFFFF" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -93,10 +93,10 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderThickness" TargetName="Bd" Value="2"></Setter>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="#FFFFFFFF"></Setter>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="#FF5EBDD3"></Setter>
                         </Trigger>
                         <Trigger Property="Height" Value="Auto">
-                            <Setter Property="MinHeight" Value="20" />
+                            <Setter Property="MinHeight" Value="10" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5"/>
@@ -122,7 +122,7 @@
                                     <ContentPresenter x:Name="HeaderContent" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
                                                        ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                       RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      TextBlock.Foreground ="White" TextBlock.FontSize="16"/>
+                                                      TextBlock.Foreground ="Black" TextBlock.FontSize="{TemplateBinding FontSize}"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -151,7 +151,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="HeaderBorder" Value="#CCFFFFFF"/>
+                            <Setter Property="Background" TargetName="HeaderBorder" Value="#FF5EBDD3"/>
                             <Setter Property="Background" TargetName="PART_HeaderGripper" Value="Transparent"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
