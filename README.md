@@ -27,7 +27,7 @@ Minecraft_QQ 插件本体(Cmd/Gui)
 > 将`Minecraft_QQ_Cmd/Gui`放到一个文件夹，选择启动`Cmd`或者是`Gui`  
 > Linux下使用
 > ```
-> dotnet Minecraft_QQ.Cmd.dll
+> dotnet Minecraft_QQ_Cmd.dll
 > ```  
 > 
 > 启动后进行[第一次使用配置](#第一次使用配置)  
