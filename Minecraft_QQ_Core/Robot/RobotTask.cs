@@ -3,10 +3,10 @@ using System.Text;
 
 namespace Minecraft_QQ_Core.Robot
 {
-    class RobotTask
+    record RobotTask
     {
-        public byte index { get; set; }
-        public string data { get; set; }
+        public byte Index { get; set; }
+        public string Data { get; set; }
     }
     class BuildPack
     {

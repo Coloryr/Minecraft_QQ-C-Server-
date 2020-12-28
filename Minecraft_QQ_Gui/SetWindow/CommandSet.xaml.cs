@@ -68,5 +68,10 @@ namespace Minecraft_QQ_Gui.SetWindow
             ShowDialog();
             return Command;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -35,6 +35,8 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
+        <Button Content="保存" Margin="10,114,0,0" HorizontalAlignment="Left" Width="53" Height="15" VerticalAlignment="Top"
+                Foreground="Black" IsDefault="True" Click="Button_Click"/>
 
     </Grid>
 </Window>

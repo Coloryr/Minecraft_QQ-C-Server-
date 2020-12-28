@@ -6,13 +6,13 @@ namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlSearchData
     {
-        public async Task<PlayerObj> PlayerAsync(long qq)
+        public static async Task<PlayerObj> PlayerAsync(long qq)
         {
             PlayerObj player = null;
-            MySqlCommand cmd = new MySqlCommand(string.Format("SELECT `Name`,`Nick`,`Admin` FROM {0} WHERE QQ=@qq", Mysql.MysqlPlayerTable));
+            MySqlCommand cmd = new($"SELECT `Name`,`Nick`,`Admin` FROM {Mysql.MysqlPlayerTable} WHERE QQ=@qq");
             cmd.Parameters.AddRange(new MySqlParameter[]
             {
-                new MySqlParameter("@qq", qq)
+                new("@qq", qq)
             });
             var item = await Mysql.MysqlSql(cmd, true);
             if (item != null && item.HasRows)
@@ -23,8 +23,8 @@ namespace Minecraft_QQ_Core.MyMysql
                 player.管理员 = item.GetBoolean(2);
                 item.Close();
             }
-            item.Close();
-            await Mysql.conn.CloseAsync();
+            await item.CloseAsync();
+            Mysql.conn.Close();
             return player;
         }
     }

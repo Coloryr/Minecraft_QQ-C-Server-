@@ -11,14 +11,14 @@ namespace Minecraft_QQ_Core.MyMysql
         /// </summary>
         /// <param name="TableName">表名字</param>
         /// <returns>是否成</returns>
-        public bool AddPlayerTable(string TableName)
+        public static bool AddPlayerTable(string TableName)
         {
             try
             {
                 Mysql.conn.Open();
-                MySqlDataAdapter adp = new MySqlDataAdapter();
+                MySqlDataAdapter adp = new();
                 DataTable dt = Mysql.conn.GetSchema();
-                MySqlCommand cmd = new MySqlCommand("select * from " + TableName, Mysql.conn);
+                MySqlCommand cmd = new("select * from " + TableName, Mysql.conn);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)
@@ -27,7 +27,7 @@ namespace Minecraft_QQ_Core.MyMysql
                 {
                     case 1146:
                         string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `Nick` VARCHAR(255) NULL DEFAULT NULL COMMENT '昵称' , `QQ` VARCHAR(255) NOT NULL COMMENT 'QQ号' , `Admin` BOOLEAN NOT NULL COMMENT '管理员' , PRIMARY KEY (`ID`))";
-                        MySqlCommand cmd = new MySqlCommand(mySelectQuery, Mysql.conn);
+                        MySqlCommand cmd = new(mySelectQuery, Mysql.conn);
                         cmd.ExecuteNonQuery();
                         break;
                     default:
@@ -44,14 +44,14 @@ namespace Minecraft_QQ_Core.MyMysql
         /// </summary>
         /// <param name="TableName">表名</param>
         /// <returns>是否成功</returns>
-        public bool AddOneTable(string TableName)
+        public static bool AddOneTable(string TableName)
         {
             try
             {
                 Mysql.conn.Open();
-                MySqlDataAdapter adp = new MySqlDataAdapter();
+                MySqlDataAdapter adp = new();
                 DataTable dt = Mysql.conn.GetSchema();
-                MySqlCommand cmd = new MySqlCommand("select * from " + TableName, Mysql.conn);
+                MySqlCommand cmd = new("select * from " + TableName, Mysql.conn);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)
@@ -60,7 +60,7 @@ namespace Minecraft_QQ_Core.MyMysql
                 {
                     case 1146:
                         string mySelectQuery = "CREATE TABLE " + TableName + "( `ID` INT(255) NOT NULL AUTO_INCREMENT COMMENT '自增ID' , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , PRIMARY KEY (`ID`))";
-                        MySqlCommand cmd = new MySqlCommand(mySelectQuery, Mysql.conn);
+                        MySqlCommand cmd = new(mySelectQuery, Mysql.conn);
                         cmd.ExecuteNonQuery();
                         break;
                     default:

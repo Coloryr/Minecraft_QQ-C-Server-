@@ -103,10 +103,10 @@ namespace Minecraft_QQ_Core.Utils
                 if (y - x <= 0)
                     return a;
                 else
-                    return a.Substring(x, y - x);
+                    return a[x..y];
             }
             else
-                return a.Substring(x);
+                return a[x..];
         }
         public static string GetRich(string a)
         {
@@ -136,7 +136,7 @@ namespace Minecraft_QQ_Core.Utils
                 {
                     int index = a.LastIndexOf(">");
                     a = a.Substring(0, index + 1);
-                    XmlDocument doc = new XmlDocument();
+                    XmlDocument doc = new();
                     doc.LoadXml(a);
                     if (a.Contains("发起投票"))
                     {
@@ -192,7 +192,7 @@ namespace Minecraft_QQ_Core.Utils
         }
         public static PlayerObj GetPlayer(string id)
         {
-            Dictionary<long, PlayerObj>.ValueCollection valueCol = Minecraft_QQ.PlayerConfig.玩家列表.Values;
+            var valueCol = Minecraft_QQ.PlayerConfig.玩家列表.Values;
             foreach (PlayerObj value in valueCol)
             {
                 if (value == null || value.名字 == null)
@@ -208,28 +208,29 @@ namespace Minecraft_QQ_Core.Utils
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
-                PlayerObj player;
+                if (!long.TryParse(GetString(msg[2], "at:", ","), out long qq))
+                {
+                    return "QQ号获取失败";
+                }
                 if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == true)
                 {
                     Minecraft_QQ.PlayerConfig.玩家列表[qq].昵称 = msg[3].Trim();
                     if (Minecraft_QQ.MysqlOK == true)
-                        Task.Factory.StartNew(async () =>
+                        Task.Run(async () =>
                         {
-                            await new MysqlAddData().PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]);
+                            await MysqlAddData.PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]);
                         });
                     else
-                        new ConfigWrite().Player();
+                        ConfigWrite.Player();
                 }
                 else
                 {
-                    player = new PlayerObj()
+                    Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, new()
                     {
                         QQ号 = qq,
                         昵称 = msg[3].Trim()
-                    };
-                    Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, player);
-                    new ConfigWrite().Player();
+                    });
+                    ConfigWrite.Player();
                 }
                 return "已修改玩家[" + qq + "]的昵称为：" + msg[3].Trim();
             }
@@ -273,12 +274,12 @@ namespace Minecraft_QQ_Core.Utils
                     player.QQ号 = fromQQ;
                     Minecraft_QQ.PlayerConfig.玩家列表.Add(fromQQ, player);
                     if (Minecraft_QQ.MysqlOK == true)
-                        Task.Factory.StartNew(async () =>
+                        Task.Run(async () =>
                         {
-                            await new MysqlAddData().PlayerAsync(player);
+                            await MysqlAddData.PlayerAsync(player);
                         });
                     else
-                        new ConfigWrite().Player();
+                        ConfigWrite.Player();
                     if (Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号 != 0)
                         RobotSocket.SendGroupPrivateMessage(group, Minecraft_QQ.MainConfig.管理员.发送绑定信息QQ号, "玩家[" + fromQQ + "]绑定了ID：[" + player_name + "]");
                     IMinecraft_QQ.GuiCall?.Invoke(GuiFun.PlayerList);
@@ -295,7 +296,10 @@ namespace Minecraft_QQ_Core.Utils
             string name;
             if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
+                if (!long.TryParse(GetString(msg[2], "at:", ","), out long qq))
+                {
+                    return "错误的文本";
+                }
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
@@ -309,12 +313,9 @@ namespace Minecraft_QQ_Core.Utils
             if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == false)
                 Minecraft_QQ.PlayerConfig.禁言列表.Add(name.ToLower());
             if (Minecraft_QQ.MysqlOK == true)
-                Task.Factory.StartNew(async () =>
-                {
-                    await new MysqlAddData().MuteAsync(name.ToLower());
-                });
+                Task.Run(async () => await MysqlAddData.MuteAsync(name.ToLower()));
             else
-                new ConfigWrite().Player();
+                ConfigWrite.Player();
             return "已禁言：[" + name + "]";
         }
         public static string UnmutePlayer(List<string> msg)
@@ -324,7 +325,10 @@ namespace Minecraft_QQ_Core.Utils
             string name;
             if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
+                if (!long.TryParse(GetString(msg[2], "at:", ","), out long qq))
+                {
+                    return "错误的文本";
+                }
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
@@ -338,9 +342,9 @@ namespace Minecraft_QQ_Core.Utils
             if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(name.ToLower()) == true)
                 Minecraft_QQ.PlayerConfig.禁言列表.Remove(name.ToLower());
             if (Minecraft_QQ.MysqlOK == true)
-                Task.Factory.StartNew(() => new MysqlRemoveData().MuteAsync(name));
+                Task.Run(async () => await MysqlRemoveData.MuteAsync(name));
             else
-                new ConfigWrite().Player();
+                ConfigWrite.Player();
             return "已解禁：[" + name + "]";
         }
         public static string GetPlayerID(List<string> msg)
@@ -349,7 +353,10 @@ namespace Minecraft_QQ_Core.Utils
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
+                if (!long.TryParse(GetString(msg[2], "at:", ","), out long qq))
+                {
+                    return "错误的文本";
+                }
                 var player = GetPlayer(qq);
                 if (player == null)
                     return "玩家[" + qq + "]未绑定ID";
@@ -380,7 +387,10 @@ namespace Minecraft_QQ_Core.Utils
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                long.TryParse(GetString(msg[2], "at:", ","), out long qq);
+                if (!long.TryParse(GetString(msg[2], "at:", ","), out long qq))
+                {
+                    return "错误的文本";
+                }
                 if (Minecraft_QQ.PlayerConfig.玩家列表.ContainsKey(qq) == false)
                 {
                     var player = new PlayerObj()
@@ -390,23 +400,17 @@ namespace Minecraft_QQ_Core.Utils
                     };
                     Minecraft_QQ.PlayerConfig.玩家列表.Add(qq, player);
                     if (Minecraft_QQ.MysqlOK == true)
-                        Task.Factory.StartNew(async () =>
-                        {
-                            await new MysqlAddData().PlayerAsync(player);
-                        });
+                        Task.Run(async () => await MysqlAddData.PlayerAsync(player));
                     else
-                        new ConfigWrite().Player();
+                        ConfigWrite.Player();
                 }
                 else
                 {
                     Minecraft_QQ.PlayerConfig.玩家列表[qq].名字 = msg[3].Trim();
                     if (Minecraft_QQ.MysqlOK == true)
-                        Task.Factory.StartNew(async () =>
-                        {
-                            await new MysqlAddData().PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]);
-                        });
+                        Task.Run(async () => await MysqlAddData.PlayerAsync(Minecraft_QQ.PlayerConfig.玩家列表[qq]));
                     else
-                        new ConfigWrite().Player();
+                        ConfigWrite.Player();
                 }
                 return "已修改玩家[" + qq + "]ID为：" + msg[3].Trim();
             }
@@ -446,20 +450,20 @@ namespace Minecraft_QQ_Core.Utils
 
         public static string FixModeChange()
         {
+            string text;
             if (Minecraft_QQ.MainConfig.设置.维护模式 == false)
             {
                 Minecraft_QQ.MainConfig.设置.维护模式 = true;
-                new ConfigWrite().Config();
-                Logs.LogOut("[Minecraft_QQ]服务器维护模式已开启");
-                return "服务器维护模式已开启";
+                text = "服务器维护模式已开启";
             }
             else
             {
                 Minecraft_QQ.MainConfig.设置.维护模式 = false;
-                new ConfigWrite().Config();
-                Logs.LogOut("[Minecraft_QQ]服务器维护模式已关闭");
-                return "服务器维护模式已关闭";
+                text = "服务器维护模式已关闭";
             }
+            ConfigWrite.Config();
+            Logs.LogOut($"[Minecraft_QQ]{text}");
+            return text;
         }
         public static string GetOnlinePlayer(long fromGroup)
         {
@@ -467,13 +471,12 @@ namespace Minecraft_QQ_Core.Utils
             {
                 if (MySocketServer.IsReady() == true)
                 {
-                    var message = new TranObj()
+                    MySocketServer.Send(new()
                     {
                         group = fromGroup.ToString(),
                         command = CommderList.ONLINE,
                         player = null
-                    };
-                    MySocketServer.Send(message);
+                    });
                     return null;
                 }
                 else
@@ -488,12 +491,11 @@ namespace Minecraft_QQ_Core.Utils
             {
                 if (MySocketServer.IsReady() == true)
                 {
-                    var message = new TranObj()
+                    MySocketServer.Send(new()
                     {
                         group = fromGroup.ToString(),
                         command = CommderList.SERVER,
-                    };
-                    MySocketServer.Send(message);
+                    });
                     return null;
                 }
                 else
@@ -510,14 +512,15 @@ namespace Minecraft_QQ_Core.Utils
                 {
                     if (MySocketServer.IsReady() == false)
                     {
-                        List<string> lists = new List<string>();
-                        lists.Add("at:" + fromQQ);
-                        lists.Add("发送失败，服务器未准备好");
-                        RobotSocket.SendGroupMessage(fromGroup, lists);
+                        RobotSocket.SendGroupMessage(fromGroup, new List<string>()
+                        {
+                            "at:" + fromQQ,
+                            "发送失败，服务器未准备好"
+                        });
                         return true;
                     }
                     bool haveserver = false;
-                    List<string> servers = new List<string>();
+                    List<string> servers = new();
                     if (value.Value.服务器使用 != null)
                     {
                         foreach (var temp in value.Value.服务器使用)
@@ -536,18 +539,21 @@ namespace Minecraft_QQ_Core.Utils
                     }
                     if (!haveserver)
                     {
-                        List<string> lists = new List<string>();
-                        lists.Add("at:" + fromQQ);
-                        lists.Add("发送失败，对应的服务器未连接");
-                        RobotSocket.SendGroupMessage(fromGroup, lists);
+                        RobotSocket.SendGroupMessage(fromGroup, new List<string>
+                        {
+                            "at:" + fromQQ,
+                            "发送失败，对应的服务器未连接"
+                        });
                     }
                     var player = GetPlayer(fromQQ);
                     if (player != null)
                     {
                         if (value.Value.玩家使用 == true || player.管理员 == true)
                         {
-                            var messageSend = new TranObj();
-                            messageSend.group = fromGroup.ToString();
+                            var messageSend = new TranObj
+                            {
+                                group = fromGroup.ToString()
+                            };
 
                             string cmd = value.Value.命令;
 
@@ -560,10 +566,11 @@ namespace Minecraft_QQ_Core.Utils
                                 var player1 = GetPlayer(qq);
                                 if (player1 == null)
                                 {
-                                    List<string> lists = new List<string>();
-                                    lists.Add("at:" + fromQQ);
-                                    lists.Add("错误，玩家：" + a + "没有绑定ID");
-                                    RobotSocket.SendGroupMessage(fromGroup, lists);
+                                    RobotSocket.SendGroupMessage(fromGroup, new List<string>
+                                    {
+                                        "at:" + fromQQ,
+                                        "错误，玩家：" + a + "没有绑定ID"
+                                    });
                                     return true;
                                 }
                                 cmd = cmd.Replace("%player_at%", player1.名字);
@@ -584,10 +591,11 @@ namespace Minecraft_QQ_Core.Utils
                                 messageSend.player = player.名字;
                                 if (string.IsNullOrWhiteSpace(player.名字) == true)
                                 {
-                                    List<string> lists = new List<string>();
-                                    lists.Add("at:" + fromQQ);
-                                    lists.Add("你未绑定ID");
-                                    RobotSocket.SendGroupMessage(fromGroup, lists);
+                                    RobotSocket.SendGroupMessage(fromGroup, new List<string>
+                                    {
+                                        "at:" + fromQQ,
+                                        "你未绑定ID"
+                                    });
                                     return true;
                                 }
                             }
@@ -599,10 +607,11 @@ namespace Minecraft_QQ_Core.Utils
                     }
                     else
                     {
-                        List<string> lists = new List<string>();
-                        lists.Add("at:" + fromQQ);
-                        lists.Add("你未绑定ID");
-                        RobotSocket.SendGroupMessage(fromGroup, lists);
+                        RobotSocket.SendGroupMessage(fromGroup, new List<string> 
+                        { 
+                            "at:" + fromQQ, 
+                            "你未绑定ID" 
+                        });
                         return true;
                     }
                 }

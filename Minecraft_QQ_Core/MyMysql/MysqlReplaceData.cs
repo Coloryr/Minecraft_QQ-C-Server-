@@ -8,17 +8,17 @@ namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlReplaceData
     {
-        public async Task PlayerAsync(PlayerObj player)
+        public static async Task PlayerAsync(PlayerObj player)
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand(string.Format("UPDATE {0} SET Name=@name,Nick=@nick,Admin=@admin WHERE QQ=@qq", Mysql.MysqlPlayerTable));
+                MySqlCommand cmd = new($"UPDATE {Mysql.MysqlPlayerTable} SET Name=@name,Nick=@nick,Admin=@admin WHERE QQ=@qq");
                 cmd.Parameters.AddRange(new MySqlParameter[]
                 {
-                    new MySqlParameter("@name", Funtion.GBKtoUTF8(player.名字)),
-                    new MySqlParameter("@nick", Funtion.GBKtoUTF8(player.昵称)),
-                    new MySqlParameter("@admin", player.管理员),
-                    new MySqlParameter("@qq", player.QQ号)
+                    new("@name", Funtion.GBKtoUTF8(player.名字)),
+                    new("@nick", Funtion.GBKtoUTF8(player.昵称)),
+                    new("@admin", player.管理员),
+                    new("@qq", player.QQ号)
                 });
                 await Mysql.MysqlSql(cmd);
             }

@@ -31,67 +31,67 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// 禁止绑定数据储存
         /// </summary>
-        public List<string> 禁止绑定列表 { get; set; } = new List<string> { };
+        public List<string> 禁止绑定列表 { get; set; } = new();
         /// <summary>
         /// 禁言数据存储
         /// </summary>
-        public List<string> 禁言列表 { get; set; } = new List<string> { };
+        public List<string> 禁言列表 { get; set; } = new();
         /// <summary>
         /// 玩家数据储存
         /// </summary>
-        public Dictionary<long, PlayerObj> 玩家列表 { get; set; } = new Dictionary<long, PlayerObj> { };
+        public Dictionary<long, PlayerObj> 玩家列表 { get; set; } = new();
     }
     public class CommandConfig
     {
         /// <summary>
         /// 服务器指令数据储存
         /// </summary>
-        public Dictionary<string, CommandObj> 命令列表 { get; set; } = new Dictionary<string, CommandObj> { };
+        public Dictionary<string, CommandObj> 命令列表 { get; set; } = new();
     }
     public class GroupConfig
     {
         /// <summary>
         /// 设置的群数据储存
         /// </summary>
-        public Dictionary<long, GroupObj> 群列表 { get; set; } = new Dictionary<long, GroupObj> { };
+        public Dictionary<long, GroupObj> 群列表 { get; set; } = new();
     }
     public class AskConfig
     {
         /// <summary>
         /// 自动应答存储
         /// </summary>
-        public Dictionary<string, string> 自动应答列表 { get; set; } = new Dictionary<string, string> { };
+        public Dictionary<string, string> 自动应答列表 { get; set; } = new();
     }
     public class MainConfig
     {
         /// <summary>
         /// 设置
         /// </summary>
-        public SettingConfig 设置 { get; set; } = new SettingConfig();
+        public SettingConfig 设置 { get; set; } = new();
         /// <summary>
         /// 消息
         /// </summary>
-        public MessageConfig 消息 { get; set; } = new MessageConfig();
+        public MessageConfig 消息 { get; set; } = new();
         /// <summary>
         /// 检测消息
         /// </summary>
-        public CheckConfig 检测 { get; set; } = new CheckConfig();
+        public CheckConfig 检测 { get; set; } = new();
         /// <summary>
         /// 管理员指令
         /// </summary>
-        public AdminConfig 管理员 { get; set; } = new AdminConfig();
+        public AdminConfig 管理员 { get; set; } = new();
         /// <summary>
         /// Socket配置
         /// </summary>
-        public SocketConfig 链接 { get; set; } = new SocketConfig();
+        public SocketConfig 链接 { get; set; } = new();
         /// <summary>
         /// Mysql配置文件
         /// </summary>
-        public MysqlConfig 数据库 { get; set; } = new MysqlConfig();
+        public MysqlConfig 数据库 { get; set; } = new();
         /// <summary>
         /// 机器人设定
         /// </summary>
-        public SettingRobot 机器人设置 { get; set; } = new SettingRobot();
+        public SettingRobot 机器人设置 { get; set; } = new();
 
         public override string ToString()
         {
@@ -360,7 +360,7 @@ namespace Minecraft_QQ_Core.Config
     /// <summary>
     /// 玩家数据储存格式
     /// </summary>
-    public class PlayerObj
+    public record PlayerObj
     {
         public string 名字 { get; set; }
         public string 昵称 { get; set; }
@@ -370,27 +370,27 @@ namespace Minecraft_QQ_Core.Config
     /// <summary>
     /// 服务器命令储存格式
     /// </summary>
-    public class CommandObj
+    public record CommandObj
     {
         public string 命令 { get; set; }
         public bool 玩家使用 { get; set; }
         public bool 玩家发送 { get; set; }
         public bool 附带参数 { get; set; }
-        public List<string> 服务器使用 { get; set; } = new List<string>();
+        public List<string> 服务器使用 { get; set; } = new();
     }
     /// <summary>
     /// 群储存格式
     /// </summary>
-    public class GroupObj
+    public record GroupObj
     {
         public string 群号 { get; set; }
         public bool 启用命令 { get; set; }
         public bool 开启对话 { get; set; }
         public bool 主群 { get; set; }
 
-        public GroupObj Clone()
+        public GroupObj Copy()
         {
-            return new GroupObj
+            return new()
             {
                 群号 = 群号,
                 启用命令 = 启用命令,

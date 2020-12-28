@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core
 {
@@ -47,21 +46,21 @@ namespace Minecraft_QQ_Core
         /// </summary>
         public static CommandConfig CommandConfig { get; set; }
 
-        /// <summary>
-        /// 接受私聊消息
-        /// </summary>
-        /// <param name="FromQQ">QQ号</param>
-        /// <param name="message">消息</param>
-        public static void PrivateMessage(long FromQQ, string message)
-        {
-            if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(message) == true)
-            {
-                string message1 = AskConfig.自动应答列表[message];
-                if (string.IsNullOrWhiteSpace(message1) != false)
-                    return;
-                RobotSocket.SendGroupMessage(FromQQ, message1);
-            }
-        }
+        ///// <summary>
+        ///// 接受私聊消息
+        ///// </summary>
+        ///// <param name="FromQQ">QQ号</param>
+        ///// <param name="message">消息</param>
+        //public static void PrivateMessage(long FromQQ, string message)
+        //{
+        //    if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(message) == true)
+        //    {
+        //        string message1 = AskConfig.自动应答列表[message];
+        //        if (string.IsNullOrWhiteSpace(message1) != false)
+        //            return;
+        //        RobotSocket.SendGroupPrivateMessage(FromQQ, message1);
+        //    }
+        //}
 
         /// <summary>
         /// 重载配置
@@ -127,7 +126,7 @@ namespace Minecraft_QQ_Core
                 File.WriteAllText(ConfigFile.群设置.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
             }
             else
-                GroupConfig = read.ReadGroup();
+                GroupConfig = ConfigRead.ReadGroup();
 
             //读自动应答消息
             if (ConfigFile.自动应答.Exists == false)
@@ -146,7 +145,7 @@ namespace Minecraft_QQ_Core
                 File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(AskConfig, Formatting.Indented));
             }
             else
-                AskConfig = read.ReadAsk();
+                AskConfig = ConfigRead.ReadAsk();
 
             //读取玩家数据
             if (MainConfig.数据库.是否启用 == true)
@@ -157,18 +156,18 @@ namespace Minecraft_QQ_Core
                     Logs.LogOut("[Mysql]Mysql链接失败");
                     if (ConfigFile.玩家储存.Exists == false)
                     {
-                        PlayerConfig = new PlayerConfig();
+                        PlayerConfig = new();
                         File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
                     }
                     else
-                        PlayerConfig = read.ReadPlayer();
+                        PlayerConfig = ConfigRead.ReadPlayer();
                 }
                 else
                 {
                     Mysql Mysql = new Mysql();
                     if (PlayerConfig == null)
-                        PlayerConfig = new PlayerConfig();
-                    Mysql.Load();
+                        PlayerConfig = new();
+                    MyMysql.Mysql.Load();
                     Logs.LogOut("[Mysql]Mysql已连接");
                 }
             }
@@ -177,12 +176,12 @@ namespace Minecraft_QQ_Core
                 if (ConfigFile.玩家储存.Exists == false)
                 {
                     Logs.LogOut("[Config]新建玩家信息储存");
-                    PlayerConfig = new PlayerConfig
+                    PlayerConfig = new()
                     {
-                        玩家列表 = new Dictionary<long, PlayerObj>
+                        玩家列表 = new()
                         {
                             {
-                                402067010, new PlayerObj
+                                402067010, new()
                                 {
                                     QQ号 = 402067010,
                                     名字 = "Color_yr",
@@ -191,13 +190,20 @@ namespace Minecraft_QQ_Core
                                 }
                             }
                         },
-                        禁止绑定列表 = new List<string> { "Color_yr" },
-                        禁言列表 = new List<string> { "playerid" }
+                        禁止绑定列表 = new() 
+                        { 
+                            "Color_yr",
+                            "id"
+                        },
+                        禁言列表 = new()
+                        {
+                            "playerid"
+                        }
                     };
                     File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
                 }
                 else
-                    PlayerConfig = read.ReadPlayer();
+                    PlayerConfig = ConfigRead.ReadPlayer();
             };
 
             //读取自定义指令
@@ -205,47 +211,13 @@ namespace Minecraft_QQ_Core
             {
                 CommandConfig = new CommandConfig
                 {
-                    命令列表 = new Dictionary<string, CommandObj>
-                    {
-                        { "插件帮助", new CommandObj
-                            {
-                                命令 = "qq help",
-                                玩家使用 = false,
-                                玩家发送 = false,
-                                附带参数 = true
-                            }
-                        },
-                        { "查钱", new CommandObj
-                            {
-                                命令 = "money %player_name%",
-                                玩家使用 = true,
-                                玩家发送 = false,
-                                附带参数 = false
-                            }
-                        },
-                        { "禁言", new CommandObj
-                            {
-                                命令 = "mute ",
-                                玩家使用 = false,
-                                玩家发送 = false,
-                                附带参数 = true
-                            }
-                        },
-                        { "传送", new CommandObj
-                            {
-                                命令 = "tpa %player_at%",
-                                玩家使用 = true,
-                                玩家发送 = false,
-                                附带参数 = false
-                            }
-                        },
-                    }
+                    命令列表 = new() { { "插件帮助", new CommandObj { 命令 = "qq help", 玩家使用 = false, 玩家发送 = false, 附带参数 = true } }, { "查钱", new CommandObj { 命令 = "money %player_name%", 玩家使用 = true, 玩家发送 = false, 附带参数 = false } }, { "禁言", new CommandObj { 命令 = "mute ", 玩家使用 = false, 玩家发送 = false, 附带参数 = true } }, { "传送", new CommandObj { 命令 = "tpa %player_at%", 玩家使用 = true, 玩家发送 = false, 附带参数 = false } }, }
                 };
                 Logs.LogOut("[Config]新建自定义指令");
                 File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(CommandConfig, Formatting.Indented));
             }
             else
-                CommandConfig = read.ReadCommand();
+                CommandConfig = ConfigRead.ReadCommand();
 
             if (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
                 IMinecraft_QQ.IsStop = true;
@@ -262,7 +234,14 @@ namespace Minecraft_QQ_Core
                 {
                     Thread.Sleep(500);
                 }
-                GroupConfig = read.ReadGroup();
+                foreach (var item in GroupConfig.群列表)
+                {
+                    if (item.Value.主群 == true)
+                    {
+                        GroupSetMain = item.Key;
+                        break;
+                    }
+                }
             }
             return true;
         }
@@ -277,11 +256,10 @@ namespace Minecraft_QQ_Core
             RobotSocket.Start();
             MySocketServer.ServerStop();
             MySocketServer.StartServer();
-            Send.Start();
+            SendGroup.Start();
             IMinecraft_QQ.IsStart = true;
 
             RobotSocket.SendGroupMessage(GroupSetMain, "[Minecraft_QQ]已启动" + IMinecraft_QQ.Version);
-
         }
 
         public static void Stop()
@@ -290,7 +268,7 @@ namespace Minecraft_QQ_Core
             MySocketServer.ServerStop();
             Mysql.MysqlStop();
             RobotSocket.Stop();
-            Send.Stop();
+            SendGroup.Stop();
         }
         /// <summary>
         /// Type=2 群消息。

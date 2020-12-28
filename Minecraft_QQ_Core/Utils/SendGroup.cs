@@ -5,16 +5,16 @@ using System.Threading;
 
 namespace Minecraft_QQ_Core.Utils
 {
-    internal class SendObj
+    internal record SendObj
     {
         public long Group { get; set; }
         public string Message { get; set; }
     }
-    internal class Send
+    internal class SendGroup
     {
         private static Thread SendT;
         private static bool Run;
-        public static List<SendObj> SendList { get; set; } = new List<SendObj>() { };
+        public static List<SendObj> SendList { get; set; } = new();
 
         public static void SendToGroup()
         {
@@ -38,7 +38,7 @@ namespace Minecraft_QQ_Core.Utils
                         }
                         if (have)
                         {
-                            b = b.Substring(0, b.Length - 1);
+                            b = b[0..^1];
                             RobotSocket.SendGroupMessage(group, b);
                         }
                         SendList.RemoveAll(a => a.Group == group);
@@ -50,7 +50,7 @@ namespace Minecraft_QQ_Core.Utils
         public static void Start()
         {
             Run = true;
-            SendT = new Thread(SendToGroup);
+            SendT = new(SendToGroup);
             SendT.Start();
         }
 

@@ -1,12 +1,13 @@
-﻿using Minecraft_QQ_Core.Config;
+﻿using Minecraft_QQ_Core;
+using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.MyMysql;
 using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Gui.SetWindow;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Minecraft_QQ_Core;
 
 namespace Minecraft_QQ_Gui
 {
@@ -16,6 +17,7 @@ namespace Minecraft_QQ_Gui
     public partial class MainWindow : Window
     {
         private bool isGet;
+        private bool isSearch;
         private Server GetServer;
 
         public void AddLog(string logs)
@@ -160,7 +162,7 @@ namespace Minecraft_QQ_Gui
                     data += ',';
                 }
                 if (!string.IsNullOrWhiteSpace(data))
-                    data = data.Substring(0, data.Length - 1);
+                    data = data[0..^1];
                 CommandList.Items.Add(new CommandOBJ
                 {
                     Check = item.Key,
@@ -196,8 +198,8 @@ namespace Minecraft_QQ_Gui
         {
             if (QQList.SelectedItems.Count == 0)
                 return;
-            var item = ((GroupObj)QQList.SelectedItem).Clone();
-            long.TryParse(item.群号, out long oldgroup);
+            var olditem = (GroupObj)QQList.SelectedItem;
+            var item = olditem.Copy();
             item = new QQSet(item).Set();
             long group;
             if (string.IsNullOrWhiteSpace(item.群号))
@@ -209,7 +211,7 @@ namespace Minecraft_QQ_Gui
                 MessageBox.Show("请检查你修改后的群号", "修改失败");
                 return;
             }
-            Minecraft_QQ.GroupConfig.群列表.Remove(oldgroup);
+            Minecraft_QQ.GroupConfig.群列表.Remove(long.Parse(olditem.群号));
             Minecraft_QQ.GroupConfig.群列表.Add(group, item);
             InitQQList();
         }
@@ -259,7 +261,7 @@ namespace Minecraft_QQ_Gui
                 MessageBox.Show("端口设置范围超出", "保存失败");
                 return;
             }
-            new ConfigWrite().All();
+            ConfigWrite.All();
             MessageBox.Show("配置已经保存", "已保存");
         }
 
@@ -529,51 +531,58 @@ namespace Minecraft_QQ_Gui
 
         private void Turnto(PlayerObj obj)
         {
-            PlayerList.SelectedItem = obj;
+            Dispatcher.Invoke(() =>
+            {
+                PlayerList.SelectedItem = obj;
+                PlayerList.ScrollIntoView(obj);
+            });
         }
 
-        private void SearchQQ_(object sender, RoutedEventArgs e)
+        private async void SearchQQ_(object sender, RoutedEventArgs e)
         {
+            if (isSearch)
+                return;
             var set = new PlayerSet(null).Set();
-            bool ok = string.IsNullOrWhiteSpace(set.名字)
-                && string.IsNullOrWhiteSpace(set.昵称)
-                && set.QQ号 == 0;
-            bool haveName;
-            bool haveNick;
-            if (ok)
+            bool ok = !string.IsNullOrWhiteSpace(set.名字)
+                || !string.IsNullOrWhiteSpace(set.昵称)
+                || set.QQ号 != 0;
+            if (!ok)
             {
                 MessageBox.Show("请输入要搜索的内容", "选择内容空");
                 return;
             }
-            haveName = string.IsNullOrWhiteSpace(set.名字);
-            haveNick = string.IsNullOrWhiteSpace(set.昵称);
-
-            foreach (var item in Minecraft_QQ.PlayerConfig.玩家列表)
+            bool haveName = !string.IsNullOrWhiteSpace(set.名字);
+            bool haveNick = !string.IsNullOrWhiteSpace(set.昵称);
+            isSearch = true;
+            await Task.Run(() =>
             {
-                if (item.Key == set.QQ号)
+                foreach (var item in Minecraft_QQ.PlayerConfig.玩家列表)
                 {
-                    Turnto(item.Value);
-                    return;
-                }
-                else if (haveName)
-                {
-                    if (item.Value.名字.Contains(set.名字) || set.名字.Contains(item.Value.名字))
+                    if (item.Key == set.QQ号)
                     {
                         Turnto(item.Value);
                         return;
                     }
-                }
-                else if (haveNick)
-                {
-                    if (item.Value.昵称.Contains(set.昵称) || set.昵称.Contains(item.Value.昵称))
+                    else if (haveName && !string.IsNullOrWhiteSpace(item.Value.名字))
                     {
-                        Turnto(item.Value);
-                        return;
+                        if (item.Value.名字.Contains(set.名字) || set.名字.Contains(item.Value.名字))
+                        {
+                            Turnto(item.Value);
+                            return;
+                        }
+                    }
+                    else if (haveNick && !string.IsNullOrWhiteSpace(item.Value.昵称))
+                    {
+                        if (item.Value.昵称.Contains(set.昵称) || set.昵称.Contains(item.Value.昵称))
+                        {
+                            Turnto(item.Value);
+                            return;
+                        }
                     }
                 }
-            }
-            MessageBox.Show("请输入要搜索的内容", "选择内容空");
-            return;
+                MessageBox.Show("你搜索的内容找不到", "找不到内容");
+                isSearch = false;
+            });
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

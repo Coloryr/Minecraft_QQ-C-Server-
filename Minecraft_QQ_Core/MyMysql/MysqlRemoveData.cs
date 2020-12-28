@@ -6,14 +6,14 @@ namespace Minecraft_QQ_Core.MyMysql
 {
     internal class MysqlRemoveData
     {
-        public async Task MuteAsync(string name)
+        public static async Task MuteAsync(string name)
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand(string.Format("DELETE FROM {0} WHERE Name=@name", Mysql.MysqlMuteTable));
+                MySqlCommand cmd = new($"DELETE FROM {Mysql.MysqlMuteTable} WHERE Name=@name");
                 cmd.Parameters.AddRange(new MySqlParameter[]
                 {
-                    new MySqlParameter("@name", name)
+                    new("@name", name)
                 });
                 await Mysql.MysqlSql(cmd);
             }

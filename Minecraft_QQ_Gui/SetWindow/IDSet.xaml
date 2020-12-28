@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ID设置" Height="75" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
+        Title="ID设置" Height="75" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico" KeyDown="TextBox_KeyDown">
     <Grid>
         <Label Content="ID" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" Width="29" Height="22" VerticalAlignment="Top"/>

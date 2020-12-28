@@ -51,7 +51,7 @@ namespace Minecraft_QQ_Core.MySocket
                             foreach (var item in Minecraft_QQ.GroupConfig.群列表)
                             {
                                 if (item.Value.开启对话 == true)
-                                    Send.SendList.Add(new SendObj
+                                    SendGroup.SendList.Add(new()
                                     {
                                         Group = item.Key,
                                         Message = message.message
@@ -63,7 +63,7 @@ namespace Minecraft_QQ_Core.MySocket
                             long.TryParse(message.group, out long group);
                             if (Minecraft_QQ.GroupConfig.群列表.ContainsKey(group) == true)
                             {
-                                Send.SendList.Add(new SendObj
+                                SendGroup.SendList.Add(new()
                                 {
                                     Group = group,
                                     Message = message.message
@@ -77,7 +77,7 @@ namespace Minecraft_QQ_Core.MySocket
                 }
 
                 local = read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾);
-                read = read.Substring(local + Minecraft_QQ.MainConfig.链接.数据尾.Length);
+                read = read[(local + Minecraft_QQ.MainConfig.链接.数据尾.Length)..];
             }
         }
         public static string StartCheck(string read)

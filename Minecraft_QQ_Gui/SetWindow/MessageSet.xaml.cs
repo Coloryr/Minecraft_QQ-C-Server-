@@ -23,5 +23,10 @@ namespace Minecraft_QQ_Gui.SetWindow
             ShowDialog();
             return Server;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -11,59 +11,48 @@ namespace Minecraft_QQ_Core.MyMysql
         /// 添加玩家
         /// </summary>
         /// <param name="player">玩家名字</param>
-        public async Task PlayerAsync(PlayerObj player)
+        public static async Task PlayerAsync(PlayerObj player)
         {
-            MysqlSearchData search = new MysqlSearchData();
-            if (await search.PlayerAsync(player.QQ号) != null)
-                await new MysqlReplaceData().PlayerAsync(player);
+            if (await MysqlSearchData.PlayerAsync(player.QQ号) != null)
+                await MysqlReplaceData.PlayerAsync(player);
             else
             {
                 MySqlCommand cmd;
                 if (string.IsNullOrWhiteSpace(player.昵称))
                 {
-                    cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name,QQ,Admin)VALUES(@name,@qq,@admin)", Mysql.MysqlPlayerTable));
+                    cmd = new($"INSERT INTO {Mysql.MysqlPlayerTable}(Name,QQ,Admin)VALUES(@name,@qq,@admin)");
                     cmd.Parameters.AddRange(new MySqlParameter[]
                     {
-                    new MySqlParameter("@name", Funtion.GBKtoUTF8(player.名字)),
-                    new MySqlParameter("@admin", player.管理员),
-                    new MySqlParameter("@qq", player.QQ号)
+                        new("@name", Funtion.GBKtoUTF8(player.名字)),
+                        new("@admin", player.管理员),
+                        new("@qq", player.QQ号)
                     });
                 }
                 else
                 {
-                    cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name,Nick,QQ,Admin)VALUES(@name,@nick,@qq,@admin)", Mysql.MysqlPlayerTable));
+                    cmd = new($"INSERT INTO {Mysql.MysqlPlayerTable}(Name,Nick,QQ,Admin)VALUES(@name,@nick,@qq,@admin)");
                     cmd.Parameters.AddRange(new MySqlParameter[]
                     {
-                    new MySqlParameter("@name", Funtion.GBKtoUTF8(player.名字)),
-                    new MySqlParameter("@nick", Funtion.GBKtoUTF8(player.昵称)),
-                    new MySqlParameter("@admin", player.管理员),
-                    new MySqlParameter("@qq", player.QQ号)
+                        new("@name", Funtion.GBKtoUTF8(player.名字)),
+                        new("@nick", Funtion.GBKtoUTF8(player.昵称)),
+                        new("@admin", player.管理员),
+                        new("@qq", player.QQ号)
                     });
                 }
                 await Mysql.MysqlSql(cmd);
             }
+            Mysql.conn.Close();
         }
-        /// <summary>
-        /// 添加禁止绑定ID
-        /// </summary>
-        /// <param name="name">禁止的ID</param>
-        public async Task NotIDAsync(string name)
+
+        public static async Task MuteAsync(string name)
         {
-            MySqlCommand cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name)VALUES(@name)", Mysql.MysqlNotIDTable));
+            MySqlCommand cmd = new($"INSERT INTO {Mysql.MysqlMuteTable}(Name)VALUES(@name)");
             cmd.Parameters.AddRange(new MySqlParameter[]
             {
-                new MySqlParameter("@name", Funtion.GBKtoUTF8(name.ToLower())),
+                new("@name", Funtion.GBKtoUTF8(name.ToLower())),
             });
             await Mysql.MysqlSql(cmd);
-        }
-        public async Task MuteAsync(string name)
-        {
-            MySqlCommand cmd = new MySqlCommand(string.Format("INSERT INTO {0}(Name)VALUES(@name)", Mysql.MysqlMuteTable));
-            cmd.Parameters.AddRange(new MySqlParameter[]
-            {
-                new MySqlParameter("@name", Funtion.GBKtoUTF8(name.ToLower())),
-            });
-            await Mysql.MysqlSql(cmd);
+            Mysql.conn.Close();
         }
     }
 }

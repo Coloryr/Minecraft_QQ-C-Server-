@@ -2,7 +2,7 @@
 
 namespace Minecraft_QQ_Core.Config
 {
-    public class ConfigOBJ
+    public record ConfigOBJ
     {
         public MessageOBJ Join { get; set; }
         public MessageOBJ Quit { get; set; }
@@ -18,12 +18,12 @@ namespace Minecraft_QQ_Core.Config
         public List<string> Mute { get; set; }
         public string Version { get; set; }
     }
-    public class MessageOBJ
+    public record MessageOBJ
     {
         public string Message { get; set; }
-        public bool sendQQ { get; set; }
+        public bool SendQQ { get; set; }
     }
-    public class ServerSetOBJ
+    public record ServerSetOBJ
     {
         public string ServerName { get; set; }
         public string Check { get; set; }
@@ -38,13 +38,13 @@ namespace Minecraft_QQ_Core.Config
         public bool BungeeCord { get; set; }
         public int CommandDelay { get; set; }
     }
-    public class SendAllServerOBJ
+    public record SendAllServerOBJ
     {
         public bool Enable { get; set; }
         public string Message { get; set; }
         public bool OnlySideServer { get; set; }
     }
-    public class SystemOBJ
+    public record SystemOBJ
     {
         public string IP { get; set; }
         public int Port { get; set; }
@@ -55,17 +55,17 @@ namespace Minecraft_QQ_Core.Config
         public string End { get; set; }
         public int Sleep { get; set; }
     }
-    public class UserOBJ
+    public record UserOBJ
     {
         public bool SendSucceed { get; set; }
         public bool NotSendCommand { get; set; }
     }
-    public class LogsOBJ
+    public record LogsOBJ
     {
         public bool Group { get; set; }
         public bool Server { get; set; }
     }
-    public class PlaceholderOBJ
+    public record PlaceholderOBJ
     {
         public string Message { get; set; }
         public string Player { get; set; }
@@ -74,7 +74,7 @@ namespace Minecraft_QQ_Core.Config
         public string PlayerNumber { get; set; }
         public string PlayerList { get; set; }
     }
-    public class LanguageOBJ
+    public record LanguageOBJ
     {
         public string MessageOFF { get; set; }
         public string MessageON { get; set; }

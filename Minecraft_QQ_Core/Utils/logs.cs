@@ -6,7 +6,7 @@ namespace Minecraft_QQ_Core.Utils
     internal class Logs
     {
         public static string log = "logs.log";
-        private static object obj = new object();
+        private static readonly object obj = new object();
 
         private static void LogWrite(string a)
         {
@@ -22,9 +22,9 @@ namespace Minecraft_QQ_Core.Utils
                     File.AppendAllText(Minecraft_QQ.Path + log, write + Environment.NewLine);
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                IMinecraft_QQ.LogCall?.Invoke(e.ToString());
             }
         }
 

@@ -8,7 +8,7 @@ namespace Minecraft_QQ_Core
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.2.0.1";
+        public const string Version = "3.3.0.0";
 
         public static bool Run;
         public static bool IsStop;

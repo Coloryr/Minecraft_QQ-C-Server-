@@ -19,7 +19,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="true">
                             <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>
-                            <Setter TargetName="data" Property="Foreground" Value="Black"/>
+                            <!--<Setter TargetName="data" Property="Foreground" Value="{TemplateBinding Foreground}"/>-->
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="gridborder" Property="BorderBrush" Value="#FF5EBDD3"/>

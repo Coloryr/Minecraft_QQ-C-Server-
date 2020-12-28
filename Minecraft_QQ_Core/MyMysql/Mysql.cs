@@ -12,15 +12,14 @@ namespace Minecraft_QQ_Core.MyMysql
     {
         public static MySqlConnection conn;
 
-        public static string MysqlPlayerTable = "minecraft_qq_player";
-        public static string MysqlNotIDTable = "minecraft_qq_notid";
-        public static string MysqlMuteTable = "minecraft_qq_mute";
+        public const string MysqlPlayerTable = "minecraft_qq_player";
+        public const string MysqlMuteTable = "minecraft_qq_mute";
 
         public static void MysqlStart()
         {
-            string ConnectString = string.Format("SslMode=none;Server={0};Port={1};User ID={2};Password={3};Database={4};Charset=utf8;",
-            Minecraft_QQ.MainConfig.数据库.地址, Minecraft_QQ.MainConfig.数据库.端口, Minecraft_QQ.MainConfig.数据库.用户名,
-            Minecraft_QQ.MainConfig.数据库.密码, Minecraft_QQ.MainConfig.数据库.数据库);
+            string ConnectString = $"SslMode=none;Server={Minecraft_QQ.MainConfig.数据库.地址};" +
+                $"Port={Minecraft_QQ.MainConfig.数据库.端口};User ID={Minecraft_QQ.MainConfig.数据库.用户名};" +
+                $"Password={Minecraft_QQ.MainConfig.数据库.密码};Database={Minecraft_QQ.MainConfig.数据库.数据库};Charset=utf8;";
             conn = new MySqlConnection(ConnectString);
             if (conn == null)
             {
@@ -28,9 +27,9 @@ namespace Minecraft_QQ_Core.MyMysql
             }
             MysqlAddTable table = new MysqlAddTable();
 
-            if (table.AddPlayerTable(MysqlPlayerTable) == false) return;
-            if (table.AddOneTable(MysqlNotIDTable) == false) return;
-            if (table.AddOneTable(MysqlMuteTable) == false) return;
+            if (MysqlAddTable.AddPlayerTable(MysqlPlayerTable) == false) return;
+            if (MysqlAddTable.AddOneTable(MysqlMuteTable) == false) return;
+
             Minecraft_QQ.MysqlOK = true;
         }
 
@@ -43,20 +42,19 @@ namespace Minecraft_QQ_Core.MyMysql
             Minecraft_QQ.MysqlOK = false;
         }
 
-        public void Load()
+        public static void Load()
         {
-            Task.Factory.StartNew(async () =>
+            Task.Run(async () =>
             {
                 await LoadPlayerAsync();
                 await LoadMuteAsync();
-                await LoadNotIDAsync();
             });
         }
 
-        private async Task LoadPlayerAsync()
+        private static async Task LoadPlayerAsync()
         {
             Minecraft_QQ.PlayerConfig.玩家列表.Clear();
-            MySqlCommand cmd = new MySqlCommand("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
+            MySqlCommand cmd = new("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
             DbDataReader reader = await MysqlSql(cmd, true);
             while (await reader.ReadAsync())
             {
@@ -77,25 +75,10 @@ namespace Minecraft_QQ_Core.MyMysql
             reader.Close();
             await conn.CloseAsync();
         }
-        private async Task LoadNotIDAsync()
-        {
-            Minecraft_QQ.PlayerConfig.禁止绑定列表.Clear();
-            MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
-            DbDataReader reader = await MysqlSql(cmd, true);
-            if (reader != null)
-                while (await reader.ReadAsync())
-                {
-                    if (!string.IsNullOrWhiteSpace(reader.GetString(0)))
-                        if (Minecraft_QQ.PlayerConfig.禁止绑定列表.Contains(reader.GetString(0).ToLower()) == false)
-                            Minecraft_QQ.PlayerConfig.禁止绑定列表.Add(reader.GetString(0).ToLower());
-                }
-            reader.Close();
-            await conn.CloseAsync();
-        }
-        private async Task LoadMuteAsync()
+        private static async Task LoadMuteAsync()
         {
             Minecraft_QQ.PlayerConfig.禁言列表.Clear();
-            MySqlCommand cmd = new MySqlCommand("SELECT `Name` FROM " + MysqlNotIDTable);
+            MySqlCommand cmd = new("SELECT `Name` FROM " + MysqlMuteTable);
             DbDataReader reader = await MysqlSql(cmd, true);
             if (reader != null)
                 while (await reader.ReadAsync())
@@ -107,7 +90,6 @@ namespace Minecraft_QQ_Core.MyMysql
             reader.Close();
             await conn.CloseAsync();
         }
-
         public static async Task<DbDataReader> MysqlSql(MySqlCommand SQL, bool needRead = false)
         {
             DbDataReader temp = null;

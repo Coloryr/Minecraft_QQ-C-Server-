@@ -1,6 +1,4 @@
-﻿using Minecraft_QQ_Core;
-using Minecraft_QQ_Core.Config;
-using Minecraft_QQ_Core.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,38 +21,38 @@ namespace Minecraft_QQ_Core.Config
                 bool save = false;
                 if (config.数据库 == null)
                 {
-                    config.数据库 = new MysqlConfig();
+                    config.数据库 = new();
                     save = true;
                 }
                 if (config.检测 == null)
                 {
-                    config.检测 = new CheckConfig();
+                    config.检测 = new();
                     save = true;
                 }
                 if (config.消息 == null)
                 {
-                    config.消息 = new MessageConfig();
+                    config.消息 = new();
                     save = true;
                 }
                 if (config.管理员 == null)
                 {
-                    config.管理员 = new AdminConfig();
+                    config.管理员 = new();
                     save = true;
                 }
                 if (config.设置 == null)
                 {
-                    config.设置 = new SettingConfig();
+                    config.设置 = new();
                     save = true;
                 }
                 if (config.链接 == null)
                 {
-                    config.链接 = new SocketConfig();
+                    config.链接 = new();
                     save = true;
                 }
                 if (save)
                 {
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Mainconfig.json配置文件读取发送错误，已经重写");
-                    new ConfigWrite().Config();
+                    ConfigWrite.Config();
                 }
                 return config;
             }
@@ -62,10 +60,10 @@ namespace Minecraft_QQ_Core.Config
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("快去检查你的Mainconfig.json文件语法，用的是json就要遵守语法！");
                 Logs.LogError(e);
-                return new MainConfig();
+                return new();
             }
         }
-        public PlayerConfig ReadPlayer()
+        public static PlayerConfig ReadPlayer()
         {
             Logs.LogOut("[Config]读取玩家配置");
             try
@@ -75,23 +73,23 @@ namespace Minecraft_QQ_Core.Config
                 bool save = false;
                 if (config.玩家列表 == null)
                 {
-                    config.玩家列表 = new Dictionary<long, PlayerObj>();
+                    config.玩家列表 = new();
                     save = true;
                 }
                 if (config.禁止绑定列表 == null)
                 {
-                    config.禁止绑定列表 = new List<string>() { "Color_yr" };
+                    config.禁止绑定列表 = new() { "Color_yr" };
                     save = true;
                 }
                 if (config.禁言列表 == null)
                 {
-                    config.禁言列表 = new List<string>();
+                    config.禁言列表 = new();
                     save = true;
                 }
                 if (save)
                 {
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Player.json配置文件读取发送错误，已经重写");
-                    new ConfigWrite().Player();
+                    ConfigWrite.Player();
                 }
                 return config;
             }
@@ -99,10 +97,10 @@ namespace Minecraft_QQ_Core.Config
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("快去检查你的Player.json文件语法，用的是json就要遵守语法！");
                 Logs.LogError(e);
-                return new PlayerConfig();
+                return new();
             }
         }
-        public GroupConfig ReadGroup()
+        public static GroupConfig ReadGroup()
         {
             Logs.LogOut("[Config]读取群设置");
             try
@@ -112,8 +110,8 @@ namespace Minecraft_QQ_Core.Config
                 if (config.群列表 == null)
                 {
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Group.json配置文件读取发送错误，已经重写");
-                    config.群列表 = new Dictionary<long, GroupObj>();
-                    new ConfigWrite().Group();
+                    config.群列表 = new();
+                    ConfigWrite.Group();
                 }
                 foreach (var item in config.群列表)
                 {
@@ -132,7 +130,7 @@ namespace Minecraft_QQ_Core.Config
                 return new GroupConfig();
             }
         }
-        public AskConfig ReadAsk()
+        public static AskConfig ReadAsk()
         {
             Logs.LogOut("[Config]读取自定义应答");
             try
@@ -159,10 +157,10 @@ namespace Minecraft_QQ_Core.Config
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("快去检查你的Ask.json文件语法，用的是json就要遵守语法！");
                 Logs.LogError(e);
-                return new AskConfig();
+                return new();
             }
         }
-        public CommandConfig ReadCommand()
+        public static CommandConfig ReadCommand()
         {
             Logs.LogOut("[Config]读取自定义指令");
             try
@@ -171,9 +169,11 @@ namespace Minecraft_QQ_Core.Config
                     (File.ReadAllText(ConfigFile.自定义指令.FullName));
                 if (config.命令列表 == null)
                 {
-                    config.命令列表 = new Dictionary<string, CommandObj>()
+                    config.命令列表 = new()
                     {
-                        { "插件帮助", new CommandObj
+                        {
+                            "插件帮助",
+                            new()
                             {
                                 命令 = "qq help",
                                 玩家使用 = false,
@@ -182,7 +182,9 @@ namespace Minecraft_QQ_Core.Config
                                 服务器使用 = null
                             }
                         },
-                        { "查钱", new CommandObj
+                        {
+                            "查钱",
+                            new()
                             {
                                 命令 = "money %player_name%",
                                 玩家使用 = true,
@@ -191,22 +193,26 @@ namespace Minecraft_QQ_Core.Config
                                 服务器使用 = null
                             }
                         },
-                        { "禁言", new CommandObj
+                        {
+                            "禁言",
+                            new()
                             {
                                 命令 = "mute ",
                                 玩家使用 = false,
                                 玩家发送 = false,
                                 附带参数 = true,
-                                服务器使用 = new List<string>{ "lobby" }
+                                服务器使用 = new List<string> { "lobby" }
                             }
                         },
-                        { "传送", new CommandObj
+                        {
+                            "传送",
+                            new()
                             {
                                 命令 = "tpa %player_at%",
                                 玩家使用 = true,
                                 玩家发送 = false,
                                 附带参数 = false,
-                                服务器使用 = new List<string>{ "sc" }
+                                服务器使用 = new List<string> { "sc" }
                             }
                         }
                     };
@@ -219,7 +225,7 @@ namespace Minecraft_QQ_Core.Config
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("快去检查你的Command.json文件语法，用的是json就要遵守语法！");
                 Logs.LogError(e);
-                return new CommandConfig();
+                return new();
             }
         }
     }

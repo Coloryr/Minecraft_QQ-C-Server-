@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Minecraft_QQ_Gui.SetWindow
 {
@@ -21,6 +22,14 @@ namespace Minecraft_QQ_Gui.SetWindow
         {
             ShowDialog();
             return ID;
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
         }
     }
 }

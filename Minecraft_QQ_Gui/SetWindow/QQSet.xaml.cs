@@ -1,5 +1,6 @@
 ﻿using Minecraft_QQ_Core.Config;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Minecraft_QQ_Gui.SetWindow
 {
@@ -22,6 +23,14 @@ namespace Minecraft_QQ_Gui.SetWindow
         {
             ShowDialog();
             return Obj;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
         }
     }
 }

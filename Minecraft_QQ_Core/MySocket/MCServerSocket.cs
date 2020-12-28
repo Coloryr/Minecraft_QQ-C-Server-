@@ -54,8 +54,9 @@ namespace Minecraft_QQ_Core.MySocket
 
                 return Encoding.UTF8.GetString(bytes, 0, receiveNumber);
             }
-            catch
+            catch(Exception e)
             {
+                Logs.LogError(e);
                 return null;
             }
         }
@@ -67,7 +68,9 @@ namespace Minecraft_QQ_Core.MySocket
                 {
                     string str = Receive();
                     if (str == null)
-                        return;
+                    {
+                        continue;
+                    }
                     if (!IsCheck)
                     {
                         Name = Message.StartCheck(str);

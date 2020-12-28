@@ -6,12 +6,12 @@ namespace Minecraft_QQ_Cmd
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("正在启动Minecraft_QQ");
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage(Message);
             IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log(Message);
-            IMinecraft_QQ.Start();
+            _ = IMinecraft_QQ.Start();
 
             while (!IMinecraft_QQ.IsStart)
             {
@@ -27,7 +27,14 @@ namespace Minecraft_QQ_Cmd
             while (true)
             {
                 string a = Console.ReadLine();
-
+                if (a == "stop")
+                {
+                    IMinecraft_QQ.Stop();
+                }
+                else if (a == "info")
+                { 
+                    
+                }
             }
         }
         private static void Message(string message)

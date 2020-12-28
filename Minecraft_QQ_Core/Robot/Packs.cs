@@ -11,7 +11,7 @@ namespace Minecraft_QQ_Core.Robot
         public string Name { get; set; }
         public List<byte> Reg { get; set; }
     }
-    class GroupMessageEventPack: PackBase
+    class GroupMessageEventPack : PackBase
     {
         public long id { get; set; }
         public long fid { get; set; }

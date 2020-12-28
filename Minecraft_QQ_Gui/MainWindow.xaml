@@ -334,7 +334,7 @@
         </TabControl>
         <Button Content="保存" Margin="0,5,10,0" IsDefault="True"
                 FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Click" HorizontalAlignment="Right" Width="66" Height="29" VerticalAlignment="Top"/>
-        <Button Content="重载" Margin="0,5,75,0" IsDefault="True"
+        <Button Content="重载" Margin="0,5,81,0" IsDefault="True"
                 FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
 
 

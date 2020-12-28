@@ -8,27 +8,27 @@ namespace Minecraft_QQ_Core.Config
 {
     public class ConfigWrite
     {
-        public void Ask()
+        public static void Ask()
         {
             Save(ConfigFile.自动应答.FullName, Minecraft_QQ.AskConfig);
         }
-        public void Command()
+        public static void Command()
         {
             Save(ConfigFile.自定义指令.FullName, Minecraft_QQ.CommandConfig);
         }
-        public void Config()
+        public static void Config()
         {
             Save(ConfigFile.主要配置文件.FullName, Minecraft_QQ.MainConfig);
         }
-        public void Group()
+        public static void Group()
         {
             Save(ConfigFile.群设置.FullName, Minecraft_QQ.GroupConfig);
         }
-        public void Player()
+        public static void Player()
         {
             Save(ConfigFile.玩家储存.FullName, Minecraft_QQ.PlayerConfig);
         }
-        public void All()
+        public static void All()
         {
             Ask();
             Command();
@@ -37,7 +37,7 @@ namespace Minecraft_QQ_Core.Config
             Player();
         }
 
-        private void Save(string FileName, object obj)
+        private static void Save(string FileName, object obj)
         {
             Task.Factory.StartNew(() =>
             {
