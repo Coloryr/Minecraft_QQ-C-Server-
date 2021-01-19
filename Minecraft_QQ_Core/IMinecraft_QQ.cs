@@ -28,12 +28,9 @@ namespace Minecraft_QQ_Core
 
         public delegate void Log(string message);
         public static Log LogCall;
-        public static async Task Start()
+        public static void Start()
         {
-            await Task.Run(() =>
-            {
-                Minecraft_QQ.Start();
-            });
+            Minecraft_QQ.Start();
         }
         public static void Stop()
         {

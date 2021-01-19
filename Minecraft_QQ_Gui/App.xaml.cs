@@ -52,7 +52,7 @@ namespace Minecraft_QQ_Gui
             {
                 MainWindow_?.AddLog(data);
             });
-            await IMinecraft_QQ.Start();
+            await Task.Run(() => IMinecraft_QQ.Start());
             Thread.Sleep(2000);
         }
 

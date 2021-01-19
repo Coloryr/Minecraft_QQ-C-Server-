@@ -11,7 +11,7 @@ namespace Minecraft_QQ_Cmd
             Console.WriteLine("正在启动Minecraft_QQ");
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage(Message);
             IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log(Message);
-            _ = IMinecraft_QQ.Start();
+            IMinecraft_QQ.Start();
 
             while (!IMinecraft_QQ.IsStart)
             {

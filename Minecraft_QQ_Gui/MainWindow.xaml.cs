@@ -131,6 +131,11 @@ namespace Minecraft_QQ_Gui
         public void InitPlayerList()
         {
             var list = Minecraft_QQ.PlayerConfig.玩家列表.Values;
+            if (Minecraft_QQ.PlayerConfig.玩家列表 == null)
+            {
+                MessageBox.Show("数据错误，请检查Mysql数据库是否连接，检查后重启");
+                return;
+            }
             PlayerList.Items.Clear();
             foreach (var item in list)
             {
