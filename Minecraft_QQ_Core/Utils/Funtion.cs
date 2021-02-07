@@ -95,6 +95,8 @@ namespace Minecraft_QQ_Core.Utils
             if (c != null)
             {
                 y = a.IndexOf(c, x);
+                if (y == -1)
+                    return a;
                 if (a[y - 1] == '"')
                 {
                     y = a.IndexOf(c, y + 1);

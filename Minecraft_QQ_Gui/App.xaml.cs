@@ -35,7 +35,7 @@ namespace Minecraft_QQ_Gui
             notifyIcon.Visible = true;
             notifyIcon.Click += NotifyIcon_Click;
 
-            var InitWindow_ = new InitWindow();
+            InitWindow_ = new InitWindow();
             InitWindow_.Show();
 
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>

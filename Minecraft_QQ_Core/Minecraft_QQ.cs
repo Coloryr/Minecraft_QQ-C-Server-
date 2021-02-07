@@ -105,7 +105,7 @@ namespace Minecraft_QQ_Core
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                if (!long.TryParse(Funtion.GetString(msg[2], "at:", ","), out long qq))
+                if (!long.TryParse(Funtion.GetString(msg[2], "at:", "]"), out long qq))
                 {
                     return "QQ号获取失败";
                 }
@@ -202,7 +202,10 @@ namespace Minecraft_QQ_Core
                 player = new();
             player.名字 = name;
             player.QQ号 = qq;
-            PlayerConfig.玩家列表.Add(qq, player);
+            if (PlayerConfig.玩家列表.ContainsKey(qq))
+                PlayerConfig.玩家列表[qq] = player;
+            else
+                PlayerConfig.玩家列表.Add(qq, player);
             if (MysqlOK == true)
                 Task.Run(() => Mysql.AddPlayerAsync(player));
             else
@@ -215,7 +218,7 @@ namespace Minecraft_QQ_Core
             string name;
             if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                if (!long.TryParse(Funtion.GetString(msg[2], "at:", ","), out long qq))
+                if (!long.TryParse(Funtion.GetString(msg[2], "at:", "]"), out long qq))
                 {
                     return "错误的文本";
                 }
@@ -264,7 +267,7 @@ namespace Minecraft_QQ_Core
             string name;
             if (msg.Count == 4 && msg[2].IndexOf("[mirai:at:") != -1)
             {
-                if (!long.TryParse(Funtion.GetString(msg[2], "at:", ","), out long qq))
+                if (!long.TryParse(Funtion.GetString(msg[2], "at:", "]"), out long qq))
                 {
                     return "错误的文本";
                 }
@@ -312,7 +315,7 @@ namespace Minecraft_QQ_Core
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                if (!long.TryParse(Funtion.GetString(msg[2], "at:", ","), out long qq))
+                if (!long.TryParse(Funtion.GetString(msg[2], "at:", "]"), out long qq))
                 {
                     return "错误的文本";
                 }
@@ -346,13 +349,13 @@ namespace Minecraft_QQ_Core
                 return "错误的参数";
             if (msg[2].IndexOf("[mirai:at:") != -1)
             {
-                if (!long.TryParse(Funtion.GetString(msg[2], "at:", ","), out long qq))
+                if (!long.TryParse(Funtion.GetString(msg[2], "at:", "]"), out long qq))
                 {
                     return "错误的文本";
                 }
                 string name = msg[3].Trim();
                 SetPlayerName(qq, name);
-                return "已修改玩家[{qq}]ID为：" + msg[3].Trim();
+                return $"已修改玩家[{qq}]ID为：{name}";
             }
             else
                 return "玩家错误，请检查";
