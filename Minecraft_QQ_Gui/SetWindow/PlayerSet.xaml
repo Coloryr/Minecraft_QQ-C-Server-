@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         Title="玩家设置" Height="140" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
+        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Button Content="保存" Margin="139,81,0,0" HorizontalAlignment="Left" Width="53" Height="15" VerticalAlignment="Top"
                 Foreground="Black" IsDefault="True" Click="Button_Click"/>
         <Label Content="QQ号" Margin="10,6,0,0" 

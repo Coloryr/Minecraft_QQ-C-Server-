@@ -23,12 +23,17 @@ namespace Minecraft_QQ_Core.MySocket
     }
     internal class Message
     {
-        public static void MessageDo(string server, string read)
+        private Minecraft_QQ Main;
+        public Message(Minecraft_QQ Minecraft_QQ)
+        {
+            Main = Minecraft_QQ;
+        }
+        public void MessageDo(string server, string read)
         {
             int local;
-            while (read.IndexOf(Minecraft_QQ.MainConfig.链接.数据头) == 0 && read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾) != -1)
+            while (read.IndexOf(Main.MainConfig.链接.数据头) == 0 && read.IndexOf(Main.MainConfig.链接.数据尾) != -1)
             {
-                string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
+                string buff = Funtion.GetString(read, Main.MainConfig.链接.数据头, Main.MainConfig.链接.数据尾);
                 var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
                 if (string.IsNullOrWhiteSpace(message.data))
                     return;
@@ -38,20 +43,20 @@ namespace Minecraft_QQ_Core.MySocket
                         if (string.IsNullOrWhiteSpace(message.message) == true ||
                             string.IsNullOrWhiteSpace(message.player) == true)
                             return;
-                        if (Minecraft_QQ.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
+                        if (Main.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
                             return;
                         if (message.group == DataType.group)
                         {
-                            if (Minecraft_QQ.MainConfig.设置.使用昵称发送至群 == true)
+                            if (Main.MainConfig.设置.使用昵称发送至群 == true)
                             {
                                 PlayerObj player = Funtion.GetPlayer(message.player);
                                 if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
                                     message.message = Utils.Funtion.ReplaceFirst(message.message, message.player, player.昵称);
                             }
-                            foreach (var item in Minecraft_QQ.GroupConfig.群列表)
+                            foreach (var item in Main.GroupConfig.群列表)
                             {
                                 if (item.Value.开启对话 == true)
-                                    SendGroup.SendList.Add(new()
+                                    Main.SendGroup.AddSend(new()
                                     {
                                         Group = item.Key,
                                         Message = message.message
@@ -61,9 +66,9 @@ namespace Minecraft_QQ_Core.MySocket
                         else
                         {
                             long.TryParse(message.group, out long group);
-                            if (Minecraft_QQ.GroupConfig.群列表.ContainsKey(group) == true)
+                            if (Main.GroupConfig.群列表.ContainsKey(group) == true)
                             {
-                                SendGroup.SendList.Add(new()
+                                Main.SendGroup.AddSend(new()
                                 {
                                     Group = group,
                                     Message = message.message
@@ -76,13 +81,13 @@ namespace Minecraft_QQ_Core.MySocket
                         break;
                 }
 
-                local = read.IndexOf(Minecraft_QQ.MainConfig.链接.数据尾);
-                read = read[(local + Minecraft_QQ.MainConfig.链接.数据尾.Length)..];
+                local = read.IndexOf(Main.MainConfig.链接.数据尾);
+                read = read[(local + Main.MainConfig.链接.数据尾.Length)..];
             }
         }
-        public static string StartCheck(string read)
+        public string StartCheck(string read)
         {
-            string buff = Funtion.GetString(read, Minecraft_QQ.MainConfig.链接.数据头, Minecraft_QQ.MainConfig.链接.数据尾);
+            string buff = Funtion.GetString(read, Main.MainConfig.链接.数据头, Main.MainConfig.链接.数据尾);
             var message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(buff));
             if (message.data == DataType.start)
                 return message.message;

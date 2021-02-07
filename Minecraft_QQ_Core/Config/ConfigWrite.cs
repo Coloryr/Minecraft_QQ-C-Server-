@@ -10,23 +10,23 @@ namespace Minecraft_QQ_Core.Config
     {
         public static void Ask()
         {
-            Save(ConfigFile.自动应答.FullName, Minecraft_QQ.AskConfig);
+            Save(ConfigFile.自动应答.FullName, IMinecraft_QQ.GetMain().AskConfig);
         }
         public static void Command()
         {
-            Save(ConfigFile.自定义指令.FullName, Minecraft_QQ.CommandConfig);
+            Save(ConfigFile.自定义指令.FullName, IMinecraft_QQ.GetMain().CommandConfig);
         }
         public static void Config()
         {
-            Save(ConfigFile.主要配置文件.FullName, Minecraft_QQ.MainConfig);
+            Save(ConfigFile.主要配置文件.FullName, IMinecraft_QQ.GetMain().MainConfig);
         }
         public static void Group()
         {
-            Save(ConfigFile.群设置.FullName, Minecraft_QQ.GroupConfig);
+            Save(ConfigFile.群设置.FullName, IMinecraft_QQ.GetMain().GroupConfig);
         }
         public static void Player()
         {
-            Save(ConfigFile.玩家储存.FullName, Minecraft_QQ.PlayerConfig);
+            Save(ConfigFile.玩家储存.FullName, IMinecraft_QQ.GetMain().PlayerConfig);
         }
         public static void All()
         {

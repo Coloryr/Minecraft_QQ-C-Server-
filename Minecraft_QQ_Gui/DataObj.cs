@@ -2,12 +2,12 @@
 
 namespace Minecraft_QQ_Gui.SetWindow
 {
-    public class Server
+    public record Server
     {
         public string Name { get; set; }
         public string Addr { get; set; }
     }
-    public class CommandOBJ
+    public record CommandOBJ
     {
         public string Check { get; set; }
         public string Command { get; set; }
@@ -15,7 +15,6 @@ namespace Minecraft_QQ_Gui.SetWindow
         public bool Send { get; set; }
         public bool Pr { get; set; }
         public string Server { get; set; }
-
         public List<string> ServerS = new List<string>();
     }
 }

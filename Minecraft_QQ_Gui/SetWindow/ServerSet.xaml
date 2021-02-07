@@ -35,6 +35,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
+        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <GroupBox Header="加入消息" Margin="10,10,0,0" Height="102" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
             <Grid>
                 <CheckBox Content="启用" IsChecked="{Binding Join.sendQQ}"

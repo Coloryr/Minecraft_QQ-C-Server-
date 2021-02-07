@@ -1,22 +1,32 @@
-﻿using Minecraft_QQ_Core.Robot;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
 namespace Minecraft_QQ_Core.Utils
 {
-    internal record SendObj
+    public record SendObj
     {
         public long Group { get; set; }
         public string Message { get; set; }
     }
-    internal class SendGroup
+    public class SendGroup
     {
-        private static Thread SendT;
-        private static bool Run;
-        public static List<SendObj> SendList { get; set; } = new();
+        private Thread SendT;
+        private bool Run;
+        private List<SendObj> SendList { get; set; } = new();
 
-        public static void SendToGroup()
+        private readonly Minecraft_QQ Main;
+        public SendGroup(Minecraft_QQ Minecraft_QQ)
+        {
+            Main = Minecraft_QQ;
+        }
+
+        public void AddSend(SendObj obj)
+        {
+            SendList.Add(obj);
+        }
+
+        private void SendToGroup()
         {
             while (Run)
             {
@@ -39,22 +49,22 @@ namespace Minecraft_QQ_Core.Utils
                         if (have)
                         {
                             b = b[0..^1];
-                            RobotSocket.SendGroupMessage(group, b);
+                            Main.Robot.SendGroupMessage(group, b);
                         }
                         SendList.RemoveAll(a => a.Group == group);
                     }
                 }
-                Thread.Sleep(Minecraft_QQ.MainConfig.设置.发送群消息间隔);
+                Thread.Sleep(Main.MainConfig.设置.发送群消息间隔);
             }
         }
-        public static void Start()
+        public void Start()
         {
             Run = true;
             SendT = new(SendToGroup);
             SendT.Start();
         }
 
-        public static void Stop()
+        public void Stop()
         {
             Run = false;
         }

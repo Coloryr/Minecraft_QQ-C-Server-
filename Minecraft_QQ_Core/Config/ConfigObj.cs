@@ -26,7 +26,7 @@ namespace Minecraft_QQ_Core.Config
         /// </summary>
         public static FileInfo 群设置 { get; set; }
     }
-    public class PlayerConfig
+    public record PlayerConfig
     {
         /// <summary>
         /// 禁止绑定数据储存
@@ -41,21 +41,21 @@ namespace Minecraft_QQ_Core.Config
         /// </summary>
         public Dictionary<long, PlayerObj> 玩家列表 { get; set; } = new();
     }
-    public class CommandConfig
+    public record CommandConfig
     {
         /// <summary>
         /// 服务器指令数据储存
         /// </summary>
         public Dictionary<string, CommandObj> 命令列表 { get; set; } = new();
     }
-    public class GroupConfig
+    public record GroupConfig
     {
         /// <summary>
         /// 设置的群数据储存
         /// </summary>
         public Dictionary<long, GroupObj> 群列表 { get; set; } = new();
     }
-    public class AskConfig
+    public record AskConfig
     {
         /// <summary>
         /// 自动应答存储

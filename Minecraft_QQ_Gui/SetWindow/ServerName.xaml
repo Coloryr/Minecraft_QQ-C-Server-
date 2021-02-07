@@ -6,6 +6,7 @@
         mc:Ignorable="d"
        Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico" KeyDown="Window_KeyDown">
     <Grid>
+        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="名字" Margin="6,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="43"/>
         <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3" Height="20"

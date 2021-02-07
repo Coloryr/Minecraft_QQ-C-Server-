@@ -15,6 +15,14 @@ namespace Minecraft_QQ_Core.MySocket
         private bool IsRun;
         private bool IsCheck = false;
         private int count;
+
+        private readonly Minecraft_QQ Main;
+        private readonly Message Message;
+        public MCServerSocket(Minecraft_QQ Minecraft_QQ)
+        {
+            Main = Minecraft_QQ;
+            Message = new(Main);
+        }
         public void Start(Socket Socket)
         {
             this.Socket = Socket;
@@ -37,14 +45,14 @@ namespace Minecraft_QQ_Core.MySocket
                 {
                     Thread.Sleep(10);
                     count++;
-                    if (Minecraft_QQ.MainConfig.链接.检测断开 && count >= 1000)
+                    if (Main.MainConfig.链接.检测断开 && count >= 1000)
                     {
                         count = 0;
                         if (Socket.Poll(10000, SelectMode.SelectRead))
                         {
-                            RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
+                            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
                             Stop();
-                            MySocketServer.Remove(Name);
+                            Main.Server.Remove(Name);
                             return null;
                         }
                     }
@@ -76,19 +84,19 @@ namespace Minecraft_QQ_Core.MySocket
                         Name = Message.StartCheck(str);
                         if (Name != null)
                         {
-                            if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
+                            if (Main.MainConfig.设置.发送日志到主群)
                             {
-                                RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "已连接");
+                                Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "已连接");
                             }
                             Logs.LogOut("[Socket]服务器" + Name + "已连接");
                             IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                         }
-                        else if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
+                        else if (Main.MainConfig.设置.发送日志到主群)
                         {
-                            RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器已连接");
+                            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                         }
                         IsCheck = true;
-                        MySocketServer.AddServer(Name, this);
+                        Main.Server.AddServer(Name, this);
                         IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                     }
                     else
@@ -96,11 +104,11 @@ namespace Minecraft_QQ_Core.MySocket
                 }
                 catch (Exception e)
                 {
-                    if (Minecraft_QQ.MainConfig.设置.发送日志到主群)
-                        RobotSocket.SendGroupMessage(Minecraft_QQ.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
+                    if (Main.MainConfig.设置.发送日志到主群)
+                        Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
                     Logs.LogError(e);
                     Stop();
-                    MySocketServer.Remove(Name);
+                    Main.Server.Remove(Name);
                     IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                     return;
                 }

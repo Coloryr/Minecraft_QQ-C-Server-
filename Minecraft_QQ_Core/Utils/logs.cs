@@ -19,7 +19,7 @@ namespace Minecraft_QQ_Core.Utils
                     string time = date.ToLongTimeString().ToString();
                     string write = "[" + year + "]" + "[" + time + "]" + a;
                     IMinecraft_QQ.LogCall?.Invoke(write);
-                    File.AppendAllText(Minecraft_QQ.Path + log, write + Environment.NewLine);
+                    File.AppendAllText(IMinecraft_QQ.GetMain().Path + log, write + Environment.NewLine);
                 }
             }
             catch(Exception e)

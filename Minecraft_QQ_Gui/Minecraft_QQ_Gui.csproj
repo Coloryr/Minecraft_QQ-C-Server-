@@ -5,8 +5,8 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU</Platforms>
-    <ApplicationIcon>Color_yr.ico</ApplicationIcon>
-    <Version>3.3.0.0</Version>
+    <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
+    <Version>3.4.0.0</Version>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
 

@@ -31,10 +31,6 @@ namespace Minecraft_QQ_Cmd
                 {
                     IMinecraft_QQ.Stop();
                 }
-                else if (a == "info")
-                { 
-                    
-                }
             }
         }
         private static void Message(string message)

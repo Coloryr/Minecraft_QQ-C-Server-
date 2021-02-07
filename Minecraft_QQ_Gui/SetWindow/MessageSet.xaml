@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         Title="消息设置" Height="205" Width="315" ResizeMode="NoResize" Background="White" Icon="/Color_yr.ico">
     <Grid>
+        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Button Content="保存" Margin="10,140,0,0" HorizontalAlignment="Left" Width="37" Height="15" VerticalAlignment="Top"
                 Foreground="Black" IsDefault="True" Click="Button_Click"/>
         <Label Content="检测" Margin="10,6,0,0" 

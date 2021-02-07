@@ -1,5 +1,6 @@
 ﻿using Minecraft_QQ_Core;
 using System;
+using System.Drawing;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,15 +17,24 @@ namespace Minecraft_QQ_Gui
         public static System.Windows.Forms.NotifyIcon notifyIcon;
         public static MainWindow MainWindow_;
 
+        public static void SetIcon(Icon icon)
+        {
+            notifyIcon.Icon = icon;
+        }
+
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            notifyIcon = new System.Windows.Forms.NotifyIcon();
+
+            notifyIcon = new();
             notifyIcon.Visible = true;
             notifyIcon.Click += NotifyIcon_Click;
+
+            new InitWindow().Show();
+
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
             {
                 MessageBox.Show(data);
@@ -53,7 +63,12 @@ namespace Minecraft_QQ_Gui
                 MainWindow_?.AddLog(data);
             });
             await Task.Run(() => IMinecraft_QQ.Start());
-            Thread.Sleep(2000);
+
+            Thread.Sleep(1000);
+            while (!IMinecraft_QQ.CanGo)
+            {
+                Thread.Sleep(200);
+            }
         }
 
         public static void Stop()

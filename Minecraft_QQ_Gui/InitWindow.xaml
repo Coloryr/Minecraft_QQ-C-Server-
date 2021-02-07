@@ -1,0 +1,13 @@
+﻿<Window x:Class="Minecraft_QQ_Gui.InitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Minecraft_QQ_Gui"
+        mc:Ignorable="d"
+        Title="初始化" Height="166" Width="317" Icon="/Minecraft_QQ.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
+        <TextBlock Text="Minecraft_QQ正在初始化" FontSize="20" Margin="0,66,0,60" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>

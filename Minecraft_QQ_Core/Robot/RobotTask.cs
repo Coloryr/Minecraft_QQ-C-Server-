@@ -13,7 +13,7 @@ namespace Minecraft_QQ_Core.Robot
         public static byte[] Build(object obj, byte index)
         {
             byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj) + " ");
-            data[data.Length - 1] = index;
+            data[^1] = index;
             return data;
         }
     }

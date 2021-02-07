@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Minecraft_QQ_Core
 {
@@ -8,9 +8,10 @@ namespace Minecraft_QQ_Core
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.3.0.0";
+        public const string Version = "3.4.0.0";
 
         public static bool Run;
+        public static bool CanGo;
         public static bool IsStop;
         /// <summary>
         /// 已经启动
@@ -18,23 +19,38 @@ namespace Minecraft_QQ_Core
         public static bool IsStart = false;
 
         public delegate void ShowMessage(string message);
-        public static ShowMessage ShowMessageCall;
-
         public delegate void ServerConfig(string name, string config);
-        public static ServerConfig ServerConfigCall;
-
         public delegate void Gui(GuiFun dofun);
-        public static Gui GuiCall;
-
         public delegate void Log(string message);
+
+        public static ShowMessage ShowMessageCall;
+        public static ServerConfig ServerConfigCall;
+        public static Gui GuiCall;
         public static Log LogCall;
+
+        public static Minecraft_QQ Main { get; private set; }
+
+        /// <summary>
+        /// 获取禁止绑定列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetBanList()
+        {
+            return Main.PlayerConfig.禁止绑定列表;
+        }
+        public static List<string> GetMuteList()
+        {
+            return Main.PlayerConfig.禁言列表;
+        }
+
         public static void Start()
         {
-            Minecraft_QQ.Start();
+            Main = new();
+            Main.Start();
         }
         public static void Stop()
         {
-            Minecraft_QQ.Stop();
+            Main.Stop();
         }
     }
 }
