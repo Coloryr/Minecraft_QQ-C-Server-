@@ -8,6 +8,6 @@
         Title="初始化" Height="166" Width="317" Icon="/Minecraft_QQ.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
-        <TextBlock Text="Minecraft_QQ正在初始化" FontSize="20" Margin="0,66,0,60" HorizontalAlignment="Center"/>
+        <TextBlock Text="Minecraft_QQ正在初始化" FontSize="20" Margin="0,45,0,60" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>
 </Window>

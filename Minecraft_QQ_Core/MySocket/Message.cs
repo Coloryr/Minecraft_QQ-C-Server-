@@ -49,7 +49,7 @@ namespace Minecraft_QQ_Core.MySocket
                         {
                             if (Main.MainConfig.设置.使用昵称发送至群 == true)
                             {
-                                PlayerObj player = Funtion.GetPlayer(message.player);
+                                PlayerObj player = Main.GetPlayer(message.player);
                                 if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
                                     message.message = Utils.Funtion.ReplaceFirst(message.message, message.player, player.昵称);
                             }

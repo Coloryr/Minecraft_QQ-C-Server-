@@ -641,7 +641,7 @@ namespace Minecraft_QQ_Core
                         { 
                             "服务器菜单", 
                             "服务器查询菜单：\r\n" +
-                            $"【{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字}】可以绑定你的游戏ID。\r\n" +
+                            $"【{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
                             $"【{MainConfig.检测.检测头}{MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +
                             $"【{MainConfig.检测.检测头}{MainConfig.检测.服务器在线检测}】可以查询服务器是否在运行。\r\n" +
                             $"【{MainConfig.检测.检测头}{MainConfig.检测.发送消息至服务器} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"

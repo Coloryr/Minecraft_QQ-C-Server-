@@ -16,6 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Minecraft_QQ.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Costura.Fody" Version="4.1.0" />
     <PackageReference Include="Fody" Version="6.3.0">
       <PrivateAssets>all</PrivateAssets>
@@ -30,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Color_yr.ico" />
     <Resource Include="Minecraft_QQ.jpg" />
+    <Resource Include="Minecraft_QQ.png" />
   </ItemGroup>
 
   <ItemGroup>

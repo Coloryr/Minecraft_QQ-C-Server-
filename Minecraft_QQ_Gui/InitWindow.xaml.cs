@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace Minecraft_QQ_Gui
 {
@@ -22,6 +14,22 @@ namespace Minecraft_QQ_Gui
         public InitWindow()
         {
             InitializeComponent();
+
+            BitmapSource m = (BitmapSource)Icon;
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(m.PixelWidth, m.PixelHeight,
+                PixelFormat.Format32bppPArgb);
+            BitmapData data = bmp.LockBits(
+            new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size),
+                ImageLockMode.WriteOnly,
+                PixelFormat.Format32bppPArgb);
+
+            m.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bmp.UnlockBits(data);
+
+            IntPtr iconHandle = bmp.GetHicon();
+            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(iconHandle);
+
+            App.SetIcon(icon);
         }
     }
 }

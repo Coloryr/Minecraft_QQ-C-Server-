@@ -17,12 +17,14 @@ namespace Minecraft_QQ_Gui
         public static System.Windows.Forms.NotifyIcon notifyIcon;
         public static MainWindow MainWindow_;
 
+        private static InitWindow InitWindow_;
+
         public static void SetIcon(Icon icon)
         {
             notifyIcon.Icon = icon;
         }
 
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
@@ -33,7 +35,8 @@ namespace Minecraft_QQ_Gui
             notifyIcon.Visible = true;
             notifyIcon.Click += NotifyIcon_Click;
 
-            new InitWindow().Show();
+            var InitWindow_ = new InitWindow();
+            InitWindow_.Show();
 
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
             {
@@ -62,13 +65,18 @@ namespace Minecraft_QQ_Gui
             {
                 MainWindow_?.AddLog(data);
             });
-            await Task.Run(() => IMinecraft_QQ.Start());
+            Task.Run(() => IMinecraft_QQ.Start());
 
             Thread.Sleep(1000);
             while (!IMinecraft_QQ.CanGo)
             {
                 Thread.Sleep(200);
             }
+        }
+
+        public static void CloseWin()
+        {
+            InitWindow_?.Close();
         }
 
         public static void Stop()

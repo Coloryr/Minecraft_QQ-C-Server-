@@ -52,14 +52,6 @@ namespace Minecraft_QQ_Gui
         public MainWindow()
         {
             InitializeComponent();
-            InitQQList();
-            InitServerList();
-            InitPlayerList();
-            InitMessageList();
-            InitCommandList();
-            InitMysql();
-            DataContext = IMinecraft_QQ.Main.MainConfig;
-            App.MainWindow_ = this;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -598,6 +590,19 @@ namespace Minecraft_QQ_Gui
             }
             else
                 e.Cancel = true;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitQQList();
+            InitServerList();
+            InitPlayerList();
+            InitMessageList();
+            InitCommandList();
+            InitMysql();
+            DataContext = IMinecraft_QQ.Main.MainConfig;
+            App.MainWindow_ = this;
+            App.CloseWin();
         }
     }
 }

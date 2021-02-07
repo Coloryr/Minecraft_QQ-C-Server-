@@ -117,7 +117,7 @@ namespace Minecraft_QQ_Core.Config
                 {
                     if (item.Value.主群 == true)
                     {
-                        IMinecraft_QQ.GetMain().GroupSetMain = item.Key;
+                        IMinecraft_QQ.Main.GroupSetMain = item.Key;
                         break;
                     }
                 }
@@ -142,11 +142,13 @@ namespace Minecraft_QQ_Core.Config
                 {
                     config.自动应答列表 = new Dictionary<string, string>()
                     {
-                        { "服务器菜单", "服务器查询菜单：\r\n【" + IMinecraft_QQ.GetMain().MainConfig.检测.检测头 + IMinecraft_QQ.GetMain().MainConfig.检测.玩家设置名字
-                    + "】可以绑定你的游戏ID。\r\n【" + IMinecraft_QQ.GetMain().MainConfig.检测.检测头 + IMinecraft_QQ.GetMain().MainConfig.检测.在线玩家获取
-                    + "】可以查询服务器在线人数。\r\n【" + IMinecraft_QQ.GetMain().MainConfig.检测.检测头 + IMinecraft_QQ.GetMain().MainConfig.检测.服务器在线检测
-                    + "】可以查询服务器是否在运行。\r\n【" + IMinecraft_QQ.GetMain().MainConfig.检测.检测头 + IMinecraft_QQ.GetMain().MainConfig.检测.发送消息至服务器
-                    + "内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
+                        { 
+                            "服务器菜单", 
+                            "服务器查询菜单：\r\n" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.服务器在线检测}】可以查询服务器是否在运行。\r\n" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.发送消息至服务器} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                     };
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Ask.json配置文件读取发送错误，已经重写");
                     File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
