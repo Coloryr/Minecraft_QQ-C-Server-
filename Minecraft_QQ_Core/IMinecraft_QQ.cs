@@ -30,19 +30,6 @@ namespace Minecraft_QQ_Core
 
         public static Minecraft_QQ Main { get; private set; }
 
-        /// <summary>
-        /// 获取禁止绑定列表
-        /// </summary>
-        /// <returns></returns>
-        public static List<string> GetBanList()
-        {
-            return Main.PlayerConfig.禁止绑定列表;
-        }
-        public static List<string> GetMuteList()
-        {
-            return Main.PlayerConfig.禁言列表;
-        }
-
         public static void Start()
         {
             Main = new();
