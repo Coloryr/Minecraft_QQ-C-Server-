@@ -1,8 +1,7 @@
 # Minecraft服务器与QQ群聊天的插件  
 Minecraft_QQ 插件本体(Cmd/Gui)
 
-[机器人使用ColorMirai](https://github.com/Coloryr/ColorMirai) 
-
+[机器人使用ColorMirai](https://github.com/Coloryr/ColorMirai)   
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)
 
 ## 连接说明
@@ -15,16 +14,13 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 ## 部署教程：
 1. 下载
 
-> [ColorMirai](https://github.com/Coloryr/ColorMirai/actions) 
-> 
-> [Minecraft_QQ_Cmd/Gui](https://github.com/HeartAge/Minecraft_QQ-C-Server-/actions)
->
+> [ColorMirai](https://github.com/Coloryr/ColorMirai/actions)   
+> [Minecraft_QQ_Cmd/Gui](https://github.com/HeartAge/Minecraft_QQ-C-Server-/actions)  
 > [Minecraft_QQ插件](https://github.com/HeartAge/Minecraft_QQ/actions)
 
 2. 安装
 
-> 安装[.Net 5](https://dotnet.microsoft.com/download/dotnet/5.0)
->
+> 安装[.Net 5](https://dotnet.microsoft.com/download/dotnet/5.0)  
 > 安装[Java](https://adoptopenjdk.net/)
 
 3. 启动
