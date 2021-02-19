@@ -5,6 +5,13 @@ Minecraft_QQ 插件本体(Cmd/Gui)
 
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)
 
+## 连接说明
+
+该插件的连接方式：
+
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
+请不要拿Minecraft_QQ直连ColorMirai，连不上的
+
 ## 部署教程：
 1. 下载
 
@@ -172,6 +179,18 @@ Minecraft_QQ 插件本体(Cmd/Gui)
 >}
 >```
 >自行添加注意格式
+
+## 端口说明
+
+ColorMirai的默认端口为23333  
+Minecraft_QQ_Cmd/Gui的默认端口为25555  
+如果没有必要，请不要随便改这两个端口
+
+## 不在一台机器上部署
+
+如果你有公网IP，直接在防火墙开放端口就行了  
+如果你没有公网IP，那就去用端口映射，能映射出去就行了  
+然后Minecraft_QQ_Cmd/Gui的绑定IP改为0.0.0.0
 
 ## 自己写Minecraft_QQ
 1. 首先确定你的环境是.net5
