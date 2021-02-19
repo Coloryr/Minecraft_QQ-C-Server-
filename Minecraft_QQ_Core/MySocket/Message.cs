@@ -17,9 +17,11 @@ namespace Minecraft_QQ_Core.MySocket
     }
     internal class CommderList
     {
-        public static readonly string SPEAK = "speak";
-        public static readonly string ONLINE = "online";
-        public static readonly string SERVER = "server";
+        public const string SPEAK = "speak";
+        public const string ONLINE = "online";
+        public const string SERVER = "server";
+
+        public const string COMM = "后台";
     }
     internal class Message
     {

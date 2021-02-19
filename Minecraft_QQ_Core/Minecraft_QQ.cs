@@ -453,10 +453,10 @@ namespace Minecraft_QQ_Core
                 return MainConfig.消息.维护提示文本;
         }
         private bool SendCommand(long fromGroup, string msg, long fromQQ)
-        { 
-            foreach (var value in CommandConfig.命令列表)
+        {
+            foreach (var item in CommandConfig.命令列表)
             {
-                if (msg.ToLower().IndexOf(value.Key) == 0)
+                if (msg.ToLower().StartsWith(item.Key))
                 {
                     if (Server.IsReady() == false)
                     {
@@ -468,10 +468,11 @@ namespace Minecraft_QQ_Core
                         return true;
                     }
                     bool haveserver = false;
-                    List<string> servers = new();
-                    if (value.Value.服务器使用 != null)
+                    List<string> servers = null;
+                    if (item.Value.服务器使用 != null && item.Value.服务器使用.Count != 0)
                     {
-                        foreach (var temp in value.Value.服务器使用)
+                        servers = new();
+                        foreach (var temp in item.Value.服务器使用)
                         {
                             if (Server.MCServers.ContainsKey(temp))
                             {
@@ -482,7 +483,6 @@ namespace Minecraft_QQ_Core
                     }
                     else
                     {
-                        servers = null;
                         haveserver = true;
                     }
                     if (!haveserver)
@@ -494,72 +494,82 @@ namespace Minecraft_QQ_Core
                         });
                     }
                     var player = GetPlayer(fromQQ);
-                    if (player != null)
-                    {
-                        if (value.Value.玩家使用 == true || player.管理员 == true)
-                        {
-                            var messageSend = new TranObj
-                            {
-                                group = fromGroup.ToString()
-                            };
-
-                            string cmd = value.Value.命令;
-
-                            if (cmd.IndexOf("%player_name%") != -1)
-                                cmd = cmd.Replace("%player_name%", player.名字);
-                            if (msg.IndexOf("[mirai:at:") != -1 && cmd.IndexOf("%player_at%") != -1)
-                            {
-                                string a = Funtion.GetString(msg, "=", "]");
-                                long.TryParse(a, out long qq);
-                                var player1 = GetPlayer(qq);
-                                if (player1 == null)
-                                {
-                                    Robot.SendGroupMessage(fromGroup, new List<string>
-                                    {
-                                        $"at:{fromQQ}",
-                                        $"错误，玩家：{a}没有绑定ID"
-                                    });
-                                    return true;
-                                }
-                                cmd = cmd.Replace("%player_at%", player1.名字);
-                            }
-
-                            if (value.Value.附带参数 == true)
-                            {
-                                if (msg.IndexOf("[mirai:at:") != -1 && msg.IndexOf("]") != -1)
-                                    messageSend.command = cmd + Funtion.GetString(msg, "]");
-                                else
-                                    messageSend.command = cmd + Funtion.ReplaceFirst(msg, value.Key, "");
-                            }
-                            else
-                                messageSend.command = cmd;
-                            messageSend.isCommand = true;
-                            if (value.Value.玩家发送)
-                            {
-                                messageSend.player = player.名字;
-                                if (string.IsNullOrWhiteSpace(player.名字) == true)
-                                {
-                                    Robot.SendGroupMessage(fromGroup, new List<string>
-                                    {
-                                        "at:" + fromQQ,
-                                        "你未绑定ID"
-                                    });
-                                    return true;
-                                }
-                            }
-                            else
-                                messageSend.player = "后台";
-                            Server.Send(messageSend, servers);
-                            return true;
-                        }
-                    }
-                    else
+                    if (player == null)
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
                             "at:" + fromQQ,
                             "你未绑定ID"
                         });
+                        return true;
+                    }
+                    if (item.Value.玩家使用 == true || player.管理员 == true)
+                    {
+                        string cmd = item.Value.命令;
+
+                        while (cmd.IndexOf("{arg:name}") != -1)
+                            cmd = cmd.Replace("{arg:name}", player.名字);
+                        if (msg.IndexOf("@") != -1)
+                        {
+                            string a = Funtion.GetString(msg, "@", " ");
+                            long.TryParse(a, out long qq);
+                            var player1 = GetPlayer(qq);
+                            if (player1 == null)
+                            {
+                                Robot.SendGroupMessage(fromGroup, new List<string>
+                                    {
+                                        $"at:{fromQQ}",
+                                        $"错误，玩家：{a}没有绑定ID"
+                                    });
+                                return true;
+                            }
+                            while (cmd.IndexOf("{arg:at}") != -1)
+                                cmd = cmd.Replace("{arg:at}", player1.名字);
+                        }
+
+                        var temp = msg.Split(" ");
+                        int b = 1;
+                        for (int a = 1; ; a++)
+                        {
+                            string args = "{arg" + a + "}";
+                            if (a > temp.Length)
+                            {
+                                break;
+                            }
+                            if (cmd.Contains(args))
+                            {
+                                for (; b < temp.Length; b++)
+                                {
+                                    if (temp[b].StartsWith("@"))
+                                    {
+                                        string temp1 = temp[b].Replace("@", "");
+                                        long.TryParse(temp1, out long qq);
+                                        var player1 = GetPlayer(qq);
+                                        if (player1 == null)
+                                        {
+                                            Robot.SendGroupMessage(fromGroup, new List<string>
+                                                    {
+                                                        $"at:{fromQQ}",
+                                                        $"错误，玩家：{temp1}没有绑定ID"
+                                                    });
+                                            return true;
+                                        }
+                                        cmd = cmd.Replace(args, player1.名字);
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(temp[b]))
+                                    {
+                                        cmd = cmd.Replace(args, temp[b]);
+                                    }
+                                }
+                            }
+                        }
+                        Server.Send(new TranObj
+                        {
+                            group = fromGroup.ToString(),
+                            command = cmd,
+                            isCommand = true,
+                            player = item.Value.玩家发送 ? player.名字 : CommderList.COMM
+                        }, servers);
                         return true;
                     }
                 }
@@ -733,16 +743,16 @@ namespace Minecraft_QQ_Core
                         { 
                             "查钱", new()
                             { 
-                                命令 = "money %player_name%", 
+                                命令 = "money {arg:name}", 
                                 玩家使用 = true, 
                                 玩家发送 = false, 
                                 附带参数 = false 
                             } 
-                        }, 
+                        },
                         { 
                             "禁言", new()
                             { 
-                                命令 = "mute ", 
+                                命令 = "mute {arg1}", 
                                 玩家使用 = false, 
                                 玩家发送 = false, 
                                 附带参数 = true 
@@ -751,12 +761,22 @@ namespace Minecraft_QQ_Core
                         { 
                             "传送", new()
                             { 
-                                命令 = "tpa %player_at%", 
+                                命令 = "tpa {arg:at}", 
                                 玩家使用 = true, 
                                 玩家发送 = false, 
                                 附带参数 = false 
                             } 
-                        }, 
+                        },
+                        {
+                            "给权限",
+                            new()
+                            {
+                                命令 = "lp user {arg:at} permission set {arg1} true",
+                                玩家使用 = false,
+                                玩家发送 = false,
+                                附带参数 = true
+                            }
+                        },
                     }
                 };
                 Logs.LogOut("[Config]新建自定义指令");
