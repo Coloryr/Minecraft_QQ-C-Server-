@@ -12,7 +12,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.101
+        dotnet-version: 6.0.100
     - name: 更新依赖
       run: dotnet restore
     - name: 构建
