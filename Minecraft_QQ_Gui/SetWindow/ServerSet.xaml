@@ -64,11 +64,11 @@
             <Grid>
                 <Label Content="服务器名字" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.ServerName}" Margin="72,5,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.ServerName}" Margin="72,5,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="检测头" Style="{DynamicResource Label}" Margin="0,24,0,0" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.Check}" Margin="72,28,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.Check}" Margin="72,28,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="发送至群格式" Style="{DynamicResource Label}" Margin="0,48,0,0" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="83"/>
@@ -106,7 +106,7 @@
                           Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
                 <Label Content="指令延迟" Style="{DynamicResource Label}" Margin="193,193,0,0" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.CommandDelay}" Margin="260,197,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.CommandDelay}" Margin="260,197,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
             </Grid>
         </GroupBox>
@@ -144,29 +144,29 @@
             <Grid>
                 <Label Content="服务器地址" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.IP}" Margin="72,5,0,0" Foreground="Black" IsEnabled="False"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.IP}" Margin="72,5,0,0" Foreground="Black" IsEnabled="False"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="服务器端口" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,24,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.Port}" Margin="72,29,0,0" Foreground="Black" IsEnabled="False"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.Port}" Margin="72,29,0,0" Foreground="Black" IsEnabled="False"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <CheckBox Content="自动重连" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,149,0,0"
                           Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
                 <Label Content="重连间隔" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,48,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.AutoConnectTime}" Margin="72,53,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.AutoConnectTime}" Margin="72,53,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="重连间隔" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,48,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.Head}" Margin="72,77,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.Head}" Margin="72,77,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="数据头" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,72,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.End}" Margin="72,101,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.End}" Margin="72,101,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="数据尾" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,96,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding System.Sleep}" Margin="72,125,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.Sleep}" Margin="72,125,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="工作间隔" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,120,0,0"/>
@@ -192,27 +192,27 @@
         </GroupBox>
         <GroupBox Header="占位符" Margin="762,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
             <Grid>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.Message}" Margin="72,5,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Message}" Margin="72,5,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="消息" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.Player}" Margin="72,32,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Player}" Margin="72,32,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="玩家" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,26,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.ServerName}" Margin="72,56,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.ServerName}" Margin="72,56,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="服务器名字" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,50,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.Server}" Margin="72,80,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Server}" Margin="72,80,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="服务器" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,74,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.PlayerNumber}" Margin="72,104,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.PlayerNumber}" Margin="72,104,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="玩家数量" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,98,0,0"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Placeholder.PlayerList}" Margin="72,128,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.PlayerList}" Margin="72,128,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="玩家列表" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,122,0,0"/>

@@ -165,7 +165,6 @@ namespace Minecraft_QQ_Gui
                     Command = item.Value.命令,
                     Use = item.Value.玩家使用,
                     Send = item.Value.玩家发送,
-                    Pr = item.Value.附带参数,
                     Server = data,
                     ServerS = item.Value.服务器使用
                 });
@@ -487,7 +486,6 @@ namespace Minecraft_QQ_Gui
                 命令 = item.Command,
                 玩家使用 = item.Use,
                 玩家发送 = item.Send,
-                附带参数 = item.Pr,
                 服务器使用 = item.ServerS
             });
             InitCommandList();
@@ -505,7 +503,6 @@ namespace Minecraft_QQ_Gui
                 命令 = item.Command,
                 玩家使用 = item.Use,
                 玩家发送 = item.Send,
-                附带参数 = item.Pr,
                 服务器使用 = item.ServerS
             });
             InitCommandList();

@@ -271,10 +271,9 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="检测" Width="120" DisplayMemberBinding="{Binding Check}"/>
-                                <GridViewColumn Header="指令" Width="130" DisplayMemberBinding="{Binding Command}"/>
+                                <GridViewColumn Header="指令" Width="230" DisplayMemberBinding="{Binding Command}"/>
                                 <GridViewColumn Header="玩家使用" Width="80" DisplayMemberBinding="{Binding Use}"/>
                                 <GridViewColumn Header="玩家发送" Width="80" DisplayMemberBinding="{Binding Send}"/>
-                                <GridViewColumn Header="附带参数" Width="80" DisplayMemberBinding="{Binding Pr}"/>
                                 <GridViewColumn Header="服务器使用" Width="200" DisplayMemberBinding="{Binding Server}"/>
                             </GridView>
                         </ListView.View>

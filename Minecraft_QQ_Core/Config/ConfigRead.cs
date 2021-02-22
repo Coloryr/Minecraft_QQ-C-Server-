@@ -179,42 +179,43 @@ namespace Minecraft_QQ_Core.Config
                             {
                                 命令 = "qq help",
                                 玩家使用 = false,
-                                玩家发送 = false,
-                                附带参数 = true,
-                                服务器使用 = null
+                                玩家发送 = false
                             }
                         },
                         {
                             "查钱",
                             new()
                             {
-                                命令 = "money %player_name%",
+                                命令 = "money {arg:name}",
                                 玩家使用 = true,
-                                玩家发送 = false,
-                                附带参数 = false,
-                                服务器使用 = null
+                                玩家发送 = false
                             }
                         },
                         {
                             "禁言",
                             new()
                             {
-                                命令 = "mute ",
+                                命令 = "mute {arg1}",
                                 玩家使用 = false,
-                                玩家发送 = false,
-                                附带参数 = true,
-                                服务器使用 = new List<string> { "lobby" }
+                                玩家发送 = false
                             }
                         },
                         {
                             "传送",
                             new()
                             {
-                                命令 = "tpa %player_at%",
+                                命令 = "tpa {arg:at}",
                                 玩家使用 = true,
-                                玩家发送 = false,
-                                附带参数 = false,
-                                服务器使用 = new List<string> { "sc" }
+                                玩家发送 = false
+                            }
+                        },
+                        {
+                            "给权限",
+                            new()
+                            {
+                                命令 = "lp user {arg:at} permission set {arg1} true",
+                                玩家使用 = false,
+                                玩家发送 = false
                             }
                         }
                     };

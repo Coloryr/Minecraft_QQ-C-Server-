@@ -452,13 +452,15 @@ namespace Minecraft_QQ_Core
             else
                 return MainConfig.消息.维护提示文本;
         }
-        private bool SendCommand(long fromGroup, string msg, long fromQQ)
+        private bool SendCommand(long fromGroup, List<string> msg, long fromQQ)
         {
             foreach (var item in CommandConfig.命令列表)
             {
-                if (msg.ToLower().StartsWith(item.Key))
+                string head = msg[1];
+                head = Funtion.ReplaceFirst(head, MainConfig.检测.检测头, "");
+                if (head.StartsWith(item.Key))
                 {
-                    if (Server.IsReady() == false)
+                    if (!Server.IsReady())
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>()
                         {
@@ -472,11 +474,11 @@ namespace Minecraft_QQ_Core
                     if (item.Value.服务器使用 != null && item.Value.服务器使用.Count != 0)
                     {
                         servers = new();
-                        foreach (var temp in item.Value.服务器使用)
+                        foreach (var item1 in item.Value.服务器使用)
                         {
-                            if (Server.MCServers.ContainsKey(temp))
+                            if (Server.MCServers.ContainsKey(item1))
                             {
-                                servers.Add(temp);
+                                servers.Add(item1);
                                 haveserver = true;
                             }
                         }
@@ -489,7 +491,7 @@ namespace Minecraft_QQ_Core
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
-                            "at:" + fromQQ,
+                            $"at:{fromQQ}",
                             "发送失败，对应的服务器未连接"
                         });
                     }
@@ -498,80 +500,89 @@ namespace Minecraft_QQ_Core
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
-                            "at:" + fromQQ,
+                             $"at:{fromQQ}",
                             "你未绑定ID"
                         });
                         return true;
                     }
-                    if (item.Value.玩家使用 == true || player.管理员 == true)
+                    if (!item.Value.玩家使用 && !player.管理员)
                     {
-                        string cmd = item.Value.命令;
-
-                        while (cmd.IndexOf("{arg:name}") != -1)
-                            cmd = cmd.Replace("{arg:name}", player.名字);
-                        if (msg.IndexOf("@") != -1)
+                        return true;
+                    }
+                    string cmd = item.Value.命令;
+                    bool haveAt = false;
+                    if (cmd.Contains("{arg:at}"))
+                    {
+                        string item1 = msg[2];
+                        if (item1.IndexOf("[mirai:at:") != -1)
                         {
-                            string a = Funtion.GetString(msg, "@", " ");
-                            long.TryParse(a, out long qq);
+                            long qq = long.Parse(Funtion.GetString(item1, "at:", "]"));
                             var player1 = GetPlayer(qq);
                             if (player1 == null)
                             {
                                 Robot.SendGroupMessage(fromGroup, new List<string>
-                                    {
-                                        $"at:{fromQQ}",
-                                        $"错误，玩家：{a}没有绑定ID"
-                                    });
+                                {
+                                    $"at:{fromQQ}",
+                                    $"错误，玩家：{qq}没有绑定ID"
+                                });
                                 return true;
                             }
                             while (cmd.IndexOf("{arg:at}") != -1)
                                 cmd = cmd.Replace("{arg:at}", player1.名字);
+                            haveAt = true;
                         }
-
-                        var temp = msg.Split(" ");
-                        int b = 1;
-                        for (int a = 1; ; a++)
+                        else
                         {
-                            string args = "{arg" + a + "}";
-                            if (a > temp.Length)
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                break;
-                            }
-                            if (cmd.Contains(args))
+                                $"at:{fromQQ}",
+                                $"错误，参数错误"
+                            });
+                            return true;
+                        }
+                    }
+                    while (cmd.IndexOf("{arg:name}") != -1)
+                        cmd = cmd.Replace("{arg:name}", player.名字);
+                    string argStr = "";
+                    for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(msg[a]))
+                        {
+                            argStr = msg[a];
+                            break;
+                        }
+                    }
+                    var arg = argStr.Split(" ");
+                    int pos = 1;
+                    for (int index = 1; ; index++)
+                    {
+                        string args = "{arg" + index + "}";
+                        if (index > arg.Length)
+                        {
+                            break;
+                        }
+                        if (cmd.Contains(args))
+                        {
+                            for (; pos < arg.Length; pos++)
                             {
-                                for (; b < temp.Length; b++)
+                                if (!string.IsNullOrWhiteSpace(arg[pos]))
                                 {
-                                    if (temp[b].StartsWith("@"))
-                                    {
-                                        string temp1 = temp[b].Replace("@", "");
-                                        long.TryParse(temp1, out long qq);
-                                        var player1 = GetPlayer(qq);
-                                        if (player1 == null)
-                                        {
-                                            Robot.SendGroupMessage(fromGroup, new List<string>
-                                                    {
-                                                        $"at:{fromQQ}",
-                                                        $"错误，玩家：{temp1}没有绑定ID"
-                                                    });
-                                            return true;
-                                        }
-                                        cmd = cmd.Replace(args, player1.名字);
-                                    }
-                                    else if (!string.IsNullOrWhiteSpace(temp[b]))
-                                    {
-                                        cmd = cmd.Replace(args, temp[b]);
-                                    }
+                                    cmd = cmd.Replace(args, arg[pos]);
+                                    break;
                                 }
                             }
                         }
-                        Server.Send(new TranObj
-                        {
-                            group = fromGroup.ToString(),
-                            command = cmd,
-                            isCommand = true,
-                            player = item.Value.玩家发送 ? player.名字 : CommderList.COMM
-                        }, servers);
-                        return true;
+                        else
+                            break;
                     }
+                    Server.Send(new TranObj
+                    {
+                        group = fromGroup.ToString(),
+                        command = cmd,
+                        isCommand = true,
+                        player = item.Value.玩家发送 ? player.名字 : CommderList.COMM
+                    }, servers);
+                    return true;
                 }
             }
             return false;
@@ -736,8 +747,7 @@ namespace Minecraft_QQ_Core
                             { 
                                 命令 = "qq help", 
                                 玩家使用 = false, 
-                                玩家发送 = false, 
-                                附带参数 = true 
+                                玩家发送 = false
                             } 
                         }, 
                         { 
@@ -745,8 +755,7 @@ namespace Minecraft_QQ_Core
                             { 
                                 命令 = "money {arg:name}", 
                                 玩家使用 = true, 
-                                玩家发送 = false, 
-                                附带参数 = false 
+                                玩家发送 = false
                             } 
                         },
                         { 
@@ -754,8 +763,7 @@ namespace Minecraft_QQ_Core
                             { 
                                 命令 = "mute {arg1}", 
                                 玩家使用 = false, 
-                                玩家发送 = false, 
-                                附带参数 = true 
+                                玩家发送 = false
                             } 
                         }, 
                         { 
@@ -763,8 +771,7 @@ namespace Minecraft_QQ_Core
                             { 
                                 命令 = "tpa {arg:at}", 
                                 玩家使用 = true, 
-                                玩家发送 = false, 
-                                附带参数 = false 
+                                玩家发送 = false
                             } 
                         },
                         {
@@ -773,10 +780,9 @@ namespace Minecraft_QQ_Core
                             {
                                 命令 = "lp user {arg:at} permission set {arg1} true",
                                 玩家使用 = false,
-                                玩家发送 = false,
-                                附带参数 = true
+                                玩家发送 = false
                             }
-                        },
+                        }
                     }
                 };
                 Logs.LogOut("[Config]新建自定义指令");
@@ -1067,7 +1073,7 @@ namespace Minecraft_QQ_Core
                         Robot.SendGroupMessage(fromGroup, lists);
                         return;
                     }
-                    else if (SendCommand(fromGroup, msg, fromQQ) == true)
+                    else if (SendCommand(fromGroup, msglist, fromQQ) == true)
                         return;
 
                     else if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(msg_low) == true)

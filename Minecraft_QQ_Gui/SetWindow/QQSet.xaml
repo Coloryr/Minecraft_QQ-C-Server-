@@ -9,7 +9,7 @@
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="群号" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
-        <TextBox Margin="44,10,0,0" TextWrapping="Wrap" Text="{Binding Obj.群号}" Foreground="Black" 
+        <TextBox Margin="44,10,0,0" TextWrapping="NoWrap" Text="{Binding Obj.群号}" Foreground="Black" 
                  Background="#225EBDD3" HorizontalAlignment="Left" Width="150" Height="20" VerticalAlignment="Top"/>
         <CheckBox Content="主群" Margin="150,35,0,0"
                   Style="{DynamicResource Check}" IsChecked="{Binding Obj.主群}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="44"/>

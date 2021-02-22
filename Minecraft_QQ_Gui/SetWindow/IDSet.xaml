@@ -9,7 +9,7 @@
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="ID" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" Width="29" Height="22" VerticalAlignment="Top"/>
-        <TextBox Margin="39,10,0,0" TextWrapping="Wrap" Text="{Binding ID}" Foreground="Black"
+        <TextBox Margin="39,10,0,0" TextWrapping="NoWrap" Text="{Binding ID}" Foreground="Black"
                  Background="#225EBDD3" HorizontalAlignment="Left" Width="158" Height="20" VerticalAlignment="Top"/>
 
     </Grid>

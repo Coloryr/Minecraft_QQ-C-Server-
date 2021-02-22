@@ -9,18 +9,16 @@
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="触发" Margin="10,5,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Margin="44,9,0,0" TextWrapping="Wrap" Text="{Binding Command.Check}" Foreground="Black" Background="#225EBDD3"
+        <TextBox Margin="44,9,0,0" TextWrapping="NoWrap" Text="{Binding Command.Check}" Foreground="Black" Background="#225EBDD3"
                  HorizontalAlignment="Left" Width="160" Height="18" VerticalAlignment="Top"/>
-        <CheckBox Content="附带参数" Margin="10,95,0,0"
-                  Style="{DynamicResource Check}" IsChecked="{Binding Command.Pr}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
-        <CheckBox Content="玩家使用" Margin="10,57,0,0"
+        <CheckBox Content="玩家使用" Margin="10,76,0,0"
                   Style="{DynamicResource Check}" IsChecked="{Binding Command.Use}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
-        <CheckBox Content="玩家发送" Margin="10,76,0,0"
+        <CheckBox Content="玩家发送" Margin="10,95,0,0"
                   Style="{DynamicResource Check}" IsChecked="{Binding Command.Send}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
         <Label Content="指令" Margin="10,30,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox Margin="44,34,0,0" TextWrapping="Wrap" Text="{Binding Command.Command}" Foreground="Black" Background="#225EBDD3" 
-                 HorizontalAlignment="Left" Width="160" Height="18" VerticalAlignment="Top"/>
+                 HorizontalAlignment="Left" Width="160" Height="37" VerticalAlignment="Top"/>
         <ListView Margin="209,5,0,0" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                   x:Name="ServerList" Height="124" VerticalAlignment="Top" HorizontalAlignment="Left" Width="126">
             <ListView.View>

@@ -375,7 +375,6 @@ namespace Minecraft_QQ_Core.Config
         public string 命令 { get; set; }
         public bool 玩家使用 { get; set; }
         public bool 玩家发送 { get; set; }
-        public bool 附带参数 { get; set; }
         public List<string> 服务器使用 { get; set; } = new();
     }
     /// <summary>

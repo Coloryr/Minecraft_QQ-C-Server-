@@ -11,7 +11,7 @@
                 Foreground="Black" IsDefault="True" Click="Button_Click"/>
         <Label Content="检测" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Margin="52,11,0,0" TextWrapping="Wrap" Text="{Binding Server.Name}" Foreground="Black" 
+        <TextBox Margin="52,11,0,0" TextWrapping="NoWrap" Text="{Binding Server.Name}" Foreground="Black" 
                  Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
         <Label Content="回复" Margin="10,31,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left"/>

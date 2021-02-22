@@ -11,17 +11,17 @@
                 Foreground="Black" IsDefault="True" Click="Button_Click"/>
         <Label Content="QQ号" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-        <TextBox Margin="52,10,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.QQ号}" 
+        <TextBox Margin="52,10,0,0" TextWrapping="NoWrap" Text="{Binding PlayerObj.QQ号}" 
                  Foreground="Black" Background="#225EBDD3" HorizontalAlignment="Left" Width="140" Height="18" VerticalAlignment="Top"/>
         <CheckBox Content="管理员" Margin="10,82,0,0" Name="Admin_C"
                   Style="{DynamicResource Check}" IsChecked="{Binding PlayerObj.管理员}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="56"/>
         <Label Content="名字" Margin="14,31,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
-        <TextBox Margin="52,35,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.名字}" Foreground="Black" Height="18"
+        <TextBox Margin="52,35,0,0" TextWrapping="NoWrap" Text="{Binding PlayerObj.名字}" Foreground="Black" Height="18"
                  Background="#225EBDD3" HorizontalAlignment="Left" Width="140" VerticalAlignment="Top"/>
         <Label Content="昵称" Margin="12,55,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38"/>
-        <TextBox Margin="52,59,0,0" TextWrapping="Wrap" Text="{Binding PlayerObj.昵称}" Foreground="Black" Height="18"
+        <TextBox Margin="52,59,0,0" TextWrapping="NoWrap" Text="{Binding PlayerObj.昵称}" Foreground="Black" Height="18"
                  Background="#225EBDD3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140"/>
 
     </Grid>

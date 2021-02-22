@@ -13,7 +13,6 @@ namespace Minecraft_QQ_Gui.SetWindow
         public string Command { get; set; }
         public bool Use { get; set; }
         public bool Send { get; set; }
-        public bool Pr { get; set; }
         public string Server { get; set; }
         public List<string> ServerS = new List<string>();
     }
