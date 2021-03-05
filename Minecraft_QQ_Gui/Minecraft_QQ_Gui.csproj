@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU</Platforms>
     <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
-    <Version>3.5.1</Version>
+    <Version>3.5.2</Version>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Authors>Coloryr</Authors>
     <Product></Product>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Minecraft_QQ.png" />
+    <None Remove="Minecraft_QQ.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,8 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Minecraft_QQ.ico" />
     <Resource Include="Minecraft_QQ.jpg" />
-    <Resource Include="Minecraft_QQ.png" />
   </ItemGroup>
 
   <ItemGroup>

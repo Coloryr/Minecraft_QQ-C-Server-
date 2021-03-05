@@ -59,6 +59,10 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >  }
 >}
 > ```
+> Gui修改`插件配置`下的`机器人账户`  
+> Cmd修改`MainConfig.json`下的`QQ机器人账户`  
+> 填写运行的QQ号即可
+>
 > 重启Cmd
 
 ## 配置文件
@@ -130,7 +134,10 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > 参数说明
 > - `{arg:at}`：将会被替换为@QQ之后的游戏ID
 > - `{arg:name}`：将会被替换为自己的游戏ID
-> - `{argx}`：将会被替换为后面的参数
+> - `{arg:qq}`：将会被替换为自己的QQ
+> - `{arg:atqq}`：将会被替换为@QQ之后的QQ
+> - `{arg[1\2\3\...]}`：将会被替换为后面的参数
+> - `{argx}`：将剩下的参数直接填进去
 > 例如
 > ```json
 > "禁言": {
@@ -153,6 +160,16 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >在群里输入 `#给权限 @恋恋 admin.*`(@一个群成员)  
 >那么发送到服务器的指令为 `lp user 该群员绑定的ID permission set admin.* true`  
 >参数注意空格，不注意会错乱
+> ```json
+>"说话": {
+>     "命令": "say {argx}",
+>     "玩家使用": false,
+>     "玩家发送": false,
+>     "服务器使用": []
+>}
+> ```
+>在群里输入 `#说话 test test`  
+>那么发送到服务器的指令为 `say test test`  
 
 >`Player.json`玩家绑定储存
 >```json

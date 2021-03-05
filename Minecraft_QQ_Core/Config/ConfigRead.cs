@@ -11,7 +11,7 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// 读取主要配置文件
         /// </summary>
-        public MainConfig ReadConfig()
+        public static MainConfig ReadConfig()
         {
             Logs.LogOut("[Config]读取主配置");
             try
@@ -214,6 +214,15 @@ namespace Minecraft_QQ_Core.Config
                             new()
                             {
                                 命令 = "lp user {arg:at} permission set {arg1} true",
+                                玩家使用 = false,
+                                玩家发送 = false
+                            }
+                        },
+                        {
+                            "说话",
+                            new()
+                            {
+                                命令 = "say {argx}",
                                 玩家使用 = false,
                                 玩家发送 = false
                             }

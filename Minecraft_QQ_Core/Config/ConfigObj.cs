@@ -192,12 +192,22 @@ namespace Minecraft_QQ_Core.Config
         /// 禁止绑定ID
         /// </summary>
         public string 不能绑定文本 { get; set; } = "绑定ID已关闭";
+        /// <summary>
+        /// 没有绑定ID
+        /// </summary>
+        public string 没有绑定ID { get; set; } = $"你没有绑定服务器ID，发送：#绑定：[ID]来绑定，如：\n绑定：Color_yr";
+        /// <summary>
+        /// 重复绑定ID
+        /// </summary>
+        public string 重复绑定ID { get; set; } = "你已经绑定ID了，请找腐竹更改";
 
         public override string ToString()
         {
             return "维护提示文本:" + 维护提示文本 + "\n"
                 + "未知指令文本:" + 未知指令文本 + "\n"
-                + "不能绑定文本:" + 不能绑定文本;
+                + "不能绑定文本:" + 不能绑定文本 + "\n"
+                + "没有绑定ID文本：" + 没有绑定ID + "\n"
+                + "重复绑定ID文本：" + 重复绑定ID;
         }
     }
     public class CheckConfig

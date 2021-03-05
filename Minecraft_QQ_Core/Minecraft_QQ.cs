@@ -188,7 +188,7 @@ namespace Minecraft_QQ_Core
                 }
             }
             else
-                return "你已经绑定ID了，请找腐竹更改";
+                return MainConfig.消息.重复绑定ID;
         }
         /// <summary>
         /// 设置玩家ID，如果存在直接修改，不存在创建
@@ -511,7 +511,7 @@ namespace Minecraft_QQ_Core
                     }
                     string cmd = item.Value.命令;
                     bool haveAt = false;
-                    if (cmd.Contains("{arg:at}"))
+                    if (cmd.Contains("{arg:at}") || cmd.Contains("{arg:atqq}"))
                     {
                         string item1 = msg[2];
                         if (item1.IndexOf("[mirai:at:") != -1)
@@ -529,6 +529,8 @@ namespace Minecraft_QQ_Core
                             }
                             while (cmd.IndexOf("{arg:at}") != -1)
                                 cmd = cmd.Replace("{arg:at}", player1.名字);
+                            while (cmd.IndexOf("{arg:atqq}") != -1)
+                                cmd = cmd.Replace("{arg:atqq}", $"{qq}");
                             haveAt = true;
                         }
                         else
@@ -543,6 +545,8 @@ namespace Minecraft_QQ_Core
                     }
                     while (cmd.IndexOf("{arg:name}") != -1)
                         cmd = cmd.Replace("{arg:name}", player.名字);
+                    while (cmd.IndexOf("{arg:qq}") != -1)
+                        cmd = cmd.Replace("{arg:qq}", $"{player.QQ号}");
                     string argStr = "";
                     for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
                     {
@@ -574,6 +578,25 @@ namespace Minecraft_QQ_Core
                         }
                         else
                             break;
+                    }
+                    if (cmd.Contains("{argx}"))
+                    {
+                        string temp = "";
+                        if (pos < arg.Length)
+                        {
+                            for (; pos < arg.Length; pos++)
+                            {
+                                if (!string.IsNullOrWhiteSpace(arg[pos]))
+                                {
+                                    temp += $"{arg[pos]} ";
+                                }
+                            }
+                            if (temp.Length > 1)
+                            {
+                                temp = temp[0..^1];
+                            }
+                        }
+                        cmd = cmd.Replace("{argx}", temp);
                     }
                     Server.Send(new TranObj
                     {
@@ -611,8 +634,6 @@ namespace Minecraft_QQ_Core
                 }
             }
 
-            ConfigRead read = new ConfigRead();
-
             ConfigFile.主要配置文件 = new FileInfo(Path + "Mainconfig.json");
             ConfigFile.玩家储存 = new FileInfo(Path + "Player.json");
             ConfigFile.自动应答 = new FileInfo(Path + "Ask.json");
@@ -627,7 +648,7 @@ namespace Minecraft_QQ_Core
                 File.WriteAllText(ConfigFile.主要配置文件.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
             }
             else
-                MainConfig = read.ReadConfig();
+                MainConfig = ConfigRead.ReadConfig();
 
             ConfigShow.Show(MainConfig);
 
@@ -782,6 +803,15 @@ namespace Minecraft_QQ_Core
                                 玩家使用 = false,
                                 玩家发送 = false
                             }
+                        },
+                        {
+                            "说话",
+                            new()
+                            {
+                                命令 = "say {argx}",
+                                玩家使用 = false,
+                                玩家发送 = false
+                            }
                         }
                     }
                 };
@@ -927,8 +957,7 @@ namespace Minecraft_QQ_Core
                             List<string> lists = new List<string>
                             {
                                 $"at:{fromQQ}",
-                                $"你没有绑定服务器ID，发送：{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字} [ID]来绑定，如：",
-                                $"{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字} Color_yr"
+                                MainConfig.消息.没有绑定ID
                             };
                             Robot.SendGroupMessage(fromGroup, lists);
                             return;

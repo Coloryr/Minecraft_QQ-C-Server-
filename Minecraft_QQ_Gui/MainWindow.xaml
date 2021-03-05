@@ -5,16 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-        Title="Minecraft_QQ" Height="458" Width="764" ResizeMode="CanMinimize" Closing="Window_Closing" KeyDown="Window_KeyDown" Icon="/Minecraft_QQ.png" Loaded="Window_Loaded">
+        Title="Minecraft_QQ" Height="470" Width="833" ResizeMode="CanMinimize" Closing="Window_Closing" KeyDown="Window_KeyDown" Icon="/Minecraft_QQ.ico" Loaded="Window_Loaded">
     <Window.Background>
-        <ImageBrush Stretch="Uniform" ImageSource="/Minecraft_QQ.jpg"/>
+        <ImageBrush Stretch="UniformToFill" ImageSource="/Minecraft_QQ.jpg"/>
     </Window.Background>
     <Grid>
         <TabControl Margin="0,0,0,0" Background="#00000000">
             <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
                     <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
-                              Name="QQList">
+                              Name="QQList" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding 群号}"/>
@@ -47,7 +47,7 @@
                              Text="{Binding 链接.端口}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
                     <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
                     <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="156"/>
-                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,312,0,0" IsDefault="True" 
+                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,342,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
                     <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,108,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="59"/>
                     <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,113,0,0" FontSize="16"
@@ -124,19 +124,6 @@
                                      Text="{Binding 管理员.发送绑定信息QQ号}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="142"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="提示文本" Margin="487,5,0,0" Foreground="White" BorderBrush="White" HorizontalAlignment="Left" Width="246" Height="373" VerticalAlignment="Top">
-                        <Grid>
-                            <Label Content="维护提示文本" Style="{DynamicResource Label}" Margin="10,3,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
-                            <TextBox TextWrapping="Wrap" Margin="10,37,10,0" FontSize="16"
-                                     Text="{Binding 消息.维护提示文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
-                            <Label Content="未知指令文本" Style="{DynamicResource Label}" Margin="10,112,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
-                            <TextBox TextWrapping="Wrap" Margin="10,146,10,0" FontSize="16"
-                                     Text="{Binding 消息.未知指令文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
-                            <Label Content="不能绑定文本" Style="{DynamicResource Label}" Margin="10,221,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
-                            <TextBox TextWrapping="Wrap" Margin="10,255,10,4" FontSize="16"
-                                     Text="{Binding 消息.不能绑定文本}" AcceptsReturn="True"/>
-                        </Grid>
-                    </GroupBox>
                     <GroupBox Header="选择设置" Margin="9,185,0,0" Foreground="White" BorderBrush="White" Height="193" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <CheckBox Content="自动应答" Height="22"
@@ -171,7 +158,7 @@
                                      Text="{Binding 设置.发送群消息间隔}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="机器人设定" Margin="248,272,0,0" Height="106" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
+                    <GroupBox Header="机器人设定" Margin="487,5,0,0" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <Label Content="地址" Style="{DynamicResource Label}" Margin="2,0,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                             <TextBox TextWrapping="Wrap" Margin="49,4,0,0" FontSize="16"
@@ -185,6 +172,32 @@
                             <CheckBox Content="检测断开" Height="22"
                                 Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,4,2,0"
                                 IsChecked="{Binding 机器人设置.检查是否断开}" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                            <Label Content="账户" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top" Margin="2,58,0,0"/>
+                            <TextBox x:Name="QQ" TextWrapping="Wrap" Margin="0,61,0,0" FontSize="16" Height="22"
+                             Text="{Binding 机器人设置.QQ机器人账户}" VerticalAlignment="Top" HorizontalAlignment="Center" Width="140"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="提示文本" Background="Transparent" Style="{DynamicResource TabItem}">
+                <Grid>
+                    <GroupBox Header="提示文本" Margin="0,10,0,0" Foreground="White" BorderBrush="White" HorizontalAlignment="Center" Width="807" Height="373" VerticalAlignment="Top">
+                        <Grid>
+                            <Label Content="维护提示文本" Style="{DynamicResource Label}" Margin="10,3,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
+                            <TextBox TextWrapping="Wrap" Margin="10,37,408,0" FontSize="16"
+                                     Text="{Binding 消息.维护提示文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                            <Label Content="未知指令文本" Style="{DynamicResource Label}" Margin="10,112,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
+                            <TextBox TextWrapping="Wrap" Margin="10,146,0,0" FontSize="16"
+                                     Text="{Binding 消息.未知指令文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left" Width="385"/>
+                            <Label Content="不能绑定文本" Style="{DynamicResource Label}" Margin="10,221,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
+                            <TextBox TextWrapping="Wrap" Margin="10,255,0,18" FontSize="16"
+                                     Text="{Binding 消息.不能绑定文本}" AcceptsReturn="True" HorizontalAlignment="Left" Width="385"/>
+                            <Label Content="没有绑定ID提示" Style="{DynamicResource Label}" Margin="408,3,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="124"/>
+                            <TextBox TextWrapping="Wrap" Margin="408,37,10,0" FontSize="16"
+                                Text="{Binding 消息.没有绑定ID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                            <Label Content="重复绑定ID提示" Style="{DynamicResource Label}" Margin="408,113,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="124"/>
+                            <TextBox TextWrapping="Wrap" Margin="408,146,10,0" FontSize="16"
+                                Text="{Binding 消息.重复绑定ID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -195,8 +208,8 @@
                         x:Name="PlayerList">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="QQ号" Width="120" DisplayMemberBinding="{Binding QQ号}"/>
-                                <GridViewColumn Header="玩家名字" Width="150" DisplayMemberBinding="{Binding 名字}"/>
+                                <GridViewColumn Header="QQ号" Width="170" DisplayMemberBinding="{Binding QQ号}"/>
+                                <GridViewColumn Header="玩家名字" Width="170" DisplayMemberBinding="{Binding 名字}"/>
                                 <GridViewColumn Header="昵称" Width="150" DisplayMemberBinding="{Binding 昵称}"/>
                                 <GridViewColumn Header="管理员" Width="90" DisplayMemberBinding="{Binding 管理员}"/>
                             </GridView>
@@ -210,7 +223,7 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <ListView Margin="568,10,10,195" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                    <ListView Margin="640,10,10,200" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                         x:Name="NoIDList">
                         <ListView.View>
                             <GridView>
@@ -225,7 +238,7 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <ListView Margin="568,185,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                    <ListView Margin="640,218,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                         x:Name="MuteList">
                         <ListView.View>
                             <GridView>
@@ -290,14 +303,7 @@
             </TabItem>
             <TabItem Header="其他" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <GroupBox Header="机器人账户设置" Margin="5,308,0,0" HorizontalAlignment="Left" Width="193" Height="70" VerticalAlignment="Top">
-                        <Grid>
-                            <Label Content="账户" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
-                            <TextBox x:Name="QQ" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"
-                             Text="{Binding 机器人设置.QQ机器人账户}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140"/>
-                        </Grid>
-                    </GroupBox>
-                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="306" VerticalAlignment="Top">
+                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="330" VerticalAlignment="Top">
                         <Grid>
                             <Label Content="地址" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
                             <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"
@@ -322,7 +328,7 @@
 
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="日志" Margin="195,5,0,0" HorizontalAlignment="Left" Width="543" Height="373" VerticalAlignment="Top">
+                    <GroupBox Header="日志" Margin="196,5,0,0" HorizontalAlignment="Left" Width="621" Height="398" VerticalAlignment="Top">
                         <ScrollViewer Style="{StaticResource ScrollViewer}">
                             <TextBox x:Name="log" IsReadOnly="True" TextWrapping="Wrap" MinHeight="344" AcceptsReturn="True"/>
                         </ScrollViewer>

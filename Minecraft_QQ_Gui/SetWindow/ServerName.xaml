@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-       Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.png" KeyDown="Window_KeyDown">
+       Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico" KeyDown="Window_KeyDown">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="名字" Margin="6,6,0,0" 

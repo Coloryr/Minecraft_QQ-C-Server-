@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="消息设置" Height="205" Width="315" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.png">
+        Title="消息设置" Height="205" Width="315" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Button Content="保存" Margin="10,140,0,0" HorizontalAlignment="Left" Width="37" Height="15" VerticalAlignment="Top"
