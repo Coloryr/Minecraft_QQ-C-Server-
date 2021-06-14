@@ -6,13 +6,11 @@ Minecraft_QQ 插件本体(Cmd/Gui)
 
 ## 连接说明
 
-该插件的连接方式：
-
-Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
-请不要拿Minecraft_QQ直连ColorMirgai，连不上的
-
 链接顺序不要搞错了  
-Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
+请不要拿Minecraft_QQ直连ColorMirai，连不上的
 
 ## 部署教程：
 1. 下载
