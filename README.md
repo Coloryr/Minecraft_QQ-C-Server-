@@ -9,7 +9,10 @@ Minecraft_QQ 插件本体(Cmd/Gui)
 该插件的连接方式：
 
 Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
-请不要拿Minecraft_QQ直连ColorMirai，连不上的
+请不要拿Minecraft_QQ直连ColorMirgai，连不上的
+
+链接顺序不要搞错了  
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 
 ## 部署教程：
 1. 下载
@@ -36,7 +39,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > 启动后进行[第一次使用配置](#第一次使用配置)  
 > 连接`ColorMirai`
 >
-> 将插件放进服务器的插件文件夹，或者放进`Mods`文件夹(Forge1.12.2专属)  
+> 将插件放进服务器的插件文件夹
 > 重启服务器  
 > 连接`Minecraft_QQ_Cmd/Gui`
 
@@ -202,6 +205,7 @@ Minecraft_QQ_Cmd/Gui的默认端口为25555
 ## 不在一台机器上部署
 
 如果你有公网IP，直接在防火墙开放端口就行了  
+然后Minecraft_QQ的IP设置填你机器的公网IP
 如果你没有公网IP，那就去用端口映射，能映射出去就行了  
 然后Minecraft_QQ_Cmd/Gui的绑定IP改为0.0.0.0
 
