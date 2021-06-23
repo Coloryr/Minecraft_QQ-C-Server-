@@ -37,9 +37,9 @@ namespace Minecraft_QQ_Core.Config
             Player();
         }
 
-        private static void Save(string FileName, object obj)
+        private static async void Save(string FileName, object obj)
         {
-            Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 try
                 {

@@ -12,14 +12,14 @@ namespace Minecraft_QQ_Core.MySocket
 {
     public class MySocketServer
     {
-        public Dictionary<string, MCServerSocket> MCServers = new Dictionary<string, MCServerSocket>();
+        public Dictionary<string, MCServerSocket> MCServers = new();
 
-        public object lock1 = new object();
+        public readonly object lock1 = new();
 
         private Socket ServerSocket;
         private Thread ServerThread;
 
-        public bool Start;
+        public bool Start { get; private set; }
 
         private readonly Minecraft_QQ Main;
 
@@ -53,14 +53,17 @@ namespace Minecraft_QQ_Core.MySocket
                 ServerThread.Start();
                 SetState(true);
                 if (Main.MainConfig.设置.发送日志到主群)
+                {
                     Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]端口已启动\n" +
                         "已绑定在：" + Main.MainConfig.链接.地址 + ":" + Main.MainConfig.链接.端口);
+                }
+
                 Logs.LogOut("[Socket]端口已启动");
             }
             catch (Exception e)
             {
                 Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]启动失败，请看日志" +
-                    "\n酷Q/Minecraft_QQ/logs.log");
+                    "\n/Minecraft_QQ/logs.log");
                 Logs.LogError(e);
                 SetState(false);
             }
@@ -151,7 +154,9 @@ namespace Minecraft_QQ_Core.MySocket
                 IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                 GC.Collect();
                 if (MCServers.Count == 0)
+                {
                     Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
+                }
             }
         }
         public void AddServer(string name, MCServerSocket receive)
@@ -168,8 +173,8 @@ namespace Minecraft_QQ_Core.MySocket
         }
         public void ServerStop()
         {
-            var temp = new Dictionary<string, MCServerSocket>(MCServers);
-            foreach (var item in temp.Values)
+            Dictionary<string, MCServerSocket> temp = new(MCServers);
+            foreach (MCServerSocket item in temp.Values)
             {
                 item.Stop();
             }

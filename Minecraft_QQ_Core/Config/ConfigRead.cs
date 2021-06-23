@@ -16,7 +16,7 @@ namespace Minecraft_QQ_Core.Config
             Logs.LogOut("[Config]读取主配置");
             try
             {
-                var config = JsonConvert.DeserializeObject<MainConfig>
+                MainConfig config = JsonConvert.DeserializeObject<MainConfig>
                     (File.ReadAllText(ConfigFile.主要配置文件.FullName));
                 bool save = false;
                 if (config.数据库 == null)
@@ -68,7 +68,7 @@ namespace Minecraft_QQ_Core.Config
             Logs.LogOut("[Config]读取玩家配置");
             try
             {
-                var config = JsonConvert.DeserializeObject<PlayerConfig>
+                PlayerConfig config = JsonConvert.DeserializeObject<PlayerConfig>
                     (File.ReadAllText(ConfigFile.玩家储存.FullName));
                 bool save = false;
                 if (config.玩家列表 == null)
@@ -105,7 +105,7 @@ namespace Minecraft_QQ_Core.Config
             Logs.LogOut("[Config]读取群设置");
             try
             {
-                var config = JsonConvert.DeserializeObject<GroupConfig>
+                GroupConfig config = JsonConvert.DeserializeObject<GroupConfig>
                     (File.ReadAllText(ConfigFile.群设置.FullName));
                 if (config.群列表 == null)
                 {
@@ -135,14 +135,14 @@ namespace Minecraft_QQ_Core.Config
             Logs.LogOut("[Config]读取自定义应答");
             try
             {
-                var config = JsonConvert.DeserializeObject<AskConfig>
+                AskConfig config = JsonConvert.DeserializeObject<AskConfig>
                     (File.ReadAllText(ConfigFile.自动应答.FullName));
 
                 if (config.自动应答列表 == null)
                 {
                     config.自动应答列表 = new Dictionary<string, string>()
                     {
-                        { 
+                        {
                             "服务器菜单", 
                             "服务器查询菜单：\r\n" +
                             $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
@@ -167,7 +167,7 @@ namespace Minecraft_QQ_Core.Config
             Logs.LogOut("[Config]读取自定义指令");
             try
             {
-                var config = JsonConvert.DeserializeObject<CommandConfig>
+                CommandConfig config = JsonConvert.DeserializeObject<CommandConfig>
                     (File.ReadAllText(ConfigFile.自定义指令.FullName));
                 if (config.命令列表 == null)
                 {

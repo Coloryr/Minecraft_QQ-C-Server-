@@ -127,19 +127,19 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// 自动应答-开关
         /// </summary>
-        public bool 自动应答开关 { get; set; } = false;
+        public bool 自动应答开关 { get; set; }
         /// <summary>
         /// 彩色代码-开关
         /// </summary>
-        public bool 颜色代码开关 { get; set; } = false;
+        public bool 颜色代码开关 { get; set; }
         /// <summary>
         /// 维护模式-开关
         /// </summary>
-        public bool 维护模式 { get; set; } = false;
+        public bool 维护模式 { get; set; }
         /// <summary>
         /// 同步对话-开关
         /// </summary>
-        public bool 始终发送消息 { get; set; } = false;
+        public bool 始终发送消息 { get; set; }
         /// <summary>
         /// 服务器昵称-开关
         /// </summary>
@@ -159,7 +159,7 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// 不发送指令到服务器
         /// </summary>
-        public bool 不发送指令到服务器 { get; set; } = false;
+        public bool 不发送指令到服务器 { get; set; }
         /// <summary>
         /// 发送群消息间隔
         /// </summary>
@@ -283,7 +283,7 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// 发送绑定信息QQ号
         /// </summary>
-        public long 发送绑定信息QQ号 { get; set; } = 0;
+        public long 发送绑定信息QQ号 { get; set; }
 
         public override string ToString()
         {
@@ -318,7 +318,7 @@ namespace Minecraft_QQ_Core.Config
         /// </summary>
         public string 数据尾 { get; set; } = "[End]";
 
-        public bool 检测断开 { get; set; } = false;
+        public bool 检测断开 { get; set; }
 
         public override string ToString()
         {
@@ -351,7 +351,7 @@ namespace Minecraft_QQ_Core.Config
         /// <summary>
         /// Mysql启用
         /// </summary>
-        public bool 是否启用 { get; set; } = false;
+        public bool 是否启用 { get; set; }
         /// <summary>
         /// 数据库名
         /// </summary>
