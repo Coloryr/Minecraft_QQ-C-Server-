@@ -164,6 +164,14 @@ namespace Minecraft_QQ_Core.Utils
                         items = items.Substring(0, items.Length - 1);
                         return "聊天记录：" + title + "\n" + items;
                     }
+                    else if (a.Contains("推荐群聊"))
+                    {
+                        var body = doc.GetElementsByTagName("msg");
+                        var title = body[0].Attributes.GetNamedItem("brief");
+                        var group = body[0].Attributes.GetNamedItem("actionData");
+                        
+                        return title.Value + " " + group.Value.Replace("group:", "");
+                    }
                 }
             }
             catch (Exception e)

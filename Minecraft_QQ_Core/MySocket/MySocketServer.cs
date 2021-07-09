@@ -13,6 +13,7 @@ namespace Minecraft_QQ_Core.MySocket
     public class MySocketServer
     {
         public Dictionary<string, MCServerSocket> MCServers = new();
+        public static byte[] Checkpack = BuildPack.Build(new(), 60);
 
         public readonly object lock1 = new();
 

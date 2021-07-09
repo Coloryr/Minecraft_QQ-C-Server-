@@ -41,41 +41,5 @@
     <Page Update="SetWindow\ServerSet.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\Button.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\CheckBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\ComboBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\ContextMenu.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\GroupBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\Label.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\ListView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\PassWordBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\RadioButton.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\Slider.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\TabControl.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="..\..\..\C#%27s src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Style\TextBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 </Project>

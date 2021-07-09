@@ -48,13 +48,7 @@ namespace Minecraft_QQ_Core.MySocket
                     if (Main.MainConfig.链接.检测断开 && count >= 1000)
                     {
                         count = 0;
-                        if (Socket.Poll(10000, SelectMode.SelectRead))
-                        {
-                            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
-                            Stop();
-                            Main.Server.Remove(Name);
-                            return null;
-                        }
+                        Socket.Send(MySocketServer.Checkpack);
                     }
                 }
                 bytes = new byte[Socket.Available];
