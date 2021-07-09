@@ -7,3 +7,5 @@ bin
 build_out
 
 publish
+
+.pubxml.user
