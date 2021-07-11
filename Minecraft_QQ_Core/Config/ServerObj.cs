@@ -21,7 +21,7 @@ namespace Minecraft_QQ_Core.Config
     public record MessageOBJ
     {
         public string Message { get; set; }
-        public bool SendQQ { get; set; }
+        public bool sendQQ { get; set; }
     }
     public record ServerSetOBJ
     {
