@@ -1,5 +1,6 @@
 ﻿using Minecraft_QQ_Core;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Minecraft_QQ_Cmd
@@ -24,12 +25,15 @@ namespace Minecraft_QQ_Cmd
                     return;
                 }
             }
-            while (true)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                string a = Console.ReadLine();
-                if (a == "stop")
+                while (true)
                 {
-                    IMinecraft_QQ.Stop();
+                    string a = Console.ReadLine();
+                    if (a == "stop")
+                    {
+                        IMinecraft_QQ.Stop();
+                    }
                 }
             }
         }
