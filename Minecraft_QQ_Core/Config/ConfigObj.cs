@@ -309,14 +309,6 @@ namespace Minecraft_QQ_Core.Config
         /// 端口
         /// </summary>
         public int 端口 { get; set; } = 25555;
-        /// <summary>
-        /// 数据包头
-        /// </summary>
-        public string 数据头 { get; set; } = "[Head]";
-        /// <summary>
-        /// 数据包尾
-        /// </summary>
-        public string 数据尾 { get; set; } = "[End]";
 
         public bool 检测断开 { get; set; }
 
@@ -324,8 +316,6 @@ namespace Minecraft_QQ_Core.Config
         {
             return "地址:" + 地址 + "\n"
                 + "端口:" + 端口 + "\n"
-                + "数据头:" + 数据头 + "\n"
-                + "数据尾:" + 数据尾 + "\n"
                 + "检测断开:" + 检测断开;
         }
     }

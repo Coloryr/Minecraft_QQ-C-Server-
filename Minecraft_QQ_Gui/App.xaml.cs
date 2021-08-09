@@ -14,6 +14,7 @@ namespace Minecraft_QQ_Gui
     /// </summary>
     public partial class App : Application
     {
+        public const string Version = IMinecraft_QQ.Version;
         public static System.Windows.Forms.NotifyIcon notifyIcon;
         public static MainWindow MainWindow_;
 

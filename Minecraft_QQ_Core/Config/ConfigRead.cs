@@ -143,7 +143,7 @@ namespace Minecraft_QQ_Core.Config
                     config.自动应答列表 = new Dictionary<string, string>()
                     {
                         {
-                            "服务器菜单", 
+                            "服务器菜单",
                             "服务器查询菜单：\r\n" +
                             $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
                             $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +

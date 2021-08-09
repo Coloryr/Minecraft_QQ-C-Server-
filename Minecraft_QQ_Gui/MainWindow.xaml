@@ -45,18 +45,12 @@
                     <Label Content="端口" Style="{DynamicResource Label}" Margin="10,75,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
                     <TextBox x:Name="Port" TextWrapping="Wrap" Margin="57,78,0,0" FontSize="16" Height="22"
                              Text="{Binding 链接.端口}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
-                    <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
-                    <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,174,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="156"/>
+                    <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,108,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
+                    <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,108,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="156"/>
                     <Button x:Name="SocketST" Content="关闭端口" Margin="10,342,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
-                    <Label Content="数据头" Style="{DynamicResource Label}" Margin="10,108,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="59"/>
-                    <TextBox x:Name="Head" TextWrapping="Wrap" Margin="74,113,0,0" FontSize="16"
-                             Text="{Binding 链接.数据头}" HorizontalAlignment="Left" Width="145" Height="22" VerticalAlignment="Top"/>
-                    <Label Content="数据尾" Style="{DynamicResource Label}" Margin="10,141,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="59"/>
-                    <TextBox x:Name="End" TextWrapping="Wrap" Margin="74,146,0,0" FontSize="16" Height="22"
-                             Text="{Binding 链接.数据尾}" HorizontalAlignment="Left" Width="145" VerticalAlignment="Top"/>
                     <CheckBox Content="检测断开" Height="22"
-                                Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="8,208,0,0"
+                                Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="8,142,0,0"
                                 IsChecked="{Binding 链接.检测断开}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                     <ListView Margin="224,10,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="ServerList">
@@ -204,8 +198,8 @@
             </TabItem>
             <TabItem Header="玩家管理" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <ListView Margin="10,10,180,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
-                        x:Name="PlayerList">
+                    <ListView Margin="10,0,0,0" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                        x:Name="PlayerList" HorizontalAlignment="Left" Width="625" Height="393" VerticalAlignment="Center">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="QQ号" Width="170" DisplayMemberBinding="{Binding QQ号}"/>
@@ -223,8 +217,8 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <ListView Margin="640,10,10,200" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
-                        x:Name="NoIDList">
+                    <ListView Margin="640,10,0,0" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                        x:Name="NoIDList" HorizontalAlignment="Left" Width="177" Height="203" VerticalAlignment="Top">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="禁止绑定" Width="140" DisplayMemberBinding="{Binding StringFormat=string}"/>
@@ -238,8 +232,8 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <ListView Margin="640,218,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
-                        x:Name="MuteList">
+                    <ListView Margin="640,218,0,0" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                        x:Name="MuteList" HorizontalAlignment="Left" Width="177" Height="185" VerticalAlignment="Top">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="禁言" Width="140" DisplayMemberBinding="{Binding StringFormat=string}"/>
@@ -303,7 +297,7 @@
             </TabItem>
             <TabItem Header="其他" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="330" VerticalAlignment="Top">
+                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="398" VerticalAlignment="Top">
                         <Grid>
                             <Label Content="地址" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
                             <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"

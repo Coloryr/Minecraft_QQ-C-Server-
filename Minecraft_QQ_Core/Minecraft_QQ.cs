@@ -683,8 +683,8 @@ namespace Minecraft_QQ_Core
                 {
                     自动应答列表 = new Dictionary<string, string>
                     {
-                        { 
-                            "服务器菜单", 
+                        {
+                            "服务器菜单",
                             "服务器查询菜单：\r\n" +
                             $"【{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
                             $"【{MainConfig.检测.检测头}{MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +
@@ -731,7 +731,8 @@ namespace Minecraft_QQ_Core
                         玩家列表 = new()
                         {
                             {
-                                402067010, new()
+                                402067010,
+                                new()
                                 {
                                     QQ号 = 402067010,
                                     名字 = "Color_yr",
@@ -740,8 +741,8 @@ namespace Minecraft_QQ_Core
                                 }
                             }
                         },
-                        禁止绑定列表 = new() 
-                        { 
+                        禁止绑定列表 = new()
+                        {
                             "Color_yr",
                             "id"
                         },
@@ -761,39 +762,43 @@ namespace Minecraft_QQ_Core
             {
                 CommandConfig = new()
                 {
-                    命令列表 = new() 
-                    { 
-                        { 
-                            "插件帮助", new() 
-                            { 
-                                命令 = "qq help", 
-                                玩家使用 = false, 
+                    命令列表 = new()
+                    {
+                        {
+                            "插件帮助",
+                            new()
+                            {
+                                命令 = "qq help",
+                                玩家使用 = false,
                                 玩家发送 = false
-                            } 
-                        }, 
-                        { 
-                            "查钱", new()
-                            { 
-                                命令 = "money {arg:name}", 
-                                玩家使用 = true, 
-                                玩家发送 = false
-                            } 
+                            }
                         },
-                        { 
-                            "禁言", new()
-                            { 
-                                命令 = "mute {arg1}", 
-                                玩家使用 = false, 
+                        {
+                            "查钱",
+                            new()
+                            {
+                                命令 = "money {arg:name}",
+                                玩家使用 = true,
                                 玩家发送 = false
-                            } 
-                        }, 
-                        { 
-                            "传送", new()
-                            { 
-                                命令 = "tpa {arg:at}", 
-                                玩家使用 = true, 
+                            }
+                        },
+                        {
+                            "禁言",
+                            new()
+                            {
+                                命令 = "mute {arg1}",
+                                玩家使用 = false,
                                 玩家发送 = false
-                            } 
+                            }
+                        },
+                        {
+                            "传送",
+                            new()
+                            {
+                                命令 = "tpa {arg:at}",
+                                玩家使用 = true,
+                                玩家发送 = false
+                            }
                         },
                         {
                             "给权限",

@@ -98,11 +98,11 @@ namespace Minecraft_QQ_Gui
             {
                 foreach (var item in IMinecraft_QQ.Main.Server.MCServers)
                 {
-                    if (item.Value.Socket.Connected)
+                    if (item.Value.Client.Connected)
                         ServerList.Items.Add(new Server
                         {
                             Name = item.Key,
-                            Addr = item.Value.Socket.RemoteEndPoint.ToString()
+                            Addr = item.Value.Client.Client.RemoteEndPoint.ToString()
                         });
                 }
             }

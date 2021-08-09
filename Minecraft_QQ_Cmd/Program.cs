@@ -7,6 +7,7 @@ namespace Minecraft_QQ_Cmd
 {
     class Program
     {
+        public const string Version = IMinecraft_QQ.Version;
         static void Main()
         {
             Console.WriteLine("正在启动Minecraft_QQ");

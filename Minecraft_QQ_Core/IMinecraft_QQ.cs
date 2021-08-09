@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Minecraft_QQ_Core
+﻿namespace Minecraft_QQ_Core
 {
     public enum GuiFun
     {
@@ -8,7 +6,7 @@ namespace Minecraft_QQ_Core
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.5.3";
+        public const string Version = "3.6.0";
 
         public static bool Run;
         public static bool CanGo;

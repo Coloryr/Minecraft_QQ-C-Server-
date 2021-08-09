@@ -1,19 +1,19 @@
-﻿using Minecraft_QQ_Core.Robot;
-using Minecraft_QQ_Core.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core.MySocket
 {
     public class MCServerSocket
     {
         public string Name { get; private set; }
-        public Socket Socket { get; private set; }
+        public TcpClient Client { get; private set; }
         private Thread RThread;
         private bool IsRun;
-        private bool IsCheck = false;
+        private bool IsCheck;
         private int count;
 
         private readonly Minecraft_QQ Main;
@@ -23,44 +23,49 @@ namespace Minecraft_QQ_Core.MySocket
             Main = Minecraft_QQ;
             Message = new(Main);
         }
-        public void Start(Socket Socket)
+        public MCServerSocket Start(TcpClient client)
         {
-            this.Socket = Socket;
+            Client = client;
             IsRun = true;
             RThread = new Thread(ReceiveData);
             RThread.Start();
+            return this;
         }
         public void Stop()
         {
             IsRun = false;
-            Socket.Close();
-            Socket.Dispose();
+            Client.Close();
+            Client.Dispose();
         }
         private string Receive()
         {
             try
             {
                 byte[] bytes;
-                while (Socket.Available <= 0)
+                while (Client.Available <= 0)
                 {
                     Thread.Sleep(10);
                     count++;
                     if (Main.MainConfig.链接.检测断开 && count >= 1000)
                     {
                         count = 0;
-                        Socket.Send(MySocketServer.Checkpack);
+                        Client.GetStream().Write(MySocketServer.Checkpack);
                     }
                 }
-                bytes = new byte[Socket.Available];
-                int receiveNumber = Socket.Receive(bytes);
+                bytes = new byte[Client.Available];
+                int receiveNumber = Client.GetStream().Read(bytes);
 
-                return Encoding.UTF8.GetString(bytes, 0, receiveNumber);
+                return Encoding.UTF8.GetString(bytes);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logs.LogError(e);
                 return null;
             }
+        }
+        public void Send(byte[] data)
+        {
+            Client.GetStream().Write(data);
         }
         private void ReceiveData()
         {
@@ -71,9 +76,13 @@ namespace Minecraft_QQ_Core.MySocket
                     string str = Receive();
                     if (str == null)
                     {
+                        throw new Exception();
+                    }
+                    else if (str == "test")
+                    {
                         continue;
                     }
-                    if (!IsCheck)
+                    else if (!IsCheck)
                     {
                         Name = Message.StartCheck(str);
                         if (Name != null)
@@ -94,7 +103,7 @@ namespace Minecraft_QQ_Core.MySocket
                         IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                     }
                     else
-                        Message.MessageDo(Name, str);
+                        Task.Run(() => Message.MessageDo(Name, str));
                 }
                 catch (Exception e)
                 {

@@ -22,7 +22,7 @@ namespace Minecraft_QQ_Core.Utils
                     File.AppendAllText(IMinecraft_QQ.Main.Path + log, write + Environment.NewLine);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 IMinecraft_QQ.LogCall?.Invoke(e.ToString());
             }

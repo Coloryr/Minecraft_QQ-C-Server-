@@ -1,11 +1,6 @@
-﻿using Minecraft_QQ_Core.Config;
-using Minecraft_QQ_Core.MySocket;
-using Minecraft_QQ_Core.Robot;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Minecraft_QQ_Core.Utils
@@ -169,7 +164,7 @@ namespace Minecraft_QQ_Core.Utils
                         var body = doc.GetElementsByTagName("msg");
                         var title = body[0].Attributes.GetNamedItem("brief");
                         var group = body[0].Attributes.GetNamedItem("actionData");
-                        
+
                         return title.Value + " " + group.Value.Replace("group:", "");
                     }
                 }
@@ -192,6 +187,6 @@ namespace Minecraft_QQ_Core.Utils
                 Logs.LogError(e);
             }
             return null;
-        } 
+        }
     }
 }
