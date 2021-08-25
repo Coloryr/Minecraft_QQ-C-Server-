@@ -175,6 +175,7 @@ namespace Minecraft_QQ_Core.MySocket
         {
             if (MCServers.ContainsKey(name))
             {
+                Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开");
                 MCServers[name].Stop();
                 MCServers[name] = receive;
             }
