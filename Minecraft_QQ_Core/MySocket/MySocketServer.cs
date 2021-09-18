@@ -113,6 +113,8 @@ namespace Minecraft_QQ_Core.MySocket
 
         private void ListenClientConnect(IAsyncResult ar)
         {
+            if (!Start)
+                return;
             var client = ServerSocket.EndAcceptTcpClient(ar);
             ServerSocket.BeginAcceptTcpClient(ListenClientConnect, null);
             MCServerSocket clientScoket = new MCServerSocket(Main).Start(client);

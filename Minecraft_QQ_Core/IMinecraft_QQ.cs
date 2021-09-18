@@ -6,7 +6,7 @@
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.6.1";
+        public const string Version = "3.6.2";
 
         public static bool Run;
         public static bool CanGo;
