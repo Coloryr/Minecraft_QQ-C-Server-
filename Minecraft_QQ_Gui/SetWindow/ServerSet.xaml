@@ -158,28 +158,18 @@
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="重连间隔" Style="{DynamicResource Label}" 
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,48,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.Head}" Margin="72,77,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="数据头" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,72,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.End}" Margin="72,101,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="数据尾" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,96,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.Sleep}" Margin="72,125,0,0" Foreground="Black"
+                <TextBox TextWrapping="NoWrap" Text="{Binding System.Sleep}" Margin="72,76,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
                 <Label Content="工作间隔" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,120,0,0"/>
+                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,72,0,0"/>
                 <CheckBox Content="调试模式" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="72,149,0,0"
                           Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="消息设置" Margin="574,210,0,0" Height="52" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
             <Grid>
-                <CheckBox Content="成功发送提示" IsChecked="{Binding User.SendSucceed}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" HorizontalAlignment="Left" Width="90" Height="14" VerticalAlignment="Top"/>
                 <CheckBox Content="不发送指令" IsChecked="{Binding User.NotSendCommand}"
-                          Style="{DynamicResource Check}" Margin="100,5,0,0" HorizontalAlignment="Left" Width="79" Height="14" VerticalAlignment="Top"/>
+                          Style="{DynamicResource Check}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="79" Height="14" VerticalAlignment="Center"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="日志设置" Margin="574,260,0,0" Height="52" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
@@ -228,10 +218,6 @@
                        Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Language.MessageON}" Margin="5,80,0,0" Foreground="Black"
                          Background="#225EBDD3" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="发送成功提醒" Style="{DynamicResource Label}" Margin="0,114,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Language.SucceedMessage}" Margin="5,138,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="不参与聊天的玩家" Margin="386,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="378">

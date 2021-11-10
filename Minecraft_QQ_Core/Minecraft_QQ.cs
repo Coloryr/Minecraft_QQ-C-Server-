@@ -464,7 +464,7 @@ namespace Minecraft_QQ_Core
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>()
                         {
-                            $"at:{fromQQ}",
+                            $"[mirai:at:{fromQQ}]",
                             "发送失败，服务器未准备好"
                         });
                         return true;
@@ -491,7 +491,7 @@ namespace Minecraft_QQ_Core
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
-                            $"at:{fromQQ}",
+                            $"[mirai:at:{fromQQ}]",
                             "发送失败，对应的服务器未连接"
                         });
                     }
@@ -500,7 +500,7 @@ namespace Minecraft_QQ_Core
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
-                             $"at:{fromQQ}",
+                             $"[mirai:at:{fromQQ}]",
                             "你未绑定ID"
                         });
                         return true;
@@ -522,7 +522,7 @@ namespace Minecraft_QQ_Core
                             {
                                 Robot.SendGroupMessage(fromGroup, new List<string>
                                 {
-                                    $"at:{fromQQ}",
+                                    $"[mirai:at:{fromQQ}]",
                                     $"错误，玩家：{qq}没有绑定ID"
                                 });
                                 return true;
@@ -537,7 +537,7 @@ namespace Minecraft_QQ_Core
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 $"错误，参数错误"
                             });
                             return true;
@@ -939,42 +939,26 @@ namespace Minecraft_QQ_Core
                         }
                         else if (MainConfig.设置.维护模式)
                         {
-                            List<string> lists = new List<string>
-                            {
-                                $"at:{fromQQ}",
-                                MainConfig.消息.维护提示文本
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.消息.维护提示文本 });
                             return;
                         }
                         else if (Server.IsReady() == false)
                         {
-                            List<string> lists = new List<string>
-                            {
-                                $"at:{fromQQ}",
-                                "发送失败，没有服务器链接"
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", "发送失败，没有服务器链接" });
                             return;
                         }
                         else if (player == null || string.IsNullOrWhiteSpace(player.名字))
                         {
-                            List<string> lists = new List<string>
-                            {
-                                $"at:{fromQQ}",
-                                MainConfig.消息.没有绑定ID
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.消息.没有绑定ID });
                             return;
                         }
                         else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 "你已被禁言"
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         try
@@ -1008,52 +992,47 @@ namespace Minecraft_QQ_Core
                     {
                         if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0)
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 MutePlayer(msglist)
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0)
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 UnmutePlayer(msglist)
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0)
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 GetPlayerID(msglist)
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0)
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 RenamePlayer(msglist)
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.维护模式切换)
                         {
-                            List<string> lists = new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                             {
-                                $"at:{fromQQ}",
+                                $"[mirai:at:{fromQQ}]",
                                 FixModeChange()
-                            };
-                            Robot.SendGroupMessage(fromGroup, lists);
+                            });
                             return;
                         }
                         else if (msg_low == MainConfig.管理员.获取禁言列表)
@@ -1075,7 +1054,7 @@ namespace Minecraft_QQ_Core
                         }
                         else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0)
                         {
-                            List<string> lists = new List<string>();
+                            List<string> lists = new();
                             lists.Add("at:" + fromQQ);
                             lists.Add(SetNick(msglist));
                             Robot.SendGroupMessage(fromGroup, lists);
@@ -1099,12 +1078,11 @@ namespace Minecraft_QQ_Core
 
                     else if (msg_low.IndexOf(MainConfig.检测.玩家设置名字) == 0)
                     {
-                        List<string> lists = new List<string>
+                        Robot.SendGroupMessage(fromGroup, new List<string>
                         {
-                            $"at:{fromQQ}",
+                            $"[mirai:at:{fromQQ}]",
                             SetPlayerName(fromGroup, fromQQ, msglist)
-                        };
-                        Robot.SendGroupMessage(fromGroup, lists);
+                        });
                         return;
                     }
                     else if (SendCommand(fromGroup, msglist, fromQQ) == true)

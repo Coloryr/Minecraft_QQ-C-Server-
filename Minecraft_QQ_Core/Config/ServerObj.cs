@@ -51,13 +51,10 @@ namespace Minecraft_QQ_Core.Config
         public bool AutoConnect { get; set; }
         public int AutoConnectTime { get; set; }
         public bool Debug { get; set; }
-        public string Head { get; set; }
-        public string End { get; set; }
         public int Sleep { get; set; }
     }
     public record UserOBJ
     {
-        public bool SendSucceed { get; set; }
         public bool NotSendCommand { get; set; }
     }
     public record LogsOBJ
@@ -78,6 +75,5 @@ namespace Minecraft_QQ_Core.Config
     {
         public string MessageOFF { get; set; }
         public string MessageON { get; set; }
-        public string SucceedMessage { get; set; }
     }
 }
