@@ -17,10 +17,8 @@ namespace Minecraft_QQ_Core.MySocket
     }
     public class MySocketServer
     {
-        public Dictionary<string, MCServerSocket> MCServers = new();
+        public ConcurrentDictionary<string, MCServerSocket> MCServers = new();
         public static byte[] Checkpack = Encoding.UTF8.GetBytes("test");
-
-        public readonly object lock1 = new();
 
         private TcpListener ServerSocket;
         private Thread SendThread;
@@ -119,25 +117,16 @@ namespace Minecraft_QQ_Core.MySocket
         }
         public void Close(string name)
         {
-            lock (lock1)
+            if (MCServers.ContainsKey(name))
             {
-                if (MCServers.ContainsKey(name))
-                {
-                    MCServers[name].Stop();
-                    MCServers.Remove(name);
-                }
+                MCServers[name].Stop();
+                MCServers.TryRemove(name, out var v);
             }
         }
 
         public void Remove(string name)
         {
-            lock (lock1)
-            {
-                if (MCServers.ContainsKey(name))
-                {
-                    MCServers.Remove(name);
-                }
-            }
+            MCServers.TryRemove(name, out var v);
         }
 
         public void Send(TranObj info, List<string> servers = null)
@@ -176,12 +165,12 @@ namespace Minecraft_QQ_Core.MySocket
             if (MCServers.ContainsKey(name))
             {
                 Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开");
-                MCServers[name].Stop();
+                MCServers[name].StopSame();
                 MCServers[name] = receive;
             }
             else
             {
-                MCServers.Add(name, receive);
+                MCServers.TryAdd(name, receive);
             }
         }
         public void ServerStop()

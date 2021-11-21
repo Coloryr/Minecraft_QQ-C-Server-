@@ -15,6 +15,7 @@ namespace Minecraft_QQ_Core.MySocket
         private bool IsRun;
         private bool IsCheck;
         private int count;
+        private bool IsSameStop = false;
 
         private readonly Minecraft_QQ Main;
         private readonly Message Message;
@@ -111,11 +112,22 @@ namespace Minecraft_QQ_Core.MySocket
                         Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
                     Logs.LogError(e);
                     Stop();
-                    Main.Server.Remove(Name);
-                    IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+                    if (!IsSameStop)
+                    {
+                        Main.Server.Remove(Name);
+                        IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+                    }
                     return;
                 }
             }
+        }
+
+        public void StopSame()
+        {
+            IsSameStop = true;
+            IsRun = false;
+            Client.Close();
+            Client.Dispose();
         }
     }
 }

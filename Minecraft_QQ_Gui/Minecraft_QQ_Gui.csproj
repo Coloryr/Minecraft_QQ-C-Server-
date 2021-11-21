@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU</Platforms>
     <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
-    <Version>3.5.2</Version>
+    <Version>3.6.4</Version>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Authors>Coloryr</Authors>
     <Product></Product>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

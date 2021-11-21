@@ -21,7 +21,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 
 2. 安装
 
-> 安装[.Net 5](https://dotnet.microsoft.com/download/dotnet/5.0)  
+> 安装[.Net 6](https://dotnet.microsoft.com/download/dotnet/6.0)  
 > 安装[Java](https://adoptopenjdk.net/)
 
 3. 启动

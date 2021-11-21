@@ -94,17 +94,14 @@ namespace Minecraft_QQ_Gui
                 SocketST.Content = "关闭端口";
                 IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
             }
-            lock (IMinecraft_QQ.Main.Server.lock1)
+            foreach (var item in IMinecraft_QQ.Main.Server.MCServers)
             {
-                foreach (var item in IMinecraft_QQ.Main.Server.MCServers)
-                {
-                    if (item.Value.Client.Connected)
-                        ServerList.Items.Add(new Server
-                        {
-                            Name = item.Key,
-                            Addr = item.Value.Client.Client.RemoteEndPoint.ToString()
-                        });
-                }
+                if (item.Value.Client.Connected)
+                    ServerList.Items.Add(new Server
+                    {
+                        Name = item.Key,
+                        Addr = item.Value.Client.Client.RemoteEndPoint.ToString()
+                    });
             }
         }
         private void InitMessageList()
