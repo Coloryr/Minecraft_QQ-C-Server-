@@ -4,19 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="消息设置" Height="205" Width="315" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico">
+        Title="消息设置" Height="205" Width="315" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
-        <Button Content="保存" Margin="10,140,0,0" HorizontalAlignment="Left" Width="37" Height="15" VerticalAlignment="Top"
-                Foreground="Black" IsDefault="True" Click="Button_Click"/>
+        <Button Content="保存" Margin="10,0,0,10" HorizontalAlignment="Left" Width="37"
+                Foreground="Black" IsDefault="True" Click="Button_Click" Height="15" VerticalAlignment="Bottom"/>
         <Label Content="检测" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Margin="52,11,0,0" TextWrapping="NoWrap" Text="{Binding Server.Name}" Foreground="Black" 
-                 Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
+        <TextBox Margin="52,11,10,0" TextWrapping="NoWrap" Text="{Binding Server.Name}" Foreground="Black" 
+                 Background="#225EBDD3" Height="20" VerticalAlignment="Top"/>
         <Label Content="回复" Margin="10,31,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <TextBox Margin="52,37,0,0" TextWrapping="Wrap" Text="{Binding Server.Addr}" Foreground="Black" Background="#225EBDD3"
-                 AcceptsReturn="True" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="238"/>
+        <TextBox Margin="52,37,10,10" TextWrapping="Wrap" Text="{Binding Server.Addr}" Foreground="Black" Background="#225EBDD3"
+                 AcceptsReturn="True"/>
 
     </Grid>
 </Window>

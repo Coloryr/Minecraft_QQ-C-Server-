@@ -47,7 +47,7 @@ namespace Minecraft_QQ_Core.MySocket
                 {
                     Thread.Sleep(10);
                     count++;
-                    if (Main.MainConfig.链接.检测断开 && count >= 1000)
+                    if (Main.MainConfig.Socket.Check && count >= 1000)
                     {
                         count = 0;
                         Client.GetStream().Write(MySocketServer.Checkpack);
@@ -88,14 +88,14 @@ namespace Minecraft_QQ_Core.MySocket
                         Name = Message.StartCheck(str);
                         if (Name != null)
                         {
-                            if (Main.MainConfig.设置.发送日志到主群)
+                            if (Main.MainConfig.Setting.SendLog)
                             {
-                                Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "已连接");
+                                Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]服务器{Name}已连接");
                             }
-                            Logs.LogOut("[Socket]服务器" + Name + "已连接");
+                            Logs.LogOut($"[Socket]服务器{Name}已连接");
                             IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                         }
-                        else if (Main.MainConfig.设置.发送日志到主群)
+                        else if (Main.MainConfig.Setting.SendLog)
                         {
                             Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器已连接");
                         }
@@ -108,8 +108,8 @@ namespace Minecraft_QQ_Core.MySocket
                 }
                 catch (Exception e)
                 {
-                    if (Main.MainConfig.设置.发送日志到主群)
-                        Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器" + Name + "异常断开");
+                    if (Main.MainConfig.Setting.SendLog)
+                        Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]服务器{Name}异常断开");
                     Logs.LogError(e);
                     Stop();
                     if (!IsSameStop)

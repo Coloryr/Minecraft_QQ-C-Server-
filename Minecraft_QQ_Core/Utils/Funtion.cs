@@ -22,51 +22,51 @@ namespace Minecraft_QQ_Core.Utils
         }
         public static string RemoveColorCodes(string text)
         {
-            if (text.Contains("§") || text.Contains("&"))
+            if (text.Contains('§') || text.Contains('&'))
             {
-                var sb = new StringBuilder(text);
-                sb.Replace("§0", string.Empty);
-                sb.Replace("§1", string.Empty);
-                sb.Replace("§2", string.Empty);
-                sb.Replace("§3", string.Empty);
-                sb.Replace("§4", string.Empty);
-                sb.Replace("§5", string.Empty);
-                sb.Replace("§6", string.Empty);
-                sb.Replace("§7", string.Empty);
-                sb.Replace("§8", string.Empty);
-                sb.Replace("§9", string.Empty);
-                sb.Replace("§a", string.Empty);
-                sb.Replace("§b", string.Empty);
-                sb.Replace("§c", string.Empty);
-                sb.Replace("§d", string.Empty);
-                sb.Replace("§e", string.Empty);
-                sb.Replace("§f", string.Empty);
-                sb.Replace("§r", string.Empty);
-                sb.Replace("§k", string.Empty);
-                sb.Replace("§n", string.Empty);
-                sb.Replace("§m", string.Empty);
-                sb.Replace("§l", string.Empty);
-                sb.Replace("&0", string.Empty);
-                sb.Replace("&1", string.Empty);
-                sb.Replace("&2", string.Empty);
-                sb.Replace("&3", string.Empty);
-                sb.Replace("&4", string.Empty);
-                sb.Replace("&5", string.Empty);
-                sb.Replace("&6", string.Empty);
-                sb.Replace("&7", string.Empty);
-                sb.Replace("&8", string.Empty);
-                sb.Replace("&9", string.Empty);
-                sb.Replace("&a", string.Empty);
-                sb.Replace("&b", string.Empty);
-                sb.Replace("&c", string.Empty);
-                sb.Replace("&d", string.Empty);
-                sb.Replace("&e", string.Empty);
-                sb.Replace("&f", string.Empty);
-                sb.Replace("&r", string.Empty);
-                sb.Replace("&k", string.Empty);
-                sb.Replace("&n", string.Empty);
-                sb.Replace("&m", string.Empty);
-                sb.Replace("&l", string.Empty);
+                var sb = new StringBuilder(text)
+                    .Replace("§0", string.Empty)
+                    .Replace("§1", string.Empty)
+                    .Replace("§2", string.Empty)
+                    .Replace("§3", string.Empty)
+                    .Replace("§4", string.Empty)
+                    .Replace("§5", string.Empty)
+                    .Replace("§6", string.Empty)
+                    .Replace("§7", string.Empty)
+                    .Replace("§8", string.Empty)
+                    .Replace("§9", string.Empty)
+                    .Replace("§a", string.Empty)
+                    .Replace("§b", string.Empty)
+                    .Replace("§c", string.Empty)
+                    .Replace("§d", string.Empty)
+                    .Replace("§e", string.Empty)
+                    .Replace("§f", string.Empty)
+                    .Replace("§r", string.Empty)
+                    .Replace("§k", string.Empty)
+                    .Replace("§n", string.Empty)
+                    .Replace("§m", string.Empty)
+                    .Replace("§l", string.Empty)
+                    .Replace("&0", string.Empty)
+                    .Replace("&1", string.Empty)
+                    .Replace("&2", string.Empty)
+                    .Replace("&3", string.Empty)
+                    .Replace("&4", string.Empty)
+                    .Replace("&5", string.Empty)
+                    .Replace("&6", string.Empty)
+                    .Replace("&7", string.Empty)
+                    .Replace("&8", string.Empty)
+                    .Replace("&9", string.Empty)
+                    .Replace("&a", string.Empty)
+                    .Replace("&b", string.Empty)
+                    .Replace("&c", string.Empty)
+                    .Replace("&d", string.Empty)
+                    .Replace("&e", string.Empty)
+                    .Replace("&f", string.Empty)
+                    .Replace("&r", string.Empty)
+                    .Replace("&k", string.Empty)
+                    .Replace("&n", string.Empty)
+                    .Replace("&m", string.Empty)
+                    .Replace("&l", string.Empty);
                 return sb.ToString();
             }
             else

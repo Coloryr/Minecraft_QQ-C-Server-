@@ -17,13 +17,14 @@ namespace Minecraft_QQ_Core.MySocket
     }
     public class MySocketServer
     {
+        public readonly static byte[] Checkpack = Encoding.UTF8.GetBytes("test");
+
         public ConcurrentDictionary<string, MCServerSocket> MCServers = new();
-        public static byte[] Checkpack = Encoding.UTF8.GetBytes("test");
 
         private TcpListener ServerSocket;
         private Thread SendThread;
 
-        private ConcurrentQueue<TaskObj> sendtask = new();
+        private ConcurrentQueue<TaskObj> Sendtask = new();
 
         public bool Start { get; private set; }
 
@@ -42,7 +43,7 @@ namespace Minecraft_QQ_Core.MySocket
 
         public bool IsReady()
         {
-            return MCServers.Count != 0;
+            return !MCServers.IsEmpty;
         }
 
         public void StartServer()
@@ -50,16 +51,16 @@ namespace Minecraft_QQ_Core.MySocket
             try
             {
                 Logs.LogOut("[Socket]正在启动端口");
-                IPAddress ip = IPAddress.Parse(Main.MainConfig.链接.地址);
-                ServerSocket = new(ip, Main.MainConfig.链接.端口);
+                IPAddress ip = IPAddress.Parse(Main.MainConfig.Socket.IP);
+                ServerSocket = new(ip, Main.MainConfig.Socket.Port);
 
                 ServerSocket.Start();
 
                 SetState(true);
-                if (Main.MainConfig.设置.发送日志到主群)
+                if (Main.MainConfig.Setting.SendLog)
                 {
-                    Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]端口已启动\n" +
-                        "已绑定在：" + Main.MainConfig.链接.地址 + ":" + Main.MainConfig.链接.端口);
+                    Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]端口已启动{Environment.NewLine}" +
+                        $"已绑定在：{Main.MainConfig.Socket.IP}:{Main.MainConfig.Socket.Port}");
                 }
 
                 SendThread = new Thread(SendTask);
@@ -71,10 +72,10 @@ namespace Minecraft_QQ_Core.MySocket
             }
             catch (Exception e)
             {
-                Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]启动失败，请看日志" +
-                    "\n/Minecraft_QQ/logs.log");
+                Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log");
                 Logs.LogError(e);
                 SetState(false);
+                IMinecraft_QQ.ShowMessageCall.Invoke("[Minecraft_QQ]启动失败，请检查设置的端口是否被占用");
             }
         }
 
@@ -82,7 +83,7 @@ namespace Minecraft_QQ_Core.MySocket
         {
             while (Start)
             {
-                if (sendtask.TryDequeue(out var task))
+                if (Sendtask.TryDequeue(out var task))
                 {
                     try
                     {
@@ -97,9 +98,9 @@ namespace Minecraft_QQ_Core.MySocket
                         Close(task.Client.Name);
                         IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                         GC.Collect();
-                        if (MCServers.Count == 0)
+                        if (MCServers.IsEmpty)
                         {
-                            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]连接已断开，无法发送\n" + e.Message);
+                            Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}");
                         }
                     }
                 }
@@ -131,7 +132,7 @@ namespace Minecraft_QQ_Core.MySocket
 
         public void Send(TranObj info, List<string> servers = null)
         {
-            if (MCServers.Count != 0)
+            if (!MCServers.IsEmpty)
             {
                 var data = JsonConvert.SerializeObject(info);
                 if (servers != null)
@@ -154,7 +155,7 @@ namespace Minecraft_QQ_Core.MySocket
         }
         private void SendData(MCServerSocket Client, string data)
         {
-            sendtask.Enqueue(new TaskObj
+            Sendtask.Enqueue(new TaskObj
             {
                 Client = Client,
                 data = data
@@ -175,11 +176,11 @@ namespace Minecraft_QQ_Core.MySocket
         }
         public void ServerStop()
         {
-            Dictionary<string, MCServerSocket> temp = new(MCServers);
-            foreach (MCServerSocket item in temp.Values)
+            foreach (var item in MCServers)
             {
-                item.Stop();
+                item.Value.Stop();
             }
+            MCServers.Clear();
             if (ServerSocket != null)
             {
                 ServerSocket.Stop();

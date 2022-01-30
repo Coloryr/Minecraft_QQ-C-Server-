@@ -47,23 +47,23 @@ namespace Minecraft_QQ_Core.MySocket
                         return;
                     }
 
-                    if (Main.PlayerConfig.禁言列表.Contains(message.player.ToLower()) == true)
+                    if (Main.PlayerConfig.MuteList.Contains(message.player.ToLower()) == true)
                     {
                         return;
                     }
                     if (message.group == DataType.group)
                     {
-                        if (Main.MainConfig.设置.使用昵称发送至群 == true)
+                        if (Main.MainConfig.Setting.SendNickGroup == true)
                         {
                             PlayerObj player = Main.GetPlayer(message.player);
-                            if (player != null && string.IsNullOrWhiteSpace(player.昵称) == false)
+                            if (player != null && string.IsNullOrWhiteSpace(player.Nick) == false)
                             {
-                                message.message = Funtion.ReplaceFirst(message.message, message.player, player.昵称);
+                                message.message = Funtion.ReplaceFirst(message.message, message.player, player.Nick);
                             }
                         }
-                        foreach (var item in Main.GroupConfig.群列表)
+                        foreach (var item in Main.GroupConfig.Groups)
                         {
-                            if (item.Value.开启对话)
+                            if (item.Value.EnableSay)
                             {
                                 Main.SendGroup.AddSend(new()
                                 {
@@ -76,7 +76,7 @@ namespace Minecraft_QQ_Core.MySocket
                     else
                     {
                         long.TryParse(message.group, out long group);
-                        if (Main.GroupConfig.群列表.ContainsKey(group))
+                        if (Main.GroupConfig.Groups.ContainsKey(group))
                         {
                             Main.SendGroup.AddSend(new()
                             {
@@ -93,7 +93,7 @@ namespace Minecraft_QQ_Core.MySocket
                     break;
             }
         }
-        public string StartCheck(string read)
+        public static string StartCheck(string read)
         {
             ReadObj message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(read));
             if (message.data == DataType.start)

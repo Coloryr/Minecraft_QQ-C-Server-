@@ -13,14 +13,14 @@
         <TabControl Margin="0,0,0,0" Background="#00000000">
             <TabItem Header="群设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <ListView Margin="10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                    <ListView Margin="10,10,10,42" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="QQList" >
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding 群号}"/>
-                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding 启用命令}"/>
-                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding 开启对话}"/>
-                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding 主群}"/>
+                                <GridViewColumn Header="群号" Width="120" DisplayMemberBinding="{Binding Group}"/>
+                                <GridViewColumn Header="允许使用指令" Width="130" DisplayMemberBinding="{Binding EnableCommand}"/>
+                                <GridViewColumn Header="开启服务器对话" Width="150" DisplayMemberBinding="{Binding EnableSay}"/>
+                                <GridViewColumn Header="主群日志群" Width="120" DisplayMemberBinding="{Binding IsMain}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
@@ -31,27 +31,28 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
+                    <Label Content="提示：右键界面可以进行操作" Style="{DynamicResource Label}" Margin="10,0,0,10" HorizontalAlignment="Left" Height="28" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="服务器设置" Background="Transparent" Style="{DynamicResource TabItem}">
+            <TabItem Header="启动设置" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <Label Content="地址" Style="{DynamicResource Label}" Margin="10,10,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="45"/>
-                    <TextBox Name="IP" TextWrapping="Wrap" Margin="57,14,0,0" FontSize="16"
-                             Text="{Binding 链接.地址}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
+                    <Label Content="启动地址" Style="{DynamicResource Label}" Margin="10,10,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <TextBox Name="IP" TextWrapping="Wrap" Margin="89,14,0,0" FontSize="16"
+                             Text="{Binding Socket.IP}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
                     <Button x:Name="Local" Content="本地用" Margin="10,45,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="89"/>
                     <Button x:Name="Out" Content="映射用" Margin="129,45,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click_3" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90"/>
-                    <Label Content="端口" Style="{DynamicResource Label}" Margin="10,75,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-                    <TextBox x:Name="Port" TextWrapping="Wrap" Margin="57,78,0,0" FontSize="16" Height="22"
-                             Text="{Binding 链接.端口}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="162"/>
+                    <Label Content="启动端口" Style="{DynamicResource Label}" Margin="10,75,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="Port" TextWrapping="Wrap" Margin="89,78,0,0" FontSize="16" Height="22"
+                             Text="{Binding Socket.Port}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
                     <Label Content="状态：" Style="{DynamicResource Label}" Margin="10,108,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
                     <Label Name="State" Content="未知" Style="{DynamicResource Label}" Margin="63,108,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="156"/>
-                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,342,0,0" IsDefault="True" 
+                    <Button x:Name="SocketST" Content="关闭端口" Margin="10,343,0,0" IsDefault="True" 
                             FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="SocketST_Click" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
                     <CheckBox Content="检测断开" Height="22"
                                 Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="8,142,0,0"
-                                IsChecked="{Binding 链接.检测断开}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+                                IsChecked="{Binding Socket.Check}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                     <ListView Margin="224,10,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
                               Name="ServerList">
                         <ListView.View>
@@ -67,6 +68,8 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
+                    <Label Content="提示：启动地址应是本地IP" Style="{DynamicResource Label}" Margin="10,169,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209"/>
+                    <Label Content="启动端口应是为占用的端口" Style="{DynamicResource Label}" Margin="10,197,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209"/>
                 </Grid>
             </TabItem>
             <TabItem Header="插件配置" Background="Transparent" Style="{DynamicResource TabItem}">
@@ -75,100 +78,131 @@
                         <Grid>
                             <Label Content="检测头" Style="{DynamicResource Label}" Margin="9,3,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,10,0,0" FontSize="16"
-                                     Text="{Binding 检测.检测头}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="153"/>
+                                     Text="{Binding Check.Head}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="153"/>
                             <Label Content="在线人数" Style="{DynamicResource Label}" Margin="1,33,0,0" HorizontalAlignment="Left" Width="74" Height="30" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,39,0,0" FontSize="16"
-                                     Text="{Binding 检测.在线玩家获取}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
+                                     Text="{Binding Check.PlayList}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
                             <Label Content="在线状态" Style="{DynamicResource Label}" Margin="1,63,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,69,5,0" FontSize="16"
-                                     Text="{Binding 检测.服务器在线检测}" Height="22" VerticalAlignment="Top"/>
+                                     Text="{Binding Check.ServerCheck}" Height="22" VerticalAlignment="Top"/>
                             <Label Content="绑定名字" Style="{DynamicResource Label}" Margin="1,92,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,98,5,0" FontSize="16"
-                                     Text="{Binding 检测.玩家设置名字}" Height="22" VerticalAlignment="Top"/>
+                                     Text="{Binding Check.Bind}" Height="22" VerticalAlignment="Top"/>
                             <Label Content="发送消息" Style="{DynamicResource Label}" Margin="1,121,0,0" HorizontalAlignment="Left" Width="74" Height="30" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,127,5,0" FontSize="16"
-                                     Text="{Binding 检测.发送消息至服务器}" Height="22" VerticalAlignment="Top"/>
+                                     Text="{Binding Check.Send}" Height="22" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="管理指令" Margin="255,5,0,0" Foreground="White" BorderBrush="White" Height="269" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
+                    <GroupBox Header="管理指令" Margin="255,5,0,0" Foreground="White" BorderBrush="White" Height="332" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <Label Content="禁言" Style="{DynamicResource Label}" Margin="17,3,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="0,9,5,0" FontSize="16"
-                                     Text="{Binding 管理员.禁言}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Right" Width="152"/>
+                                     Text="{Binding Admin.Mute}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Right" Width="152"/>
                             <Label Content="取消禁言" Style="{DynamicResource Label}" Margin="1,33,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="74"/>
                             <TextBox TextWrapping="Wrap" Margin="80,39,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.取消禁言}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
+                                     Text="{Binding Admin.UnMute}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
                             <Label Content="查询名字" Style="{DynamicResource Label}" Margin="1,63,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="74"/>
                             <TextBox TextWrapping="Wrap" Margin="80,69,0,0" FontSize="16"
-                                     Text="{Binding 管理员.查询绑定名字}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
+                                     Text="{Binding Admin.CheckBind}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
                             <Label Content="重命名" Style="{DynamicResource Label}" Margin="1,92,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,98,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.重命名}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
+                                     Text="{Binding Admin.Rename}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
                             <Label Content="维护切换" Style="{DynamicResource Label}" Margin="1,121,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,126,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.维护模式切换}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
+                                     Text="{Binding Admin.Fix}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
                             <Label Content="重读配置" Style="{DynamicResource Label}" Margin="1,150,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,156,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.重读配置}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
+                                     Text="{Binding Admin.Reload}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
                             <Label Content="设置昵称" Style="{DynamicResource Label}" Margin="1,179,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
                             <TextBox TextWrapping="Wrap" Margin="80,184,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.设置昵称}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
-                            <Label Content="发送QQ号" Style="{DynamicResource Label}" Margin="1,208,0,0" HorizontalAlignment="Left" Width="84" Height="29" VerticalAlignment="Top"/>
-                            <TextBox TextWrapping="Wrap" Margin="90,214,0,0" FontSize="16" Height="22"
-                                     Text="{Binding 管理员.发送绑定信息QQ号}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="142"/>
+                                     Text="{Binding Admin.Nick}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
+                            <Label Content="反馈Q号" Style="{DynamicResource Label}" Margin="2,266,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top"/>
+                            <TextBox TextWrapping="Wrap" Margin="80,270,0,0" FontSize="16" Height="22"
+                                     Text="{Binding Admin.SendQQ}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="152"/>
+                            <Label Content="禁绑列表" Style="{DynamicResource Label}" Margin="0,208,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
+                            <Label Content="禁言列表" Style="{DynamicResource Label}" Margin="0,237,0,0" HorizontalAlignment="Left" Width="74" Height="29" VerticalAlignment="Top"/>
+                            <TextBox TextWrapping="Wrap" Margin="80,212,0,0" FontSize="16" Height="22"
+                                Text="{Binding Admin.GetCantBindList}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
+                            <TextBox TextWrapping="Wrap" Margin="80,240,0,0" FontSize="16" Height="22"
+                                Text="{Binding Admin.GetMuteList}" HorizontalAlignment="Left" Width="152" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="选择设置" Margin="9,192,0,0" Foreground="White" BorderBrush="White" Height="193" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <CheckBox Content="自动应答" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,4,0,0"
-                                      IsChecked="{Binding 设置.自动应答开关}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+                                      IsChecked="{Binding Setting.AskEnable}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                             <CheckBox Content="颜色代码" Height="22" 
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,29,0,0"
-                                      IsChecked="{Binding 设置.颜色代码开关}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+                                      IsChecked="{Binding Setting.ColorEnable}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                             <CheckBox Content="维护模式" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,54,0,0"
-                                      IsChecked="{Binding 设置.维护模式}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+                                      IsChecked="{Binding Setting.FixMode}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                             <CheckBox Content="始终发送消息" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,79,0,0"
-                                      IsChecked="{Binding 设置.始终发送消息}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+                                      IsChecked="{Binding Setting.AutoSend}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
                             <CheckBox Content="昵称发送至服务器" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,4,0,0"
-                                      IsChecked="{Binding 设置.使用昵称发送至服务器}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
+                                      IsChecked="{Binding Setting.SendNickServer}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
                             <CheckBox Content="昵称发送至群" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,29,0,0"
-                                      IsChecked="{Binding 设置.使用昵称发送至群}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
+                                      IsChecked="{Binding Setting.SendNickGroup}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
                             <CheckBox Content="可以绑定名字" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,54,0,0"
-                                      IsChecked="{Binding 设置.可以绑定名字}" HorizontalAlignment="Right" Width="148" VerticalAlignment="Top"/>
+                                      IsChecked="{Binding Setting.CanBind}" HorizontalAlignment="Right" Width="148" VerticalAlignment="Top"/>
                             <CheckBox Content="发送日志到主群" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,79,0,0"
-                                      IsChecked="{Binding 设置.发送日志到主群}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
-                            <CheckBox Content="不发送指令到服务器" Height="22"
+                                      IsChecked="{Binding Setting.SendLog}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148"/>
+                            <CheckBox Content="发送指令到服务器" Height="22"
                                       Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="2,104,0,0"
-                                      IsChecked="{Binding 设置.不发送指令到服务器}" VerticalAlignment="Top"/>
+                                      IsChecked="{Binding Setting.SendCommand}" VerticalAlignment="Top"/>
                             <Label Content="发送消息间隔" Style="{DynamicResource Label}" Margin="2,128,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="106"/>
                             <TextBox TextWrapping="Wrap" Margin="112,134,0,0" FontSize="16"
-                                     Text="{Binding 设置.发送群消息间隔}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
+                                     Text="{Binding Setting.SendDelay}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="机器人设定" Margin="501,5,0,0" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="241">
                         <Grid>
                             <Label Content="地址" Style="{DynamicResource Label}" Margin="2,0,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                             <TextBox TextWrapping="Wrap" Margin="49,4,0,0" FontSize="16"
-                                     Text="{Binding 机器人设置.地址}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99"/>
+                                     Text="{Binding RobotSetting.IP}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99"/>
                             <Label Content="端口" Style="{DynamicResource Label}" Margin="2,29,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                             <TextBox TextWrapping="Wrap" Margin="49,32,0,0" FontSize="16"
-                                Text="{Binding 机器人设置.端口}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
+                                Text="{Binding RobotSetting.Port}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
                             <Label Content="延迟" Style="{DynamicResource Label}" Margin="120,28,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                             <TextBox TextWrapping="Wrap" Margin="167,32,0,0" FontSize="16"
-                                Text="{Binding 机器人设置.自动重连延迟}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65"/>
+                                Text="{Binding RobotSetting.CheckDelay}" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65"/>
                             <CheckBox Content="检测断开" Height="22"
                                 Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="0,4,2,0"
-                                IsChecked="{Binding 机器人设置.检查是否断开}" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                IsChecked="{Binding RobotSetting.Check}" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                             <Label Content="账户" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top" Margin="2,58,0,0"/>
-                            <TextBox x:Name="QQ" TextWrapping="Wrap" Margin="0,61,0,0" FontSize="16" Height="22"
-                             Text="{Binding 机器人设置.QQ机器人账户}" VerticalAlignment="Top" HorizontalAlignment="Center" Width="228"/>
+                            <TextBox x:Name="QQ" TextWrapping="Wrap" Margin="49,61,0,0" FontSize="16" Height="22"
+                             Text="{Binding RobotSetting.QQ}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="183"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Mysql设定" Margin="501,128,0,0" HorizontalAlignment="Left" Width="241" Height="234" VerticalAlignment="Top">
+                        <Grid>
+                            <Label Content="地址" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
+                            <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="47,3,0,0" FontSize="16" Height="22"
+                                Text="{Binding Database.IP}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="185"/>
+                            <Label Content="端口" Style="{DynamicResource Label}" Margin="0,28,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
+                            <TextBox x:Name="MysqlPort" TextWrapping="Wrap" Margin="47,31,0,0" FontSize="16"
+                                Text="{Binding Database.Port}" HorizontalAlignment="Left" Width="185" Height="22" VerticalAlignment="Top"/>
+                            <Label Content="用户" Style="{DynamicResource Label}" Margin="0,56,0,0" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
+                            <TextBox x:Name="MysqlUser" TextWrapping="Wrap" Margin="47,59,0,0" FontSize="16" Height="22"
+                                Text="{Binding Database.User}" HorizontalAlignment="Left" Width="185" VerticalAlignment="Top"/>
+                            <Label Content="密码" Style="{DynamicResource Label}" Margin="0,84,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
+                            <PasswordBox x:Name="MysqlPassword" Margin="47,87,0,0" FontSize="16" PasswordChanged="MysqlPassword_PasswordChanged"
+                                HorizontalAlignment="Left" Width="185" Height="22" VerticalAlignment="Top"/>
+                            <Label Content="数据库" Style="{DynamicResource Label}" Margin="0,112,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
+                            <TextBox x:Name="MysqlDataBase" Margin="63,115,0,0" FontSize="16" TextWrapping="Wrap" Text="{Binding Database.Database}" Height="22" HorizontalAlignment="Left" Width="169" VerticalAlignment="Top"/>
+                            <Label Content="状态：" Style="{DynamicResource Label}" Margin="0,140,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
+                            <Label x:Name="MysqlState" Content="未知" Style="{DynamicResource Label}" Margin="58,140,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="174"/>
+                            <Button x:Name="MysqlConnect" Content="连接" Margin="162,173,0,0" IsDefault="True" 
+                                FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click" HorizontalAlignment="Left" Width="70" Height="25" VerticalAlignment="Top"/>
+                            <CheckBox Content="启用" Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="6,173,0,0"
+                                IsChecked="{Binding Database.Enable}" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="64"/>
+
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -179,19 +213,19 @@
                         <Grid>
                             <Label Content="维护提示文本" Style="{DynamicResource Label}" Margin="10,3,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
                             <TextBox TextWrapping="Wrap" Margin="10,37,408,0" FontSize="16"
-                                     Text="{Binding 消息.维护提示文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                                     Text="{Binding Message.FixText}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                             <Label Content="未知指令文本" Style="{DynamicResource Label}" Margin="10,112,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
                             <TextBox TextWrapping="Wrap" Margin="10,146,0,0" FontSize="16"
-                                     Text="{Binding 消息.未知指令文本}" AcceptsReturn="True" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left" Width="385"/>
+                                     Text="{Binding Message.UnknowText}" AcceptsReturn="True" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left" Width="385"/>
                             <Label Content="不能绑定文本" Style="{DynamicResource Label}" Margin="10,221,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="112"/>
                             <TextBox TextWrapping="Wrap" Margin="10,255,0,18" FontSize="16"
-                                     Text="{Binding 消息.不能绑定文本}" AcceptsReturn="True" HorizontalAlignment="Left" Width="385"/>
+                                     Text="{Binding Message.CantBindText}" AcceptsReturn="True" HorizontalAlignment="Left" Width="385"/>
                             <Label Content="没有绑定ID提示" Style="{DynamicResource Label}" Margin="408,3,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="124"/>
                             <TextBox TextWrapping="Wrap" Margin="408,37,10,0" FontSize="16"
-                                Text="{Binding 消息.没有绑定ID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                                Text="{Binding Message.NoneBindID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                             <Label Content="重复绑定ID提示" Style="{DynamicResource Label}" Margin="408,113,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="124"/>
                             <TextBox TextWrapping="Wrap" Margin="408,146,10,0" FontSize="16"
-                                Text="{Binding 消息.重复绑定ID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
+                                Text="{Binding Message.AlreadyBindID}" AcceptsReturn="True" Height="70" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -202,10 +236,10 @@
                         x:Name="PlayerList" HorizontalAlignment="Left" Width="625" Height="393" VerticalAlignment="Center">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="QQ号" Width="170" DisplayMemberBinding="{Binding QQ号}"/>
-                                <GridViewColumn Header="玩家名字" Width="170" DisplayMemberBinding="{Binding 名字}"/>
-                                <GridViewColumn Header="昵称" Width="150" DisplayMemberBinding="{Binding 昵称}"/>
-                                <GridViewColumn Header="管理员" Width="90" DisplayMemberBinding="{Binding 管理员}"/>
+                                <GridViewColumn Header="QQ号" Width="170" DisplayMemberBinding="{Binding QQ}"/>
+                                <GridViewColumn Header="玩家名字" Width="170" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="昵称" Width="150" DisplayMemberBinding="{Binding Nick}"/>
+                                <GridViewColumn Header="管理员" Width="90" DisplayMemberBinding="{Binding IsAdmin}"/>
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
@@ -297,45 +331,20 @@
             </TabItem>
             <TabItem Header="其他" Background="Transparent" Style="{DynamicResource TabItem}">
                 <Grid>
-                    <GroupBox Header="Mysql" Margin="5,5,0,0" HorizontalAlignment="Left" Width="193" Height="398" VerticalAlignment="Top">
-                        <Grid>
-                            <Label Content="地址" Style="{DynamicResource Label}" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
-                            <TextBox x:Name="MysqlIP" TextWrapping="Wrap" Margin="47,5,0,0" FontSize="16" Height="22"
-                             Text="{Binding 数据库.地址}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="137"/>
-                            <Label Content="端口" Style="{DynamicResource Label}" Margin="0,33,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-                            <TextBox x:Name="MysqlPort" TextWrapping="Wrap" Margin="47,38,0,0" FontSize="16"
-                             Text="{Binding 数据库.端口}" HorizontalAlignment="Left" Width="137" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="用户" Style="{DynamicResource Label}" Margin="0,66,0,0" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
-                            <TextBox x:Name="MysqlUser" TextWrapping="Wrap" Margin="47,71,0,0" FontSize="16" Height="22"
-                             Text="{Binding 数据库.用户名}" HorizontalAlignment="Left" Width="137" VerticalAlignment="Top"/>
-                            <Label Content="密码" Style="{DynamicResource Label}" Margin="0,99,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-                            <PasswordBox x:Name="MysqlPassword" Margin="47,104,0,0" FontSize="16" PasswordChanged="MysqlPassword_PasswordChanged"
-                                 HorizontalAlignment="Left" Width="137" Height="22" VerticalAlignment="Top"/>
-                            <Label Content="数据库" Style="{DynamicResource Label}" Margin="0,132,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
-                            <TextBox x:Name="MysqlDataBase" Margin="63,137,0,0" FontSize="16" TextWrapping="Wrap" Text="{Binding 数据库.数据库}" Height="22" HorizontalAlignment="Left" Width="121" VerticalAlignment="Top"/>
-                            <Label Content="状态：" Style="{DynamicResource Label}" Margin="0,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"/>
-                            <Label x:Name="MysqlState" Content="未知" Style="{DynamicResource Label}" Margin="58,165,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="126"/>
-                            <Button x:Name="MysqlConnect" Content="连接" Margin="114,195,0,0" IsDefault="True" 
-                            FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="MysqlConnect_Click" HorizontalAlignment="Left" Width="70" Height="25" VerticalAlignment="Top"/>
-                            <CheckBox Content="启用" Style="{DynamicResource Check}" FontSize="16" Foreground="White" Margin="5,198,0,0"
-                              IsChecked="{Binding 数据库.是否启用}" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="64"/>
-
-                        </Grid>
-                    </GroupBox>
-                    <GroupBox Header="日志" Margin="203,5,0,0" HorizontalAlignment="Left" Width="614" Height="398" VerticalAlignment="Top">
+                    <GroupBox Header="日志" Margin="10,10,10,10" Background="Transparent" >
                         <ScrollViewer Style="{StaticResource ScrollViewer}">
                             <TextBox x:Name="log" IsReadOnly="True" TextWrapping="Wrap" MinHeight="344" AcceptsReturn="True"/>
                         </ScrollViewer>
                     </GroupBox>
-
+                    <Button Content="清理" Margin="0,12,12,0" IsDefault="True"
+                            FontSize="16" Foreground="White" HorizontalAlignment="Right" Width="64" Height="24" 
+                            VerticalAlignment="Top" Click="Button_Click_2"/>
                 </Grid>
             </TabItem>
         </TabControl>
         <Button Content="保存" Margin="0,5,10,0" IsDefault="True"
-                FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Click" HorizontalAlignment="Right" Width="66" Height="29" VerticalAlignment="Top"/>
+                FontSize="16" Foreground="White" Click="Click" HorizontalAlignment="Right" Width="66" Height="29" VerticalAlignment="Top"/>
         <Button Content="重载" Margin="0,5,81,0" IsDefault="True"
-                FontSize="16" Foreground="White" RenderTransformOrigin="0.5,0.5" Click="Button_Click" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
-
-
+                FontSize="16" Foreground="White" Click="Button_Click" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
     </Grid>
 </Window>

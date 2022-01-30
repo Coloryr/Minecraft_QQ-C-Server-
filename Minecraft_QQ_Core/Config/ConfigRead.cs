@@ -17,36 +17,36 @@ namespace Minecraft_QQ_Core.Config
             try
             {
                 MainConfig config = JsonConvert.DeserializeObject<MainConfig>
-                    (File.ReadAllText(ConfigFile.主要配置文件.FullName));
+                    (File.ReadAllText(ConfigFile.MainConfig.FullName));
                 bool save = false;
-                if (config.数据库 == null)
+                if (config.Database == null)
                 {
-                    config.数据库 = new();
+                    config.Database = new();
                     save = true;
                 }
-                if (config.检测 == null)
+                if (config.Check == null)
                 {
-                    config.检测 = new();
+                    config.Check = new();
                     save = true;
                 }
-                if (config.消息 == null)
+                if (config.Message == null)
                 {
-                    config.消息 = new();
+                    config.Message = new();
                     save = true;
                 }
-                if (config.管理员 == null)
+                if (config.Admin == null)
                 {
-                    config.管理员 = new();
+                    config.Admin = new();
                     save = true;
                 }
-                if (config.设置 == null)
+                if (config.Setting == null)
                 {
-                    config.设置 = new();
+                    config.Setting = new();
                     save = true;
                 }
-                if (config.链接 == null)
+                if (config.Socket == null)
                 {
-                    config.链接 = new();
+                    config.Socket = new();
                     save = true;
                 }
                 if (save)
@@ -69,21 +69,21 @@ namespace Minecraft_QQ_Core.Config
             try
             {
                 PlayerConfig config = JsonConvert.DeserializeObject<PlayerConfig>
-                    (File.ReadAllText(ConfigFile.玩家储存.FullName));
+                    (File.ReadAllText(ConfigFile.PlayerSave.FullName));
                 bool save = false;
-                if (config.玩家列表 == null)
+                if (config.PlayerList == null)
                 {
-                    config.玩家列表 = new();
+                    config.PlayerList = new();
                     save = true;
                 }
-                if (config.禁止绑定列表 == null)
+                if (config.NotBindList == null)
                 {
-                    config.禁止绑定列表 = new() { "Color_yr" };
+                    config.NotBindList = new();
                     save = true;
                 }
-                if (config.禁言列表 == null)
+                if (config.MuteList == null)
                 {
-                    config.禁言列表 = new();
+                    config.MuteList = new();
                     save = true;
                 }
                 if (save)
@@ -106,16 +106,16 @@ namespace Minecraft_QQ_Core.Config
             try
             {
                 GroupConfig config = JsonConvert.DeserializeObject<GroupConfig>
-                    (File.ReadAllText(ConfigFile.群设置.FullName));
-                if (config.群列表 == null)
+                    (File.ReadAllText(ConfigFile.GroupConfig.FullName));
+                if (config.Groups == null)
                 {
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Group.json配置文件读取发送错误，已经重写");
-                    config.群列表 = new();
+                    config.Groups = new();
                     ConfigWrite.Group();
                 }
-                foreach (var item in config.群列表)
+                foreach (var item in config.Groups)
                 {
-                    if (item.Value.主群 == true)
+                    if (item.Value.IsMain == true)
                     {
                         IMinecraft_QQ.Main.GroupSetMain = item.Key;
                         break;
@@ -136,22 +136,22 @@ namespace Minecraft_QQ_Core.Config
             try
             {
                 AskConfig config = JsonConvert.DeserializeObject<AskConfig>
-                    (File.ReadAllText(ConfigFile.自动应答.FullName));
+                    (File.ReadAllText(ConfigFile.AskConfig.FullName));
 
-                if (config.自动应答列表 == null)
+                if (config.AskList == null)
                 {
-                    config.自动应答列表 = new Dictionary<string, string>()
+                    config.AskList = new Dictionary<string, string>()
                     {
                         {
                             "服务器菜单",
-                            "服务器查询菜单：\r\n" +
-                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
-                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +
-                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.服务器在线检测}】可以查询服务器是否在运行。\r\n" +
-                            $"【{IMinecraft_QQ.Main.MainConfig.检测.检测头}{IMinecraft_QQ.Main.MainConfig.检测.发送消息至服务器} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
+                            $"服务器查询菜单：{Environment.NewLine}" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                            $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                     };
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Ask.json配置文件读取发送错误，已经重写");
-                    File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
+                    File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
                 return config;
             }
@@ -168,68 +168,68 @@ namespace Minecraft_QQ_Core.Config
             try
             {
                 CommandConfig config = JsonConvert.DeserializeObject<CommandConfig>
-                    (File.ReadAllText(ConfigFile.自定义指令.FullName));
-                if (config.命令列表 == null)
+                    (File.ReadAllText(ConfigFile.CommandSave.FullName));
+                if (config.CommandList == null)
                 {
-                    config.命令列表 = new()
+                    config.CommandList = new()
                     {
                         {
                             "插件帮助",
                             new()
                             {
-                                命令 = "qq help",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "qq help",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "查钱",
                             new()
                             {
-                                命令 = "money {arg:name}",
-                                玩家使用 = true,
-                                玩家发送 = false
+                                Command = "money {arg:name}",
+                                PlayerUse = true,
+                                PlayerSend = false
                             }
                         },
                         {
                             "禁言",
                             new()
                             {
-                                命令 = "mute {arg1}",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "mute {arg1}",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "传送",
                             new()
                             {
-                                命令 = "tpa {arg:at}",
-                                玩家使用 = true,
-                                玩家发送 = false
+                                Command = "tpa {arg:at}",
+                                PlayerUse = true,
+                                PlayerSend = false
                             }
                         },
                         {
                             "给权限",
                             new()
                             {
-                                命令 = "lp user {arg:at} permission set {arg1} true",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "lp user {arg:at} permission set {arg1} true",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "说话",
                             new()
                             {
-                                命令 = "say {argx}",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "say {argx}",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         }
                     };
                     IMinecraft_QQ.ShowMessageCall?.Invoke("Command.json配置文件读取发送错误，已经重写");
-                    File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
+                    File.WriteAllText(ConfigFile.CommandSave.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
                 return config;
             }

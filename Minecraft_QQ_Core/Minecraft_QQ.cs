@@ -78,8 +78,8 @@ namespace Minecraft_QQ_Core
         /// <returns>玩家信息</returns>
         public PlayerObj GetPlayer(long qq)
         {
-            if (PlayerConfig.玩家列表.ContainsKey(qq) == true)
-                return PlayerConfig.玩家列表[qq];
+            if (PlayerConfig.PlayerList.ContainsKey(qq) == true)
+                return PlayerConfig.PlayerList[qq];
             return null;
         }
         /// <summary>
@@ -89,12 +89,12 @@ namespace Minecraft_QQ_Core
         /// <returns>玩家信息</returns>
         public PlayerObj GetPlayer(string id)
         {
-            var valueCol = PlayerConfig.玩家列表.Values;
+            var valueCol = PlayerConfig.PlayerList.Values;
             foreach (PlayerObj value in valueCol)
             {
-                if (value == null || value.名字 == null)
+                if (value == null || value.Name == null)
                     return null;
-                if (value.名字.ToLower() == id.ToLower())
+                if (value.Name.ToLower() == id.ToLower())
                     return value;
             }
             return null;
@@ -123,20 +123,20 @@ namespace Minecraft_QQ_Core
         /// <param name="nick">昵称</param>
         public void SetNick(long qq, string nick)
         {
-            if (PlayerConfig.玩家列表.ContainsKey(qq) == true)
+            if (PlayerConfig.PlayerList.ContainsKey(qq) == true)
             {
-                PlayerConfig.玩家列表[qq].昵称 = nick;
+                PlayerConfig.PlayerList[qq].Nick = nick;
                 if (MysqlOK == true)
-                    Task.Run(() => Mysql.AddPlayerAsync(PlayerConfig.玩家列表[qq]));
+                    Task.Run(() => Mysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
                 else
                     ConfigWrite.Player();
             }
             else
             {
-                PlayerConfig.玩家列表.Add(qq, new()
+                PlayerConfig.PlayerList.Add(qq, new()
                 {
-                    QQ号 = qq,
-                    昵称 = nick
+                    QQ = qq,
+                    Nick = nick
                 });
                 ConfigWrite.Player();
             }
@@ -146,14 +146,14 @@ namespace Minecraft_QQ_Core
             if (msg.Count != 3)
                 return "错误的参数";
             string data = msg[1];
-            if (data.IndexOf(MainConfig.检测.检测头) == 0)
-                data = data.Replace(MainConfig.检测.检测头, null);
-            if (MainConfig.设置.可以绑定名字 == false)
-                return MainConfig.消息.不能绑定文本;
+            if (data.IndexOf(MainConfig.Check.Head) == 0)
+                data = data.Replace(MainConfig.Check.Head, null);
+            if (MainConfig.Setting.CanBind == false)
+                return MainConfig.Message.CantBindText;
             var player = GetPlayer(fromQQ);
-            if (player == null || string.IsNullOrWhiteSpace(player.名字) == true)
+            if (player == null || string.IsNullOrWhiteSpace(player.Name) == true)
             {
-                string player_name = data.Replace(MainConfig.检测.玩家设置名字, "");
+                string player_name = data.Replace(MainConfig.Check.Bind, "");
                 string check = player_name.Trim();
                 if (string.IsNullOrWhiteSpace(player_name) ||
                     check.StartsWith("id:") || check.StartsWith("id：") ||
@@ -163,32 +163,32 @@ namespace Minecraft_QQ_Core
                 {
                     player_name = player_name.Trim();
 
-                    if (PlayerConfig.禁止绑定列表.Contains(player_name.ToLower()) == true)
+                    if (PlayerConfig.NotBindList.Contains(player_name.ToLower()) == true)
                         return $"禁止绑定ID：[{player_name}]";
                     else if (GetPlayer(player_name) != null)
                         return $"ID：[{player_name}]已经被绑定过了";
-                    if (PlayerConfig.玩家列表.ContainsKey(fromQQ) == true)
+                    if (PlayerConfig.PlayerList.ContainsKey(fromQQ) == true)
                     {
-                        player = PlayerConfig.玩家列表[fromQQ];
-                        PlayerConfig.玩家列表.Remove(fromQQ);
+                        player = PlayerConfig.PlayerList[fromQQ];
+                        PlayerConfig.PlayerList.Remove(fromQQ);
                     }
                     else
                         player = new PlayerObj();
-                    player.名字 = player_name;
-                    player.QQ号 = fromQQ;
-                    PlayerConfig.玩家列表.Add(fromQQ, player);
+                    player.Name = player_name;
+                    player.QQ = fromQQ;
+                    PlayerConfig.PlayerList.Add(fromQQ, player);
                     if (MysqlOK == true)
                         Task.Run(() => Mysql.AddPlayerAsync(player));
                     else
                         ConfigWrite.Player();
-                    if (MainConfig.管理员.发送绑定信息QQ号 != 0)
-                        Robot.SendGroupPrivateMessage(group, MainConfig.管理员.发送绑定信息QQ号, $"玩家[{fromQQ}]绑定了ID：[{player_name}]");
+                    if (MainConfig.Admin.SendQQ != 0)
+                        Robot.SendGroupPrivateMessage(group, MainConfig.Admin.SendQQ, $"玩家[{fromQQ}]绑定了ID：[{player_name}]");
                     IMinecraft_QQ.GuiCall?.Invoke(GuiFun.PlayerList);
                     return $"绑定ID：[{player_name}]成功！";
                 }
             }
             else
-                return MainConfig.消息.重复绑定ID;
+                return MainConfig.Message.AlreadyBindID;
         }
         /// <summary>
         /// 设置玩家ID，如果存在直接修改，不存在创建
@@ -200,12 +200,12 @@ namespace Minecraft_QQ_Core
             var player = GetPlayer(qq);
             if (player == null)
                 player = new();
-            player.名字 = name;
-            player.QQ号 = qq;
-            if (PlayerConfig.玩家列表.ContainsKey(qq))
-                PlayerConfig.玩家列表[qq] = player;
+            player.Name = name;
+            player.QQ = qq;
+            if (PlayerConfig.PlayerList.ContainsKey(qq))
+                PlayerConfig.PlayerList[qq] = player;
             else
-                PlayerConfig.玩家列表.Add(qq, player);
+                PlayerConfig.PlayerList.Add(qq, player);
             if (MysqlOK == true)
                 Task.Run(() => Mysql.AddPlayerAsync(player));
             else
@@ -225,12 +225,12 @@ namespace Minecraft_QQ_Core
                 var player = GetPlayer(qq);
                 if (player == null)
                     return $"玩家[{qq}]未绑定ID";
-                name = player.名字;
+                name = player.Name;
             }
             else
             {
-                name = msg[2].Replace(MainConfig.管理员.禁言, "").Trim();
-                name = Funtion.ReplaceFirst(name, MainConfig.检测.检测头, "");
+                name = msg[2].Replace(MainConfig.Admin.Mute, "").Trim();
+                name = Funtion.ReplaceFirst(name, MainConfig.Check.Head, "");
             }
             MutePlayer(name);
             return $"已禁言：[{name}]";
@@ -242,9 +242,9 @@ namespace Minecraft_QQ_Core
         public void MutePlayer(long qq)
         {
             var player = GetPlayer(qq);
-            if (player != null && !string.IsNullOrWhiteSpace(player.名字))
+            if (player != null && !string.IsNullOrWhiteSpace(player.Name))
             {
-                MutePlayer(player.名字);
+                MutePlayer(player.Name);
             }
         }
         /// <summary>
@@ -253,8 +253,8 @@ namespace Minecraft_QQ_Core
         /// <param name="name">名字</param>
         public void MutePlayer(string name)
         {
-            if (PlayerConfig.禁言列表.Contains(name.ToLower()) == false)
-                PlayerConfig.禁言列表.Add(name.ToLower());
+            if (PlayerConfig.MuteList.Contains(name.ToLower()) == false)
+                PlayerConfig.MuteList.Add(name.ToLower());
             if (MysqlOK == true)
                 Task.Run(() => Mysql.AddMuteAsync(name.ToLower()));
             else
@@ -274,12 +274,12 @@ namespace Minecraft_QQ_Core
                 var player = GetPlayer(qq);
                 if (player == null)
                     return $"玩家[{qq}]未绑定ID";
-                name = player.名字;
+                name = player.Name;
             }
             else
             {
-                name = msg[2].Replace(MainConfig.管理员.禁言, "").Trim();
-                name = Funtion.ReplaceFirst(name, MainConfig.检测.检测头, "");
+                name = msg[2].Replace(MainConfig.Admin.Mute, "").Trim();
+                name = Funtion.ReplaceFirst(name, MainConfig.Check.Head, "");
             }
             UnmutePlayer(name);
             return $"已解禁：[{name}]";
@@ -291,9 +291,9 @@ namespace Minecraft_QQ_Core
         public void UnmutePlayer(long qq)
         {
             var player = GetPlayer(qq);
-            if (player != null && !string.IsNullOrWhiteSpace(player.名字))
+            if (player != null && !string.IsNullOrWhiteSpace(player.Name))
             {
-                UnmutePlayer(player.名字);
+                UnmutePlayer(player.Name);
             }
         }
         /// <summary>
@@ -302,8 +302,8 @@ namespace Minecraft_QQ_Core
         /// <param name="name">玩家ID</param>
         public void UnmutePlayer(string name)
         {
-            if (PlayerConfig.禁言列表.Contains(name.ToLower()) == true)
-                PlayerConfig.禁言列表.Remove(name.ToLower());
+            if (PlayerConfig.MuteList.Contains(name.ToLower()) == true)
+                PlayerConfig.MuteList.Remove(name.ToLower());
             if (MysqlOK == true)
                 Task.Run(() => Mysql.DeleteMuteAsync(name));
             else
@@ -323,11 +323,11 @@ namespace Minecraft_QQ_Core
                 if (player == null)
                     return $"玩家[{qq}]未绑定ID";
                 else
-                    return $"玩家[{qq}]绑定的ID为：" + player.名字;
+                    return $"玩家[{qq}]绑定的ID为：" + player.Name;
             }
             else if (msg.Count == 3)
             {
-                string data = msg[2].Replace(MainConfig.管理员.查询绑定名字, "");
+                string data = msg[2].Replace(MainConfig.Admin.CheckBind, "");
                 if (long.TryParse(data.Remove(0, 1), out long qq) == false)
                 {
                     return "无效的QQ号";
@@ -336,7 +336,7 @@ namespace Minecraft_QQ_Core
                 if (player == null)
                     return $"玩家[{qq}]未绑定ID";
                 else
-                    return $"玩家[{qq}]绑定的ID为：" + player.名字;
+                    return $"玩家[{qq}]绑定的ID为：" + player.Name;
             }
             else
             {
@@ -362,28 +362,28 @@ namespace Minecraft_QQ_Core
         }
         private string GetMuteList()
         {
-            if (PlayerConfig.禁言列表.Count == 0)
+            if (PlayerConfig.MuteList.Count == 0)
                 return "没有禁言的玩家";
             else
             {
                 string a = "禁言的玩家：";
-                foreach (string name in PlayerConfig.禁言列表)
+                foreach (string name in PlayerConfig.MuteList)
                 {
-                    a += "\n" + name;
+                    a += Environment.NewLine + name;
                 }
                 return a;
             }
         }
         private string GetCantBind()
         {
-            if (PlayerConfig.禁止绑定列表.Count == 0)
+            if (PlayerConfig.NotBindList.Count == 0)
                 return "没有禁止绑定的ID";
             else
             {
                 string a = "禁止绑定的ID：";
-                foreach (string name in PlayerConfig.禁止绑定列表)
+                foreach (string name in PlayerConfig.NotBindList)
                 {
-                    a += "\n" + name;
+                    a += Environment.NewLine + name;
                 }
                 return a;
             }
@@ -394,19 +394,19 @@ namespace Minecraft_QQ_Core
         /// <param name="open">状态</param>
         public void FixModeChange(bool open)
         {
-            MainConfig.设置.维护模式 = open;
+            MainConfig.Setting.FixMode = open;
         }
         private string FixModeChange()
         {
             string text;
-            if (MainConfig.设置.维护模式 == false)
+            if (MainConfig.Setting.FixMode == false)
             {
-                MainConfig.设置.维护模式 = true;
+                MainConfig.Setting.FixMode = true;
                 text = "服务器维护模式已开启";
             }
             else
             {
-                MainConfig.设置.维护模式 = false;
+                MainConfig.Setting.FixMode = false;
                 text = "服务器维护模式已关闭";
             }
             ConfigWrite.Config();
@@ -415,7 +415,7 @@ namespace Minecraft_QQ_Core
         }
         private string GetOnlinePlayer(long fromGroup)
         {
-            if (MainConfig.设置.维护模式 == false)
+            if (MainConfig.Setting.FixMode == false)
             {
                 if (Server.IsReady() == true)
                 {
@@ -431,11 +431,11 @@ namespace Minecraft_QQ_Core
                     return "发送失败，服务器未准备好";
             }
             else
-                return MainConfig.消息.维护提示文本;
+                return MainConfig.Message.FixText;
         }
         private string GetOnlineServer(long fromGroup)
         {
-            if (MainConfig.设置.维护模式 == false)
+            if (MainConfig.Setting.FixMode == false)
             {
                 if (Server.IsReady() == true)
                 {
@@ -450,14 +450,14 @@ namespace Minecraft_QQ_Core
                     return "发送失败，服务器未准备好";
             }
             else
-                return MainConfig.消息.维护提示文本;
+                return MainConfig.Message.FixText;
         }
         private bool SendCommand(long fromGroup, List<string> msg, long fromQQ)
         {
-            foreach (var item in CommandConfig.命令列表)
+            foreach (var item in CommandConfig.CommandList)
             {
                 string head = msg[1];
-                head = Funtion.ReplaceFirst(head, MainConfig.检测.检测头, "");
+                head = Funtion.ReplaceFirst(head, MainConfig.Check.Head, "");
                 if (head.StartsWith(item.Key))
                 {
                     if (!Server.IsReady())
@@ -471,10 +471,10 @@ namespace Minecraft_QQ_Core
                     }
                     bool haveserver = false;
                     List<string> servers = null;
-                    if (item.Value.服务器使用 != null && item.Value.服务器使用.Count != 0)
+                    if (item.Value.Servers != null && item.Value.Servers.Count != 0)
                     {
                         servers = new();
-                        foreach (var item1 in item.Value.服务器使用)
+                        foreach (var item1 in item.Value.Servers)
                         {
                             if (Server.MCServers.ContainsKey(item1))
                             {
@@ -505,11 +505,11 @@ namespace Minecraft_QQ_Core
                         });
                         return true;
                     }
-                    if (!item.Value.玩家使用 && !player.管理员)
+                    if (!item.Value.PlayerUse && !player.IsAdmin)
                     {
                         return true;
                     }
-                    string cmd = item.Value.命令;
+                    string cmd = item.Value.Command;
                     bool haveAt = false;
                     if (cmd.Contains("{arg:at}") || cmd.Contains("{arg:atqq}"))
                     {
@@ -528,7 +528,7 @@ namespace Minecraft_QQ_Core
                                 return true;
                             }
                             while (cmd.IndexOf("{arg:at}") != -1)
-                                cmd = cmd.Replace("{arg:at}", player1.名字);
+                                cmd = cmd.Replace("{arg:at}", player1.Name);
                             while (cmd.IndexOf("{arg:atqq}") != -1)
                                 cmd = cmd.Replace("{arg:atqq}", $"{qq}");
                             haveAt = true;
@@ -544,9 +544,9 @@ namespace Minecraft_QQ_Core
                         }
                     }
                     while (cmd.IndexOf("{arg:name}") != -1)
-                        cmd = cmd.Replace("{arg:name}", player.名字);
+                        cmd = cmd.Replace("{arg:name}", player.Name);
                     while (cmd.IndexOf("{arg:qq}") != -1)
-                        cmd = cmd.Replace("{arg:qq}", $"{player.QQ号}");
+                        cmd = cmd.Replace("{arg:qq}", $"{player.QQ}");
                     string argStr = "";
                     for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
                     {
@@ -603,7 +603,7 @@ namespace Minecraft_QQ_Core
                         group = fromGroup.ToString(),
                         command = cmd,
                         isCommand = true,
-                        player = item.Value.玩家发送 ? player.名字 : CommderList.COMM
+                        player = item.Value.PlayerSend ? player.Name : CommderList.COMM
                     }, servers);
                     return true;
                 }
@@ -625,27 +625,27 @@ namespace Minecraft_QQ_Core
             {
                 try
                 {
-                    File.WriteAllText(Path + Logs.log, "正在尝试创建日志文件" + Environment.NewLine);
+                    File.WriteAllText(Path + Logs.log, $"正在尝试创建日志文件{Environment.NewLine}");
                 }
                 catch (Exception e)
                 {
-                    IMinecraft_QQ.ShowMessageCall?.Invoke("[Minecraft_QQ]日志文件创建失败\n" + e.ToString());
+                    IMinecraft_QQ.ShowMessageCall?.Invoke($"[Minecraft_QQ]日志文件创建失败{Environment.NewLine}{e}");
                     return false;
                 }
             }
 
-            ConfigFile.主要配置文件 = new FileInfo(Path + "Mainconfig.json");
-            ConfigFile.玩家储存 = new FileInfo(Path + "Player.json");
-            ConfigFile.自动应答 = new FileInfo(Path + "Ask.json");
-            ConfigFile.自定义指令 = new FileInfo(Path + "Command.json");
-            ConfigFile.群设置 = new FileInfo(Path + "Group.json");
+            ConfigFile.MainConfig = new FileInfo(Path + "Mainconfig.json");
+            ConfigFile.PlayerSave = new FileInfo(Path + "Player.json");
+            ConfigFile.AskConfig = new FileInfo(Path + "Ask.json");
+            ConfigFile.CommandSave = new FileInfo(Path + "Command.json");
+            ConfigFile.GroupConfig = new FileInfo(Path + "Group.json");
 
             //读取主配置文件
-            if (ConfigFile.主要配置文件.Exists == false)
+            if (ConfigFile.MainConfig.Exists == false)
             {
                 Logs.LogOut("[Config]新建主配置");
                 MainConfig = new MainConfig();
-                File.WriteAllText(ConfigFile.主要配置文件.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.MainConfig.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
             }
             else
                 MainConfig = ConfigRead.ReadConfig();
@@ -653,62 +653,53 @@ namespace Minecraft_QQ_Core
             ConfigShow.Show(MainConfig);
 
             //读取群设置
-            if (ConfigFile.群设置.Exists == false)
+            if (ConfigFile.GroupConfig.Exists == false)
             {
                 Logs.LogOut("[Config]新建群设置配置");
+                
                 GroupConfig = new GroupConfig()
                 {
-                    群列表 = new Dictionary<long, GroupObj>
-                    {
-                        {
-                            123456789, new GroupObj
-                            {
-                                群号 = "123456789",
-                                主群 = false,
-                                启用命令 = true,
-                                开启对话 = true
-                            }
-                        }
-                    }
+                    Groups = new Dictionary<long, GroupObj>()
                 };
-                File.WriteAllText(ConfigFile.群设置.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
+
+                File.WriteAllText(ConfigFile.GroupConfig.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
             }
             else
                 GroupConfig = ConfigRead.ReadGroup();
 
             //读自动应答消息
-            if (ConfigFile.自动应答.Exists == false)
+            if (ConfigFile.AskConfig.Exists == false)
             {
                 AskConfig = new AskConfig
                 {
-                    自动应答列表 = new Dictionary<string, string>
+                    AskList = new Dictionary<string, string>
                     {
                         {
                             "服务器菜单",
-                            "服务器查询菜单：\r\n" +
-                            $"【{MainConfig.检测.检测头}{MainConfig.检测.玩家设置名字} ID】可以绑定你的游戏ID。\r\n" +
-                            $"【{MainConfig.检测.检测头}{MainConfig.检测.在线玩家获取}】可以查询服务器在线人数。\r\n" +
-                            $"【{MainConfig.检测.检测头}{MainConfig.检测.服务器在线检测}】可以查询服务器是否在运行。\r\n" +
-                            $"【{MainConfig.检测.检测头}{MainConfig.检测.发送消息至服务器} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
+                            $"服务器查询菜单：{Environment.NewLine}" +
+                            $"【{MainConfig.Check.Head}{MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                            $"【{MainConfig.Check.Head}{MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                            $"【{MainConfig.Check.Head}{MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                            $"【{MainConfig.Check.Head}{MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
                         }
                     }
                 };
-                File.WriteAllText(ConfigFile.自动应答.FullName, JsonConvert.SerializeObject(AskConfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(AskConfig, Formatting.Indented));
             }
             else
                 AskConfig = ConfigRead.ReadAsk();
 
             //读取玩家数据
-            if (MainConfig.数据库.是否启用 == true)
+            if (MainConfig.Database.Enable == true)
             {
                 Mysql.MysqlStart();
                 if (MysqlOK == false)
                 {
                     Logs.LogOut("[Mysql]Mysql链接失败");
-                    if (ConfigFile.玩家储存.Exists == false)
+                    if (ConfigFile.PlayerSave.Exists == false)
                     {
                         PlayerConfig = new();
-                        File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
+                        File.WriteAllText(ConfigFile.PlayerSave.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
                     }
                     else
                         PlayerConfig = ConfigRead.ReadPlayer();
@@ -723,144 +714,135 @@ namespace Minecraft_QQ_Core
             }
             else
             {
-                if (ConfigFile.玩家储存.Exists == false)
+                if (ConfigFile.PlayerSave.Exists == false)
                 {
                     Logs.LogOut("[Config]新建玩家信息储存");
                     PlayerConfig = new()
                     {
-                        玩家列表 = new()
+                        PlayerList = new()
                         {
                             {
                                 402067010,
                                 new()
                                 {
-                                    QQ号 = 402067010,
-                                    名字 = "Color_yr",
-                                    昵称 = "Color_yr",
-                                    管理员 = true
+                                    QQ = 402067010,
+                                    Name = "Color_yr",
+                                    Nick = "Color_yr",
+                                    IsAdmin = true
                                 }
                             }
                         },
-                        禁止绑定列表 = new()
+                        NotBindList = new()
                         {
                             "Color_yr",
                             "id"
                         },
-                        禁言列表 = new()
+                        MuteList = new()
                         {
                             "playerid"
                         }
                     };
-                    File.WriteAllText(ConfigFile.玩家储存.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
+                    File.WriteAllText(ConfigFile.PlayerSave.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
                 }
                 else
                     PlayerConfig = ConfigRead.ReadPlayer();
             };
 
             //读取自定义指令
-            if (ConfigFile.自定义指令.Exists == false)
+            if (ConfigFile.CommandSave.Exists == false)
             {
                 CommandConfig = new()
                 {
-                    命令列表 = new()
+                    CommandList = new()
                     {
                         {
                             "插件帮助",
                             new()
                             {
-                                命令 = "qq help",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "qq help",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "查钱",
                             new()
                             {
-                                命令 = "money {arg:name}",
-                                玩家使用 = true,
-                                玩家发送 = false
+                                Command = "money {arg:name}",
+                                PlayerUse = true,
+                                PlayerSend = false
                             }
                         },
                         {
                             "禁言",
                             new()
                             {
-                                命令 = "mute {arg1}",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "mute {arg1}",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "传送",
                             new()
                             {
-                                命令 = "tpa {arg:at}",
-                                玩家使用 = true,
-                                玩家发送 = false
+                                Command = "tpa {arg:at}",
+                                PlayerUse = true,
+                                PlayerSend = false
                             }
                         },
                         {
                             "给权限",
                             new()
                             {
-                                命令 = "lp user {arg:at} permission set {arg1} true",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "lp user {arg:at} permission set {arg1} true",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         },
                         {
                             "说话",
                             new()
                             {
-                                命令 = "say {argx}",
-                                玩家使用 = false,
-                                玩家发送 = false
+                                Command = "say {argx}",
+                                PlayerUse = false,
+                                PlayerSend = false
                             }
                         }
                     }
                 };
                 Logs.LogOut("[Config]新建自定义指令");
-                File.WriteAllText(ConfigFile.自定义指令.FullName, JsonConvert.SerializeObject(CommandConfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.CommandSave.FullName, JsonConvert.SerializeObject(CommandConfig, Formatting.Indented));
             }
             else
                 CommandConfig = ConfigRead.ReadCommand();
 
-            if (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
-                IMinecraft_QQ.IsStop = true;
-
-            IMinecraft_QQ.CanGo = true;
-
-            while (GroupConfig.群列表.Count == 0 || GroupSetMain == 0)
-            {
-                IMinecraft_QQ.ShowMessageCall?.Invoke("请设置QQ群，有且最多一个主群");
-                Thread.Sleep(500);
-                if (!IMinecraft_QQ.IsStop)
-                {
-                    return false;
-                }
-                while (IMinecraft_QQ.Run)
-                {
-                    Thread.Sleep(500);
-                }
-                foreach (var item in GroupConfig.群列表)
-                {
-                    if (item.Value.主群 == true)
-                    {
-                        GroupSetMain = item.Key;
-                        break;
-                    }
-                }
-            }
             return true;
         }
         /// <summary>
         /// 插件启动
         /// </summary>
-        public void Start()
+        public async Task Start()
         {
             if (!Reload())
                 return;
+
+            await Task.Run(() =>
+            {
+                while (GroupConfig.Groups.Count == 0 || GroupSetMain == 0)
+                {
+                    IMinecraft_QQ.ShowMessageCall?.Invoke("请设置QQ群，有且最多一个主群");
+                    IMinecraft_QQ.ConfigInitCall?.Invoke();
+                    foreach (var item in GroupConfig.Groups)
+                    {
+                        if (item.Value.IsMain == true)
+                        {
+                            GroupSetMain = item.Key;
+                            break;
+                        }
+                    }
+                }
+            });
 
             Robot.Start();
             Server.ServerStop();
@@ -891,22 +873,22 @@ namespace Minecraft_QQ_Core
                 return;
             string msg = msglist[msglist.Count - 1];
             Logs.LogOut($"[{fromGroup}][QQ:{fromQQ}]:{msg}");
-            if (GroupConfig.群列表.ContainsKey(fromGroup) == true)
+            if (GroupConfig.Groups.ContainsKey(fromGroup) == true)
             {
-                GroupObj list = GroupConfig.群列表[fromGroup];
+                GroupObj list = GroupConfig.Groups[fromGroup];
                 //始终发送
-                if (MainConfig.设置.始终发送消息 == true && MainConfig.设置.维护模式 == false
-                    && Server.IsReady() == true && list.开启对话 == true)
+                if (MainConfig.Setting.AutoSend == true && MainConfig.Setting.FixMode == false
+                    && Server.IsReady() == true && list.EnableSay == true)
                 {
                     string msg_copy = msg;
-                    if (!MainConfig.设置.不发送指令到服务器 || msg_copy.IndexOf(MainConfig.检测.检测头) != 0)
+                    if (MainConfig.Setting.SendCommand || msg_copy.IndexOf(MainConfig.Check.Head) != 0)
                     {
                         PlayerObj player = GetPlayer(fromQQ);
-                        if (player != null && !PlayerConfig.禁言列表.Contains(player.名字.ToLower())
-                            && !string.IsNullOrWhiteSpace(player.名字))
+                        if (player != null && !PlayerConfig.MuteList.Contains(player.Name.ToLower())
+                            && !string.IsNullOrWhiteSpace(player.Name))
                         {
                             msg_copy = Funtion.GetRich(msg_copy);
-                            if (MainConfig.设置.颜色代码开关 == false)
+                            if (MainConfig.Setting.ColorEnable == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
@@ -914,9 +896,9 @@ namespace Minecraft_QQ_Core
                                 {
                                     group = fromGroup.ToString(),
                                     message = msg_copy,
-                                    player = !MainConfig.设置.使用昵称发送至服务器 ?
-                                    player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
-                                    player.名字 : player.昵称,
+                                    player = !MainConfig.Setting.SendNickServer ?
+                                    player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
+                                    player.Name : player.Nick,
                                     command = CommderList.SPEAK
                                 };
                                 Server.Send(messagelist);
@@ -924,22 +906,22 @@ namespace Minecraft_QQ_Core
                         }
                     }
                 }
-                if (msg.IndexOf(MainConfig.检测.检测头) == 0 && list.启用命令 == true)
+                if (msg.IndexOf(MainConfig.Check.Head) == 0 && list.EnableCommand == true)
                 {
                     //去掉检测头
-                    msg = Funtion.ReplaceFirst(msg, MainConfig.检测.检测头, "");
+                    msg = Funtion.ReplaceFirst(msg, MainConfig.Check.Head, "");
                     string msg_low = msg.ToLower();
                     PlayerObj player = GetPlayer(fromQQ);
-                    if (MainConfig.设置.始终发送消息 == false && msg_low.IndexOf(MainConfig.检测.发送消息至服务器) == 0)
+                    if (MainConfig.Setting.AutoSend == false && msg_low.IndexOf(MainConfig.Check.Send) == 0)
                     {
-                        if (list.开启对话 == false)
+                        if (list.EnableSay == false)
                         {
                             Robot.SendGroupMessage(fromGroup, "该群没有开启聊天功能");
                             return;
                         }
-                        else if (MainConfig.设置.维护模式)
+                        else if (MainConfig.Setting.FixMode)
                         {
-                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.消息.维护提示文本 });
+                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.Message.FixText });
                             return;
                         }
                         else if (Server.IsReady() == false)
@@ -947,12 +929,12 @@ namespace Minecraft_QQ_Core
                             Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", "发送失败，没有服务器链接" });
                             return;
                         }
-                        else if (player == null || string.IsNullOrWhiteSpace(player.名字))
+                        else if (player == null || string.IsNullOrWhiteSpace(player.Name))
                         {
-                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.消息.没有绑定ID });
+                            Robot.SendGroupMessage(fromGroup, new List<string> { $"[mirai:at:{fromQQ}]", MainConfig.Message.NoneBindID });
                             return;
                         }
-                        else if (PlayerConfig.禁言列表.Contains(player.名字.ToLower()))
+                        else if (PlayerConfig.MuteList.Contains(player.Name.ToLower()))
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -964,8 +946,8 @@ namespace Minecraft_QQ_Core
                         try
                         {
                             string msg_copy = msg;
-                            msg_copy = msg_copy.Replace(MainConfig.检测.发送消息至服务器, "");
-                            if (MainConfig.设置.颜色代码开关 == false)
+                            msg_copy = msg_copy.Replace(MainConfig.Check.Send, "");
+                            if (MainConfig.Setting.ColorEnable == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
@@ -973,9 +955,9 @@ namespace Minecraft_QQ_Core
                                 {
                                     group = DataType.group,
                                     message = msg_copy,
-                                    player = !MainConfig.设置.使用昵称发送至服务器 ?
-                                    player.名字 : string.IsNullOrWhiteSpace(player.昵称) ?
-                                    player.名字 : player.昵称,
+                                    player = !MainConfig.Setting.SendNickServer ?
+                                    player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
+                                    player.Name : player.Nick,
                                     command = CommderList.SPEAK
                                 };
                                 Server.Send(messagelist);
@@ -988,9 +970,9 @@ namespace Minecraft_QQ_Core
                             return;
                         }
                     }
-                    else if (player != null && player.管理员 == true)
+                    else if (player != null && player.IsAdmin == true)
                     {
-                        if (msg_low.IndexOf(MainConfig.管理员.禁言) == 0)
+                        if (msg_low.IndexOf(MainConfig.Admin.Mute) == 0)
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -999,7 +981,7 @@ namespace Minecraft_QQ_Core
                             });
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.取消禁言) == 0)
+                        else if (msg_low.IndexOf(MainConfig.Admin.UnMute) == 0)
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -1008,7 +990,7 @@ namespace Minecraft_QQ_Core
                             });
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.查询绑定名字) == 0)
+                        else if (msg_low.IndexOf(MainConfig.Admin.CheckBind) == 0)
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -1017,7 +999,7 @@ namespace Minecraft_QQ_Core
                             });
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.重命名) == 0)
+                        else if (msg_low.IndexOf(MainConfig.Admin.Rename) == 0)
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -1026,7 +1008,7 @@ namespace Minecraft_QQ_Core
                             });
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.维护模式切换)
+                        else if (msg_low == MainConfig.Admin.Fix)
                         {
                             Robot.SendGroupMessage(fromGroup, new List<string>
                             {
@@ -1035,24 +1017,24 @@ namespace Minecraft_QQ_Core
                             });
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.获取禁言列表)
+                        else if (msg_low == MainConfig.Admin.GetMuteList)
                         {
                             Robot.SendGroupMessage(fromGroup, GetMuteList());
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.获取禁止绑定列表)
+                        else if (msg_low == MainConfig.Admin.GetCantBindList)
                         {
                             Robot.SendGroupMessage(fromGroup, GetCantBind());
                             return;
                         }
-                        else if (msg_low == MainConfig.管理员.重读配置)
+                        else if (msg_low == MainConfig.Admin.Reload)
                         {
                             Robot.SendGroupMessage(fromGroup, "开始重读配置文件");
                             Reload();
                             Robot.SendGroupMessage(fromGroup, "重读完成");
                             return;
                         }
-                        else if (msg_low.IndexOf(MainConfig.管理员.设置昵称) == 0)
+                        else if (msg_low.IndexOf(MainConfig.Admin.Nick) == 0)
                         {
                             List<string> lists = new();
                             lists.Add("at:" + fromQQ);
@@ -1061,14 +1043,14 @@ namespace Minecraft_QQ_Core
                             return;
                         }
                     }
-                    if (msg_low == MainConfig.检测.在线玩家获取)
+                    if (msg_low == MainConfig.Check.PlayList)
                     {
                         string test = GetOnlinePlayer(fromGroup);
                         if (test != null)
                             Robot.SendGroupMessage(fromGroup, test);
                         return;
                     }
-                    else if (msg_low == MainConfig.检测.服务器在线检测)
+                    else if (msg_low == MainConfig.Check.ServerCheck)
                     {
                         string test = GetOnlineServer(fromGroup);
                         if (test != null)
@@ -1076,7 +1058,7 @@ namespace Minecraft_QQ_Core
                         return;
                     }
 
-                    else if (msg_low.IndexOf(MainConfig.检测.玩家设置名字) == 0)
+                    else if (msg_low.IndexOf(MainConfig.Check.Bind) == 0)
                     {
                         Robot.SendGroupMessage(fromGroup, new List<string>
                         {
@@ -1088,18 +1070,18 @@ namespace Minecraft_QQ_Core
                     else if (SendCommand(fromGroup, msglist, fromQQ) == true)
                         return;
 
-                    else if (MainConfig.设置.自动应答开关 && AskConfig.自动应答列表.ContainsKey(msg_low) == true)
+                    else if (MainConfig.Setting.AskEnable && AskConfig.AskList.ContainsKey(msg_low) == true)
                     {
-                        string message = AskConfig.自动应答列表[msg_low];
+                        string message = AskConfig.AskList[msg_low];
                         if (string.IsNullOrWhiteSpace(message) == false)
                         {
                             Robot.SendGroupMessage(fromGroup, message);
                             return;
                         }
                     }
-                    else if (string.IsNullOrWhiteSpace(MainConfig.消息.未知指令文本) == false)
+                    else if (string.IsNullOrWhiteSpace(MainConfig.Message.UnknowText) == false)
                     {
-                        Robot.SendGroupMessage(fromGroup, MainConfig.消息.未知指令文本);
+                        Robot.SendGroupMessage(fromGroup, MainConfig.Message.UnknowText);
                         return;
                     }
                 }

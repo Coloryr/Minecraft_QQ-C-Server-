@@ -2,38 +2,50 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Cmd
 {
     class Program
     {
         public const string Version = IMinecraft_QQ.Version;
-        static void Main()
+        static async Task Main()
         {
             Console.WriteLine("正在启动Minecraft_QQ");
-            IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage(Message);
-            IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log(Message);
-            IMinecraft_QQ.Start();
+            IMinecraft_QQ.ShowMessageCall = Message;
+            IMinecraft_QQ.LogCall = Message;
+            IMinecraft_QQ.ConfigInitCall = ConfigInit;
+            await IMinecraft_QQ.Start();
 
-            while (!IMinecraft_QQ.IsStart)
-            {
-                Thread.Sleep(100);
-                if (IMinecraft_QQ.IsStop)
-                {
-                    IMinecraft_QQ.IsStop = false;
-                    Console.WriteLine("请手动设置后重启");
-                    Console.ReadLine();
-                    return;
-                }
-            }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (Environment.UserInteractive)
             {
                 while (true)
                 {
                     string a = Console.ReadLine();
-                    if (a == "stop")
+                    var arg = a.Split(' ');
+                    switch (arg[0])
                     {
-                        IMinecraft_QQ.Stop();
+                        case "help":
+                            Console.WriteLine("帮助手册");
+                            Console.WriteLine("reload 重读配置文件");
+                            Console.WriteLine("stop 关闭");
+                            break;
+                        case "reload":
+                            Console.WriteLine("正在读取配置文件");
+                            var res = IMinecraft_QQ.Main.Reload();
+                            if (res)
+                            {
+                                Console.WriteLine("已成功读取配置文件");
+                            }
+                            else
+                            {
+                                Console.WriteLine("配置文件读取失败");
+                            }
+                            break;
+                        case "stop":
+                            Console.WriteLine("正在关闭");
+                            IMinecraft_QQ.Stop();
+                            return;
                     }
                 }
             }
@@ -41,6 +53,32 @@ namespace Minecraft_QQ_Cmd
         private static void Message(string message)
         {
             Console.WriteLine(message);
+        }
+
+        private static void ConfigInit() 
+        {
+            if (Environment.UserInteractive)
+            {
+                Console.WriteLine("进行初始配置");
+                while (true)
+                {
+                    Console.Write("请输入主群号：");
+                    string a = Console.ReadLine();
+                    if (long.TryParse(a, out var group))
+                    {
+                        group = Math.Abs(group);
+                        IMinecraft_QQ.Main.GroupConfig.Groups.Add(group, new()
+                        {
+                            Group = group.ToString(),
+                            EnableCommand = true,
+                            EnableSay = true,
+                            IsMain = true
+                        });
+                        break;
+                    }
+                    Console.WriteLine("非法输入");
+                }
+            }
         }
     }
 }

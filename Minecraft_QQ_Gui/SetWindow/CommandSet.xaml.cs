@@ -54,7 +54,7 @@ namespace Minecraft_QQ_Gui.SetWindow
                 string new_ = new IDSet(old).Set();
                 if (string.IsNullOrWhiteSpace(new_))
                 {
-                    MessageBox.Show("无效的服务器名");
+                    new MessageWindow("无效的服务器名");
                     return;
                 }
                 Command.ServerS.Remove(old);

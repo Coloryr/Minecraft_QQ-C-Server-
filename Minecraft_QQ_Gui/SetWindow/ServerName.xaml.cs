@@ -16,7 +16,7 @@ namespace Minecraft_QQ_Gui.SetWindow
                 this.Obj = new Server();
             else
                 this.Obj = Obj;
-            DataContext = this.Obj;
+            DataContext = this;
         }
         public Server Set()
         {

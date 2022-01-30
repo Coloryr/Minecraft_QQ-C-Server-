@@ -5,9 +5,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
-    <AssemblyVersion>3.5.0.0</AssemblyVersion>
-    <FileVersion>3.5.0.0</FileVersion>
-    <Version>3.5.2</Version>
+    <AssemblyVersion>3.7.0</AssemblyVersion>
+    <FileVersion>3.7.0</FileVersion>
+    <Version>3.7.0</Version>
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>

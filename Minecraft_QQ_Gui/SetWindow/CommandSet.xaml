@@ -4,23 +4,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-         Title="服务器指令设置" Height="175" Width="360" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico">
+         Title="服务器指令设置" Height="175" Width="360" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="触发" Margin="10,5,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Margin="44,9,0,0" TextWrapping="NoWrap" Text="{Binding Command.Check}" Foreground="Black" Background="#225EBDD3"
-                 HorizontalAlignment="Left" Width="160" Height="18" VerticalAlignment="Top"/>
-        <CheckBox Content="玩家使用" Margin="10,76,0,0"
-                  Style="{DynamicResource Check}" IsChecked="{Binding Command.Use}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
-        <CheckBox Content="玩家发送" Margin="10,95,0,0"
-                  Style="{DynamicResource Check}" IsChecked="{Binding Command.Send}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
+        <TextBox Margin="44,9,150,0" TextWrapping="NoWrap" Text="{Binding Command.Check}" Foreground="Black" Background="#225EBDD3" Height="18" VerticalAlignment="Top"/>
+        <CheckBox Content="玩家使用" Margin="140,0,0,10"
+                  Style="{DynamicResource Check}" IsChecked="{Binding Command.Use}" HorizontalAlignment="Left" Width="70" Height="14" VerticalAlignment="Bottom"/>
+        <CheckBox Content="玩家发送" Margin="68,0,0,10"
+                  Style="{DynamicResource Check}" IsChecked="{Binding Command.Send}" HorizontalAlignment="Left" Width="70" Height="14" VerticalAlignment="Bottom"/>
         <Label Content="指令" Margin="10,30,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Margin="44,34,0,0" TextWrapping="Wrap" Text="{Binding Command.Command}" Foreground="Black" Background="#225EBDD3" 
-                 HorizontalAlignment="Left" Width="160" Height="37" VerticalAlignment="Top"/>
-        <ListView Margin="209,5,0,0" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
-                  x:Name="ServerList" Height="124" VerticalAlignment="Top" HorizontalAlignment="Left" Width="126">
+        <TextBox Margin="44,34,150,43" TextWrapping="Wrap" Text="{Binding Command.Command}" Foreground="Black" Background="#225EBDD3"/>
+        <ListView Margin="219,5,10,10" Background="#22FFFFFF" Style="{DynamicResource ListViewStyle1}"
+                  x:Name="ServerList">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="服务器列表" Width="100" DisplayMemberBinding="{Binding StringFormat=string}"/>
@@ -34,7 +32,7 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <Button Content="保存" Margin="10,114,0,0" HorizontalAlignment="Left" Width="53" Height="15" VerticalAlignment="Top"
+        <Button Content="保存" Margin="10,0,0,10" HorizontalAlignment="Left" Width="53" Height="15" VerticalAlignment="Bottom"
                 Foreground="Black" IsDefault="True" Click="Button_Click"/>
 
     </Grid>

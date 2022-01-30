@@ -12,6 +12,7 @@ namespace Minecraft_QQ_Core.Robot
 {
     public class RobotSocket
     {
+        private static readonly byte[] TestPack = {(byte)'{', (byte)'}', 60 };
         private Socket Socket;
         private Thread ReadThread;
         private Thread DoThread;
@@ -49,7 +50,7 @@ namespace Minecraft_QQ_Core.Robot
                             {
                                 case 49:
                                     var pack = JsonConvert.DeserializeObject<GroupMessageEventPack>(task.Data);
-                                    if (pack.qq == Main.MainConfig.机器人设置.QQ机器人账户)
+                                    if (pack.qq == Main.MainConfig.RobotSetting.QQ)
                                         Main.GroupMessage(pack.id, pack.fid, pack.message);
                                     break;
                             }
@@ -91,29 +92,30 @@ namespace Minecraft_QQ_Core.Robot
                                 Data = Encoding.UTF8.GetString(data)
                             });
                         }
-                        else if (time >= 1000)
-                        {
-                            time = 0;
-                            if (Main.MainConfig.机器人设置.检查是否断开 && Socket.Poll(2000, SelectMode.SelectRead))
-                            {
-                                Logs.LogOut("机器人连接中断");
-                                IsConnect = false;
-                            }
-                        }
                         else if (QueueSend.TryTake(out byte[] Send))
                         {
                             Socket.Send(Send);
                         }
-                        time++;
+
+                        if (Main.MainConfig.RobotSetting.Check)
+                        {
+                            if (time >= 1000)
+                            {
+                                time = 0;
+                                Socket.Send(TestPack);
+                            }
+                            time++;
+                        }
+
                         Thread.Sleep(10);
                     }
                     catch (Exception e)
                     {
-                        Logs.LogError("机器人连接失败");
+                        Logs.LogError("机器人连接中断");
                         Logs.LogError(e);
                         IsConnect = false;
-                        Logs.LogError("机器人" + Main.MainConfig.机器人设置.自动重连延迟 + "毫秒后重连");
-                        Thread.Sleep(Main.MainConfig.机器人设置.自动重连延迟);
+                        Logs.LogError($"机器人{Main.MainConfig.RobotSetting.CheckDelay}毫秒后重连");
+                        Thread.Sleep(Main.MainConfig.RobotSetting.CheckDelay);
                         Logs.LogError("机器人重连中");
                     }
                 }
@@ -126,8 +128,8 @@ namespace Minecraft_QQ_Core.Robot
             if (Socket != null)
                 Socket.Close();
             Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            Socket.Connect(IPAddress.Parse(Main.MainConfig.机器人设置.地址),
-                Main.MainConfig.机器人设置.端口);
+            Socket.Connect(IPAddress.Parse(Main.MainConfig.RobotSetting.IP),
+                Main.MainConfig.RobotSetting.Port);
 
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(PackStart) + " ");
             data[^1] = 0;
@@ -149,17 +151,19 @@ namespace Minecraft_QQ_Core.Robot
         }
         public void SendGroupMessage(long id, string message)
         {
+            if (!IsConnect)
+                return;
             SendGroupMessage(id, new List<string>() { message });
         }
         public void SendGroupMessage(long id, List<string> message)
         {
-            var data = BuildPack.Build(new SendGroupMessagePack { qq = Main.MainConfig.机器人设置.QQ机器人账户, id = id, message = message }, 52);
+            var data = BuildPack.Build(new SendGroupMessagePack { qq = Main.MainConfig.RobotSetting.QQ, id = id, message = message }, 52);
             QueueSend.Add(data);
         }
         public void SendGroupPrivateMessage(long id, long fid, string message)
         {
             var data = BuildPack.Build(new SendGroupPrivateMessagePack
-            { qq = Main.MainConfig.机器人设置.QQ机器人账户, id = id, fid = fid, message = new List<string>() { message } }, 53);
+            { qq = Main.MainConfig.RobotSetting.QQ, id = id, fid = fid, message = new List<string>() { message } }, 53);
             QueueSend.Add(data);
         }
         public void SendStop()

@@ -10,23 +10,23 @@ namespace Minecraft_QQ_Core.Config
     {
         public static void Ask()
         {
-            Save(ConfigFile.自动应答.FullName, IMinecraft_QQ.Main.AskConfig);
+            Save(ConfigFile.AskConfig.FullName, IMinecraft_QQ.Main.AskConfig);
         }
         public static void Command()
         {
-            Save(ConfigFile.自定义指令.FullName, IMinecraft_QQ.Main.CommandConfig);
+            Save(ConfigFile.CommandSave.FullName, IMinecraft_QQ.Main.CommandConfig);
         }
         public static void Config()
         {
-            Save(ConfigFile.主要配置文件.FullName, IMinecraft_QQ.Main.MainConfig);
+            Save(ConfigFile.MainConfig.FullName, IMinecraft_QQ.Main.MainConfig);
         }
         public static void Group()
         {
-            Save(ConfigFile.群设置.FullName, IMinecraft_QQ.Main.GroupConfig);
+            Save(ConfigFile.GroupConfig.FullName, IMinecraft_QQ.Main.GroupConfig);
         }
         public static void Player()
         {
-            Save(ConfigFile.玩家储存.FullName, IMinecraft_QQ.Main.PlayerConfig);
+            Save(ConfigFile.PlayerSave.FullName, IMinecraft_QQ.Main.PlayerConfig);
         }
         public static void All()
         {
@@ -37,20 +37,19 @@ namespace Minecraft_QQ_Core.Config
             Player();
         }
 
-        private static async void Save(string FileName, object obj)
+        private static void Save(string FileName, object obj)
         {
-            await Task.Run(() =>
+            Task.Run(() =>
             {
                 try
                 {
                     File.WriteAllText(FileName,
                     JsonConvert.SerializeObject(obj, Formatting.Indented));
-
                 }
                 catch (Exception e)
                 {
                     Logs.LogError(e);
-                    IMinecraft_QQ.ShowMessageCall?.Invoke("配置" + FileName + "在写入时发发生了错误");
+                    IMinecraft_QQ.ShowMessageCall?.Invoke($"配置{FileName}在写入时发发生了错误");
                 }
             });
         }

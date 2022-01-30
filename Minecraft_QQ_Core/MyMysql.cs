@@ -22,9 +22,9 @@ namespace Minecraft_QQ_Core
 
         public void MysqlStart()
         {
-            string ConnectString = $"SslMode=none;Server={Main.MainConfig.数据库.地址};" +
-                $"Port={Main.MainConfig.数据库.端口};User ID={Main.MainConfig.数据库.用户名};" +
-                $"Password={Main.MainConfig.数据库.密码};Database={Main.MainConfig.数据库.数据库};Charset=utf8;";
+            string ConnectString = $"SslMode=none;Server={Main.MainConfig.Database.IP};" +
+                $"Port={Main.MainConfig.Database.Port};User ID={Main.MainConfig.Database.User};" +
+                $"Password={Main.MainConfig.Database.Password};Database={Main.MainConfig.Database.Database};Charset=utf8;";
             Conn = new MySqlConnection(ConnectString);
             if (Conn == null)
             {
@@ -57,39 +57,39 @@ namespace Minecraft_QQ_Core
 
         private async Task LoadPlayerAsync()
         {
-            Main.PlayerConfig.玩家列表.Clear();
+            Main.PlayerConfig.PlayerList.Clear();
             MySqlCommand cmd = new("SELECT `Name`,`Nick`,`Admin`,`QQ` FROM " + MysqlPlayerTable);
             DbDataReader reader = await MysqlSql(cmd, true);
             while (await reader.ReadAsync())
             {
                 PlayerObj player = new PlayerObj
                 {
-                    名字 = reader.GetString(0),
-                    管理员 = reader.GetBoolean(2),
+                    Name = reader.GetString(0),
+                    IsAdmin = reader.GetBoolean(2),
                 };
                 if (!reader.IsDBNull(1))
                 {
-                    player.昵称 = reader.GetString(1);
+                    player.Nick = reader.GetString(1);
                 }
                 long.TryParse(reader.GetString(3), out long temp);
-                player.QQ号 = temp;
-                if (Main.PlayerConfig.玩家列表.ContainsKey(player.QQ号) == false)
-                    Main.PlayerConfig.玩家列表.Add(player.QQ号, player);
+                player.QQ = temp;
+                if (Main.PlayerConfig.PlayerList.ContainsKey(player.QQ) == false)
+                    Main.PlayerConfig.PlayerList.Add(player.QQ, player);
             }
             reader.Close();
             await Conn.CloseAsync();
         }
         private async Task LoadMuteAsync()
         {
-            Main.PlayerConfig.禁言列表.Clear();
+            Main.PlayerConfig.MuteList.Clear();
             MySqlCommand cmd = new("SELECT `Name` FROM " + MysqlMuteTable);
             DbDataReader reader = await MysqlSql(cmd, true);
             if (reader != null)
                 while (await reader.ReadAsync())
                 {
                     if (!string.IsNullOrWhiteSpace(reader.GetString(0)))
-                        if (Main.PlayerConfig.禁言列表.Contains(reader.GetString(0).ToLower()) == false)
-                            Main.PlayerConfig.禁言列表.Add(reader.GetString(0).ToLower());
+                        if (Main.PlayerConfig.MuteList.Contains(reader.GetString(0).ToLower()) == false)
+                            Main.PlayerConfig.MuteList.Add(reader.GetString(0).ToLower());
                 }
             reader.Close();
             await Conn.CloseAsync();
@@ -119,19 +119,19 @@ namespace Minecraft_QQ_Core
         /// <param name="player">玩家名字</param>
         public async Task AddPlayerAsync(PlayerObj player)
         {
-            if (await GetPlayerAsync(player.QQ号) != null)
+            if (await GetPlayerAsync(player.QQ) != null)
                 await UpdatePlayerAsync(player);
             else
             {
                 MySqlCommand cmd;
-                if (string.IsNullOrWhiteSpace(player.昵称))
+                if (string.IsNullOrWhiteSpace(player.Nick))
                 {
                     cmd = new($"INSERT INTO {MysqlPlayerTable}(Name,QQ,Admin)VALUES(@name,@qq,@admin)");
                     cmd.Parameters.AddRange(new MySqlParameter[]
                     {
-                        new("@name", Funtion.GBKtoUTF8(player.名字)),
-                        new("@admin", player.管理员),
-                        new("@qq", player.QQ号)
+                        new("@name", Funtion.GBKtoUTF8(player.Name)),
+                        new("@admin", player.IsAdmin),
+                        new("@qq", player.QQ)
                     });
                 }
                 else
@@ -139,10 +139,10 @@ namespace Minecraft_QQ_Core
                     cmd = new($"INSERT INTO {MysqlPlayerTable}(Name,Nick,QQ,Admin)VALUES(@name,@nick,@qq,@admin)");
                     cmd.Parameters.AddRange(new MySqlParameter[]
                     {
-                        new("@name", Funtion.GBKtoUTF8(player.名字)),
-                        new("@nick", Funtion.GBKtoUTF8(player.昵称)),
-                        new("@admin", player.管理员),
-                        new("@qq", player.QQ号)
+                        new("@name", Funtion.GBKtoUTF8(player.Name)),
+                        new("@nick", Funtion.GBKtoUTF8(player.Nick)),
+                        new("@admin", player.IsAdmin),
+                        new("@qq", player.QQ)
                     });
                 }
                 await MysqlSql(cmd);
@@ -250,10 +250,10 @@ namespace Minecraft_QQ_Core
                 MySqlCommand cmd = new($"UPDATE {MysqlPlayerTable} SET Name=@name,Nick=@nick,Admin=@admin WHERE QQ=@qq");
                 cmd.Parameters.AddRange(new MySqlParameter[]
                 {
-                    new("@name", Funtion.GBKtoUTF8(player.名字)),
-                    new("@nick", Funtion.GBKtoUTF8(player.昵称)),
-                    new("@admin", player.管理员),
-                    new("@qq", player.QQ号)
+                    new("@name", Funtion.GBKtoUTF8(player.Name)),
+                    new("@nick", Funtion.GBKtoUTF8(player.Nick)),
+                    new("@admin", player.IsAdmin),
+                    new("@qq", player.QQ)
                 });
                 await MysqlSql(cmd);
             }
@@ -274,10 +274,10 @@ namespace Minecraft_QQ_Core
             var item = await MysqlSql(cmd, true);
             if (item != null && item.HasRows)
             {
-                player.名字 = item.GetString(0);
-                player.昵称 = item.GetString(1);
-                player.QQ号 = qq;
-                player.管理员 = item.GetBoolean(2);
+                player.Name = item.GetString(0);
+                player.Nick = item.GetString(1);
+                player.QQ = qq;
+                player.IsAdmin = item.GetBoolean(2);
                 item.Close();
             }
             await item.CloseAsync();

@@ -6,11 +6,13 @@
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU</Platforms>
     <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
-    <Version>3.6.4</Version>
+    <Version>3.7.0</Version>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
+    <AssemblyVersion>3.7.0</AssemblyVersion>
+    <FileVersion>3.7.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

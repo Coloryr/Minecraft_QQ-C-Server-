@@ -7,14 +7,14 @@
        Title="服务器名字设置" Height="98" Width="220" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico" KeyDown="Window_KeyDown">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
-        <Label Content="名字" Margin="6,6,0,0" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="43"/>
-        <TextBox Margin="52,10,0,0" TextWrapping="NoWrap" Text="{Binding Name}" Foreground="Black" Background="#225EBDD3" Height="20"
-                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
+        <Label Content="名字" Margin="6,8,0,0" 
+               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox Margin="45,10,10,0" TextWrapping="NoWrap" Text="{Binding Obj.Name}" Foreground="Black" Background="#225EBDD3" Height="20"
+                 VerticalAlignment="Top"/>
         <Label Content="别名" Margin="6,31,0,0" 
-            Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="41"/>
-        <TextBox Margin="52,34,0,0" TextWrapping="NoWrap" Text="{Binding Addr}" Foreground="Black" Background="#225EBDD3" Height="20" 
-                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="158"/>
+            Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox Margin="45,34,10,0" TextWrapping="NoWrap" Text="{Binding Obj.Addr}" Foreground="Black" Background="#225EBDD3" Height="20" 
+                 VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

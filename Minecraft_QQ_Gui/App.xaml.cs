@@ -25,11 +25,11 @@ namespace Minecraft_QQ_Gui
             notifyIcon.Icon = icon;
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
-            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             notifyIcon = new();
@@ -42,11 +42,21 @@ namespace Minecraft_QQ_Gui
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
             {
                 MessageBox.Show(data);
+                //Dispatcher.Invoke(() =>
+                //{
+                //    new MessageWindow(data);
+                //});
             });
             IMinecraft_QQ.ServerConfigCall = new IMinecraft_QQ.ServerConfig((string key, string value) =>
             {
                 MainWindow_?.ServerConfig(key, value);
             });
+            IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log((string data) =>
+            {
+                MainWindow_?.AddLog(data);
+            });
+            await IMinecraft_QQ.Start();
+
             IMinecraft_QQ.GuiCall = new IMinecraft_QQ.Gui((GuiFun fun) =>
             {
                 Dispatcher.Invoke(() =>
@@ -62,17 +72,6 @@ namespace Minecraft_QQ_Gui
                     }
                 });
             });
-            IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log((string data) =>
-            {
-                MainWindow_?.AddLog(data);
-            });
-            Task.Run(() => IMinecraft_QQ.Start());
-
-            Thread.Sleep(1000);
-            while (!IMinecraft_QQ.CanGo)
-            {
-                Thread.Sleep(200);
-            }
         }
 
         public static void CloseWin()
@@ -96,11 +95,11 @@ namespace Minecraft_QQ_Gui
             try
             {
                 e.Handled = true;
-                MessageBox.Show("捕获未处理异常:" + e.Exception.ToString());
+                new MessageWindow("捕获未处理异常:" + e.Exception.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show("发生错误" + ex.ToString());
+                new MessageWindow("发生错误" + ex.ToString());
             }
 
         }
@@ -121,13 +120,17 @@ namespace Minecraft_QQ_Gui
             {
                 sbEx.Append(e.ExceptionObject);
             }
-            MessageBox.Show(sbEx.ToString());
+            new MessageWindow(sbEx.ToString());
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            MessageBox.Show("捕获线程内未处理异常：" + e.Exception.ToString());
-            e.SetObserved();
+            Dispatcher.Invoke(() =>
+            {
+                new MessageWindow("捕获线程内未处理异常：" + Environment.NewLine + e.Exception.InnerException.ToString() 
+                    + Environment.NewLine + e.Exception.InnerException.StackTrace.ToString());
+                e.SetObserved();
+            });
         }
     }
 }

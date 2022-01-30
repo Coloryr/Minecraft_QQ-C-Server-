@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>E:\Cshape src\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>F:\code\Minecraft_QQ-C-Server-\Minecraft_QQ_Gui\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
@@ -12,12 +12,24 @@
     <Compile Update="InitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="MessageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="InitWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MessageWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SelectWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="SetWindow\CommandSet.xaml">

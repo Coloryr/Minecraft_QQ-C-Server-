@@ -17,7 +17,7 @@ namespace Minecraft_QQ_Core.Utils
                     DateTime date = DateTime.Now;
                     string year = date.ToShortDateString().ToString();
                     string time = date.ToLongTimeString().ToString();
-                    string write = "[" + year + "]" + "[" + time + "]" + a;
+                    string write = $"[{year}][{time}]{a}";
                     IMinecraft_QQ.LogCall?.Invoke(write);
                     File.AppendAllText(IMinecraft_QQ.Main.Path + log, write + Environment.NewLine);
                 }
@@ -30,7 +30,7 @@ namespace Minecraft_QQ_Core.Utils
 
         public static void LogError(Exception e)
         {
-            LogWrite("[Error]" + e.Message + "\n" + e.StackTrace);
+            LogWrite("[Error]" + e.Message + Environment.NewLine + e.StackTrace);
         }
 
         public static void LogError(string e)

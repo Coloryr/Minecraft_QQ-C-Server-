@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -43,7 +44,7 @@ namespace Minecraft_QQ_Core.Utils
                             if (string.IsNullOrWhiteSpace(a.Message) == false)
                             {
                                 have = true;
-                                b += a.Message + '\n';
+                                b += a.Message + Environment.NewLine;
                             }
                         }
                         if (have)
@@ -54,7 +55,7 @@ namespace Minecraft_QQ_Core.Utils
                         SendList.RemoveAll(a => a.Group == group);
                     }
                 }
-                Thread.Sleep(Main.MainConfig.设置.发送群消息间隔);
+                Thread.Sleep(Main.MainConfig.Setting.SendDelay);
             }
         }
         public void Start()

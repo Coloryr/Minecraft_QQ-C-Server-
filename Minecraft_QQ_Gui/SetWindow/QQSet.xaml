@@ -4,19 +4,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="QQ群设置" Height="95" Width="220" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico" KeyDown="Window_KeyDown">
+        Title="QQ群设置" Height="95" Width="220" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico" KeyDown="Window_KeyDown">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="群号" Margin="10,6,0,0" 
                Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
-        <TextBox Margin="44,10,0,0" TextWrapping="NoWrap" Text="{Binding Obj.群号}" Foreground="Black" 
-                 Background="#225EBDD3" HorizontalAlignment="Left" Width="150" Height="20" VerticalAlignment="Top"/>
+        <TextBox Margin="44,10,10,0" TextWrapping="NoWrap" Text="{Binding Obj.Group}" Foreground="Black" 
+                 Background="#225EBDD3" Height="20" VerticalAlignment="Top"/>
         <CheckBox Content="主群" Margin="150,35,0,0"
-                  Style="{DynamicResource Check}" IsChecked="{Binding Obj.主群}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="44"/>
+                  Style="{DynamicResource Check}" IsChecked="{Binding Obj.IsMain}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="44"/>
         <CheckBox Content="启用命令" Margin="10,35,0,0"
-            Style="{DynamicResource Check}" IsChecked="{Binding Obj.启用命令}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="68"/>
+                  Style="{DynamicResource Check}" IsChecked="{Binding Obj.EnableCommand}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="68"/>
         <CheckBox Content="开启对话" Margin="80,35,0,0"
-            Style="{DynamicResource Check}" IsChecked="{Binding Obj.开启对话}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="68"/>
+                  Style="{DynamicResource Check}" IsChecked="{Binding Obj.EnableSay}" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="68"/>
 
     </Grid>
 </Window>
