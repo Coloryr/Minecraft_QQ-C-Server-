@@ -43,6 +43,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 
 ## 第一次使用配置
 
+1. 群设置
 > `Gui`下，添加主群即可  
 > 有弹窗一样可以点主界面  
 > `右键`就能修改/添加
@@ -60,11 +61,15 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >  }
 >}
 > ```
+2. 运行QQ号设置
 > Gui修改`插件配置`下的`机器人账户`  
 > Cmd修改`MainConfig.json`下的`QQ机器人账户`  
 > 填写运行的QQ号即可
 >
-> 重启Cmd
+
+3. 保存重启
+> `Cmd`的配置文件修改后需要重启
+> `Gui`点右上角保存即可
 
 ## 配置文件
 
