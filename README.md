@@ -51,19 +51,19 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > `Cmd`下，打开`Group.json`调整配置
 > ```json
 > {
->  "群列表": {
+>  "Groups": {
 >    "123456789": {
->      "群号": "123456789",
->      "启用命令": true,
->      "开启对话": true,
->      "主群": true
+>      "Group": "123456789",
+>      "EnableCommand": true,
+>      "EnableSay": true,
+>      "IsMain": true
 >    }
 >  }
 >}
 > ```
 2. 运行QQ号设置
 > Gui修改`插件配置`下的`机器人账户`  
-> Cmd修改`MainConfig.json`下的`QQ机器人账户`  
+> Cmd修改`MainConfig.json`下的`RobotSetting.QQ`  
 > 填写运行的QQ号即可
 >
 
@@ -77,7 +77,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > `自动应答`配置文件
 > ```json
 >{
->  "自动应答列表": {
+>  "AskList": {
 >    "服务器菜单": "服务器查询菜单：\r\n【#绑定： ID】可以绑定你的游戏ID。\r\n【#在线人数】可以查询服务器在线人数。\r\n【#服务器状态】可以查询服务器是否在运行。\r\n【#服务器： 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
 >  }
 >}
@@ -85,7 +85,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > 可以自行添加，注意json格式就行
 > ```json
 >{
->  "自动应答列表": {
+>  "AskList": {
 >    "a": "xxx",
 >   ......
 >    "b": "xxx"
@@ -97,45 +97,45 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > `自定义命令`配置文件
 > ```json
 >{
->  "命令列表": {
+>  "CommandList": {
 >    "插件帮助": {
->      "命令": "qq help",
->      "玩家使用": false,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "qq help",
+>      "PlayerUse": false,
+>      "PlayerSend": false,
+>      "Servers": []
 >    },
 >    "查钱": {
->      "命令": "money {arg:name}",
->      "玩家使用": true,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "money {arg:name}",
+>      "PlayerUse": true,
+>      "PlayerSend": false,
+>      "Servers": []
 >    },
 >    "禁言": {
->      "命令": "mute {arg1}",
->      "玩家使用": false,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "mute {arg1}",
+>      "PlayerUse": false,
+>      "PlayerSend": false,
+>      "Servers": []
 >    },
 >    "传送": {
->      "命令": "tpa {arg:at}",
->      "玩家使用": true,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "tpa {arg:at}",
+>      "PlayerUse": true,
+>      "PlayerSend": false,
+>      "Servers": []
 >    },
 >    "给权限": {
->      "命令": "lp user {arg:at} permission set {arg1} true",
->      "玩家使用": false,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "lp user {arg:at} permission set {arg1} true",
+>      "PlayerUse": false,
+>      "PlayerSend": false,
+>      "Servers": []
 >    }
 >  }
 >}
 > ```
 > 命令可以自己添加，注意json格式
-> - `命令`：发送到服务器的格式
-> - `玩家使用`：该命令是否非管理员可用
-> - `玩家发送`：命令执行是否是玩家
-> - `服务器使用`：发送给的服务器，服务器名字记得加上`"`标起来
+> - `Command`：发送到服务器的格式
+> - `PlayerUse`：该命令是否非管理员可用
+> - `PlayerSend`：命令执行是否是玩家
+> - `Servers`：发送给的服务器，服务器名字记得加上`"`标起来
 >
 > 参数说明
 > - `{arg:at}`：将会被替换为@QQ之后的游戏ID
@@ -147,20 +147,20 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 > 例如
 > ```json
 > "禁言": {
->      "命令": "mute {arg1}",
->      "玩家使用": false,
->      "玩家发送": false,
->      "服务器使用": []
+>      "Command": "mute {arg1}",
+>      "PlayerUse": false,
+>      "PlayerSend": false,
+>      "Servers": []
 >}
 > ```
 >在群里输入 `#禁言 Color_yr` 
 >那么发送到服务器的指令为 `mute Color_yr`  
 > ```json
 >"给权限": {
->     "命令": "lp user {arg:at} permission set {arg1} true",
->     "玩家使用": false,
->     "玩家发送": false,
->     "服务器使用": []
+>     "Command": "lp user {arg:at} permission set {arg1} true",
+>     "PlayerUse": false,
+>     "PlayerSend": false,
+>     "Servers": []
 >}
 > ```
 >在群里输入 `#给权限 @恋恋 admin.*`(@一个群成员)  
@@ -168,10 +168,10 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >参数注意空格，不注意会错乱
 > ```json
 >"说话": {
->     "命令": "say {argx}",
->     "玩家使用": false,
->     "玩家发送": false,
->     "服务器使用": []
+>     "Command": "say {argx}",
+>     "PlayerUse": false,
+>     "PlayerSend": false,
+>     "Servers": []
 >}
 > ```
 >在群里输入 `#说话 test test`  
@@ -180,19 +180,19 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >`Player.json`玩家绑定储存
 >```json
 >{
->  "禁止绑定列表": [
+>  "NotBindList": [
 >    "Color_yr",
 >    "id"
 >  ],
->  "禁言列表": [
+>  "MuteList": [
 >    "playerid"
 >  ],
->  "玩家列表": {
+>  "PlayerList": {
 >    "402067010": {
->      "名字": "测试",
->      "昵称": "昵称",
->      "QQ号": 402067010,
->      "管理员": true
+>      "Name": "测试",
+>      "Nick": "昵称",
+>      "QQ": 402067010,
+>      "IsAdmin": true
 >    }
 >  }
 >}
@@ -213,7 +213,7 @@ Minecraft_QQ_Cmd/Gui的默认端口为25555
 然后Minecraft_QQ_Cmd/Gui的绑定IP改为0.0.0.0
 
 ## 自己写Minecraft_QQ
-1. 首先确定你的环境是.net5
+1. 首先确定你的环境是.net6
 2. 在你的项目里面导入`Minecraft_QQ_Core.dll`  
 如果你导入的是`ref`文件夹里面的dll，请另外安装[Newtonsoft.Json](https://www.newtonsoft.com/json)
 

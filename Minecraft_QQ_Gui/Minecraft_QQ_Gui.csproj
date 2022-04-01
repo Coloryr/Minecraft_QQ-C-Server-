@@ -11,8 +11,8 @@
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
-    <AssemblyVersion>3.7.0</AssemblyVersion>
-    <FileVersion>3.7.0</FileVersion>
+    <AssemblyVersion>3.7.1</AssemblyVersion>
+    <FileVersion>3.7.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

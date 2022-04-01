@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="服务器配置文件" Height="557" Width="968" ResizeMode="NoResize" Background="White" Icon="/Minecraft_QQ.ico">
+        Title="服务器配置文件" Height="557" Width="968" ResizeMode="CanMinimize" Background="White" Icon="/Minecraft_QQ.ico">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ListViewStyle1" TargetType="{x:Type ListView}">

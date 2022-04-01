@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-         Title="服务器指令设置" Height="175" Width="360" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico">
+         Title="服务器指令设置" MinHeight="175" MinWidth="360" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico" Height="188">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
         <Label Content="触发" Margin="10,5,0,0" 
