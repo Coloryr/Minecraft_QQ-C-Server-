@@ -1,16 +1,42 @@
-﻿<Window x:Class="Minecraft_QQ_Gui.SetWindow.IDSet"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="ID设置" MinHeight="75" MinWidth="220" ResizeMode="CanResize" Background="White" Icon="/Minecraft_QQ.ico" KeyDown="TextBox_KeyDown">
+﻿<Window
+    x:Class="Minecraft_QQ_Gui.SetWindow.IDSet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ID设置"
+    Width="220"
+    Height="78"
+    MinWidth="220"
+    MinHeight="78"
+    Background="White"
+    Icon="/Minecraft_QQ.ico"
+    KeyDown="TextBox_KeyDown"
+    ResizeMode="CanResize"
+    mc:Ignorable="d">
     <Grid>
-        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
-        <Label Content="ID" Margin="10,6,0,0" 
-               Style="{DynamicResource Label}" Foreground="Black" Background="#00898989" HorizontalAlignment="Left" Width="29" Height="22" VerticalAlignment="Top"/>
-        <TextBox Margin="39,10,23,0" TextWrapping="NoWrap" Text="{Binding ID}" Foreground="Black"
-                 Background="#225EBDD3" Height="20" VerticalAlignment="Top"/>
+        <Rectangle
+            Fill="#FFF4F4F5"
+            Stroke="#FF5ABED6"
+            StrokeThickness="2" />
+        <Label
+            Width="29"
+            Height="22"
+            Margin="10,6,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="#00898989"
+            Content="ID"
+            Foreground="Black"
+            Style="{DynamicResource Label}" />
+        <TextBox
+            Height="20"
+            Margin="39,10,23,0"
+            VerticalAlignment="Top"
+            Background="#225EBDD3"
+            Foreground="Black"
+            Text="{Binding ID}"
+            TextWrapping="NoWrap" />
 
     </Grid>
 </Window>

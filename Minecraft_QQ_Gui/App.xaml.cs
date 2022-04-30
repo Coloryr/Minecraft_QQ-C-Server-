@@ -29,7 +29,6 @@ namespace Minecraft_QQ_Gui
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
-            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             notifyIcon = new();
@@ -42,10 +41,6 @@ namespace Minecraft_QQ_Gui
             IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
             {
                 MessageBox.Show(data);
-                //Dispatcher.Invoke(() =>
-                //{
-                //    new MessageWindow(data);
-                //});
             });
             IMinecraft_QQ.ServerConfigCall = new IMinecraft_QQ.ServerConfig((string key, string value) =>
             {

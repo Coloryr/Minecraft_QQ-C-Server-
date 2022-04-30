@@ -1,46 +1,51 @@
 ﻿using System;
 using System.IO;
 
-namespace Minecraft_QQ_Core.Utils
+namespace Minecraft_QQ_Core.Utils;
+
+internal static class Logs
 {
-    internal class Logs
+    public static string log = "logs.log";
+    private static readonly object obj = new object();
+
+    private static void LogWrite(string a)
     {
-        public static string log = "logs.log";
-        private static readonly object obj = new object();
-
-        private static void LogWrite(string a)
+        try
         {
-            try
+            lock (obj)
             {
-                lock (obj)
-                {
-                    DateTime date = DateTime.Now;
-                    string year = date.ToShortDateString().ToString();
-                    string time = date.ToLongTimeString().ToString();
-                    string write = $"[{year}][{time}]{a}";
-                    IMinecraft_QQ.LogCall?.Invoke(write);
-                    File.AppendAllText(IMinecraft_QQ.Main.Path + log, write + Environment.NewLine);
-                }
-            }
-            catch (Exception e)
-            {
-                IMinecraft_QQ.LogCall?.Invoke(e.ToString());
+                DateTime date = DateTime.Now;
+                string year = date.ToShortDateString().ToString();
+                string time = date.ToLongTimeString().ToString();
+                string write = $"[{year}][{time}]{a}";
+                IMinecraft_QQ.LogCall?.Invoke(write);
+                File.AppendAllText(IMinecraft_QQ.Main.Path + log, write + Environment.NewLine);
             }
         }
-
-        public static void LogError(Exception e)
+        catch (Exception e)
         {
-            LogWrite("[Error]" + e.Message + Environment.NewLine + e.StackTrace);
+            IMinecraft_QQ.LogCall?.Invoke(e.ToString());
         }
+    }
 
-        public static void LogError(string e)
-        {
-            LogWrite("[Error]" + e);
-        }
+    public static void LogError(string text, Exception e)
+    {
+        LogWrite("[Error]" + text + Environment.NewLine 
+            + e.Message + Environment.NewLine + e.StackTrace);
+    }
 
-        internal static void LogOut(string v)
-        {
-            LogWrite("[Info]" + v);
-        }
+    public static void LogError(Exception e)
+    {
+        LogWrite("[Error]" + e.Message + Environment.NewLine + e.StackTrace);
+    }
+
+    public static void LogError(string e)
+    {
+        LogWrite("[Error]" + e);
+    }
+
+    internal static void LogOut(string v)
+    {
+        LogWrite("[Info]" + v);
     }
 }

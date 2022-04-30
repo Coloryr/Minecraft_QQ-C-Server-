@@ -8,7 +8,7 @@ namespace Minecraft_QQ_Core
     }
     public class IMinecraft_QQ
     {
-        public const string Version = "3.7.1";
+        public const string Version = "3.8.0";
 
         /// <summary>
         /// 已经启动

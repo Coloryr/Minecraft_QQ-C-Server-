@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core
@@ -78,7 +79,7 @@ namespace Minecraft_QQ_Core
         /// <returns>玩家信息</returns>
         public PlayerObj GetPlayer(long qq)
         {
-            if (PlayerConfig.PlayerList.ContainsKey(qq) == true)
+            if (PlayerConfig.PlayerList.ContainsKey(qq))
                 return PlayerConfig.PlayerList[qq];
             return null;
         }
@@ -89,14 +90,9 @@ namespace Minecraft_QQ_Core
         /// <returns>玩家信息</returns>
         public PlayerObj GetPlayer(string id)
         {
-            var valueCol = PlayerConfig.PlayerList.Values;
-            foreach (PlayerObj value in valueCol)
-            {
-                if (value == null || value.Name == null)
-                    return null;
-                if (value.Name.ToLower() == id.ToLower())
-                    return value;
-            }
+            var valueCol = PlayerConfig.PlayerList.Values.Where(a=> a.Name.ToLower() == id.ToLower());
+            if (valueCol.Any())
+                return valueCol.First();
             return null;
         }
         private string SetNick(List<string> msg)
@@ -126,10 +122,6 @@ namespace Minecraft_QQ_Core
             if (PlayerConfig.PlayerList.ContainsKey(qq) == true)
             {
                 PlayerConfig.PlayerList[qq].Nick = nick;
-                if (MysqlOK == true)
-                    Task.Run(() => Mysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
-                else
-                    ConfigWrite.Player();
             }
             else
             {
@@ -138,8 +130,12 @@ namespace Minecraft_QQ_Core
                     QQ = qq,
                     Nick = nick
                 });
-                ConfigWrite.Player();
             }
+
+            if (MysqlOK == true)
+                Task.Run(() => Mysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
+            else
+                ConfigWrite.Player();
         }
         private string SetPlayerName(long group, long fromQQ, List<string> msg)
         {
@@ -458,155 +454,156 @@ namespace Minecraft_QQ_Core
             {
                 string head = msg[1];
                 head = Funtion.ReplaceFirst(head, MainConfig.Check.Head, "");
-                if (head.StartsWith(item.Key))
+                if (!head.StartsWith(item.Key))
                 {
-                    if (!Server.IsReady())
-                    {
-                        Robot.SendGroupMessage(fromGroup, new List<string>()
+                    continue;
+                }
+                if (!Server.IsReady())
+                {
+                    Robot.SendGroupMessage(fromGroup, new List<string>()
                         {
                             $"[mirai:at:{fromQQ}]",
                             "发送失败，服务器未准备好"
                         });
-                        return true;
-                    }
-                    bool haveserver = false;
-                    List<string> servers = null;
-                    if (item.Value.Servers != null && item.Value.Servers.Count != 0)
+                    return true;
+                }
+                bool haveserver = false;
+                List<string> servers = null;
+                if (item.Value.Servers != null && item.Value.Servers.Count != 0)
+                {
+                    servers = new();
+                    foreach (var item1 in item.Value.Servers)
                     {
-                        servers = new();
-                        foreach (var item1 in item.Value.Servers)
+                        if (Server.MCServers.ContainsKey(item1))
                         {
-                            if (Server.MCServers.ContainsKey(item1))
-                            {
-                                servers.Add(item1);
-                                haveserver = true;
-                            }
+                            servers.Add(item1);
+                            haveserver = true;
                         }
                     }
-                    else
-                    {
-                        haveserver = true;
-                    }
-                    if (!haveserver)
-                    {
-                        Robot.SendGroupMessage(fromGroup, new List<string>
+                }
+                else
+                {
+                    haveserver = true;
+                }
+                if (!haveserver)
+                {
+                    Robot.SendGroupMessage(fromGroup, new List<string>
                         {
                             $"[mirai:at:{fromQQ}]",
                             "发送失败，对应的服务器未连接"
                         });
-                    }
-                    var player = GetPlayer(fromQQ);
-                    if (player == null)
-                    {
-                        Robot.SendGroupMessage(fromGroup, new List<string>
+                    return true;
+                }
+                var player = GetPlayer(fromQQ);
+                if (player == null)
+                {
+                    Robot.SendGroupMessage(fromGroup, new List<string>
                         {
                              $"[mirai:at:{fromQQ}]",
                             "你未绑定ID"
                         });
-                        return true;
-                    }
-                    if (!item.Value.PlayerUse && !player.IsAdmin)
+                    return true;
+                }
+                if (!item.Value.PlayerUse && !player.IsAdmin)
+                {
+                    return true;
+                }
+                string cmd = item.Value.Command;
+                bool haveAt = false;
+                if (cmd.Contains("{arg:at}") || cmd.Contains("{arg:atqq}"))
+                {
+                    string item1 = msg[2];
+                    if (item1.IndexOf("[mirai:at:") != -1)
                     {
-                        return true;
-                    }
-                    string cmd = item.Value.Command;
-                    bool haveAt = false;
-                    if (cmd.Contains("{arg:at}") || cmd.Contains("{arg:atqq}"))
-                    {
-                        string item1 = msg[2];
-                        if (item1.IndexOf("[mirai:at:") != -1)
+                        long qq = long.Parse(Funtion.GetString(item1, "at:", "]"));
+                        var player1 = GetPlayer(qq);
+                        if (player1 == null)
                         {
-                            long qq = long.Parse(Funtion.GetString(item1, "at:", "]"));
-                            var player1 = GetPlayer(qq);
-                            if (player1 == null)
-                            {
-                                Robot.SendGroupMessage(fromGroup, new List<string>
+                            Robot.SendGroupMessage(fromGroup, new List<string>
                                 {
                                     $"[mirai:at:{fromQQ}]",
                                     $"错误，玩家：{qq}没有绑定ID"
                                 });
-                                return true;
-                            }
-                            while (cmd.IndexOf("{arg:at}") != -1)
-                                cmd = cmd.Replace("{arg:at}", player1.Name);
-                            while (cmd.IndexOf("{arg:atqq}") != -1)
-                                cmd = cmd.Replace("{arg:atqq}", $"{qq}");
-                            haveAt = true;
+                            return true;
                         }
-                        else
-                        {
-                            Robot.SendGroupMessage(fromGroup, new List<string>
+                        while (cmd.IndexOf("{arg:at}") != -1)
+                            cmd = cmd.Replace("{arg:at}", player1.Name);
+                        while (cmd.IndexOf("{arg:atqq}") != -1)
+                            cmd = cmd.Replace("{arg:atqq}", $"{qq}");
+                        haveAt = true;
+                    }
+                    else
+                    {
+                        Robot.SendGroupMessage(fromGroup, new List<string>
                             {
                                 $"[mirai:at:{fromQQ}]",
                                 $"错误，参数错误"
                             });
-                            return true;
-                        }
+                        return true;
                     }
-                    while (cmd.IndexOf("{arg:name}") != -1)
-                        cmd = cmd.Replace("{arg:name}", player.Name);
-                    while (cmd.IndexOf("{arg:qq}") != -1)
-                        cmd = cmd.Replace("{arg:qq}", $"{player.QQ}");
-                    string argStr = "";
-                    for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
-                    {
-                        if (!string.IsNullOrWhiteSpace(msg[a]))
-                        {
-                            argStr = msg[a];
-                            break;
-                        }
-                    }
-                    var arg = argStr.Split(" ");
-                    int pos = 1;
-                    for (int index = 1; ; index++)
-                    {
-                        string args = "{arg" + index + "}";
-                        if (index > arg.Length)
-                        {
-                            break;
-                        }
-                        if (cmd.Contains(args))
-                        {
-                            for (; pos < arg.Length; pos++)
-                            {
-                                if (!string.IsNullOrWhiteSpace(arg[pos]))
-                                {
-                                    cmd = cmd.Replace(args, arg[pos]);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            break;
-                    }
-                    if (cmd.Contains("{argx}"))
-                    {
-                        string temp = "";
-                        if (pos < arg.Length)
-                        {
-                            for (; pos < arg.Length; pos++)
-                            {
-                                if (!string.IsNullOrWhiteSpace(arg[pos]))
-                                {
-                                    temp += $"{arg[pos]} ";
-                                }
-                            }
-                            if (temp.Length > 1)
-                            {
-                                temp = temp[0..^1];
-                            }
-                        }
-                        cmd = cmd.Replace("{argx}", temp);
-                    }
-                    Server.Send(new TranObj
-                    {
-                        group = fromGroup.ToString(),
-                        command = cmd,
-                        isCommand = true,
-                        player = item.Value.PlayerSend ? player.Name : CommderList.COMM
-                    }, servers);
-                    return true;
                 }
+                while (cmd.IndexOf("{arg:name}") != -1)
+                    cmd = cmd.Replace("{arg:name}", player.Name);
+                while (cmd.IndexOf("{arg:qq}") != -1)
+                    cmd = cmd.Replace("{arg:qq}", $"{player.QQ}");
+                string argStr = "";
+                for (int a = haveAt ? 3 : 2; a < msg.Count - 1; a++)
+                {
+                    if (!string.IsNullOrEmpty(msg[a]))
+                    {
+                        argStr += msg[a];
+                    }
+                }
+                var arg = argStr.Split(" ");
+                int pos = 1;
+                for (int index = 1; ; index++)
+                {
+                    string args = "{arg" + index + "}";
+                    if (index > arg.Length)
+                    {
+                        break;
+                    }
+                    if (cmd.Contains(args))
+                    {
+                        for (; pos < arg.Length; pos++)
+                        {
+                            if (!string.IsNullOrWhiteSpace(arg[pos]))
+                            {
+                                cmd = cmd.Replace(args, arg[pos]);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        break;
+                }
+                if (cmd.Contains("{argx}"))
+                {
+                    string temp = "";
+                    if (pos < arg.Length)
+                    {
+                        for (; pos < arg.Length; pos++)
+                        {
+                            if (!string.IsNullOrWhiteSpace(arg[pos]))
+                            {
+                                temp += $"{arg[pos]} ";
+                            }
+                        }
+                        if (temp.Length > 1)
+                        {
+                            temp = temp[0..^1];
+                        }
+                    }
+                    cmd = cmd.Replace("{argx}", temp);
+                }
+                Server.Send(new TranObj
+                {
+                    group = fromGroup.ToString(),
+                    command = cmd,
+                    isCommand = true,
+                    player = item.Value.PlayerSend ? player.Name : CommderList.COMM
+                }, servers);
+                return true;
             }
             return false;
         }
@@ -649,8 +646,6 @@ namespace Minecraft_QQ_Core
             }
             else
                 MainConfig = ConfigRead.ReadConfig();
-
-            ConfigShow.Show(MainConfig);
 
             //读取群设置
             if (ConfigFile.GroupConfig.Exists == false)

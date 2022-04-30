@@ -3,71 +3,70 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Minecraft_QQ_Core.Utils
+namespace Minecraft_QQ_Core.Utils;
+
+public record SendObj
 {
-    public record SendObj
+    public long Group { get; set; }
+    public string Message { get; set; }
+}
+public class SendGroup
+{
+    private Thread SendT;
+    private bool Run;
+    private List<SendObj> SendList { get; set; } = new();
+
+    private readonly Minecraft_QQ Main;
+    public SendGroup(Minecraft_QQ Minecraft_QQ)
     {
-        public long Group { get; set; }
-        public string Message { get; set; }
+        Main = Minecraft_QQ;
     }
-    public class SendGroup
+
+    public void AddSend(SendObj obj)
     {
-        private Thread SendT;
-        private bool Run;
-        private List<SendObj> SendList { get; set; } = new();
+        SendList.Add(obj);
+    }
 
-        private readonly Minecraft_QQ Main;
-        public SendGroup(Minecraft_QQ Minecraft_QQ)
+    private void SendToGroup()
+    {
+        while (Run)
         {
-            Main = Minecraft_QQ;
-        }
-
-        public void AddSend(SendObj obj)
-        {
-            SendList.Add(obj);
-        }
-
-        private void SendToGroup()
-        {
-            while (Run)
+            if (SendList.Count != 0)
             {
-                if (SendList.Count != 0)
+                var group = SendList.First().Group;
+                string b = null;
+                lock (SendList)
                 {
-                    var group = SendList.First().Group;
-                    string b = null;
-                    lock (SendList)
+                    var SendList_C = SendList.Where(a => a.Group == group);
+                    var have = false;
+                    foreach (var a in SendList_C)
                     {
-                        var SendList_C = SendList.Where(a => a.Group == group);
-                        var have = false;
-                        foreach (var a in SendList_C)
+                        if (string.IsNullOrWhiteSpace(a.Message) == false)
                         {
-                            if (string.IsNullOrWhiteSpace(a.Message) == false)
-                            {
-                                have = true;
-                                b += a.Message + Environment.NewLine;
-                            }
+                            have = true;
+                            b += a.Message + Environment.NewLine;
                         }
-                        if (have)
-                        {
-                            b = b[0..^1];
-                            Main.Robot.SendGroupMessage(group, b);
-                        }
-                        SendList.RemoveAll(a => a.Group == group);
                     }
+                    if (have)
+                    {
+                        b = b[0..^1];
+                        Main.Robot.SendGroupMessage(group, b);
+                    }
+                    SendList.RemoveAll(a => a.Group == group);
                 }
-                Thread.Sleep(Main.MainConfig.Setting.SendDelay);
             }
+            Thread.Sleep(Main.MainConfig.Setting.SendDelay);
         }
-        public void Start()
-        {
-            Run = true;
-            SendT = new(SendToGroup);
-            SendT.Start();
-        }
+    }
+    public void Start()
+    {
+        Run = true;
+        SendT = new(SendToGroup);
+        SendT.Start();
+    }
 
-        public void Stop()
-        {
-            Run = false;
-        }
+    public void Stop()
+    {
+        Run = false;
     }
 }
