@@ -4,15 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <SignAssembly>false</SignAssembly>
-    <Version>3.8.0</Version>
+    <Version></Version>
     <AssemblyName>Minecraft_QQ_Core</AssemblyName>
     <RootNamespace>Minecraft_QQ_Core</RootNamespace>
     <ApplicationIcon></ApplicationIcon>
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
-    <AssemblyVersion>3.8.0</AssemblyVersion>
-    <FileVersion>3.8.0</FileVersion>
+    <AssemblyVersion>3.9.0</AssemblyVersion>
+    <FileVersion>3.9.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
