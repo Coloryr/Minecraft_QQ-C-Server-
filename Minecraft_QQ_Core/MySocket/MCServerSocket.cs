@@ -92,14 +92,16 @@ public class MCServerSocket
                     {
                         if (Main.MainConfig.Setting.SendLog)
                         {
-                            Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]服务器{Name}已连接");
+                            Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new()
+                            { $"[Minecraft_QQ]服务器{Name}已连接" });
                         }
                         Logs.LogOut($"[Socket]服务器{Name}已连接");
                         IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                     }
                     else if (Main.MainConfig.Setting.SendLog)
                     {
-                        Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器已连接");
+                        Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+                        { "[Minecraft_QQ]服务器已连接" });
                     }
                     IsCheck = true;
                     Main.Server.AddServer(Name, this);
@@ -111,7 +113,8 @@ public class MCServerSocket
             catch (Exception e)
             {
                 if (Main.MainConfig.Setting.SendLog)
-                    Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]服务器{Name}异常断开");
+                    Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+                    { $"[Minecraft_QQ]服务器{Name}异常断开" });
                 Logs.LogError(e);
                 Stop();
                 if (!IsSameStop)

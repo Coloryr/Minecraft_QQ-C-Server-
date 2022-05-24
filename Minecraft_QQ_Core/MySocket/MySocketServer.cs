@@ -59,8 +59,8 @@ public class MySocketServer
             SetState(true);
             if (Main.MainConfig.Setting.SendLog)
             {
-                Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]端口已启动{Environment.NewLine}" +
-                    $"已绑定在：{Main.MainConfig.Socket.IP}:{Main.MainConfig.Socket.Port}");
+                Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+                { $"[Minecraft_QQ]端口已启动{Environment.NewLine}",$"已绑定在：{Main.MainConfig.Socket.IP}:{Main.MainConfig.Socket.Port}" });
             }
 
             SendThread = new Thread(SendTask);
@@ -72,7 +72,8 @@ public class MySocketServer
         }
         catch (Exception e)
         {
-            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log");
+            Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+            { "[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log" });
             Logs.LogError(e);
             SetState(false);
             IMinecraft_QQ.ShowMessageCall.Invoke("[Minecraft_QQ]启动失败，请检查设置的端口是否被占用");
@@ -100,7 +101,8 @@ public class MySocketServer
                     GC.Collect();
                     if (MCServers.IsEmpty)
                     {
-                        Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}");
+                        Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+                        { $"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}" });
                     }
                 }
             }
@@ -151,7 +153,8 @@ public class MySocketServer
             }
         }
         else
-            Main.Robot.SendGroupMessage(Main.GroupSetMain, "[Minecraft_QQ]服务器未连接，无法发送");
+            Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+            { "[Minecraft_QQ]服务器未连接，无法发送" });
     }
     private void SendData(MCServerSocket Client, string data)
     {
@@ -165,7 +168,8 @@ public class MySocketServer
     {
         if (MCServers.ContainsKey(name))
         {
-            Main.Robot.SendGroupMessage(Main.GroupSetMain, $"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开");
+            Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, Main.GroupSetMain, new() 
+            { $"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开" });
             MCServers[name].StopSame();
             MCServers[name] = receive;
         }

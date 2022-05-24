@@ -34,7 +34,7 @@ public class SendGroup
             if (SendList.Count != 0)
             {
                 var group = SendList.First().Group;
-                string b = null;
+                string temp = null;
                 lock (SendList)
                 {
                     var SendList_C = SendList.Where(a => a.Group == group);
@@ -44,13 +44,14 @@ public class SendGroup
                         if (string.IsNullOrWhiteSpace(a.Message) == false)
                         {
                             have = true;
-                            b += a.Message + Environment.NewLine;
+                            temp += a.Message + Environment.NewLine;
                         }
                     }
                     if (have)
                     {
-                        b = b[0..^1];
-                        Main.Robot.SendGroupMessage(group, b);
+                        temp = temp[0..^1];
+                        Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, group, new() 
+                        { temp });
                     }
                     SendList.RemoveAll(a => a.Group == group);
                 }
