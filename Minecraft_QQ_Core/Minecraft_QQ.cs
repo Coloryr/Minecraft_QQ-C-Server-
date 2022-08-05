@@ -393,8 +393,7 @@ public static class Minecraft_QQ
                 PluginServer.Send(new()
                 {
                     group = fromGroup.ToString(),
-                    command = CommderList.ONLINE,
-                    player = null
+                    command = CommderList.ONLINE
                 });
                 return null;
             }

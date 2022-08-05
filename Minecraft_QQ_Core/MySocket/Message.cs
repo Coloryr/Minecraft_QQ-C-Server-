@@ -54,6 +54,10 @@ internal static class Message
                 {
                     return;
                 }
+                if (!Minecraft_QQ.MainConfig.Setting.ColorEnable)
+                {
+                    message.message = Funtion.RemoveColorCodes(message.message);
+                }
                 if (message.group == DataType.group)
                 {
                     if (Minecraft_QQ.MainConfig.Setting.SendNickGroup == true)
