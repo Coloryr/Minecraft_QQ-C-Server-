@@ -11,8 +11,8 @@
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
-    <AssemblyVersion>3.9.0</AssemblyVersion>
-    <FileVersion>3.9.0</FileVersion>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <FileVersion>4.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,7 +25,12 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="MySql.Data" Version="8.0.29" />
+    <PackageReference Include="DotNetty.Buffers" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Codecs" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Common" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Transport" Version="0.7.2" />
+    <PackageReference Include="MySql.Data" Version="8.0.30" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

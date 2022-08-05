@@ -21,7 +21,7 @@ public record ConfigOBJ
 public record MessageOBJ
 {
     public string Message { get; set; }
-    public bool sendQQ { get; set; }
+    public bool Send { get; set; }
 }
 public record ServerSetOBJ
 {
@@ -35,7 +35,7 @@ public record ServerSetOBJ
     public bool HideEmptyServer { get; set; }
     public string PlayerListMessage { get; set; }
     public string ServerOnlineMessage { get; set; }
-    public bool BungeeCord { get; set; }
+    public bool TopMode { get; set; }
     public int CommandDelay { get; set; }
 }
 public record SendAllServerOBJ
@@ -48,10 +48,8 @@ public record SystemOBJ
 {
     public string IP { get; set; }
     public int Port { get; set; }
-    public bool AutoConnect { get; set; }
     public int AutoConnectTime { get; set; }
     public bool Debug { get; set; }
-    public int Sleep { get; set; }
 }
 public record UserOBJ
 {

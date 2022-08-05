@@ -1,4 +1,6 @@
-﻿using Minecraft_QQ_Core.Config;
+﻿using DotNetty.Buffers;
+using Minecraft_QQ_Core.Config;
+using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
 
@@ -23,16 +25,17 @@ internal class CommderList
 
     public const string COMM = "后台";
 }
-internal class Message
+internal static class Message
 {
-    private Minecraft_QQ Main;
-    public Message(Minecraft_QQ Minecraft_QQ)
+    public static void MessageDo(string server, IByteBuffer read)
     {
-        Main = Minecraft_QQ;
-    }
-    public void MessageDo(string server, string read)
-    {
-        ReadObj message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(read));
+        ReadObj message = new ()
+        {
+            group = read.ReadString(),
+            message = read.ReadString(),
+            player = read.ReadString(),
+            data = read.ReadString()
+        };
         if (string.IsNullOrWhiteSpace(message.data))
         {
             return;
@@ -47,25 +50,25 @@ internal class Message
                     return;
                 }
 
-                if (Main.PlayerConfig.MuteList.Contains(message.player.ToLower()) == true)
+                if (Minecraft_QQ.PlayerConfig.MuteList.Contains(message.player.ToLower()) == true)
                 {
                     return;
                 }
                 if (message.group == DataType.group)
                 {
-                    if (Main.MainConfig.Setting.SendNickGroup == true)
+                    if (Minecraft_QQ.MainConfig.Setting.SendNickGroup == true)
                     {
-                        PlayerObj player = Main.GetPlayer(message.player);
+                        PlayerObj player = Minecraft_QQ.GetPlayer(message.player);
                         if (player != null && string.IsNullOrWhiteSpace(player.Nick) == false)
                         {
                             message.message = Funtion.ReplaceFirst(message.message, message.player, player.Nick);
                         }
                     }
-                    foreach (var item in Main.GroupConfig.Groups)
+                    foreach (var item in Minecraft_QQ.GroupConfig.Groups)
                     {
                         if (item.Value.EnableSay)
                         {
-                            Main.SendGroup.AddSend(new()
+                            SendGroup.AddSend(new()
                             {
                                 Group = item.Key,
                                 Message = message.message
@@ -76,9 +79,9 @@ internal class Message
                 else
                 {
                     long.TryParse(message.group, out long group);
-                    if (Main.GroupConfig.Groups.ContainsKey(group))
+                    if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(group))
                     {
-                        Main.SendGroup.AddSend(new()
+                        SendGroup.AddSend(new()
                         {
                             Group = group,
                             Message = message.message

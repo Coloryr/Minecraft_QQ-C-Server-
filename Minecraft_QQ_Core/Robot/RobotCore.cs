@@ -1,61 +1,54 @@
 ﻿using Minecraft_QQ_Core.Utils;
-using System;
 
 namespace Minecraft_QQ_Core.Robot;
 
-public class RobotCore
+public static class RobotCore
 {
-    public RobotSDK Robot = new();
-    private Minecraft_QQ main;
+    public static RobotSDK Robot = new();
 
-    public RobotCore(Minecraft_QQ main) 
-    {
-        this.main = main;
-    }
-
-    private void Message(byte type, object data)
+    private static void Message(byte type, object data)
     {
         switch (type)
         {
             case 49:
                 var pack = data as GroupMessageEventPack;
-                main.GroupMessage(pack.id, pack.fid, pack.message);
+                Minecraft_QQ.GroupMessage(pack.id, pack.fid, pack.message);
                 break;
         }
     }
 
-    private void Log(LogType type, string data)
+    private static void Log(LogType type, string data)
     {
         Logs.LogOut($"[Robot]{type} {data}");
     }
 
-    private void State(StateType type)
+    private static void State(StateType type)
     {
         Logs.LogOut($"[Robot]{type}");
     }
 
-    public void Start()
+    public static void Start()
     {
         RobotConfig config = new()
         {
-            IP = main.MainConfig.RobotSetting.IP,
-            Port = main.MainConfig.RobotSetting.Port,
+            IP = Minecraft_QQ.MainConfig.RobotSetting.IP,
+            Port = Minecraft_QQ.MainConfig.RobotSetting.Port,
             Name = "Minecraft_QQ",
             Pack = new() { 49 },
-            RunQQ = main.MainConfig.RobotSetting.QQ,
-            Time = main.MainConfig.RobotSetting.CheckDelay,
-            Check = main.MainConfig.RobotSetting.Check,
+            RunQQ = Minecraft_QQ.MainConfig.RobotSetting.QQ,
+            Time = Minecraft_QQ.MainConfig.RobotSetting.CheckDelay,
+            Check = Minecraft_QQ.MainConfig.RobotSetting.Check,
             CallAction = Message,
             LogAction = Log,
             StateAction = State
         };
 
         Robot.Set(config);
-        Robot.SetPipe(new ColorMiraiSocket(Robot));
+        Robot.SetPipe(new ColorMiraiNetty(Robot));
         Robot.Start();
     }
 
-    public void Stop() 
+    public static void Stop() 
     {
         Robot.Stop();
     }

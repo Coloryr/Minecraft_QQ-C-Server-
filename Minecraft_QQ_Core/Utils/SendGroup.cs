@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minecraft_QQ_Core.Robot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,24 +11,18 @@ public record SendObj
     public long Group { get; set; }
     public string Message { get; set; }
 }
-public class SendGroup
+public static class SendGroup
 {
-    private Thread SendT;
-    private bool Run;
-    private List<SendObj> SendList { get; set; } = new();
+    private static Thread SendT;
+    private static bool Run;
+    private static List<SendObj> SendList { get; set; } = new();
 
-    private readonly Minecraft_QQ Main;
-    public SendGroup(Minecraft_QQ Minecraft_QQ)
-    {
-        Main = Minecraft_QQ;
-    }
-
-    public void AddSend(SendObj obj)
+    public static void AddSend(SendObj obj)
     {
         SendList.Add(obj);
     }
 
-    private void SendToGroup()
+    private static void SendToGroup()
     {
         while (Run)
         {
@@ -50,23 +45,24 @@ public class SendGroup
                     if (have)
                     {
                         temp = temp[0..^1];
-                        Main.robot.Robot.SendGroupMessage(Main.MainConfig.RobotSetting.QQ, group, new() 
-                        { temp });
+                        RobotCore.Robot.SendGroupMessage(
+                            Minecraft_QQ.MainConfig.RobotSetting.QQ, group, 
+                            new() { temp });
                     }
                     SendList.RemoveAll(a => a.Group == group);
                 }
             }
-            Thread.Sleep(Main.MainConfig.Setting.SendDelay);
+            Thread.Sleep(Minecraft_QQ.MainConfig.Setting.SendDelay);
         }
     }
-    public void Start()
+    public static void Start()
     {
         Run = true;
         SendT = new(SendToGroup);
         SendT.Start();
     }
 
-    public void Stop()
+    public static void Stop()
     {
         Run = false;
     }

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Minecraft_QQ_Core;
+﻿namespace Minecraft_QQ_Core;
 
 public enum GuiFun
 {
@@ -8,7 +6,7 @@ public enum GuiFun
 }
 public class IMinecraft_QQ
 {
-    public const string Version = "3.9.0";
+    public const string Version = "4.0.0";
 
     /// <summary>
     /// 已经启动
@@ -26,16 +24,4 @@ public class IMinecraft_QQ
     public static ConfigInit ConfigInitCall;
     public static Gui GuiCall;
     public static Log LogCall;
-
-    public static Minecraft_QQ Main { get; private set; }
-
-    public static Task Start()
-    {
-        Main = new();
-        return Main.Start();
-    }
-    public static void Stop()
-    {
-        Main.Stop();
-    }
 }

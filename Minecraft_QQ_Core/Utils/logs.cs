@@ -19,7 +19,7 @@ internal static class Logs
                 string time = date.ToLongTimeString().ToString();
                 string write = $"[{year}][{time}]{a}";
                 IMinecraft_QQ.LogCall?.Invoke(write);
-                File.AppendAllText(IMinecraft_QQ.Main.Path + log, write + Environment.NewLine);
+                File.AppendAllText(Minecraft_QQ.Path + log, write + Environment.NewLine);
             }
         }
         catch (Exception e)

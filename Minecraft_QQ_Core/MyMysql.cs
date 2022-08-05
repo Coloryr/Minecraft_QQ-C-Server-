@@ -8,39 +8,35 @@ using Dapper;
 
 namespace Minecraft_QQ_Core;
 
-public class MyMysql
+public static class MyMysql
 {
     public const string MysqlPlayerTable = "minecraft_qq_player";
     public const string MysqlMuteTable = "minecraft_qq_mute";
     public const string MysqlNotIDTable = "minecraft_qq_notid";
 
-    private string ConnectString;
-    private readonly Minecraft_QQ Main;
-    public MyMysql(Minecraft_QQ Minecraft_QQ)
-    {
-        Main = Minecraft_QQ;
-    }
+    private static string ConnectString;
+
     /// <summary>
     /// 数据库启动
     /// </summary>
-    public void MysqlStart()
+    public static void MysqlStart()
     {
-        ConnectString = $"SslMode=none;Server={Main.MainConfig.Database.IP};" +
-            $"Port={Main.MainConfig.Database.Port};User ID={Main.MainConfig.Database.User};" +
-            $"Password={Main.MainConfig.Database.Password};Database={Main.MainConfig.Database.Database};Charset=utf8;";
+        ConnectString = $"SslMode=none;Server={Minecraft_QQ.MainConfig.Database.IP};" +
+            $"Port={Minecraft_QQ.MainConfig.Database.Port};User ID={Minecraft_QQ.MainConfig.Database.User};" +
+            $"Password={Minecraft_QQ.MainConfig.Database.Password};Database={Minecraft_QQ.MainConfig.Database.Database};Charset=utf8;";
         InitPlayerTable();
         InitMuteTable();
         InitNotIDTable();
 
-        Main.MysqlOK = true;
+        Minecraft_QQ.MysqlOK = true;
     }
     /// <summary>
     /// 数据库关闭
     /// </summary>
-    public void MysqlStop()
+    public static void MysqlStop()
     {
         MySqlConnection.ClearAllPools();
-        Main.MysqlOK = false;
+        Minecraft_QQ.MysqlOK = false;
     }
 
     /// <summary>
@@ -48,16 +44,16 @@ public class MyMysql
     /// </summary>
     /// <param name="TableName">表名字</param>
     /// <returns>是否成</returns>
-    private void InitPlayerTable()
+    private static void InitPlayerTable()
     {
         try
         {
-            var Conn = new MySqlConnection(ConnectString);
-            var read = Conn.Query($"show tables like '{MysqlPlayerTable}'");
+            using var conn = new MySqlConnection(ConnectString);
+            var read = conn.Query($"show tables like '{MysqlPlayerTable}'");
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlPlayerTable}，正在创建");
-                Conn.Execute($"CREATE TABLE {MysqlPlayerTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT 'ID' , `Nick` VARCHAR(255) NULL COMMENT '昵称' , `QQ` BIGINT NOT NULL COMMENT 'QQ号' , `IsAdmin` TINYINT(1) NOT NULL COMMENT '是否为管理员' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updatetime` TIMESTAMP on update CURRENT_TIMESTAMP NULL , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '玩家储存';");
+                conn.Execute($"CREATE TABLE {MysqlPlayerTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT 'ID' , `Nick` VARCHAR(255) NULL COMMENT '昵称' , `QQ` BIGINT NOT NULL COMMENT 'QQ号' , `IsAdmin` TINYINT(1) NOT NULL COMMENT '是否为管理员' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updatetime` TIMESTAMP on update CURRENT_TIMESTAMP NULL , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '玩家储存';");
             }
         }
         catch (Exception e)
@@ -70,16 +66,16 @@ public class MyMysql
     /// </summary>
     /// <param name="TableName">表名</param>
     /// <returns>是否成功</returns>
-    private void InitMuteTable()
+    private static void InitMuteTable()
     {
         try
         {
-            var Conn = new MySqlConnection(ConnectString);
-            var read = Conn.Query($"show tables like '{MysqlMuteTable}'");
+            using var conn = new MySqlConnection(ConnectString);
+            var read = conn.Query($"show tables like '{MysqlMuteTable}'");
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlMuteTable}，正在创建");
-                Conn.Execute($"CREATE TABLE {MysqlMuteTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
+                conn.Execute($"CREATE TABLE {MysqlMuteTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
             }
         }
         catch (Exception e)
@@ -92,16 +88,16 @@ public class MyMysql
     /// </summary>
     /// <param name="TableName">表名</param>
     /// <returns>是否成功</returns>
-    private void InitNotIDTable()
+    private static void InitNotIDTable()
     {
         try
         {
-            var Conn = new MySqlConnection(ConnectString);
-            var read = Conn.Query($"show tables like '{MysqlNotIDTable}'");
+            using var conn = new MySqlConnection(ConnectString);
+            var read = conn.Query($"show tables like '{MysqlNotIDTable}'");
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlNotIDTable}，正在创建");
-                Conn.Execute($"CREATE TABLE {MysqlNotIDTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
+                conn.Execute($"CREATE TABLE {MysqlNotIDTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
             }
         }
         catch (Exception e)
@@ -114,7 +110,7 @@ public class MyMysql
     /// 读取所有数据
     /// </summary>
     /// <returns></returns>
-    public void Load()
+    public static void Load()
     {
         LoadPlayerAsync();
         LoadMuteAsync();
@@ -125,15 +121,15 @@ public class MyMysql
     /// 读取玩家数据
     /// </summary>
     /// <returns></returns>
-    private void LoadPlayerAsync()
+    private static void LoadPlayerAsync()
     {
-        Main.PlayerConfig.PlayerList.Clear();
-        var Conn = new MySqlConnection(ConnectString);
-        var list = Conn.Query<PlayerObj>($"SELECT `Name`,`Nick`,`IsAdmin`,`QQ` FROM {MysqlPlayerTable}");
+        Minecraft_QQ.PlayerConfig.PlayerList.Clear();
+        using var conn = new MySqlConnection(ConnectString);
+        var list = conn.Query<PlayerObj>($"SELECT `Name`,`Nick`,`IsAdmin`,`QQ` FROM {MysqlPlayerTable}");
 
         foreach (var item in list)
         {
-            Main.PlayerConfig.PlayerList.Add(item.QQ, item);
+            Minecraft_QQ.PlayerConfig.PlayerList.Add(item.QQ, item);
         }
     }
 
@@ -145,34 +141,34 @@ public class MyMysql
     /// 读取禁言数据
     /// </summary>
     /// <returns></returns>
-    private void LoadMuteAsync()
+    private static void LoadMuteAsync()
     {
-        Main.PlayerConfig.MuteList.Clear();
-        var Conn = new MySqlConnection(ConnectString);
-        var list = Conn.Query<Obj2>($"SELECT `Name` FROM {MysqlMuteTable}");
+        Minecraft_QQ.PlayerConfig.MuteList.Clear();
+        using var conn = new MySqlConnection(ConnectString);
+        var list = conn.Query<Obj2>($"SELECT `Name` FROM {MysqlMuteTable}");
 
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Main.PlayerConfig.MuteList.Contains(item.Name.ToLower()) == false)
-                    Main.PlayerConfig.MuteList.Add(item.Name.ToLower());
+                if (Minecraft_QQ.PlayerConfig.MuteList.Contains(item.Name.ToLower()) == false)
+                    Minecraft_QQ.PlayerConfig.MuteList.Add(item.Name.ToLower());
         }
     }
     /// <summary>
     /// 读取禁止绑定列表
     /// </summary>
     /// <returns></returns>
-    private void LoadNotIDAsync()
+    private static void LoadNotIDAsync()
     {
-        Main.PlayerConfig.NotBindList.Clear();
-        var Conn = new MySqlConnection(ConnectString);
-        var list = Conn.Query<Obj2>($"SELECT `Name` FROM {MysqlNotIDTable}");
+        Minecraft_QQ.PlayerConfig.NotBindList.Clear();
+        using var conn = new MySqlConnection(ConnectString);
+        var list = conn.Query<Obj2>($"SELECT `Name` FROM {MysqlNotIDTable}");
 
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Main.PlayerConfig.NotBindList.Contains(item.Name.ToLower()) == false)
-                    Main.PlayerConfig.NotBindList.Add(item.Name.ToLower());
+                if (Minecraft_QQ.PlayerConfig.NotBindList.Contains(item.Name.ToLower()) == false)
+                    Minecraft_QQ.PlayerConfig.NotBindList.Add(item.Name.ToLower());
         }
     }
 
@@ -180,24 +176,24 @@ public class MyMysql
     /// 添加玩家
     /// </summary>
     /// <param name="player">玩家名字</param>
-    public async Task AddPlayerAsync(PlayerObj player)
+    public static async Task AddPlayerAsync(PlayerObj player)
     {
         if (await GetPlayerAsync(player.QQ) != null)
             await UpdatePlayerAsync(player);
         else
         {
-            var Conn = new MySqlConnection(ConnectString);
-            await Conn.ExecuteAsync($"INSERT INTO {MysqlPlayerTable}(Name,QQ,IsAdmin,Nick)VALUES(@Name,@QQ,@IsAdmin,@Nick)", player);
+            using var conn = new MySqlConnection(ConnectString);
+            await conn.ExecuteAsync($"INSERT INTO {MysqlPlayerTable}(Name,QQ,IsAdmin,Nick)VALUES(@Name,@QQ,@IsAdmin,@Nick)", player);
         }
     }
 
-    public async Task AddMuteAsync(string name)
+    public static async Task AddMuteAsync(string name)
     {
         var Conn = new MySqlConnection(ConnectString);
         await Conn.ExecuteAsync($"INSERT INTO {MysqlMuteTable}(Name)VALUES(@name)", new { name});
     }
     
-    public async Task DeleteMuteAsync(string name)
+    public static async Task DeleteMuteAsync(string name)
     {
         try
         {
@@ -209,7 +205,7 @@ public class MyMysql
             Logs.LogError("[Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
         }
     }
-    private async Task UpdatePlayerAsync(PlayerObj player)
+    private static async Task UpdatePlayerAsync(PlayerObj player)
     {
         try
         {
@@ -221,7 +217,7 @@ public class MyMysql
             Logs.LogError(e);
         }
     }
-    private async Task<PlayerObj> GetPlayerAsync(long qq)
+    private static async Task<PlayerObj> GetPlayerAsync(long qq)
     {
         var Conn = new MySqlConnection(ConnectString);
         var list = await Conn.QueryAsync<PlayerObj>($"SELECT `Name`,`Nick`,`IsAdmin`,`QQ` FROM {MysqlPlayerTable} WHERE QQ=@qq", new { qq });

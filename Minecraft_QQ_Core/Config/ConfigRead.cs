@@ -117,7 +117,7 @@ internal class ConfigRead
             {
                 if (item.Value.IsMain == true)
                 {
-                    IMinecraft_QQ.Main.GroupSetMain = item.Key;
+                    Minecraft_QQ.GroupSetMain = item.Key;
                     break;
                 }
             }
@@ -145,10 +145,10 @@ internal class ConfigRead
                     {
                         "服务器菜单",
                         $"服务器查询菜单：{Environment.NewLine}" +
-                        $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
-                        $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
-                        $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
-                        $"【{IMinecraft_QQ.Main.MainConfig.Check.Head}{IMinecraft_QQ.Main.MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
+                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                 };
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Ask.json配置文件读取发送错误，已经重写");
                 File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));

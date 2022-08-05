@@ -15,7 +15,7 @@ namespace Minecraft_QQ_Cmd
             IMinecraft_QQ.ShowMessageCall = Message;
             IMinecraft_QQ.LogCall = Message;
             IMinecraft_QQ.ConfigInitCall = ConfigInit;
-            await IMinecraft_QQ.Start();
+            await Minecraft_QQ.Start();
 
             if (Environment.UserInteractive)
             {
@@ -32,7 +32,7 @@ namespace Minecraft_QQ_Cmd
                             break;
                         case "reload":
                             Console.WriteLine("正在读取配置文件");
-                            var res = IMinecraft_QQ.Main.Reload();
+                            var res = Minecraft_QQ.Reload();
                             if (res)
                             {
                                 Console.WriteLine("已成功读取配置文件");
@@ -44,7 +44,7 @@ namespace Minecraft_QQ_Cmd
                             break;
                         case "stop":
                             Console.WriteLine("正在关闭");
-                            IMinecraft_QQ.Stop();
+                            Minecraft_QQ.Stop();
                             return;
                     }
                 }
@@ -67,7 +67,7 @@ namespace Minecraft_QQ_Cmd
                     if (long.TryParse(a, out var group))
                     {
                         group = Math.Abs(group);
-                        IMinecraft_QQ.Main.GroupConfig.Groups.Add(group, new()
+                        Minecraft_QQ.GroupConfig.Groups.Add(group, new()
                         {
                             Group = group.ToString(),
                             EnableCommand = true,

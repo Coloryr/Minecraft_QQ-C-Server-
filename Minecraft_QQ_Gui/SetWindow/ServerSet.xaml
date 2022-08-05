@@ -1,31 +1,37 @@
-﻿<Window x:Class="Minecraft_QQ_Gui.SetWindow.ServerSet"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="服务器配置文件" Height="557" Width="968" ResizeMode="CanMinimize" Background="White" Icon="/Minecraft_QQ.ico">
+﻿<Window
+    x:Class="Minecraft_QQ_Gui.SetWindow.ServerSet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="服务器配置文件"
+    Width="968"
+    Height="557"
+    Background="White"
+    Icon="/Minecraft_QQ.ico"
+    ResizeMode="CanMinimize"
+    mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ListViewStyle1" TargetType="{x:Type ListView}">
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-                <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-                <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+                <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ListView}">
                             <ScrollViewer Padding="{TemplateBinding Padding}" Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                             <ControlTemplate.Triggers>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
-                                        <Condition Property="IsGrouping" Value="true"/>
-                                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                        <Condition Property="IsGrouping" Value="true" />
+                                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
                                     </MultiTrigger.Conditions>
-                                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                                    <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                                 </MultiTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -35,205 +41,713 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Rectangle Fill="#FFF4F4F5" Stroke="#FF5ABED6" StrokeThickness="2"/>
-        <GroupBox Header="加入消息" Margin="10,10,0,0" Height="102" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <Rectangle
+            Fill="#FFF4F4F5"
+            Stroke="#FF5ABED6"
+            StrokeThickness="2" />
+        <GroupBox
+            Width="190"
+            Height="102"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="加入消息">
             <Grid>
-                <CheckBox Content="启用" IsChecked="{Binding Join.sendQQ}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Join.Message}" Margin="5,24,5,5" Foreground="Black"
-                         Background="#225EBDD3"/>
+                <CheckBox
+                    Width="38"
+                    Height="14"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="启用"
+                    IsChecked="{Binding Join.Send}"
+                    Style="{DynamicResource Check}" />
+                <TextBox
+                    Margin="5,24,5,5"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Join.Message}"
+                    TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="退出消息" Margin="10,110,0,0" Height="102" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="102"
+            Margin="10,110,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="退出消息">
             <Grid>
-                <CheckBox Content="启用" IsChecked="{Binding Quit.sendQQ}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Quit.Message}" Margin="5,24,5,5" Foreground="Black"
-                         Background="#225EBDD3"/>
+                <CheckBox
+                    Width="38"
+                    Height="14"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="启用"
+                    IsChecked="{Binding Quit.Send}"
+                    Style="{DynamicResource Check}" />
+                <TextBox
+                    Margin="5,24,5,5"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Quit.Message}"
+                    TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="跳服消息" Margin="10,210,0,0" Height="102" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="102"
+            Margin="10,210,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="跳服消息">
             <Grid>
-                <CheckBox Content="启用" IsChecked="{Binding ChangeServer.sendQQ}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" HorizontalAlignment="Left" Width="38" Height="14" VerticalAlignment="Top"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ChangeServer.Message}" Margin="5,24,5,5" Foreground="Black"
-                         Background="#225EBDD3"/>
+                <CheckBox
+                    Width="38"
+                    Height="14"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="启用"
+                    IsChecked="{Binding ChangeServer.Send}"
+                    Style="{DynamicResource Check}" />
+                <TextBox
+                    Margin="5,24,5,5"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ChangeServer.Message}"
+                    TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="加入消息" Margin="198,10,0,0" Height="302" VerticalAlignment="Top" HorizontalAlignment="Left" Width="378">
+        <GroupBox
+            Width="378"
+            Height="302"
+            Margin="198,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="加入消息">
             <Grid>
-                <Label Content="服务器名字" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.ServerName}" Margin="72,5,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="检测头" Style="{DynamicResource Label}" Margin="0,24,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.Check}" Margin="72,28,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="发送至群格式" Style="{DynamicResource Label}" Margin="0,48,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="83"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.Message}" Margin="5,72,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="发送至服务器格式" Style="{DynamicResource Label}" Margin="0,120,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.Say}" Margin="5,144,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="显示子服人数格式" Style="{DynamicResource Label}" Margin="0,192,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.SendOneByOneMessage}" Margin="5,216,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="在线人数格式" Style="{DynamicResource Label}" Margin="188,0,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="83"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.PlayerListMessage}" Margin="193,24,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="服务器在线格式" Style="{DynamicResource Label}" Margin="187,72,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding ServerSet.ServerOnlineMessage}" Margin="193,96,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="服务器模式" Style="{DynamicResource Label}" Margin="187,144,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96"/>
-                <RadioButton Content="模式0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="193,169,0,0" Name="Mode1" FontSize="12"
-                             Style="{DynamicResource RadioButton_Left}" Foreground="Black" Click="Click_" Width="58"/>
-                <RadioButton Content="模式1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,169,0,0" Name="Mode2" FontSize="12"
-                             Style="{DynamicResource RadioButton_Middle}" Foreground="Black" Click="Click_" Width="60"/>
-                <RadioButton Content="模式2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="309,169,0,0" Name="Mode3" FontSize="12"
-                             Style="{DynamicResource RadioButton_Right}" Foreground="Black" Click="Click_" Width="60"/>
-                <CheckBox Content="单独显示子服的人数" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="193,222,0,0"
-                          Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.SendOneByOne}"/>
-                <CheckBox Content="隐藏空的子服" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="193,241,0,0"
-                          Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.HideEmptyServer}"/>
-                <CheckBox Content="BC模式" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,241,0,0"
-                          Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
-                <Label Content="指令延迟" Style="{DynamicResource Label}" Margin="193,193,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding ServerSet.CommandDelay}" Margin="260,197,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
+                <Label
+                    Width="71"
+                    Height="24"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器名字"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.ServerName}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="检测头"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,28,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.Check}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="83"
+                    Height="24"
+                    Margin="0,48,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="发送至群格式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="48"
+                    Margin="5,72,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.Message}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="107"
+                    Height="24"
+                    Margin="0,120,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="发送至服务器格式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="48"
+                    Margin="5,144,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.Say}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="107"
+                    Height="24"
+                    Margin="0,192,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="显示子服人数格式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="48"
+                    Margin="5,216,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.SendOneByOneMessage}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="83"
+                    Height="24"
+                    Margin="188,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="在线人数格式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="48"
+                    Margin="193,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.PlayerListMessage}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="96"
+                    Height="24"
+                    Margin="187,72,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器在线格式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="48"
+                    Margin="193,96,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.ServerOnlineMessage}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="96"
+                    Height="24"
+                    Margin="187,144,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器模式"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <RadioButton
+                    Name="Mode1"
+                    Width="58"
+                    Margin="193,169,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Click_"
+                    Content="模式0"
+                    FontSize="12"
+                    Foreground="Black"
+                    Style="{DynamicResource RadioButton_Left}" />
+                <RadioButton
+                    Name="Mode2"
+                    Width="60"
+                    Margin="251,169,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Click_"
+                    Content="模式1"
+                    FontSize="12"
+                    Foreground="Black"
+                    Style="{DynamicResource RadioButton_Middle}" />
+                <RadioButton
+                    Name="Mode3"
+                    Width="60"
+                    Margin="309,169,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Click_"
+                    Content="模式2"
+                    FontSize="12"
+                    Foreground="Black"
+                    Style="{DynamicResource RadioButton_Right}" />
+                <CheckBox
+                    Margin="193,222,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="单独显示子服的人数"
+                    IsChecked="{Binding ServerSet.SendOneByOne}"
+                    Style="{DynamicResource Check}" />
+                <CheckBox
+                    Margin="193,241,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="隐藏空的子服"
+                    IsChecked="{Binding ServerSet.HideEmptyServer}"
+                    Style="{DynamicResource Check}" />
+                <CheckBox
+                    Margin="284,241,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="群组服模式"
+                    IsChecked="{Binding ServerSet.TopMode}"
+                    Style="{DynamicResource Check}" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="193,193,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="指令延迟"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="20"
+                    Margin="260,197,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding ServerSet.CommandDelay}"
+                    TextWrapping="NoWrap" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="服务器别名" Margin="10,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="378">
+        <GroupBox
+            Width="378"
+            Height="202"
+            Margin="10,310,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="服务器别名">
             <Grid>
-                <ListView Margin="10" Style="{DynamicResource ListViewStyle1}"
-                          x:Name="ServerNameList">
+                <ListView
+                    x:Name="ServerNameList"
+                    Margin="10"
+                    Style="{DynamicResource ListViewStyle1}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="子服名字" Width="150" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="别名" Width="180" DisplayMemberBinding="{Binding Addr}"/>
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Name}"
+                                Header="子服名字" />
+                            <GridViewColumn
+                                Width="180"
+                                DisplayMemberBinding="{Binding Addr}"
+                                Header="别名" />
                         </GridView>
                     </ListView.View>
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="添加" Click="AddS"/>
-                            <MenuItem Header="修改" Click="EditS"/>
-                            <MenuItem Header="删除" Click="DeleteS"/>
+                            <MenuItem Click="AddS" Header="添加" />
+                            <MenuItem Click="EditS" Header="修改" />
+                            <MenuItem Click="DeleteS" Header="删除" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                 </ListView>
             </Grid>
         </GroupBox>
-        <GroupBox Header="发送消息到其他子服" Margin="762,210,0,0" Height="102" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="102"
+            Margin="762,210,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="发送消息到其他子服">
             <Grid Height="77" VerticalAlignment="Top">
-                <CheckBox Content="启用" IsChecked="{Binding SendAllServer.Enable}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding SendAllServer.Message}" Margin="5,24,5,5" Foreground="Black"
-                         Background="#225EBDD3"/>
-                <CheckBox Content="只除了本服" IsChecked="{Binding SendAllServer.OnlySideServer}"
-                          Style="{DynamicResource Check}" Margin="48,5,0,0" Height="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
+                <CheckBox
+                    Width="38"
+                    Height="14"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="启用"
+                    IsChecked="{Binding SendAllServer.Enable}"
+                    Style="{DynamicResource Check}" />
+                <TextBox
+                    Margin="5,24,5,5"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding SendAllServer.Message}"
+                    TextWrapping="Wrap" />
+                <CheckBox
+                    Width="80"
+                    Height="14"
+                    Margin="48,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="只除了本服"
+                    IsChecked="{Binding SendAllServer.OnlySideServer}"
+                    Style="{DynamicResource Check}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="系统设置" Margin="574,10,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="202"
+            Margin="574,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="系统设置">
             <Grid>
-                <Label Content="服务器地址" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.IP}" Margin="72,5,0,0" Foreground="Black" IsEnabled="False"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="服务器端口" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,24,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.Port}" Margin="72,29,0,0" Foreground="Black" IsEnabled="False"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <CheckBox Content="自动重连" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,149,0,0"
-                          Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
-                <Label Content="重连间隔" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,48,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.AutoConnectTime}" Margin="72,53,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="重连间隔" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,48,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding System.Sleep}" Margin="72,76,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="工作间隔" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,72,0,0"/>
-                <CheckBox Content="调试模式" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="72,149,0,0"
-                          Style="{DynamicResource Check}" IsChecked="{Binding ServerSet.BungeeCord}"/>
+                <Label
+                    Width="71"
+                    Height="24"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器地址"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    IsEnabled="False"
+                    Text="{Binding System.IP}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器端口"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,29,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    IsEnabled="False"
+                    Text="{Binding System.Port}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,48,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="重连间隔"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,53,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding System.AutoConnectTime}" />
+                <CheckBox
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="调试模式"
+                    IsChecked="{Binding ServerSet.BungeeCord}"
+                    Style="{DynamicResource Check}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="消息设置" Margin="574,210,0,0" Height="52" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="52"
+            Margin="574,210,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="消息设置">
             <Grid>
-                <CheckBox Content="不发送指令" IsChecked="{Binding User.NotSendCommand}"
-                          Style="{DynamicResource Check}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="79" Height="14" VerticalAlignment="Center"/>
+                <CheckBox
+                    Width="79"
+                    Height="14"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="不发送指令"
+                    IsChecked="{Binding User.NotSendCommand}"
+                    Style="{DynamicResource Check}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="日志设置" Margin="574,260,0,0" Height="52" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="52"
+            Margin="574,260,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="日志设置">
             <Grid>
-                <CheckBox Content="记录群消息" IsChecked="{Binding Logs.Group}"
-                          Style="{DynamicResource Check}" Margin="5,5,0,0" HorizontalAlignment="Left" Width="77" Height="14" VerticalAlignment="Top"/>
-                <CheckBox Content="记录服务器消息" IsChecked="{Binding Logs.Server}"
-                          Style="{DynamicResource Check}" Margin="87,5,0,0" HorizontalAlignment="Left" Width="99" Height="14" VerticalAlignment="Top"/>
+                <CheckBox
+                    Width="77"
+                    Height="14"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="记录群消息"
+                    IsChecked="{Binding Logs.Group}"
+                    Style="{DynamicResource Check}" />
+                <CheckBox
+                    Width="99"
+                    Height="14"
+                    Margin="87,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="记录服务器消息"
+                    IsChecked="{Binding Logs.Server}"
+                    Style="{DynamicResource Check}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="占位符" Margin="762,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="202"
+            Margin="762,310,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="占位符">
             <Grid>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Message}" Margin="72,5,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="17" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="消息" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Player}" Margin="72,32,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="玩家" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,26,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.ServerName}" Margin="72,56,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="服务器名字" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,50,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.Server}" Margin="72,80,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="服务器" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,74,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.PlayerNumber}" Margin="72,104,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="玩家数量" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,98,0,0"/>
-                <TextBox TextWrapping="NoWrap" Text="{Binding Placeholder.PlayerList}" Margin="72,128,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="109"/>
-                <Label Content="玩家列表" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Margin="0,122,0,0"/>
+                <TextBox
+                    Width="109"
+                    Height="17"
+                    Margin="72,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.Message}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="消息"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="16"
+                    Margin="72,32,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.Player}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,26,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="玩家"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="16"
+                    Margin="72,56,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.ServerName}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,50,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器名字"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="16"
+                    Margin="72,80,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.Server}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,74,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="服务器"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="16"
+                    Margin="72,104,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.PlayerNumber}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,98,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="玩家数量"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="109"
+                    Height="16"
+                    Margin="72,128,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Placeholder.PlayerList}"
+                    TextWrapping="NoWrap" />
+                <Label
+                    Width="71"
+                    Height="24"
+                    Margin="0,122,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="玩家列表"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="消息文本" Margin="762,10,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190">
+        <GroupBox
+            Width="190"
+            Height="202"
+            Margin="762,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="消息文本">
             <Grid>
-                <Label Content="关闭聊天" Style="{DynamicResource Label}" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="83"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Language.MessageOFF}" Margin="5,24,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
-                <Label Content="启用聊天" Style="{DynamicResource Label}" Margin="0,56,0,0" 
-                       Foreground="Black" Background="#00898989" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Language.MessageON}" Margin="5,80,0,0" Foreground="Black"
-                         Background="#225EBDD3" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="176"/>
+                <Label
+                    Width="83"
+                    Height="24"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="关闭聊天"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="32"
+                    Margin="5,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Language.MessageOFF}"
+                    TextWrapping="Wrap" />
+                <Label
+                    Width="107"
+                    Height="24"
+                    Margin="0,56,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#00898989"
+                    Content="启用聊天"
+                    Foreground="Black"
+                    Style="{DynamicResource Label}" />
+                <TextBox
+                    Width="176"
+                    Height="34"
+                    Margin="5,80,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#225EBDD3"
+                    Foreground="Black"
+                    Text="{Binding Language.MessageON}"
+                    TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="不参与聊天的玩家" Margin="386,310,0,0" Height="202" VerticalAlignment="Top" HorizontalAlignment="Left" Width="378">
+        <GroupBox
+            Width="378"
+            Height="202"
+            Margin="386,310,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Header="不参与聊天的玩家">
             <Grid>
-                <ListView Margin="10" Style="{DynamicResource ListViewStyle1}"
-                          x:Name="MuteList">
+                <ListView
+                    x:Name="MuteList"
+                    Margin="10"
+                    Style="{DynamicResource ListViewStyle1}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="名字" Width="330" DisplayMemberBinding="{Binding StringFormat=string}"/>
+                            <GridViewColumn
+                                Width="330"
+                                DisplayMemberBinding="{Binding StringFormat=string}"
+                                Header="名字" />
                         </GridView>
                     </ListView.View>
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="添加" Click="AddM"/>
-                            <MenuItem Header="修改" Click="EditM"/>
-                            <MenuItem Header="删除" Click="DeleteM"/>
+                            <MenuItem Click="AddM" Header="添加" />
+                            <MenuItem Click="EditM" Header="修改" />
+                            <MenuItem Click="DeleteM" Header="删除" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                 </ListView>

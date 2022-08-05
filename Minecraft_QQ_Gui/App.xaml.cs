@@ -50,7 +50,7 @@ namespace Minecraft_QQ_Gui
             {
                 MainWindow_?.AddLog(data);
             });
-            await IMinecraft_QQ.Start();
+            await Minecraft_QQ.Start();
 
             IMinecraft_QQ.GuiCall = new IMinecraft_QQ.Gui((GuiFun fun) =>
             {
@@ -78,7 +78,7 @@ namespace Minecraft_QQ_Gui
         {
             MainWindow_ = null;
             notifyIcon.Dispose();
-            IMinecraft_QQ.Stop();
+            Minecraft_QQ.Stop();
         }
 
         private void NotifyIcon_Click(object sender, EventArgs e)

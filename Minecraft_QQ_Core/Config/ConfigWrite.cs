@@ -10,23 +10,23 @@ public class ConfigWrite
 {
     public static void Ask()
     {
-        Save(ConfigFile.AskConfig.FullName, IMinecraft_QQ.Main.AskConfig);
+        Save(ConfigFile.AskConfig.FullName, Minecraft_QQ.AskConfig);
     }
     public static void Command()
     {
-        Save(ConfigFile.CommandSave.FullName, IMinecraft_QQ.Main.CommandConfig);
+        Save(ConfigFile.CommandSave.FullName, Minecraft_QQ.CommandConfig);
     }
     public static void Config()
     {
-        Save(ConfigFile.MainConfig.FullName, IMinecraft_QQ.Main.MainConfig);
+        Save(ConfigFile.MainConfig.FullName, Minecraft_QQ.MainConfig);
     }
     public static void Group()
     {
-        Save(ConfigFile.GroupConfig.FullName, IMinecraft_QQ.Main.GroupConfig);
+        Save(ConfigFile.GroupConfig.FullName, Minecraft_QQ.GroupConfig);
     }
     public static void Player()
     {
-        Save(ConfigFile.PlayerSave.FullName, IMinecraft_QQ.Main.PlayerConfig);
+        Save(ConfigFile.PlayerSave.FullName, Minecraft_QQ.PlayerConfig);
     }
     public static void All()
     {

@@ -47,8 +47,6 @@ public record PlayerConfig
         NotBindList = new();
         MuteList = new();
         PlayerList = new();
-
-        NotBindList.Add("Color_yr");
     }
 }
 public record CommandConfig
@@ -153,7 +151,7 @@ public record SettingRobot
     {
         QQ = 0;
         IP = "127.0.0.1";
-        Port = 23333;
+        Port = 23335;
         CheckDelay = 1000;
         Check = true;
     }
@@ -393,11 +391,7 @@ public record AdminConfig
     }
 }
 public record SocketConfig
-{
-    /// <summary>
-    /// 地址
-    /// </summary>
-    public string IP { get; set; }
+{ 
     /// <summary>
     /// 端口
     /// </summary>
@@ -409,15 +403,13 @@ public record SocketConfig
 
     public SocketConfig()
     {
-        IP = "127.0.0.1";
         Port = 25555;
         Check = true;
     }
 
     public override string ToString()
     {
-        return $"地址:{IP}{Environment.NewLine}"
-            + $"端口:{Port}{Environment.NewLine}"
+        return $"端口:{Port}{Environment.NewLine}"
             + $"检测断开:{Check}";
     }
 }

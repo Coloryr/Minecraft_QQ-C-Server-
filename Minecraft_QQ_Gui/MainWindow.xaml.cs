@@ -40,9 +40,9 @@ namespace Minecraft_QQ_Gui
             var temp1 = new TranObj
             {
                 command = DataType.set,
-                message = JsonConvert.SerializeObject(temp)
+                message = JsonConvert.SerializeObject(temp, Formatting.Indented)
             };
-            IMinecraft_QQ.Main.Server.Send(temp1, new List<string>
+            PluginServer.Send(temp1, new List<string>
             {
                 server
             });
@@ -63,7 +63,7 @@ namespace Minecraft_QQ_Gui
         }
         private void InitQQList()
         {
-            var list = IMinecraft_QQ.Main.GroupConfig.Groups.Values;
+            var list = Minecraft_QQ.GroupConfig.Groups.Values;
             QQList.Items.Clear();
             foreach (var item in list)
             {
@@ -74,40 +74,39 @@ namespace Minecraft_QQ_Gui
         public void InitServerList()
         {
             ServerList.Items.Clear();
-            if (!IMinecraft_QQ.Main.Server.Start)
+            if (!PluginServer.Start)
             {
                 State.Content = "未就绪";
                 SocketST.Content = "启动端口";
-                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = true;
+                Port.IsEnabled = true;
                 return;
             }
-            else if (IMinecraft_QQ.Main.Server.Start && !IMinecraft_QQ.Main.Server.IsReady())
+            else if (PluginServer.Start && !PluginServer.IsReady())
             {
                 State.Content = "等待连接";
                 SocketST.Content = "关闭端口";
-                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                Port.IsEnabled = false;
                 return;
             }
-            else if (IMinecraft_QQ.Main.Server.IsReady())
+            else if (PluginServer.IsReady())
             {
                 State.Content = "运行中";
                 SocketST.Content = "关闭端口";
-                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                 Port.IsEnabled = false;
             }
-            foreach (var item in IMinecraft_QQ.Main.Server.MCServers)
+            foreach (var item in PluginServer.MCServers)
             {
-                if (item.Value.Client.Connected)
-                    ServerList.Items.Add(new Server
-                    {
-                        Name = item.Key,
-                        Addr = item.Value.Client.Client.RemoteEndPoint.ToString()
-                    });
+                ServerList.Items.Add(new Server
+                {
+                    Name = item.Key,
+                    Addr = item.Value.Channel.RemoteAddress.ToString()
+                });
             }
         }
         private void InitMessageList()
         {
             MessageList.Items.Clear();
-            foreach (var item in IMinecraft_QQ.Main.AskConfig.AskList)
+            foreach (var item in Minecraft_QQ.AskConfig.AskList)
             {
                 MessageList.Items.Add(new Server
                 {
@@ -118,8 +117,8 @@ namespace Minecraft_QQ_Gui
         }
         public void InitPlayerList()
         {
-            var list = IMinecraft_QQ.Main.PlayerConfig.PlayerList.Values;
-            if (IMinecraft_QQ.Main.PlayerConfig.PlayerList == null)
+            var list = Minecraft_QQ.PlayerConfig.PlayerList.Values;
+            if (Minecraft_QQ.PlayerConfig.PlayerList == null)
             {
                 new MessageWindow("数据错误，请检查Mysql数据库是否连接，检查后重启");
                 return;
@@ -129,13 +128,13 @@ namespace Minecraft_QQ_Gui
             {
                 PlayerList.Items.Add(item);
             }
-            var list1 = IMinecraft_QQ.Main.PlayerConfig.NotBindList;
+            var list1 = Minecraft_QQ.PlayerConfig.NotBindList;
             NoIDList.Items.Clear();
             foreach (var item in list1)
             {
                 NoIDList.Items.Add(item);
             }
-            list1 = IMinecraft_QQ.Main.PlayerConfig.MuteList;
+            list1 = Minecraft_QQ.PlayerConfig.MuteList;
             MuteList.Items.Clear();
             foreach (var item in list1)
             {
@@ -144,7 +143,7 @@ namespace Minecraft_QQ_Gui
         }
         private void InitCommandList()
         {
-            var list = IMinecraft_QQ.Main.CommandConfig.CommandList;
+            var list = Minecraft_QQ.CommandConfig.CommandList;
             CommandList.Items.Clear();
             foreach (var item in list)
             {
@@ -169,8 +168,8 @@ namespace Minecraft_QQ_Gui
         }
         private void InitMysql()
         {
-            MysqlPassword.Password = IMinecraft_QQ.Main.MainConfig.Database.Password;
-            if (IMinecraft_QQ.Main.MysqlOK)
+            MysqlPassword.Password = Minecraft_QQ.MainConfig.Database.Password;
+            if (Minecraft_QQ.MysqlOK)
             {
                 MysqlState.Content = "已连接";
                 MysqlConnect.Content = "断开";
@@ -203,8 +202,8 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("请检查你修改后的群号", "修改失败");
                 return;
             }
-            IMinecraft_QQ.Main.GroupConfig.Groups.Remove(long.Parse(olditem.Group));
-            IMinecraft_QQ.Main.GroupConfig.Groups.Add(group, item);
+            Minecraft_QQ.GroupConfig.Groups.Remove(long.Parse(olditem.Group));
+            Minecraft_QQ.GroupConfig.Groups.Add(group, item);
             InitQQList();
         }
 
@@ -216,7 +215,7 @@ namespace Minecraft_QQ_Gui
             {
                 var temp = (GroupObj)item;
                 long.TryParse(temp.Group, out long group);
-                IMinecraft_QQ.Main.GroupConfig.Groups.Remove(group);
+                Minecraft_QQ.GroupConfig.Groups.Remove(group);
             }
             InitQQList();
         }
@@ -233,11 +232,11 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("群号错误", "添加失败");
                 return;
             }
-            if (IMinecraft_QQ.Main.GroupConfig.Groups.ContainsKey(group))
+            if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(group))
             {
-                IMinecraft_QQ.Main.GroupConfig.Groups.Remove(group);
+                Minecraft_QQ.GroupConfig.Groups.Remove(group);
             }
-            IMinecraft_QQ.Main.GroupConfig.Groups.Add(group, item);
+            Minecraft_QQ.GroupConfig.Groups.Add(group, item);
             InitQQList();
         }
 
@@ -259,32 +258,23 @@ namespace Minecraft_QQ_Gui
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            IMinecraft_QQ.Main.Reload();
+            Minecraft_QQ.Reload();
             new MessageWindow("配置文件已重载", "已重读");
-            DataContext = IMinecraft_QQ.Main.MainConfig;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            IP.Text = "127.0.0.1";
-        }
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            IP.Text = "0.0.0.0";
+            DataContext = Minecraft_QQ.MainConfig;
         }
 
         private void SocketST_Click(object sender, RoutedEventArgs e)
         {
-            if (IMinecraft_QQ.Main.Server.Start)
+            if (PluginServer.Start)
             {
-                IMinecraft_QQ.Main.Server.ServerStop();
-                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = true;
+                PluginServer.ServerStop();
+                 Port.IsEnabled = true;
                 SocketST.Content = "启动端口";
             }
             else
             {
-                IMinecraft_QQ.Main.Server.StartServer();
-                IP.IsEnabled = Local.IsEnabled = Out.IsEnabled = Port.IsEnabled = false;
+                PluginServer.StartServer();
+                Port.IsEnabled = false;
                 SocketST.Content = "关闭端口";
             }
             InitServerList();
@@ -294,7 +284,7 @@ namespace Minecraft_QQ_Gui
             if (ServerList.SelectedItem == null)
                 return;
             GetServer = (Server)ServerList.SelectedItem;
-            IMinecraft_QQ.Main.Server.Send(new TranObj
+            PluginServer.Send(new TranObj
             {
                 command = DataType.config
             },
@@ -308,7 +298,7 @@ namespace Minecraft_QQ_Gui
             foreach (var item in ServerList.SelectedItems)
             {
                 var temp = (Server)item;
-                IMinecraft_QQ.Main.Server.Close(temp.Name);
+                PluginServer.Close(temp.Name);
             }
             InitServerList();
         }
@@ -318,7 +308,7 @@ namespace Minecraft_QQ_Gui
             foreach (var item in PlayerList.SelectedItems)
             {
                 var temp = (PlayerObj)item;
-                IMinecraft_QQ.Main.PlayerConfig.PlayerList.Remove(temp.QQ);
+                Minecraft_QQ.PlayerConfig.PlayerList.Remove(temp.QQ);
             }
             InitPlayerList();
         }
@@ -334,8 +324,8 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("请检查你写的QQ号", "修改失败");
                 return;
             }
-            IMinecraft_QQ.Main.PlayerConfig.PlayerList.Remove(olditem);
-            IMinecraft_QQ.Main.PlayerConfig.PlayerList.Add(item.QQ, item);
+            Minecraft_QQ.PlayerConfig.PlayerList.Remove(olditem);
+            Minecraft_QQ.PlayerConfig.PlayerList.Add(item.QQ, item);
             InitPlayerList();
         }
         private void PlayerA(object sender, RoutedEventArgs e)
@@ -345,7 +335,7 @@ namespace Minecraft_QQ_Gui
             {
                 return;
             }
-            IMinecraft_QQ.Main.PlayerConfig.PlayerList.Add(item.QQ, item);
+            Minecraft_QQ.PlayerConfig.PlayerList.Add(item.QQ, item);
             InitPlayerList();
         }
 
@@ -353,7 +343,7 @@ namespace Minecraft_QQ_Gui
         {
             foreach (var item in NoIDList.SelectedItems)
             {
-                IMinecraft_QQ.Main.PlayerConfig.NotBindList.Remove((string)item);
+                Minecraft_QQ.PlayerConfig.NotBindList.Remove((string)item);
             }
             InitPlayerList();
         }
@@ -362,9 +352,9 @@ namespace Minecraft_QQ_Gui
             if (NoIDList.SelectedItem != null)
             {
                 var item = (string)NoIDList.SelectedItem;
-                IMinecraft_QQ.Main.PlayerConfig.NotBindList.Remove(item);
+                Minecraft_QQ.PlayerConfig.NotBindList.Remove(item);
                 item = new IDSet(item).Set();
-                IMinecraft_QQ.Main.PlayerConfig.NotBindList.Add(item);
+                Minecraft_QQ.PlayerConfig.NotBindList.Add(item);
             }
             InitPlayerList();
         }
@@ -375,11 +365,11 @@ namespace Minecraft_QQ_Gui
             {
                 return;
             }
-            if (IMinecraft_QQ.Main.PlayerConfig.NotBindList.Contains(item))
+            if (Minecraft_QQ.PlayerConfig.NotBindList.Contains(item))
             {
                 return;
             }
-            IMinecraft_QQ.Main.PlayerConfig.NotBindList.Add(item);
+            Minecraft_QQ.PlayerConfig.NotBindList.Add(item);
             InitPlayerList();
         }
 
@@ -387,7 +377,7 @@ namespace Minecraft_QQ_Gui
         {
             foreach (var item in MuteList.SelectedItems)
             {
-                IMinecraft_QQ.Main.PlayerConfig.MuteList.Remove((string)item);
+                Minecraft_QQ.PlayerConfig.MuteList.Remove((string)item);
             }
             InitPlayerList();
         }
@@ -396,9 +386,9 @@ namespace Minecraft_QQ_Gui
             if (MuteList.SelectedItem != null)
             {
                 var item = (string)MuteList.SelectedItem;
-                IMinecraft_QQ.Main.PlayerConfig.MuteList.Remove(item);
+                Minecraft_QQ.PlayerConfig.MuteList.Remove(item);
                 item = new IDSet(item).Set();
-                IMinecraft_QQ.Main.PlayerConfig.MuteList.Add(item);
+                Minecraft_QQ.PlayerConfig.MuteList.Add(item);
             }
             InitPlayerList();
         }
@@ -409,11 +399,11 @@ namespace Minecraft_QQ_Gui
             {
                 return;
             }
-            if (IMinecraft_QQ.Main.PlayerConfig.MuteList.Contains(item))
+            if (Minecraft_QQ.PlayerConfig.MuteList.Contains(item))
             {
                 return;
             }
-            IMinecraft_QQ.Main.PlayerConfig.MuteList.Add(item);
+            Minecraft_QQ.PlayerConfig.MuteList.Add(item);
             InitPlayerList();
         }
 
@@ -422,7 +412,7 @@ namespace Minecraft_QQ_Gui
             foreach (var item in MessageList.SelectedItems)
             {
                 var temp = (Server)item;
-                IMinecraft_QQ.Main.AskConfig.AskList.Remove(temp.Name);
+                Minecraft_QQ.AskConfig.AskList.Remove(temp.Name);
             }
             InitMessageList();
         }
@@ -439,8 +429,8 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("请检查你写内容", "修改失败");
                 return;
             }
-            IMinecraft_QQ.Main.AskConfig.AskList.Remove(olditem);
-            IMinecraft_QQ.Main.AskConfig.AskList.Add(item.Name, item.Addr);
+            Minecraft_QQ.AskConfig.AskList.Remove(olditem);
+            Minecraft_QQ.AskConfig.AskList.Add(item.Name, item.Addr);
             InitMessageList();
         }
         private void MessageA(object sender, RoutedEventArgs e)
@@ -451,7 +441,7 @@ namespace Minecraft_QQ_Gui
             {
                 return;
             }
-            IMinecraft_QQ.Main.AskConfig.AskList.Add(item.Name, item.Addr);
+            Minecraft_QQ.AskConfig.AskList.Add(item.Name, item.Addr);
             InitMessageList();
         }
 
@@ -460,7 +450,7 @@ namespace Minecraft_QQ_Gui
             foreach (var item in CommandList.SelectedItems)
             {
                 var temp = (CommandOBJ)item;
-                IMinecraft_QQ.Main.CommandConfig.CommandList.Remove(temp.Check);
+                Minecraft_QQ.CommandConfig.CommandList.Remove(temp.Check);
             }
             InitCommandList();
         }
@@ -477,8 +467,8 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("请检查你写内容", "修改失败");
                 return;
             }
-            IMinecraft_QQ.Main.CommandConfig.CommandList.Remove(olditem);
-            IMinecraft_QQ.Main.CommandConfig.CommandList.Add(item.Check, new CommandObj
+            Minecraft_QQ.CommandConfig.CommandList.Remove(olditem);
+            Minecraft_QQ.CommandConfig.CommandList.Add(item.Check, new CommandObj
             {
                 Command = item.Command,
                 PlayerUse = item.Use,
@@ -495,7 +485,7 @@ namespace Minecraft_QQ_Gui
             {
                 return;
             }
-            IMinecraft_QQ.Main.CommandConfig.CommandList.Add(item.Check, new CommandObj
+            Minecraft_QQ.CommandConfig.CommandList.Add(item.Check, new CommandObj
             {
                 Command = item.Command,
                 PlayerUse = item.Use,
@@ -507,15 +497,15 @@ namespace Minecraft_QQ_Gui
 
         private void MysqlPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            IMinecraft_QQ.Main.MainConfig.Database.Password = MysqlPassword.Password;
+            Minecraft_QQ.MainConfig.Database.Password = MysqlPassword.Password;
         }
 
         private void MysqlConnect_Click(object sender, RoutedEventArgs e)
         {
-            if (IMinecraft_QQ.Main.MysqlOK)
-                IMinecraft_QQ.Main.Mysql.MysqlStop();
+            if (Minecraft_QQ.MysqlOK)
+                MyMysql.MysqlStop();
             else
-                IMinecraft_QQ.Main.Mysql.MysqlStart();
+                MyMysql.MysqlStart();
             InitMysql();
         }
 
@@ -546,7 +536,7 @@ namespace Minecraft_QQ_Gui
             isSearch = true;
             await Task.Run(() =>
             {
-                foreach (var item in IMinecraft_QQ.Main.PlayerConfig.PlayerList)
+                foreach (var item in Minecraft_QQ.PlayerConfig.PlayerList)
                 {
                     if (item.Key == set.QQ)
                     {
@@ -594,7 +584,7 @@ namespace Minecraft_QQ_Gui
             InitMessageList();
             InitCommandList();
             InitMysql();
-            DataContext = IMinecraft_QQ.Main.MainConfig;
+            DataContext = Minecraft_QQ.MainConfig;
             App.MainWindow_ = this;
             App.CloseWin();
         }
