@@ -39,7 +39,7 @@ public static class SendGroup
                         if (string.IsNullOrWhiteSpace(a.Message) == false)
                         {
                             have = true;
-                            temp += a.Message + Environment.NewLine;
+                            temp += a.Message + "\n";
                         }
                     }
                     if (have)
