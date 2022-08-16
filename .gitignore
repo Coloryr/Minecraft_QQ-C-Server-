@@ -9,3 +9,8 @@ build_out
 publish
 
 .pubxml.user
+Minecraft_QQ_Cmd/Properties/PublishProfiles/FolderProfile.pubxml.user
+Minecraft_QQ_Cmd/Properties/PublishProfiles/FolderProfile1.pubxml.user
+Minecraft_QQ_Cmd/Properties/PublishProfiles/FolderProfile2.pubxml.user
+Minecraft_QQ_Cmd/Properties/PublishProfiles/FolderProfile3.pubxml.user
+Minecraft_QQ_Gui/Properties/PublishProfiles/FolderProfile.pubxml.user
