@@ -1,4 +1,5 @@
-﻿using Minecraft_QQ_Core.Utils;
+﻿using ColoryrSDK;
+using Minecraft_QQ_Core.Utils;
 
 namespace Minecraft_QQ_Core.Robot;
 

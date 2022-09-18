@@ -1,7 +1,7 @@
-﻿using DotNetty.Buffers;
+﻿using ColoryrSDK;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
-using DotNetty.Handlers.Tls;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
@@ -16,10 +16,9 @@ namespace Minecraft_QQ_Core.MySocket;
 
 public static class PluginServer
 {
-    public readonly static byte[] Checkpack = Encoding.UTF8.GetBytes("test");
 
-    public static ConcurrentDictionary<string, PluginItem> MCServers = new();
-    public static ConcurrentDictionary<IChannel, PluginItem> Contexts = new();
+    public readonly static ConcurrentDictionary<string, PluginItem> MCServers = new();
+    public readonly static ConcurrentDictionary<IChannel, PluginItem> Contexts = new();
 
     private static IEventLoopGroup bossGroup;
     private static IEventLoopGroup workerGroup;
@@ -69,6 +68,8 @@ public static class PluginServer
 
             bootstrap
                 .Option(ChannelOption.SoBacklog, 100)
+                .Option(ChannelOption.TcpNodelay, true)
+                .Option(ChannelOption.SoKeepalive, true)
                 .Handler(new LoggingHandler("Minecraft_QQ"))
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {

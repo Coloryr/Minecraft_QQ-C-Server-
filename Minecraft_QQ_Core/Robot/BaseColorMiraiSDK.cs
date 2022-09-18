@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 //请用net6运行
 //并安装Newtonsoft.Json
-namespace Minecraft_QQ_Core.Robot;
+namespace ColoryrSDK;
 
 //机器人返回数据包
 /// <summary>
@@ -413,6 +413,28 @@ public record GroupSettings
     /// </summary>
     public bool isAnonymousChatEnabled { get; set; }
 }
+/// <summary>
+/// 消息来源类型
+/// </summary>
+public enum MessageSourceKind 
+{
+    /// <summary>
+    /// 群消息
+    /// </summary>
+    GROUP = 0,
+    /// <summary>
+    /// 好友消息
+    /// </summary>
+    FRIEND,
+    /// <summary>
+    /// 来自群成员的临时会话消息
+    /// </summary>
+    TEMP,
+    /// <summary>
+    /// 来自陌生人的消息
+    /// </summary>
+    STRANGER
+}
 //机器人公共数据包
 /// <summary>
 /// 基础包
@@ -685,6 +707,14 @@ public record FriendMessagePostSendEventPack : PackBase
     /// </summary>
     public bool res { get; set; }
     /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
+    /// <summary>
     /// 消息
     /// </summary>
     public List<string> message { get; set; }
@@ -822,6 +852,14 @@ public record GroupMessagePostSendEventPack : PackBase
     /// 是否发送成功
     /// </summary>
     public bool res { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
     /// <summary>
     /// 发送的消息
     /// </summary>
@@ -1221,6 +1259,14 @@ public record TempMessagePostSendEventPack : PackBase
     /// </summary>
     public bool res { get; set; }
     /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
+    /// <summary>
     /// 消息
     /// </summary>
     public List<string> message { get; set; }
@@ -1265,6 +1311,18 @@ public record GroupMessageEventPack : PackBase
     /// </summary>
     public string name { get; set; }
     /// <summary>
+    /// 发送时间
+    /// </summary>
+    public int time { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
+    /// <summary>
     /// 发送人权限
     /// </summary>
     public MemberPermission permission { get; set; }
@@ -1291,6 +1349,14 @@ public record TempMessageEventPack : PackBase
     /// </summary>
     public string name { get; set; }
     /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
+    /// <summary>
     /// 发送人权限
     /// </summary>
     public MemberPermission permission { get; set; }
@@ -1316,6 +1382,14 @@ public record FriendMessageEventPack : PackBase
     /// 昵称
     /// </summary>
     public string name { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
     /// <summary>
     /// 消息
     /// </summary>
@@ -1600,7 +1674,15 @@ public record ReCallMessagePack : PackBase
     /// <summary>
     /// 消息ID
     /// </summary>
-    public int id { get; set; }
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
+    /// <summary>
+    /// 消息类型
+    /// </summary>
+    public MessageSourceKind kind { get; set; }
 }
 /// <summary>
 /// 72 [机器人]友输入状态改变（事件）
@@ -2005,7 +2087,11 @@ public record GroupSetEssenceMessagePack : PackBase
     /// <summary>
     /// 消息ID
     /// </summary>
-    public int mid { get; set; }
+    public int[] ids1 { get; set; }
+    /// <summary>
+    /// 消息ID
+    /// </summary>
+    public int[] ids2 { get; set; }
 }
 /// <summary>
 /// 95 [插件]消息队列

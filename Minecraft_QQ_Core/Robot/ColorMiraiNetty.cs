@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Minecraft_QQ_Core.Robot;
+namespace ColoryrSDK;
 
 internal static class PackDecode
 {
+    public const int NettyVersion = 100;
     public static string ReadString(this IByteBuffer buff)
     {
         return buff.ReadString(buff.ReadInt(), Encoding.UTF8);
@@ -34,6 +35,15 @@ internal static class PackDecode
         for (int i = 0; i < a; i++)
         {
             list.Add(buff.ReadString());
+        }
+        return list;
+    }
+    public static int[] ReadIntList(this IByteBuffer buff)
+    {
+        var list = new int[buff.ReadInt()];
+        for (int a = 0; a < list.Length; a++)
+        {
+            list[a] = buff.ReadInt();
         }
         return list;
     }
@@ -429,6 +439,8 @@ internal static class PackDecode
             qq = buff.ReadLong(),
             id = buff.ReadLong(),
             res = buff.ReadBoolean(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             message = buff.ReadStringList(),
             error = buff.ReadString()
         };
@@ -507,6 +519,8 @@ internal static class PackDecode
             qq = buff.ReadLong(),
             id = buff.ReadLong(),
             res = buff.ReadBoolean(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             message = buff.ReadStringList(),
             error = buff.ReadString()
         };
@@ -737,6 +751,8 @@ internal static class PackDecode
             qq = buff.ReadLong(),
             id = buff.ReadLong(),
             res = buff.ReadBoolean(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             message = buff.ReadStringList(),
             error = buff.ReadString()
         };
@@ -759,6 +775,9 @@ internal static class PackDecode
             id = buff.ReadLong(),
             fid = buff.ReadLong(),
             name = buff.ReadString(),
+            time = buff.ReadInt(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             permission = (MemberPermission)buff.ReadInt(),
             message = buff.ReadStringList()
         };
@@ -772,6 +791,8 @@ internal static class PackDecode
             id = buff.ReadLong(),
             fid = buff.ReadLong(),
             name = buff.ReadString(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             permission = (MemberPermission)buff.ReadInt(),
             message = buff.ReadStringList(),
             time = buff.ReadInt()
@@ -785,6 +806,8 @@ internal static class PackDecode
             qq = buff.ReadLong(),
             id = buff.ReadLong(),
             name = buff.ReadString(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             message = buff.ReadStringList(),
             time = buff.ReadInt()
         };
@@ -917,6 +940,8 @@ internal static class PackDecode
             qq = buff.ReadLong(),
             id = buff.ReadLong(),
             name = buff.ReadString(),
+            ids1 = buff.ReadIntList(),
+            ids2 = buff.ReadIntList(),
             message = buff.ReadStringList(),
             time = buff.ReadInt()
         };
@@ -988,15 +1013,21 @@ internal static class PackEncode
         buff.WriteBytes(data, 0, data.Length);
         return buff;
     }
+    public static IByteBuffer WriteIntList(this IByteBuffer buff, int[] data)
+    {
+        buff.WriteInt(data.Length);
+        foreach (var item in data)
+        {
+            buff.WriteInt(item);
+        }
+        return buff;
+    }
 
     public static IByteBuffer ToPack(this StartPack pack)
     {
-        if (pack.qqList == null)
-            pack.qqList = new();
-        if (pack.groups == null)
-            pack.groups = new();
-        if (pack.reg == null)
-            pack.reg = new();
+        pack.qqList ??= new();
+        pack.groups ??= new();
+        pack.reg ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(0)
             .WriteString(pack.name)
@@ -1007,13 +1038,13 @@ internal static class PackEncode
         }
         buff.WriteLongList(pack.groups)
             .WriteLongList(pack.qqList)
-            .WriteLong(pack.qq);
+            .WriteLong(pack.qq)
+            .WriteInt(PackDecode.NettyVersion);
         return buff;
     }
     public static IByteBuffer ToPack(this SendGroupMessagePack pack)
     {
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(52)
             .WriteLong(pack.qq)
@@ -1085,10 +1116,8 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendGroupImagePack pack)
     {
-        if (pack.data == null)
-            pack.data = Array.Empty<byte>();
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.data ??= Array.Empty<byte>();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(61)
             .WriteLong(pack.qq)
@@ -1100,8 +1129,7 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendGroupPrivateImagePack pack)
     {
-        if (pack.data == null)
-            pack.data = Array.Empty<byte>();
+        pack.data ??= Array.Empty<byte>();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(62)
             .WriteLong(pack.qq)
@@ -1113,8 +1141,7 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendFriendImagePack pack)
     {
-        if (pack.data == null)
-            pack.data = Array.Empty<byte>();
+        pack.data ??= Array.Empty<byte>();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(63)
             .WriteLong(pack.qq)
@@ -1199,16 +1226,16 @@ internal static class PackEncode
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(71)
             .WriteLong(pack.qq)
-            .WriteInt(pack.id);
+            .WriteIntList(pack.ids1)
+            .WriteIntList(pack.ids2)
+            .WriteInt((int)pack.kind);
 
         return buff;
     }
     public static IByteBuffer ToPack(this SendGroupSoundPack pack)
     {
-        if (pack.data == null)
-            pack.data = Array.Empty<byte>();
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.data ??= Array.Empty<byte>();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(74)
             .WriteLong(pack.qq)
@@ -1333,14 +1360,14 @@ internal static class PackEncode
         buff.WriteByte(94)
             .WriteLong(pack.qq)
             .WriteLong(pack.id)
-            .WriteInt(pack.mid);
+            .WriteIntList(pack.ids1)
+            .WriteIntList(pack.ids2);
 
         return buff;
     }
     public static IByteBuffer ToPack(this MessageBuffPack pack)
     {
-        if (pack.imgData == null)
-            pack.imgData = Array.Empty<byte>();
+        pack.imgData ??= Array.Empty<byte>();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(95)
             .WriteLong(pack.qq)
@@ -1528,8 +1555,7 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendFriendSoundFilePack pack)
     {
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(112)
             .WriteLong(pack.qq)
@@ -1571,8 +1597,7 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendStrangerImageFilePack pack)
     {
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(118)
             .WriteLong(pack.qq)
@@ -1603,8 +1628,7 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendStrangerSoundFilePack pack)
     {
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(121)
             .WriteLong(pack.qq)
@@ -1616,10 +1640,8 @@ internal static class PackEncode
     }
     public static IByteBuffer ToPack(this SendFriendSoundPack pack)
     {
-        if (pack.data == null)
-            pack.data = Array.Empty<byte>();
-        if (pack.ids == null)
-            pack.ids = new();
+        pack.data ??= Array.Empty<byte>();
+        pack.ids ??= new();
         IByteBuffer buff = Unpooled.Buffer();
         buff.WriteByte(126)
             .WriteLong(pack.qq)
@@ -2172,17 +2194,6 @@ internal class ColorMiraiNetty : IColorMiraiPipe
 
         Robot.RobotStateEvent.Invoke(StateType.Connecting);
 
-        bootstrap = new Bootstrap();
-        bootstrap
-            .Group(group)
-            .Channel<TcpSocketChannel>()
-            .Handler(new ActionChannelInitializer<ISocketChannel>(channel =>
-            {
-                IChannelPipeline pipeline = channel.Pipeline;
-                pipeline.AddLast(new LengthFieldPrepender(4))
-                        .AddLast(new LengthFieldBasedFrameDecoder(1024 * 500, 0, 4, 0, 4))
-                        .AddLast(new ClientHandler(this));
-            }));
         client = bootstrap.ConnectAsync(Robot.Config.IP, Robot.Config.Port).Result;
 
         var pack = Robot.PackStart.ToPack();
@@ -2210,6 +2221,18 @@ internal class ColorMiraiNetty : IColorMiraiPipe
 
     public void StartRead()
     {
+        bootstrap = new Bootstrap();
+        bootstrap
+            .Group(group)
+            .Channel<TcpSocketChannel>()
+            .Handler(new ActionChannelInitializer<ISocketChannel>(channel =>
+            {
+                IChannelPipeline pipeline = channel.Pipeline;
+                pipeline.AddLast(new LengthFieldPrepender(4))
+                        .AddLast(new LengthFieldBasedFrameDecoder(1024 * 500, 0, 4, 0, 4))
+                        .AddLast(new ClientHandler(this));
+            }));
+
         thread.Start();
     }
 
@@ -2217,13 +2240,13 @@ internal class ColorMiraiNetty : IColorMiraiPipe
     {
         Robot.IsConnect = false;
         Robot.RobotStateEvent.Invoke(StateType.Disconnect);
-        client.CloseAsync().Wait();
+        client?.CloseAsync().Wait();
     }
 }
 
 internal class ClientHandler : ChannelHandlerAdapter
 {
-    private ColorMiraiNetty netty;
+    private readonly ColorMiraiNetty netty;
     internal ClientHandler(ColorMiraiNetty netty)
     {
         this.netty = netty;
