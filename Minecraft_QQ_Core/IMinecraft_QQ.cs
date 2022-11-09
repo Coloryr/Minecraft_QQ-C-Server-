@@ -6,7 +6,7 @@ public enum GuiFun
 }
 public class IMinecraft_QQ
 {
-    public const string Version = "4.1.0";
+    public const string Version = "4.2.0";
 
     /// <summary>
     /// 已经启动

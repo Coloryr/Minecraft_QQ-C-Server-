@@ -7,7 +7,7 @@ public static class RobotCore
 {
     public static RobotSDK Robot = new();
 
-    private static void Message(byte type, object data)
+    private static void Message(int type, object data)
     {
         switch (type)
         {
