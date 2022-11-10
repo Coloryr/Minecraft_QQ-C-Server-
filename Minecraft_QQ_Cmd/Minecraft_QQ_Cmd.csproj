@@ -11,6 +11,7 @@
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
+	  <!--<PublishAot>true</PublishAot>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
