@@ -1,0 +1,77 @@
+<UserControl
+    x:Class="Minecraft_QQ.NewGui.Controls.CommandSetControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Minecraft_QQ.NewGui.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <DockPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="触发" />
+                    <TextBox
+                        Width="200"
+                        Margin="5,0,0,0"
+                        Text="{Binding Check}"
+                        Watermark="触发的指令" />
+                </StackPanel>
+                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Label Content="指令" />
+                    <TextBox
+                        Width="200"
+                        Height="80"
+                        Margin="5,0,0,0"
+                        AcceptsReturn="True"
+                        Text="{Binding CommandObj.Command}"
+                        TextWrapping="NoWrap"
+                        Watermark="执行的指令" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <CheckBox Content="玩家发送" IsChecked="{Binding CommandObj.PlayerSend}" />
+                    <CheckBox
+                        Margin="20,0,0,0"
+                        Content="玩家使用"
+                        IsChecked="{Binding CommandObj.PlayerUse}" />
+                </StackPanel>
+            </StackPanel>
+            <DataGrid
+                Name="DataGrid1"
+                Width="200"
+                Height="150"
+                Margin="5,0,0,0"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding}"
+                        Header="执行的服务器"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <StackPanel
+            Margin="0,5,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="25"
+                Command="{Binding Save}"
+                Content="保存" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="100,0,0,0"
+                Command="{Binding Cancel}"
+                Content="取消" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

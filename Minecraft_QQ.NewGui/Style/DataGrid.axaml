@@ -1,0 +1,38 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <DataGrid
+                Name="DataGrid1"
+                Height="200"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="123"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Arch}"
+                        Header="456"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Os}"
+                        Header="789"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="#76c2d4" />
+    </Style>
+
+    <Style Selector="DataGrid">
+        <Setter Property="Background" Value="#d8d8d9" />
+    </Style>
+</Styles>

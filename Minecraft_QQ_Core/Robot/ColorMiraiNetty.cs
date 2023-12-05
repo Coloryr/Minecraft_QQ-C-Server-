@@ -1100,8 +1100,8 @@ internal static class PackEncode
     }
     public static IByteBuffer WriteBytes1(this IByteBuffer buff, byte[] data)
     {
-        buff.WriteInt(data.Length);
-        buff.WriteBytes(data, 0, data.Length);
+        buff.WriteInt(data.Length)
+            .WriteBytes(data, 0, data.Length);
         return buff;
     }
     public static IByteBuffer WriteIntList(this IByteBuffer buff, int[] data)

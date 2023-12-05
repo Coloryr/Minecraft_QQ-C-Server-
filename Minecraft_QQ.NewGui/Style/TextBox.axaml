@@ -1,0 +1,44 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <TextBox
+                    Width="300"
+                    Margin="0,0,0,10"
+                    Classes="input1"
+                    Text="测试"
+                    Watermark="配置文件路径" />
+
+                <TextBox Width="300" Watermark="配置文件路径" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="TextBox">
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="#7cc8da" />
+        <Setter Property="Background" Value="#e0ecf0" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <Style Selector="TextBox.input1">
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <Style Selector="TextBox:focus.input1 /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+    </Style>
+
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+    </Style>
+
+</Styles>

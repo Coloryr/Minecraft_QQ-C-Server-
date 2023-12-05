@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU</Platforms>
+    <ApplicationIcon>Minecraft_QQ.ico</ApplicationIcon>
+    <Version></Version>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Authors>Coloryr</Authors>
+    <Product></Product>
+    <DebugType>embedded</DebugType>
+    <AssemblyVersion>4.2.0</AssemblyVersion>
+    <FileVersion>4.2.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\build_out\Gui\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Minecraft_QQ.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NotifyIconWpf" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Minecraft_QQ_Core\Minecraft_QQ.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Minecraft_QQ.ico" />
+    <Resource Include="Minecraft_QQ.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SetWindow\CommandSet.xaml.cs">
+      <DependentUpon>CommandSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\IDSet.xaml.cs">
+      <DependentUpon>IDSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\MessageSet.xaml.cs">
+      <DependentUpon>MessageSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\PlayerSet.xaml.cs">
+      <DependentUpon>PlayerSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\QQSet.xaml.cs">
+      <DependentUpon>QQSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\ServerName.xaml.cs">
+      <DependentUpon>ServerName.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SetWindow\ServerSet.xaml.cs">
+      <DependentUpon>ServerSet.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="SetWindow\CommandSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\IDSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\MessageSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\PlayerSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\QQSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\ServerName.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SetWindow\ServerSet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

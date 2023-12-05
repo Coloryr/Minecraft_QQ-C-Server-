@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29001.49
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Core", "Minecraft_QQ_Core\Minecraft_QQ_Core.csproj", "{98F9345E-7FA8-4A57-BDEC-136110D3D244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.Core", "Minecraft_QQ_Core\Minecraft_QQ.Core.csproj", "{98F9345E-7FA8-4A57-BDEC-136110D3D244}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Gui", "Minecraft_QQ_Gui\Minecraft_QQ_Gui.csproj", "{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.Gui", "Minecraft_QQ_Gui\Minecraft_QQ.Gui.csproj", "{C96FF4A5-2594-4AEB-BD69-FC22D2E8E36E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ_Cmd", "Minecraft_QQ_Cmd\Minecraft_QQ_Cmd.csproj", "{006009D2-0A65-4ABF-B061-2E8ACB104975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.Cmd", "Minecraft_QQ_Cmd\Minecraft_QQ.Cmd.csproj", "{006009D2-0A65-4ABF-B061-2E8ACB104975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ.NewGui", "Minecraft_QQ.NewGui\Minecraft_QQ.NewGui.csproj", "{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006009D2-0A65-4ABF-B061-2E8ACB104975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,52 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Background="Black">
+                <Button
+                    Width="80"
+                    Height="40"
+                    Content="123" />
+                <Button
+                    Width="80"
+                    Height="40"
+                    Content="123"
+                    IsEnabled="False" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Button">
+        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+    </Style>
+
+    <Style Selector="Button:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.95)" />
+    </Style>
+
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FFDDDDDD" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+    </Style>
+
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FFAAAAAA" />
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FF666666" />
+        <Setter Property="Foreground" Value="#FFCDCDCD" />
+    </Style>
+</Styles>

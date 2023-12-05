@@ -17,7 +17,7 @@ class Program
         IMinecraft_QQ.ConfigInitCall = ConfigInit;
         await Minecraft_QQ.Start();
 
-        if (Environment.UserInteractive)
+        if (!Minecraft_QQ.MainConfig.Admin.NoInput)
         {
             while (true)
             {

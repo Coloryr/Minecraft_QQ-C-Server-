@@ -362,6 +362,8 @@ public record AdminConfig
     /// </summary>
     public long SendQQ { get; set; }
 
+    public bool NoInput { get; set; }
+
     public AdminConfig()
     {
         Mute = "禁言：";

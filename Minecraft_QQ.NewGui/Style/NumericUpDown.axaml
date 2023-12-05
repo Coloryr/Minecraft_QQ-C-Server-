@@ -1,0 +1,20 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <NumericUpDown
+                Width="150"
+                Height="30"
+                FormatString="N0" />
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="NumericUpDown">
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+</Styles>

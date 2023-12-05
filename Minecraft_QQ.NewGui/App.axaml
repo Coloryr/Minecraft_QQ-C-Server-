@@ -1,0 +1,22 @@
+<Application
+    x:Class="Minecraft_QQ.NewGui.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedThemeVariant="Default">
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="/Style/Button.axaml" />
+        <StyleInclude Source="/Style/Tab.axaml" />
+        <StyleInclude Source="/Style/TextBox.axaml" />
+        <StyleInclude Source="/Style/ComboBox.axaml" />
+        <StyleInclude Source="/Style/NumericUpDown.axaml" />
+        <StyleInclude Source="/Style/ProgressBar.axaml" />
+        <StyleInclude Source="/Style/Label.axaml" />
+        <StyleInclude Source="/Style/CheckBox.axaml" />
+        <StyleInclude Source="/Style/TextBlock.axaml" />
+        <StyleInclude Source="/Style/DataGrid.axaml" />
+        <StyleInclude Source="/Style/ToolTip.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+    </Application.Styles>
+</Application>

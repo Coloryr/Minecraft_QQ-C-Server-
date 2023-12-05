@@ -1,0 +1,23 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Height="400">
+                <ComboBox Width="500">
+                    <ComboBoxItem>Inline Items</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 2</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 3</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 4</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+</Styles>
