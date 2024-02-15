@@ -1,5 +1,4 @@
 ﻿using Minecraft_QQ_Core.Robot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -45,9 +44,9 @@ public static class SendGroup
                     if (have)
                     {
                         temp = temp[0..^1];
-                        RobotCore.Robot.SendGroupMessage(
+                        RobotCore.SendGroupMessage(
                             Minecraft_QQ.MainConfig.RobotSetting.QQ, group, 
-                            new() { temp });
+                            [temp]);
                     }
                     SendList.RemoveAll(a => a.Group == group);
                 }

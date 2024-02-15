@@ -1,8 +1,8 @@
-﻿using ColoryrSDK;
-using DotNetty.Buffers;
+﻿using DotNetty.Buffers;
 using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Minecraft_QQ_Core.MySocket;
 
@@ -27,6 +27,24 @@ internal class CommderList
 }
 internal static class Message
 {
+    public static string ReadString(this IByteBuffer read)
+    {
+        var length = read.ReadInt();
+        var bytes = new byte[length];
+        read.ReadBytes(bytes);
+
+        return Encoding.UTF8.GetString(bytes);
+    }
+
+    public static IByteBuffer WriteString(this IByteBuffer data, string tmep)
+    {
+        var bytes = Encoding.UTF8.GetBytes(tmep);
+        data.WriteInt(bytes.Length);
+        data.WriteBytes(bytes);
+
+        return data;
+    }
+
     public static void MessageDo(string server, IByteBuffer read)
     {
         ReadObj message = new ()
@@ -82,7 +100,7 @@ internal static class Message
                 }
                 else
                 {
-                    long.TryParse(message.group, out long group);
+                    _ = long.TryParse(message.group, out long group);
                     if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(group))
                     {
                         SendGroup.AddSend(new()

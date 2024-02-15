@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using System;
 
-namespace Minecraft_QQ.NewGui.UISetting;
+namespace Minecraft_QQ_NewGui.UISetting;
 
 public static class Indexer
 {

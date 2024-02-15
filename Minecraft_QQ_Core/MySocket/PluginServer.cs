@@ -1,5 +1,4 @@
-﻿using ColoryrSDK;
-using DotNetty.Buffers;
+﻿using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
@@ -10,7 +9,6 @@ using Minecraft_QQ_Core.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Minecraft_QQ_Core.MySocket;
 
@@ -87,16 +85,18 @@ public static class PluginServer
             SetState(true);
             if (Minecraft_QQ.MainConfig.Setting.SendLog)
             {
-                RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new() 
-                { $"[Minecraft_QQ]端口已启动{Environment.NewLine}",$"已绑定在：{Minecraft_QQ.MainConfig.Socket.Port}" });
+                RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, 
+                [
+                    $"[Minecraft_QQ]端口已启动{Environment.NewLine}",
+                    $"已绑定在：{Minecraft_QQ.MainConfig.Socket.Port}"
+                ]);
             }
 
             Logs.LogOut("[Socket]端口已启动");
         }
         catch (Exception e)
         {
-            RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new() 
-            { "[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log" });
+            RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log"]);
             Logs.LogError(e);
             SetState(false);
             IMinecraft_QQ.ShowMessageCall.Invoke("[Minecraft_QQ]启动失败，请检查设置的端口是否被占用");
@@ -105,10 +105,9 @@ public static class PluginServer
 
     public static void Close(string name)
     {
-        if (MCServers.ContainsKey(name))
+        if (MCServers.TryRemove(name, out PluginItem value))
         {
-            MCServers[name].Stop();
-            MCServers.TryRemove(name, out var v);
+            value.Stop();
         }
     }
 
@@ -144,8 +143,7 @@ public static class PluginServer
             }
         }
         else
-            RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new() 
-            { "[Minecraft_QQ]服务器未连接，无法发送" });
+            RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]服务器未连接，无法发送"]);
     }
     private static void SendData(PluginItem Client, IByteBuffer data)
     {
@@ -161,18 +159,16 @@ public static class PluginServer
             GC.Collect();
             if (MCServers.IsEmpty)
             {
-                RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new()
-                        { $"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}" });
+                RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}"]);
             }
         }
     }
     public static void AddServer(string name, PluginItem receive)
     {
-        if (MCServers.ContainsKey(name))
+        if (MCServers.TryGetValue(name, out PluginItem value))
         {
-            RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new() 
-            { $"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开" });
-            MCServers[name].StopSame();
+            RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开"]);
+            value.StopSame();
             MCServers[name] = receive;
         }
         else
@@ -196,8 +192,7 @@ public class PluginServerHandler : ChannelHandlerAdapter
 {
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
-        var buffer = message as IByteBuffer;
-        if (buffer != null)
+        if (message is IByteBuffer buffer)
         {
             PluginServer.ReadData(context.Channel, buffer);
         }

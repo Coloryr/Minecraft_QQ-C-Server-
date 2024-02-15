@@ -1,32 +1,51 @@
-﻿using Minecraft_QQ_Core.Utils;
-using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace Minecraft_QQ_Core.Config;
+﻿namespace Minecraft_QQ_Core.Config;
 
 public class ConfigWrite
 {
     public static void Ask()
     {
-        Save(ConfigFile.AskConfig.FullName, Minecraft_QQ.AskConfig);
+        ConfigSave.AddItem(new()
+        {
+            Name = "ask",
+            Local = ConfigFile.AskConfig.FullName,
+            Obj = Minecraft_QQ.AskConfig
+        });
     }
     public static void Command()
     {
-        Save(ConfigFile.CommandSave.FullName, Minecraft_QQ.CommandConfig);
+        ConfigSave.AddItem(new()
+        {
+            Name = "command",
+            Local = ConfigFile.CommandConfig.FullName,
+            Obj = Minecraft_QQ.CommandConfig
+        });
     }
     public static void Config()
     {
-        Save(ConfigFile.MainConfig.FullName, Minecraft_QQ.MainConfig);
+        ConfigSave.AddItem(new()
+        {
+            Name = "config",
+            Local = ConfigFile.MainConfig.FullName,
+            Obj = Minecraft_QQ.MainConfig
+        });
     }
     public static void Group()
     {
-        Save(ConfigFile.GroupConfig.FullName, Minecraft_QQ.GroupConfig);
+        ConfigSave.AddItem(new()
+        {
+            Name = "group",
+            Local = ConfigFile.GroupConfig.FullName,
+            Obj = Minecraft_QQ.GroupConfig
+        });
     }
     public static void Player()
     {
-        Save(ConfigFile.PlayerSave.FullName, Minecraft_QQ.PlayerConfig);
+        ConfigSave.AddItem(new()
+        {
+            Name = "player",
+            Local = ConfigFile.PlayerConfig.FullName,
+            Obj = Minecraft_QQ.PlayerConfig
+        });
     }
     public static void All()
     {
@@ -35,22 +54,5 @@ public class ConfigWrite
         Config();
         Group();
         Player();
-    }
-
-    private static void Save(string FileName, object obj)
-    {
-        Task.Run(() =>
-        {
-            try
-            {
-                File.WriteAllText(FileName,
-                JsonConvert.SerializeObject(obj, Formatting.Indented));
-            }
-            catch (Exception e)
-            {
-                Logs.LogError(e);
-                IMinecraft_QQ.ShowMessageCall?.Invoke($"配置{FileName}在写入时发发生了错误");
-            }
-        });
     }
 }

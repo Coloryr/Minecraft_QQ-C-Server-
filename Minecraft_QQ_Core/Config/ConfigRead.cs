@@ -69,7 +69,7 @@ internal class ConfigRead
         try
         {
             PlayerConfig config = JsonConvert.DeserializeObject<PlayerConfig>
-                (File.ReadAllText(ConfigFile.PlayerSave.FullName));
+                (File.ReadAllText(ConfigFile.PlayerConfig.FullName));
             bool save = false;
             if (config.PlayerList == null)
             {
@@ -168,7 +168,7 @@ internal class ConfigRead
         try
         {
             CommandConfig config = JsonConvert.DeserializeObject<CommandConfig>
-                (File.ReadAllText(ConfigFile.CommandSave.FullName));
+                (File.ReadAllText(ConfigFile.CommandConfig.FullName));
             if (config.CommandList == null)
             {
                 config.CommandList = new()
@@ -229,7 +229,7 @@ internal class ConfigRead
                     }
                 };
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Command.json配置文件读取发送错误，已经重写");
-                File.WriteAllText(ConfigFile.CommandSave.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
+                File.WriteAllText(ConfigFile.CommandConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
             }
             return config;
         }

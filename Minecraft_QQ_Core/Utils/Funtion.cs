@@ -108,10 +108,10 @@ internal static class Funtion
     {
         try
         {
-            if (a.StartsWith("{"))
+            if (a.StartsWith('{'))
             {
-                int index = a.LastIndexOf("}");
-                a = a.Substring(0, index + 1);
+                int index = a.LastIndexOf('}');
+                a = a[..(index + 1)];
                 var obj = JObject.Parse(a);
                 string app = obj["app"].ToString();
                 if (app == "com.tencent.qq.checkin")
@@ -130,8 +130,8 @@ internal static class Funtion
             }
             else if (a.StartsWith("<?xml"))
             {
-                int index = a.LastIndexOf(">");
-                a = a.Substring(0, index + 1);
+                int index = a.LastIndexOf('>');
+                a = a[..(index + 1)];
                 XmlDocument doc = new();
                 doc.LoadXml(a);
                 if (a.Contains("发起投票"))
@@ -143,7 +143,7 @@ internal static class Funtion
                     {
                         items += item.InnerText.Trim() + "\n";
                     }
-                    items = items.Substring(0, items.Length - 2);
+                    items = items[..^2];
                     return "发起群投票：" + title + "\n" + items;
                 }
                 else if (a.Contains("聊天记录"))
@@ -156,7 +156,7 @@ internal static class Funtion
                         var item = body[i];
                         items += item.InnerText.Trim().Remove(0, 3) + "\n";
                     }
-                    items = items.Substring(0, items.Length - 1);
+                    items = items[..^1];
                     return "聊天记录：" + title + "\n" + items;
                 }
                 else if (a.Contains("推荐群聊"))

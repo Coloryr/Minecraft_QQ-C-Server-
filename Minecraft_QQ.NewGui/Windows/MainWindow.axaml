@@ -1,12 +1,13 @@
 <Window
-    x:Class="Minecraft_QQ.NewGui.Windows.MainWindow"
+    x:Class="Minecraft_QQ_NewGui.Windows.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:view="using:Minecraft_QQ.NewGui.Controls"
-    xmlns:vm="using:Minecraft_QQ.NewGui.ViewModels"
-    Title="Minecraft_QQ.NewGui"
+    xmlns:view="using:Minecraft_QQ_NewGui.Controls"
+    xmlns:vm="using:Minecraft_QQ_NewGui.ViewModels"
+    Title="Minecraft_QQ"
     Width="800"
     Height="450"
     MinWidth="800"
@@ -16,6 +17,56 @@
     Icon="/icon.ico"
     mc:Ignorable="d">
 
-    <view:CommandSetControl Name="CommandSet" IsVisible="False" />
+    <dialog:DialogHost DisableOpeningAnimation="True">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="vm:CommandSetModel">
+                <view:CommandSetControl DataContext="{Binding}" />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <TabControl>
+            <TabItem Header="群设置">
+                <DockPanel>
+                    <TextBlock
+                        Margin="5"
+                        DockPanel.Dock="Bottom"
+                        Text="右键可以打开菜单" />
+                    <DataGrid
+                        Name="GroupDataGrid"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="True"
+                        ItemsSource="{Binding Groups}"
+                        SelectedItem="{Binding GroupItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Group}" Header="群号" />
+                            <DataGridCheckBoxColumn Binding="{Binding EnableCommand}" Header="允许使用指令" />
+                            <DataGridCheckBoxColumn Binding="{Binding EnableSay}" Header="开启服务器对话" />
+                            <DataGridCheckBoxColumn Binding="{Binding IsMain}" Header="主群日志群" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="启动设置">
+                <DockPanel>
+                    <TextBlock
+                        Margin="5"
+                        DockPanel.Dock="Bottom"
+                        Text="右键可以打开菜单" />
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="123" IsReadOnly="True" />
+                            <DataGridTextColumn Header="456" IsReadOnly="True" />
+                            <DataGridTextColumn Header="789" IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </dialog:DialogHost>
+
+
 
 </Window>

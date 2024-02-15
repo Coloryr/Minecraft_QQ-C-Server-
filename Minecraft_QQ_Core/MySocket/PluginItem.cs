@@ -1,5 +1,4 @@
-﻿using ColoryrSDK;
-using DotNetty.Buffers;
+﻿using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
@@ -8,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core.MySocket;
 
-public class PluginItem
+public class PluginItem(IChannel client)
 {
     public string Name { get; private set; }
-    public IChannel Channel { get; private set; }
+    public IChannel Channel { get; private set; } = client;
     private bool IsSameStop = false;
 
-    public PluginItem(IChannel client)
-    {
-        Channel = client;
-    }
     public void Stop()
     {
         Channel.DisconnectAsync();
@@ -39,18 +34,16 @@ public class PluginItem
                 {
                     if (Minecraft_QQ.MainConfig.Setting.SendLog)
                     {
-                        RobotCore.Robot.SendGroupMessage(
+                        RobotCore.SendGroupMessage(
                             Minecraft_QQ.MainConfig.RobotSetting.QQ,
-                            Minecraft_QQ.GroupSetMain, new()
-                            { $"[Minecraft_QQ]服务器{Name}已连接" });
+                            Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]服务器{Name}已连接"]);
                     }
                     Logs.LogOut($"[Socket]服务器{Name}已连接");
                     IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
                 }
                 else if (Minecraft_QQ.MainConfig.Setting.SendLog)
                 {
-                    RobotCore.Robot.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, new()
-                        { "[Minecraft_QQ]服务器已连接" });
+                    RobotCore.SendGroupMessage(Minecraft_QQ.MainConfig.RobotSetting.QQ, Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]服务器已连接"]);
                 }
                 PluginServer.AddServer(Name, this);
                 IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
@@ -61,10 +54,9 @@ public class PluginItem
         catch (Exception e)
         {
             if (Minecraft_QQ.MainConfig.Setting.SendLog)
-                RobotCore.Robot.SendGroupMessage(
+                RobotCore.SendGroupMessage(
                     Minecraft_QQ.MainConfig.RobotSetting.QQ,
-                    Minecraft_QQ.GroupSetMain, new()
-                    { $"[Minecraft_QQ]服务器{Name}异常断开" });
+                    Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]服务器{Name}异常断开"]);
             Logs.LogError(e);
             Stop();
             if (!IsSameStop)

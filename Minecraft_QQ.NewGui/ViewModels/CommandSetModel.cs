@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Minecraft_QQ.NewGui.ViewModels;
+namespace Minecraft_QQ_NewGui.ViewModels;
 
-public partial class WindowModel : BaseModel
+public partial class CommandSetModel : ObservableObject
 {
     private readonly Semaphore _semaphore = new(0, 2);
 
@@ -22,7 +22,7 @@ public partial class WindowModel : BaseModel
 
     public ObservableCollection<string> ServerList { get; init; } = new();
 
-    public WindowModel()
+    public CommandSetModel()
     {
         CommandCheck = "";
         CommandObj = new();

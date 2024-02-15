@@ -1,52 +1,55 @@
-﻿using ColoryrSDK;
-using Minecraft_QQ_Core.Utils;
+﻿using Minecraft_QQ_Core.Utils;
+using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Minecraft_QQ_Core.Robot;
 
-public static class RobotCore
+internal static class RobotCore
 {
-    public static RobotSDK Robot = new();
+    public static OneBotSDK Robot;
 
-    private static void Message(int type, object data)
+    public static void Message(object data)
     {
-        switch (type)
+        if (data is GroupMessagePack pack)
         {
-            case 49:
-                var pack = data as GroupMessageEventPack;
-                Minecraft_QQ.GroupMessage(pack.id, pack.fid, pack.message);
-                break;
+            Minecraft_QQ.GroupMessage(pack.group_id, pack.user_id, pack.raw_message, pack.message);
         }
-    }
-
-    private static void Log(LogType type, string data)
-    {
-        Logs.LogOut($"[Robot]{type} {data}");
-    }
-
-    private static void State(StateType type)
-    {
-        Logs.LogOut($"[Robot]{type}");
     }
 
     public static void Start()
     {
-        RobotConfig config = new()
+        Robot = new OneBotSDK(Minecraft_QQ.MainConfig.RobotSetting.Url,
+            Minecraft_QQ.MainConfig.RobotSetting.Authorization);
+        Robot.Start();
+    }
+
+    public static void SendGroupTempMessage(long qq, long group, long to, List<string> list)
+    { 
+        
+    }
+
+    public static void SendGroupMessage(long qq, long group, List<string> list)
+    {
+        var msg = new StringBuilder();
+        foreach (var item in list)
         {
-            IP = Minecraft_QQ.MainConfig.RobotSetting.IP,
-            Port = Minecraft_QQ.MainConfig.RobotSetting.Port,
-            Name = "Minecraft_QQ",
-            Pack = new() { 49 },
-            RunQQ = Minecraft_QQ.MainConfig.RobotSetting.QQ,
-            Time = Minecraft_QQ.MainConfig.RobotSetting.CheckDelay,
-            Check = Minecraft_QQ.MainConfig.RobotSetting.Check,
-            CallAction = Message,
-            LogAction = Log,
-            StateAction = State
+            msg.Append(item);
+        }
+        var obj = new JObject()
+        {
+            { "action", "send_group_msg" },
+            { "params", new JObject()
+            {
+                { "group_id", group },
+                { "message", msg.ToString() },
+                { "auto_escape", true }
+            } 
+            }
         };
 
-        Robot.Set(config);
-        Robot.SetPipe(new ColorMiraiNetty(Robot));
-        Robot.Start();
+        Robot.Send(obj.ToString());
     }
 
     public static void Stop() 

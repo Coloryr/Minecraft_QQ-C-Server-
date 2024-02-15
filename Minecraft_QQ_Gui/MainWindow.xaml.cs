@@ -202,7 +202,7 @@ namespace Minecraft_QQ_Gui
                 new MessageWindow("请检查你修改后的群号", "修改失败");
                 return;
             }
-            Minecraft_QQ.GroupConfig.Groups.Remove(long.Parse(olditem.Group));
+            Minecraft_QQ.GroupConfig.Groups.Remove(olditem.Group);
             Minecraft_QQ.GroupConfig.Groups.Add(group, item);
             InitQQList();
         }

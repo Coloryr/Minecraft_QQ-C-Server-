@@ -1,7 +1,7 @@
 <Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:Minecraft_QQ.NewGui.UISetting">
+    xmlns:setting="clr-namespace:Minecraft_QQ_NewGui.UISetting">
     <Design.PreviewWith>
         <Border Padding="20">
             <DataGrid
@@ -28,11 +28,13 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="DataGridColumnHeader">
-        <Setter Property="Background" Value="#76c2d4" />
+    <Style Selector="DataGrid">
+        <Setter Property="Foreground" Value="#ffffff" />
     </Style>
 
-    <Style Selector="DataGrid">
-        <Setter Property="Background" Value="#d8d8d9" />
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Foreground" Value="#ffffff" />
     </Style>
+
+
 </Styles>

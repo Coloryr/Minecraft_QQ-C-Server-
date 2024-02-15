@@ -13,7 +13,7 @@ public record ConfigFile
     /// <summary>
     /// 玩家管理配置文件
     /// </summary>
-    public static FileInfo PlayerSave { get; set; }
+    public static FileInfo PlayerConfig { get; set; }
     /// <summary>
     /// 自动应答配置文件
     /// </summary>
@@ -21,7 +21,7 @@ public record ConfigFile
     /// <summary>
     /// 服务器命令配置文件
     /// </summary>
-    public static FileInfo CommandSave { get; set; }
+    public static FileInfo CommandConfig { get; set; }
     /// <summary>
     /// 群配置文件
     /// </summary>
@@ -44,9 +44,9 @@ public record PlayerConfig
 
     public PlayerConfig()
     {
-        NotBindList = new();
-        MuteList = new();
-        PlayerList = new();
+        NotBindList = [];
+        MuteList = [];
+        PlayerList = [];
     }
 }
 public record CommandConfig
@@ -58,7 +58,7 @@ public record CommandConfig
 
     public CommandConfig()
     {
-        CommandList = new();
+        CommandList = [];
     }
 }
 public record GroupConfig
@@ -70,7 +70,7 @@ public record GroupConfig
 
     public GroupConfig()
     {
-        Groups = new();
+        Groups = [];
     }
 }
 public record AskConfig
@@ -82,7 +82,7 @@ public record AskConfig
 
     public AskConfig()
     {
-        AskList = new();
+        AskList = [];
     }
 }
 public record MainConfig
@@ -142,26 +142,19 @@ public record MainConfig
 public record SettingRobot
 {
     public long QQ { get; set; }
-    public string IP { get; set; }
-    public int Port { get; set; }
-    public int CheckDelay { get; set; }
-    public bool Check { get; set; }
+    public string Url { get; set; }
+    public string Authorization { get; set; }
 
     public SettingRobot()
     {
         QQ = 0;
-        IP = "127.0.0.1";
-        Port = 23335;
-        CheckDelay = 1000;
-        Check = true;
+        Url = "ws://127.0.0.1:8081";
     }
 
     public override string ToString()
     {
-        return $"地址:{IP}{Environment.NewLine}"
-            + $"端口:{Port}{Environment.NewLine}"
-            + $"自动重连延迟:{CheckDelay}{Environment.NewLine}"
-            + $"检查是否断开:{Check}{Environment.NewLine}"
+        return $"地址:{Url}{Environment.NewLine}"
+            + $"鉴权:" + (string.IsNullOrWhiteSpace(Authorization) ? "" : "xxxxxxx")
             + $"QQ机器人账户:{QQ}";
     }
 }
@@ -488,7 +481,7 @@ public record CommandObj
 /// </summary>
 public record GroupObj
 {
-    public string Group { get; set; }
+    public long Group { get; set; }
     public bool EnableCommand { get; set; }
     public bool EnableSay { get; set; }
     public bool IsMain { get; set; }

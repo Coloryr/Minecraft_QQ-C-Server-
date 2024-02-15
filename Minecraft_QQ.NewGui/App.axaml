@@ -1,11 +1,11 @@
 <Application
-    x:Class="Minecraft_QQ.NewGui.App"
+    x:Class="Minecraft_QQ_NewGui.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    RequestedThemeVariant="Default">
-
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
     <Application.Styles>
         <FluentTheme />
+        <dialog:DialogHostStyles />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />

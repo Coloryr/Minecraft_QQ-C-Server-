@@ -1,4 +1,5 @@
 ﻿using Minecraft_QQ_Core;
+using Minecraft_QQ_Core.Config;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -69,11 +70,12 @@ class Program
                     group = Math.Abs(group);
                     Minecraft_QQ.GroupConfig.Groups.Add(group, new()
                     {
-                        Group = group.ToString(),
+                        Group = group,
                         EnableCommand = true,
                         EnableSay = true,
                         IsMain = true
                     });
+                    ConfigWrite.Group();
                     break;
                 }
                 Console.WriteLine("非法输入");

@@ -1,12 +1,16 @@
 using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Minecraft_QQ.NewGui.ViewModels;
-using Minecraft_QQ.NewGui.Windows;
+using Avalonia.Threading;
+using Minecraft_QQ_Core;
+using Minecraft_QQ_NewGui.ViewModels;
+using Minecraft_QQ_NewGui.Windows;
 using System;
+using System.Threading;
 
-namespace Minecraft_QQ.NewGui;
+namespace Minecraft_QQ_NewGui;
 
 public partial class App : Application
 {
@@ -17,7 +21,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -28,6 +32,23 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+
+        IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
+        {
+            using var sem = new Semaphore(0, 2);
+            Dispatcher.UIThread.Post(() =>
+            {
+                var window = new Window();
+                window.Show();
+                window.Closed += (a, b) =>
+                {
+                    sem.Release();
+                };
+            });
+            sem.WaitOne();
+        });
+
+        await Minecraft_QQ.Start();
     }
 
 }

@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Minecraft_QQ.NewGui.UISetting;
+namespace Minecraft_QQ_NewGui.UISetting;
 
 public class ColorSel : INotifyPropertyChanged
 {

@@ -2,7 +2,7 @@
 using Avalonia.Media;
 using System;
 
-namespace Minecraft_QQ.NewGui;
+namespace Minecraft_QQ_NewGui;
 
 internal class Program
 {
