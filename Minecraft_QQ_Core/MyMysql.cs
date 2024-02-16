@@ -21,14 +21,9 @@ public static class MyMysql
     /// </summary>
     public static void MysqlStart()
     {
-        ConnectString = $"SslMode=none;Server={Minecraft_QQ.MainConfig.Database.IP};" +
-            $"Port={Minecraft_QQ.MainConfig.Database.Port};User ID={Minecraft_QQ.MainConfig.Database.User};" +
-            $"Password={Minecraft_QQ.MainConfig.Database.Password};Database={Minecraft_QQ.MainConfig.Database.Database};Charset=utf8;";
-        InitPlayerTable();
-        InitMuteTable();
-        InitNotIDTable();
+        ConnectString = Minecraft_QQ.MainConfig.Database.Url;
 
-        Minecraft_QQ.MysqlOK = true;
+        Minecraft_QQ.MysqlOK = InitPlayerTable() && InitMuteTable() && InitNotIDTable();
     }
     /// <summary>
     /// 数据库关闭
@@ -44,7 +39,7 @@ public static class MyMysql
     /// </summary>
     /// <param name="TableName">表名字</param>
     /// <returns>是否成</returns>
-    private static void InitPlayerTable()
+    private static bool InitPlayerTable()
     {
         try
         {
@@ -53,20 +48,31 @@ public static class MyMysql
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlPlayerTable}，正在创建");
-                conn.Execute($"CREATE TABLE {MysqlPlayerTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT 'ID' , `Nick` VARCHAR(255) NULL COMMENT '昵称' , `QQ` BIGINT NOT NULL COMMENT 'QQ号' , `IsAdmin` TINYINT(1) NOT NULL COMMENT '是否为管理员' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updatetime` TIMESTAMP on update CURRENT_TIMESTAMP NULL , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '玩家储存';");
+                conn.Execute($"CREATE TABLE {MysqlPlayerTable} ( " +
+                    $"`ID` INT(20) NOT NULL AUTO_INCREMENT , " +
+                    $"`Name` VARCHAR(255) NOT NULL COMMENT 'ID' , " +
+                    $"`Nick` VARCHAR(255) NULL COMMENT '昵称' , " +
+                    $"`QQ` BIGINT NOT NULL COMMENT 'QQ号' , " +
+                    $"`IsAdmin` TINYINT(1) NOT NULL COMMENT '是否为管理员' , " +
+                    $"`createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , " +
+                    $"`updatetime` TIMESTAMP on update CURRENT_TIMESTAMP NULL , " +
+                    $"PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '玩家储存';");
             }
+
+            return true;
         }
         catch (Exception e)
         {
             Logs.LogError("[Mysql]数据库操作错误", e);
         }
+        return false;
     }
     /// <summary>
     /// 添加禁言表格
     /// </summary>
     /// <param name="TableName">表名</param>
     /// <returns>是否成功</returns>
-    private static void InitMuteTable()
+    private static bool InitMuteTable()
     {
         try
         {
@@ -75,20 +81,26 @@ public static class MyMysql
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlMuteTable}，正在创建");
-                conn.Execute($"CREATE TABLE {MysqlMuteTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
+                conn.Execute($"CREATE TABLE {MysqlMuteTable} ( " +
+                    $"`ID` INT(20) NOT NULL AUTO_INCREMENT , " +
+                    $"`Name` VARCHAR(255) NOT NULL COMMENT '名字' , " +
+                    $"`createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , " +
+                    $"PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
             }
+            return true;
         }
         catch (Exception e)
         {
             Logs.LogError("[Mysql]数据库操作错误", e);
         }
+        return false;
     }
     /// <summary>
     /// 添加禁言表格
     /// </summary>
     /// <param name="TableName">表名</param>
     /// <returns>是否成功</returns>
-    private static void InitNotIDTable()
+    private static bool InitNotIDTable()
     {
         try
         {
@@ -97,13 +109,19 @@ public static class MyMysql
             if (!read.Any())
             {
                 Logs.LogOut($"[Mysql]不存在数据表{MysqlNotIDTable}，正在创建");
-                conn.Execute($"CREATE TABLE {MysqlNotIDTable} ( `ID` INT(20) NOT NULL AUTO_INCREMENT , `Name` VARCHAR(255) NOT NULL COMMENT '名字' , `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
+                conn.Execute($"CREATE TABLE {MysqlNotIDTable} ( " +
+                    $"`ID` INT(20) NOT NULL AUTO_INCREMENT , " +
+                    $"`Name` VARCHAR(255) NOT NULL COMMENT '名字' , " +
+                    $"`createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , " +
+                    $"PRIMARY KEY (`ID`)) ENGINE = MyISAM COMMENT = '禁言ID';");
             }
+            return true;
         }
         catch (Exception e)
         {
             Logs.LogError("[Mysql]数据库操作错误", e);
         }
+        return false;
     }
 
     /// <summary>
@@ -217,7 +235,7 @@ public static class MyMysql
             Logs.LogError(e);
         }
     }
-    private static async Task<PlayerObj> GetPlayerAsync(long qq)
+    private static async Task<PlayerObj?> GetPlayerAsync(long qq)
     {
         var Conn = new MySqlConnection(ConnectString);
         var list = await Conn.QueryAsync<PlayerObj>($"SELECT `Name`,`Nick`,`IsAdmin`,`QQ` FROM {MysqlPlayerTable} WHERE QQ=@qq", new { qq });

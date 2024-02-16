@@ -11,12 +11,18 @@
     <Authors>Coloryr</Authors>
     <Product></Product>
     <DebugType>embedded</DebugType>
+    <Nullable>enable</Nullable>
 	  <!--<PublishAot>true</PublishAot>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\build_out\Cmd\</OutputPath>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

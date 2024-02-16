@@ -80,7 +80,7 @@ internal static class Message
                 {
                     if (Minecraft_QQ.MainConfig.Setting.SendNickGroup == true)
                     {
-                        PlayerObj player = Minecraft_QQ.GetPlayer(message.player);
+                        var player = Minecraft_QQ.GetPlayer(message.player);
                         if (player != null && string.IsNullOrWhiteSpace(player.Nick) == false)
                         {
                             message.message = Funtion.ReplaceFirst(message.message, message.player, player.Nick);
@@ -117,14 +117,5 @@ internal static class Message
             default:
                 break;
         }
-    }
-    public static string StartCheck(string read)
-    {
-        ReadObj message = JsonConvert.DeserializeObject<ReadObj>(Funtion.RemoveColorCodes(read));
-        if (message.data == DataType.start)
-        {
-            return message.message;
-        }
-        return null;
     }
 }

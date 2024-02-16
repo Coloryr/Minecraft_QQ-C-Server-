@@ -28,7 +28,7 @@ public static class SendGroup
             if (SendList.Count != 0)
             {
                 var group = SendList.First().Group;
-                string temp = null;
+                string temp = "";
                 lock (SendList)
                 {
                     var SendList_C = SendList.Where(a => a.Group == group);
@@ -44,9 +44,7 @@ public static class SendGroup
                     if (have)
                     {
                         temp = temp[0..^1];
-                        RobotCore.SendGroupMessage(
-                            Minecraft_QQ.MainConfig.RobotSetting.QQ, group, 
-                            [temp]);
+                        RobotCore.SendGroupMessage(group, [temp]);
                     }
                     SendList.RemoveAll(a => a.Group == group);
                 }

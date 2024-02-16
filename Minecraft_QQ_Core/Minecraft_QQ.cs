@@ -51,9 +51,9 @@ public static class Minecraft_QQ
     /// </summary>
     /// <param name="qq">qq号</param>
     /// <returns>玩家信息</returns>
-    public static PlayerObj GetPlayer(long qq)
+    public static PlayerObj? GetPlayer(long qq)
     {
-        if (PlayerConfig.PlayerList.TryGetValue(qq, out PlayerObj value))
+        if (PlayerConfig.PlayerList.TryGetValue(qq, out var value))
             return value;
         return null;
     }
@@ -62,7 +62,7 @@ public static class Minecraft_QQ
     /// </summary>
     /// <param name="id">玩家ID</param>
     /// <returns>玩家信息</returns>
-    public static PlayerObj GetPlayer(string id)
+    public static PlayerObj? GetPlayer(string id)
     {
         var valueCol = PlayerConfig.PlayerList.Values.Where(a=> 
             a.Name.Equals(id, StringComparison.CurrentCultureIgnoreCase));
@@ -112,7 +112,7 @@ public static class Minecraft_QQ
         else
             ConfigWrite.Player();
     }
-    private static string SetPlayerName(long group, long fromQQ, List<GroupMessagePack.Message> msg)
+    private static string? SetPlayerName(long group, long fromQQ, List<GroupMessagePack.Message> msg)
     {
         if (msg.Count != 1)
             return "错误的参数";
@@ -151,7 +151,7 @@ public static class Minecraft_QQ
                 else
                     ConfigWrite.Player();
                 if (MainConfig.Setting.SendQQ != 0)
-                    RobotCore.SendGroupTempMessage(MainConfig.RobotSetting.QQ, group, MainConfig.Setting.SendQQ,
+                    RobotCore.SendGroupTempMessage(group, MainConfig.Setting.SendQQ,
                     [
                         $"玩家[{fromQQ}]绑定了ID：[{name}]"
                     ]);
@@ -381,7 +381,7 @@ public static class Minecraft_QQ
         Logs.LogOut($"[Minecraft_QQ]{text}");
         return text;
     }
-    private static string GetOnlinePlayer(long fromGroup)
+    private static string? GetOnlinePlayer(long fromGroup)
     {
         if (MainConfig.Setting.FixMode == false)
         {
@@ -400,7 +400,7 @@ public static class Minecraft_QQ
         else
             return MainConfig.Message.FixText;
     }
-    private static string GetOnlineServer(long fromGroup)
+    private static string? GetOnlineServer(long fromGroup)
     {
         if (MainConfig.Setting.FixMode == false)
         {
@@ -431,7 +431,7 @@ public static class Minecraft_QQ
             }
             if (!PluginServer.IsReady())
             {
-                RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                RobotCore.SendGroupMessage(fromGroup,
                 [
                     $"[mirai:at:{fromQQ}]",
                     "发送失败，服务器未准备好"
@@ -439,7 +439,7 @@ public static class Minecraft_QQ
                 return true;
             }
             bool haveserver = false;
-            List<string> servers = null;
+            List<string>? servers = null;
             if (item.Value.Servers != null && item.Value.Servers.Count != 0)
             {
                 servers = [];
@@ -458,7 +458,7 @@ public static class Minecraft_QQ
             }
             if (!haveserver)
             {
-                RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                RobotCore.SendGroupMessage(fromGroup,
                 [
                     $"[mirai:at:{fromQQ}]",
                     "发送失败，对应的服务器未连接"
@@ -468,7 +468,7 @@ public static class Minecraft_QQ
             var player = GetPlayer(fromQQ);
             if (player == null)
             {
-                RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                RobotCore.SendGroupMessage(fromGroup,
                     [
                          $"[mirai:at:{fromQQ}]",
                         "你未绑定ID"
@@ -489,7 +489,7 @@ public static class Minecraft_QQ
                     var player1 = GetPlayer(qq);
                     if (player1 == null)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                             [
                                 $"[mirai:at:{fromQQ}]",
                                 $"错误，玩家：{qq}没有绑定ID"
@@ -504,7 +504,7 @@ public static class Minecraft_QQ
                 }
                 else
                 {
-                    RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                    RobotCore.SendGroupMessage(fromGroup,
                         [
                             $"[mirai:at:{fromQQ}]",
                             $"错误，参数错误"
@@ -816,7 +816,7 @@ public static class Minecraft_QQ
         SendGroup.Start();
         IMinecraft_QQ.IsStart = true;
 
-        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, GroupSetMain,
+        RobotCore.SendGroupMessage(GroupSetMain,
         [
             $"[Minecraft_QQ]已启动[{IMinecraft_QQ.Version}]"
         ]);
@@ -852,11 +852,11 @@ public static class Minecraft_QQ
                 string msg_copy = raw;
                 if (MainConfig.Setting.SendCommand || !msg_copy.StartsWith(MainConfig.Check.Head))
                 {
-                    PlayerObj player = GetPlayer(fromQQ);
+                    var player = GetPlayer(fromQQ);
                     if (player != null && !PlayerConfig.MuteList.Contains(player.Name.ToLower())
                         && !string.IsNullOrWhiteSpace(player.Name))
                     {
-                        msg_copy = Funtion.GetRich(msg_copy);
+                        msg_copy = Funtion.GetRich(msg_copy) ?? msg_copy;
                         if (MainConfig.Setting.ColorEnable == false)
                             msg_copy = Funtion.RemoveColorCodes(msg_copy);
                         if (string.IsNullOrWhiteSpace(msg_copy) == false)
@@ -880,176 +880,170 @@ public static class Minecraft_QQ
                 //去掉检测头
                 raw = Funtion.ReplaceFirst(raw, MainConfig.Check.Head, "");
                 string msg_low = raw.ToLower();
-                PlayerObj player = GetPlayer(fromQQ);
+                var player = GetPlayer(fromQQ);
                 if (MainConfig.Setting.AutoSend == false && msg_low.StartsWith(MainConfig.Check.Send))
                 {
                     if (list.EnableSay == false)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, ["该群没有开启聊天功能"]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, ["该群没有开启聊天功能"]);
                     }
                     else if (MainConfig.Setting.FixMode)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [$"[mirai:at:{fromQQ}]", MainConfig.Message.FixText]);
-                        return;
+                        if (!string.IsNullOrWhiteSpace(MainConfig.Message.FixText))
+                        {
+                            RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", MainConfig.Message.FixText]);
+                        }
                     }
                     else if (PluginServer.IsReady() == false)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [$"[mirai:at:{fromQQ}]", "发送失败，没有服务器链接"]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", "发送失败，没有服务器链接"]);
                     }
                     else if (player == null || string.IsNullOrWhiteSpace(player.Name))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [$"[mirai:at:{fromQQ}]", MainConfig.Message.NoneBindID]);
+                        if (!string.IsNullOrWhiteSpace(MainConfig.Message.NoneBindID))
+                        {
+                            RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", MainConfig.Message.NoneBindID]);
+                        }
                         return;
                     }
                     else if (PlayerConfig.MuteList.Contains(player.Name.ToLower()))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             "你已被禁言"
                         ]);
-                        return;
                     }
-                    try
+                    else
                     {
-                        string msg_copy = raw;
-                        msg_copy = msg_copy.Replace(MainConfig.Check.Send, "");
-                        if (MainConfig.Setting.ColorEnable == false)
-                            msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
+                        try
                         {
-                            var messagelist = new TranObj()
+                            string msg_copy = raw;
+                            msg_copy = msg_copy.Replace(MainConfig.Check.Send, "");
+                            if (MainConfig.Setting.ColorEnable == false)
+                                msg_copy = Funtion.RemoveColorCodes(msg_copy);
+                            if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
-                                group = DataType.group,
-                                message = msg_copy,
-                                player = !MainConfig.Setting.SendNickServer ?
-                                player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
-                                player.Name : player.Nick,
-                                command = CommderList.SPEAK
-                            };
-                            PluginServer.Send(messagelist);
+                                var messagelist = new TranObj()
+                                {
+                                    group = DataType.group,
+                                    message = msg_copy,
+                                    player = !MainConfig.Setting.SendNickServer ?
+                                    player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
+                                    player.Name : player.Nick,
+                                    command = CommderList.SPEAK
+                                };
+                                PluginServer.Send(messagelist);
+                            }
                         }
-                        return;
-                    }
-                    catch (Exception e)
-                    {
-                        Logs.LogError(e);
-                        return;
+                        catch (Exception e)
+                        {
+                            Logs.LogError(e);
+                        }
                     }
                 }
                 else if (player != null && player.IsAdmin == true)
                 {
                     if (msg_low.StartsWith(MainConfig.Admin.Mute))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             MutePlayer(msglist)
                         ]);
-                        return;
                     }
                     else if (msg_low.StartsWith(MainConfig.Admin.UnMute))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             UnmutePlayer(msglist)
                         ]);
-                        return;
                     }
                     else if (msg_low.StartsWith(MainConfig.Admin.CheckBind))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             GetPlayerID(msglist)
                         ]);
-                        return;
                     }
                     else if (msg_low.StartsWith(MainConfig.Admin.Rename))
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             RenamePlayer(msglist)
                         ]);
-                        return;
                     }
                     else if (msg_low == MainConfig.Admin.Fix)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
-                            $"[mirai:at:{fromQQ}]",
+                            $"[CQ:at,qq={fromQQ}]",
                             FixModeChange()
                         ]);
-                        return;
                     }
                     else if (msg_low == MainConfig.Admin.GetMuteList)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [GetMuteList()]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, [GetMuteList()]);
                     }
                     else if (msg_low == MainConfig.Admin.GetCantBindList)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [GetCantBind()]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, [GetCantBind()]);
                     }
                     else if (msg_low == MainConfig.Admin.Reload)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, ["开始重读配置文件"]);
+                        RobotCore.SendGroupMessage(fromGroup, ["开始重读配置文件"]);
                         Reload();
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, ["重读完成"]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, ["重读完成"]);
                     }
                     else if (msg_low.StartsWith(MainConfig.Admin.Nick))
                     {
                         List<string> lists = ["at:" + fromQQ, SetNick(msglist)];
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, lists);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, lists);
                     }
                 }
                 if (msg_low == MainConfig.Check.PlayList)
                 {
-                    string test = GetOnlinePlayer(fromGroup);
+                    var test = GetOnlinePlayer(fromGroup);
                     if (test != null)
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [test]);
-                    return;
+                        RobotCore.SendGroupMessage(fromGroup, [test]);
                 }
                 else if (msg_low == MainConfig.Check.ServerCheck)
                 {
-                    string test = GetOnlineServer(fromGroup);
+                    var test = GetOnlineServer(fromGroup);
                     if (test != null)
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [test]);
-                    return;
+                        RobotCore.SendGroupMessage(fromGroup, [test]);
                 }
 
                 else if (msg_low.StartsWith(MainConfig.Check.Bind))
                 {
-                    RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup,
-                    [
-                        $"[mirai:at:{fromQQ}]",
-                        SetPlayerName(fromGroup, fromQQ, msglist)
-                    ]);
-                    return;
+                    var str = SetPlayerName(fromGroup, fromQQ, msglist);
+                    if (str != null)
+                    {
+                        RobotCore.SendGroupMessage(fromGroup,
+                        [
+                            $"[CQ:at,qq={fromQQ}]",
+                        str
+                        ]);
+                    }
                 }
                 else if (SendCommand(fromGroup, msglist, fromQQ) == true)
-                    return;
+                {
 
+                }
                 else if (MainConfig.Setting.AskEnable && AskConfig.AskList.ContainsKey(msg_low) == true)
                 {
                     string message = AskConfig.AskList[msg_low];
                     if (string.IsNullOrWhiteSpace(message) == false)
                     {
-                        RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [message]);
-                        return;
+                        RobotCore.SendGroupMessage(fromGroup, [message]);
                     }
                 }
                 else if (string.IsNullOrWhiteSpace(MainConfig.Message.UnknowText) == false)
                 {
-                    RobotCore.SendGroupMessage(MainConfig.RobotSetting.QQ, fromGroup, [MainConfig.Message.UnknowText]);
-                    return;
+                    RobotCore.SendGroupMessage(fromGroup, [MainConfig.Message.UnknowText]);
                 }
             }
         }

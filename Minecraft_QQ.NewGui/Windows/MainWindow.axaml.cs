@@ -23,7 +23,9 @@ public partial class MainWindow : Window
         GroupDataGrid.CellPointerPressed += GroupDataGrid_CellPointerPressed;
         GroupDataGrid.PointerPressed += GroupDataGrid_PointerPressed;
         ServerDataGrid.CellPointerPressed += ServerDataGrid_CellPointerPressed;
+        PlayerDataGrid.CellPointerPressed += PlayerDataGrid_CellPointerPressed;
         DataContextChanged += MainWindow_DataContextChanged;
+        Closing += MainWindow_Closing;
 
         IMinecraft_QQ.ShowMessageCall = (data) =>
         {
@@ -56,7 +58,7 @@ public partial class MainWindow : Window
         };
         IMinecraft_QQ.GuiCall = (state) =>
         {
-            Dispatcher.UIThread.Post(async () =>
+            Dispatcher.UIThread.Post(() =>
             {
                 var model = (DataContext as WindowModel)!;
                 switch (state)
@@ -67,6 +69,28 @@ public partial class MainWindow : Window
                 }
             });
         };
+    }
+
+    private void PlayerDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        var po = e.PointerPressedEventArgs.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new PlayerFlyout((sender as Control)!, model, model.PlayerItem);
+            }
+        });
+    }
+
+    private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        Minecraft_QQ.Stop();
     }
 
     private void ServerDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)

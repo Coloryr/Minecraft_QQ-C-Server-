@@ -13,13 +13,19 @@ public partial class WindowModel : ObservableObject
 {
     public ObservableCollection<GroupModel> Groups { get; init; } = [];
     public ObservableCollection<ServerModel> Servers { get; init; } = [];
+    public ObservableCollection<PlayerModel> Players { get; init; } = [];
+    public ObservableCollection<string> Mutes { get; set; } = [];
+    public ObservableCollection<string> NotBinds { get; set; } = [];
 
     public ConfigModel Config { get; init; }
+    public DatabaseModel Database { get; init; }
 
     [ObservableProperty]
     private GroupModel? _groupItem;
     [ObservableProperty]
     private ServerModel? _serverItem;
+    [ObservableProperty]
+    private PlayerModel? _playerItem;
 
     [ObservableProperty]
     private string _state;
@@ -39,6 +45,7 @@ public partial class WindowModel : ObservableObject
     public WindowModel()
     {
         Config = new(this);
+        Database = new(this);
     }
 
     partial void OnSocketPortChanged(ushort? value)
@@ -97,6 +104,8 @@ public partial class WindowModel : ObservableObject
         LoadGroup();
         LoadServer();
         Config.Load();
+        Database.Load();
+        LoadPlayer();
         _isLoad = false;
     }
 
@@ -134,7 +143,7 @@ public partial class WindowModel : ObservableObject
         }
         foreach (var item in PluginServer.MCServers)
         {
-            Servers.Add(new()
+            Servers.Add(new(this)
             {
                 Name = item.Key,
                 Addr = item.Value.Channel.RemoteAddress.ToString() ?? ""
@@ -152,9 +161,61 @@ public partial class WindowModel : ObservableObject
         }
     }
 
+    public void LoadPlayer()
+    {
+        Players.Clear();
+
+        foreach (var item in Minecraft_QQ.PlayerConfig.PlayerList.Values)
+        {
+            Players.Add(new(this, item));
+        }
+
+        Mutes.Clear();
+
+        foreach (var item in Minecraft_QQ.PlayerConfig.MuteList)
+        {
+            Mutes.Add(item);
+        }
+
+        NotBinds.Clear();
+
+        foreach (var item in Minecraft_QQ.PlayerConfig.NotBindList)
+        {
+            NotBinds.Add(item);
+        }
+    }
+
     public void AddGroup()
     {
         DialogHost.Show(new AddGroupModel(this), "Main");
+    }
+
+    public void AddPlayer(AddPlayerModel model)
+    {
+        DialogHost.Close("Main");
+
+        var obj = model.ToObj();
+        if (obj.QQ == 0 || string.IsNullOrWhiteSpace(obj.Name))
+        {
+            ShowNotify("请输入正确的信息");
+            return;
+        }
+
+        if (!Minecraft_QQ.PlayerConfig.PlayerList.TryAdd(obj.QQ, obj))
+        {
+            Minecraft_QQ.PlayerConfig.PlayerList[obj.QQ] = obj;
+        }
+
+        ConfigWrite.Player();
+
+        LoadPlayer();
+
+        ShowNotify("已添加玩家");
+    }
+
+    public void AddPlayer()
+    {
+        DialogHost.Show(new AddPlayerModel(this), "Main");
     }
 
     public void AddGroup(AddGroupModel model)
@@ -194,6 +255,37 @@ public partial class WindowModel : ObservableObject
             {
                 ShowNotify("群设置删除失败");
             }
+        }, Cancel), "Main");
+    }
+
+    public void Delete(PlayerModel model)
+    {
+        if (model.UserQQ == null || model.UserQQ == 0)
+        {
+            return;
+        }
+        DialogHost.Show(new YesNoModel("是否要删除玩家", () =>
+        {
+            if (Minecraft_QQ.PlayerConfig.PlayerList.Remove((long)model.UserQQ))
+            {
+                ConfigWrite.Player();
+                ShowNotify("已删除玩家");
+                LoadPlayer();
+            }
+            else
+            {
+                ShowNotify("玩家删除失败");
+            }
+        }, Cancel), "Main");
+    }
+
+    public void Delete(ServerModel model)
+    {
+        DialogHost.Show(new YesNoModel("是否要断开链接", () =>
+        {
+            PluginServer.Close(model.Name);
+            ShowNotify("已断开链接");
+            UpdateServer();
         }, Cancel), "Main");
     }
 

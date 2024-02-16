@@ -1,12 +1,10 @@
-﻿using Minecraft_QQ_Core.Utils;
-using Newtonsoft.Json.Linq;
-using System.Collections;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Minecraft_QQ_Core.Robot;
 
-internal static class RobotCore
+public static class RobotCore
 {
     public static OneBotSDK Robot;
 
@@ -20,12 +18,12 @@ internal static class RobotCore
 
     public static void Start()
     {
-        Robot = new OneBotSDK(Minecraft_QQ.MainConfig.RobotSetting.Url,
-            Minecraft_QQ.MainConfig.RobotSetting.Authorization);
+        Robot = new OneBotSDK(Minecraft_QQ.MainConfig.Setting.BotUrl,
+            Minecraft_QQ.MainConfig.Setting.BotAuthorization);
         Robot.Start();
     }
 
-    public static void SendGroupTempMessage(long qq, long group, long to, List<string> list)
+    public static void SendGroupTempMessage(long group, long to, List<string> list)
     {
         var msg = new StringBuilder();
         foreach (var item in list)
@@ -38,8 +36,7 @@ internal static class RobotCore
             { "params", new JObject()
             {
                 { "user_id", to },
-                { "message", msg.ToString() },
-                { "auto_escape", true }
+                { "message", msg.ToString() }
             }
             }
         };
@@ -47,7 +44,7 @@ internal static class RobotCore
         Robot.Send(obj.ToString());
     }
 
-    public static void SendGroupMessage(long qq, long group, List<string> list)
+    public static void SendGroupMessage(long group, List<string> list)
     {
         var msg = new StringBuilder();
         foreach (var item in list)
@@ -60,8 +57,7 @@ internal static class RobotCore
             { "params", new JObject()
             {
                 { "group_id", group },
-                { "message", msg.ToString() },
-                { "auto_escape", true }
+                { "message", msg.ToString() }
             } 
             }
         };

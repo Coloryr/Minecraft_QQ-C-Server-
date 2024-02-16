@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Minecraft_QQ_Core.Utils;
 
-internal static class Logs
+public static class Logs
 {
     public static string log = "logs.log";
     private static readonly object obj = new object();

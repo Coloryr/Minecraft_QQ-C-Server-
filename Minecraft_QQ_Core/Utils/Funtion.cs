@@ -5,21 +5,8 @@ using System.Xml;
 
 namespace Minecraft_QQ_Core.Utils;
 
-internal static class Funtion
+public static class Funtion
 {
-    public static string GBKtoUTF8(string msg)
-    {
-        try
-        {
-            byte[] srcBytes = Encoding.Default.GetBytes(msg);
-            byte[] bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, srcBytes);
-            return Encoding.UTF8.GetString(bytes);
-        }
-        catch
-        {
-            return msg;
-        }
-    }
     public static string RemoveColorCodes(string text)
     {
         if (text.Contains('§') || text.Contains('&'))
@@ -83,7 +70,7 @@ internal static class Funtion
         value = value.Remove(idx, oldValue.Length);
         return value.Insert(idx, newValue);
     }
-    public static string GetString(string a, string b, string c = null)
+    public static string GetString(string a, string b, string? c = null)
     {
         int x = a.IndexOf(b) + b.Length;
         int y;
@@ -104,7 +91,7 @@ internal static class Funtion
         else
             return a[x..];
     }
-    public static string GetRich(string a)
+    public static string? GetRich(string a)
     {
         try
         {
@@ -113,18 +100,18 @@ internal static class Funtion
                 int index = a.LastIndexOf('}');
                 a = a[..(index + 1)];
                 var obj = JObject.Parse(a);
-                string app = obj["app"].ToString();
+                var app = obj["app"]?.ToString();
                 if (app == "com.tencent.qq.checkin")
                 {
-                    return obj["prompt"].ToString() + "-" + obj["meta"]["checkInData"]["desc"].ToString();
+                    return obj["prompt"]?.ToString() + "-" + obj["meta"]?["checkInData"]?["desc"]?.ToString();
                 }
                 else if (app == "com.tencent.mannounce")
                 {
-                    return obj["prompt"].ToString();
+                    return obj["prompt"]?.ToString();
                 }
                 else if (app == "com.tencent.structmsg")
                 {
-                    return obj["prompt"].ToString() + "\n" + "链接：" + obj["meta"]["news"]["jumpUrl"].ToString();
+                    return obj["prompt"]?.ToString() + "\n" + "链接：" + obj["meta"]?["news"]?["jumpUrl"]?.ToString();
                 }
 
             }
@@ -134,27 +121,15 @@ internal static class Funtion
                 a = a[..(index + 1)];
                 XmlDocument doc = new();
                 doc.LoadXml(a);
-                if (a.Contains("发起投票"))
-                {
-                    var items = "";
-                    var title = doc.GetElementsByTagName("title")[0].InnerText.Trim();
-                    var list = doc.GetElementsByTagName("checklist");
-                    foreach (XmlNode item in list[0].ChildNodes)
-                    {
-                        items += item.InnerText.Trim() + "\n";
-                    }
-                    items = items[..^2];
-                    return "发起群投票：" + title + "\n" + items;
-                }
-                else if (a.Contains("聊天记录"))
+                if (a.Contains("聊天记录"))
                 {
                     var items = "";
                     var body = doc.GetElementsByTagName("title");
-                    var title = body[0].InnerText.Trim();
+                    var title = body[0]!.InnerText.Trim();
                     for (int i = 1; i < body.Count; i++)
                     {
                         var item = body[i];
-                        items += item.InnerText.Trim().Remove(0, 3) + "\n";
+                        items += item!.InnerText.Trim().Remove(0, 3) + "\n";
                     }
                     items = items[..^1];
                     return "聊天记录：" + title + "\n" + items;
@@ -162,10 +137,10 @@ internal static class Funtion
                 else if (a.Contains("推荐群聊"))
                 {
                     var body = doc.GetElementsByTagName("msg");
-                    var title = body[0].Attributes.GetNamedItem("brief");
-                    var group = body[0].Attributes.GetNamedItem("actionData");
+                    var title = body[0]!.Attributes!.GetNamedItem("brief");
+                    var group = body[0]!.Attributes!.GetNamedItem("actionData");
 
-                    return title.Value + " " + group.Value.Replace("group:", "");
+                    return title!.Value + " " + group!.Value!.Replace("group:", "");
                 }
             }
         }
@@ -174,18 +149,5 @@ internal static class Funtion
             Logs.LogError(e);
         }
         return a;
-    }
-    public static string GetSign(string a, string player)
-    {
-        try
-        {
-            if (a.Contains("title=") && a.Contains(",image"))
-                return player + "群签到：" + GetString(a, "title=", ",image");
-        }
-        catch (Exception e)
-        {
-            Logs.LogError(e);
-        }
-        return null;
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Minecraft_QQ_NewGui.ViewModels.Items;
 
-public partial class ServerModel : ObservableObject
+public partial class ServerModel(WindowModel top) : ObservableObject
 {
     [ObservableProperty]
     private string _name;
@@ -16,8 +16,8 @@ public partial class ServerModel : ObservableObject
     private string _addr;
 
     public void Disconnect()
-    { 
-    
+    {
+        top.Delete(this);
     }
 
     public void EditConfig()

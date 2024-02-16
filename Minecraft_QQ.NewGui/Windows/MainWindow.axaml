@@ -25,6 +25,12 @@
             <DataTemplate DataType="vm:AddGroupModel">
                 <view:AddGroupControl DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="vm:AddPlayerModel">
+                <view:AddPlayerControl DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="vm:AddNameModel">
+                <view:AddNameControl DataContext="{Binding}" />
+            </DataTemplate>
             <DataTemplate DataType="vm:YesNoModel">
                 <view:YesNoControl DataContext="{Binding}" />
             </DataTemplate>
@@ -95,6 +101,61 @@
                                 Binding="{Binding Addr}"
                                 Header="链接地址"
                                 IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Margin="0,0,0,5" Header="玩家管理">
+                <DockPanel>
+                    <UniformGrid
+                        Width="180"
+                        Margin="10,0,0,0"
+                        DockPanel.Dock="Right"
+                        Rows="2">
+                        <DataGrid
+                            Name="NotBindDataGrid"
+                            AutoGenerateColumns="False"
+                            Background="Transparent"
+                            CanUserResizeColumns="True"
+                            CanUserSortColumns="False"
+                            ItemsSource="{Binding Servers}"
+                            SelectedItem="{Binding ServerItem}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Binding="{Binding}"
+                                    Header="禁止绑定"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid
+                            Name="MuteDataGrid"
+                            AutoGenerateColumns="False"
+                            Background="Transparent"
+                            CanUserResizeColumns="True"
+                            CanUserSortColumns="False"
+                            ItemsSource="{Binding Servers}"
+                            SelectedItem="{Binding ServerItem}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Binding="{Binding}"
+                                    Header="禁言"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </UniformGrid>
+                    <DataGrid
+                        Name="PlayerDataGrid"
+                        AutoGenerateColumns="False"
+                        Background="Transparent"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        ItemsSource="{Binding Players}"
+                        SelectedItem="{Binding PlayerItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding UserQQ}" Header="QQ号" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="游戏名" />
+                            <DataGridTextColumn Binding="{Binding Nick}" Header="昵称" />
+                            <DataGridCheckBoxColumn Binding="{Binding Admin}" Header="管理员" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -172,7 +233,7 @@
                                     Margin="0,0,0,5"
                                     FontSize="17"
                                     Text="模式设置" />
-                                <WrapPanel Width="350">
+                                <WrapPanel Width="470">
                                     <ToggleSwitch
                                         Margin="0,0,5,5"
                                         IsChecked="{Binding Config.SettingAsk}"
@@ -218,27 +279,37 @@
                                         IsChecked="{Binding Config.SettingCommand}"
                                         OffContent="发送指令到服务器"
                                         OnContent="发送指令到服务器" />
+                                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" Text="发送消息间隔" />
+                                        <TextBox
+                                            Width="80"
+                                            Classes="input1"
+                                            Text="{Binding Config.SettingDelay}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" Text="反馈QQ号" />
+                                        <TextBox
+                                            Width="120"
+                                            Classes="input1"
+                                            Text="{Binding Config.SettingQQ}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" Text="机器人地址" />
+                                        <TextBox
+                                            Width="140"
+                                            Classes="input1"
+                                            Text="{Binding Config.SettingBot}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" Text="机器人鉴权" />
+                                        <TextBox
+                                            Width="140"
+                                            Classes="input1"
+                                            PasswordChar="*"
+                                            Text="{Binding Config.SettingAuth}" />
+                                    </StackPanel>
                                 </WrapPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock
-                                        Width="90"
-                                        Margin="0,0,10,0"
-                                        Text="发送消息间隔" />
-                                    <TextBox
-                                        Width="160"
-                                        Classes="input1"
-                                        Text="{Binding Config.SettingDelay}" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock
-                                        Width="90"
-                                        Margin="0,0,10,0"
-                                        Text="反馈QQ号" />
-                                    <TextBox
-                                        Width="160"
-                                        Classes="input1"
-                                        Text="{Binding Config.SettingDelay}" />
-                                </StackPanel>
+
                             </StackPanel>
                         </Border>
                         <Border
@@ -344,7 +415,133 @@
                                 </WrapPanel>
                             </StackPanel>
                         </Border>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="数据库设置" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Width="60"
+                                        Margin="0,0,10,0"
+                                        Text="链接地址" />
+                                    <TextBox
+                                        Width="160"
+                                        Classes="input1"
+                                        IsEnabled="{Binding Database.Enable}"
+                                        Text="{Binding Database.Url}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
+                                    <TextBlock Margin="0,0,10,0" Text="数据库状态：" />
+                                    <TextBlock
+                                        Width="160"
+                                        Classes="input1"
+                                        Text="{Binding Database.State}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Margin="0,0,5,0"
+                                        Content="启用数据库"
+                                        IsChecked="{Binding Database.EnableData}" />
+                                    <Button
+                                        Width="100"
+                                        Height="25"
+                                        Command="{Binding Database.TestConnect}"
+                                        Content="{Binding Database.Button}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
                     </WrapPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Margin="0,0,0,5" Header="文本设置">
+                <ScrollViewer>
+                    <StackPanel>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="维护提示文本" />
+                                <TextBox
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    Text="{Binding Config.MessageFix}"
+                                    Watermark="维护提示文本" />
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="未知指令文本" />
+                                <TextBox
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    Text="{Binding Config.MessageUnknow}"
+                                    Watermark="未知指令文本" />
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="不能绑定文本" />
+                                <TextBox
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    Text="{Binding Config.MessageBind}"
+                                    Watermark="不能绑定文本" />
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="没有绑定名字提示" />
+                                <TextBox
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    Text="{Binding Config.MessageNo}"
+                                    Watermark="没有绑定名字提示" />
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Classes="t2">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="17"
+                                    Text="重复绑定名字提示" />
+                                <TextBox
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    Text="{Binding Config.MessageIsBind}"
+                                    Watermark="重复绑定名字提示" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
         </TabControl>

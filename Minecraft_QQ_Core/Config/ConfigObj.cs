@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
 namespace Minecraft_QQ_Core.Config;
 
@@ -111,10 +112,6 @@ public record MainConfig
     /// Mysql配置文件
     /// </summary>
     public MysqlConfig Database { get; set; }
-    /// <summary>
-    /// 机器人设定
-    /// </summary>
-    public SettingRobot RobotSetting { get; set; }
 
     public MainConfig()
     {
@@ -124,7 +121,6 @@ public record MainConfig
         Admin = new();
         Socket = new();
         Database = new();
-        RobotSetting = new();
     }
 
     public override string ToString()
@@ -134,28 +130,7 @@ public record MainConfig
             + $"检测:{Check}{Environment.NewLine}"
             + $"管理员:{Admin}{Environment.NewLine}"
             + $"链接:{Socket}{Environment.NewLine}"
-            + $"数据库:{Database}{Environment.NewLine}"
-            + $"机器人设置:{RobotSetting}";
-    }
-}
-
-public record SettingRobot
-{
-    public long QQ { get; set; }
-    public string Url { get; set; }
-    public string Authorization { get; set; }
-
-    public SettingRobot()
-    {
-        QQ = 0;
-        Url = "ws://127.0.0.1:8081";
-    }
-
-    public override string ToString()
-    {
-        return $"地址:{Url}{Environment.NewLine}"
-            + $"鉴权:" + (string.IsNullOrWhiteSpace(Authorization) ? "" : "xxxxxxx")
-            + $"QQ机器人账户:{QQ}";
+            + $"数据库:{Database}";
     }
 }
 
@@ -205,6 +180,8 @@ public record SettingConfig
     /// 发送绑定信息QQ号
     /// </summary>
     public long SendQQ { get; set; }
+    public string BotUrl { get; set; }
+    public string? BotAuthorization { get; set; }
 
     public SettingConfig()
     {
@@ -218,6 +195,7 @@ public record SettingConfig
         SendLog = true;
         SendCommand = false;
         SendDelay = 100;
+        BotUrl = "ws://127.0.0.1:8081/";
     }
 
     public override string ToString()
@@ -232,7 +210,9 @@ public record SettingConfig
             + $"发送日志到群:{SendLog}{Environment.NewLine}"
             + $"不发送指令到服务器:{SendCommand}{Environment.NewLine}"
             + $"发送绑定信息QQ号:{SendQQ}{Environment.NewLine}"
-            + $"发送群消息间隔:{SendDelay}";
+            + $"发送群消息间隔:{SendDelay}{Environment.NewLine}"
+            + $"机器人地址:{BotUrl}{Environment.NewLine}"
+            + $"机器人鉴权:" + (string.IsNullOrWhiteSpace(BotAuthorization) ? "" : "xxxxxxx");
     }
 }
 public record MessageConfig
@@ -240,23 +220,23 @@ public record MessageConfig
     /// <summary>
     /// 维护时发送的文本
     /// </summary>
-    public string FixText { get; set; }
+    public string? FixText { get; set; }
     /// <summary>
     /// 未知的指令
     /// </summary>
-    public string UnknowText { get; set; }
+    public string? UnknowText { get; set; }
     /// <summary>
     /// 禁止绑定ID
     /// </summary>
-    public string CantBindText { get; set; }
+    public string? CantBindText { get; set; }
     /// <summary>
     /// 没有绑定ID
     /// </summary>
-    public string NoneBindID { get; set; }
+    public string? NoneBindID { get; set; }
     /// <summary>
     /// 重复绑定ID
     /// </summary>
-    public string AlreadyBindID { get; set; }
+    public string? AlreadyBindID { get; set; }
 
     public MessageConfig()
     {
@@ -413,46 +393,22 @@ public record MysqlConfig
     /// <summary>
     /// 地址
     /// </summary>
-    public string IP { get; set; }
-    /// <summary>
-    /// 端口
-    /// </summary>
-    public int Port { get; set; }
-    /// <summary>
-    /// 账户
-    /// </summary>
-    public string User { get; set; }
-    /// <summary>
-    /// 密码
-    /// </summary>
-    public string Password { get; set; }
+    public string Url { get; set; }
     /// <summary>
     /// Mysql启用
     /// </summary>
     public bool Enable { get; set; }
-    /// <summary>
-    /// 数据库名
-    /// </summary>
-    public string Database { get; set; }
 
     public MysqlConfig()
     {
-        IP = "127.0.0.1";
-        Port = 3306;
-        User = "root";
-        Password = "root";
+        Url = "SslMode=none;Server=127.0.0.1;Port=3306;User ID=root;Password=123456;Database=minecraft;Charset=utf8;";
         Enable = false;
-        Database = "minecraft_qq";
     }
 
     public override string ToString()
     {
-        return $"地址:{IP}{Environment.NewLine}"
-            + $"端口:{Port}{Environment.NewLine}"
-            + $"用户名:{User}{Environment.NewLine}"
-            + $"密码:{Password}{Environment.NewLine}"
-            + $"是否启用:{Enable}{Environment.NewLine}"
-            + $"数据库:{Database}";
+        return $"链接地址:{Url}{Environment.NewLine}"
+            + $"是否启用:{Enable}";
     }
 }
 /// <summary>

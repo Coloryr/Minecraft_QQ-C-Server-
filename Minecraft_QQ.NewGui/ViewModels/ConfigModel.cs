@@ -39,6 +39,10 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
     private int? _settingDelay;
     [ObservableProperty]
     private long? _settingQQ;
+    [ObservableProperty]
+    private string? _settingBot;
+    [ObservableProperty]
+    private string? _settingAuth;
 
     [ObservableProperty]
     private string? _adminMute;
@@ -58,6 +62,17 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
     private string? _adminList;
     [ObservableProperty]
     private string? _adminMuteList;
+
+    [ObservableProperty]
+    private string? _messageFix;
+    [ObservableProperty]
+    private string? _messageUnknow;
+    [ObservableProperty]
+    private string? _messageBind;
+    [ObservableProperty]
+    private string? _messageNo;
+    [ObservableProperty]
+    private string? _messageIsBind;
 
     private bool _isLoad = false;
 
@@ -253,6 +268,30 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
         ConfigWrite.Config();
     }
 
+    partial void OnSettingBotChanged(string? value)
+    {
+        if (_isLoad || string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Setting;
+        con.BotUrl = value;
+        ConfigWrite.Config();
+    }
+
+    partial void OnSettingAuthChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Setting;
+        con.BotAuthorization = value;
+        ConfigWrite.Config();
+    }
+
     partial void OnAdminMuteChanged(string? value)
     {
         if (_isLoad || string.IsNullOrWhiteSpace(value))
@@ -361,6 +400,66 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
         ConfigWrite.Config();
     }
 
+    partial void OnMessageFixChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Message;
+        con.FixText = value;
+        ConfigWrite.Config();
+    }
+
+    partial void OnMessageUnknowChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Message;
+        con.FixText = value;
+        ConfigWrite.Config();
+    }
+
+    partial void OnMessageBindChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Message;
+        con.CantBindText = value;
+        ConfigWrite.Config();
+    }
+
+    partial void OnMessageNoChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Message;
+        con.NoneBindID = value;
+        ConfigWrite.Config();
+    }
+
+    partial void OnMessageIsBindChanged(string? value)
+    {
+        if (_isLoad)
+        {
+            return;
+        }
+
+        var con = Minecraft_QQ.MainConfig.Message;
+        con.AlreadyBindID = value;
+        ConfigWrite.Config();
+    }
+
     public void Load()
     {
         _isLoad = true;
@@ -385,6 +484,8 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             SettingNickGroup = con.SendNickGroup;
             SettingNickServer = con.SendNickServer;
             SettingQQ = con.SendQQ;
+            SettingBot = con.BotUrl;
+            SettingAuth = con.BotAuthorization;
         }
         {
             var con = Minecraft_QQ.MainConfig.Admin;
@@ -397,6 +498,14 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             AdminReload = con.Reload;
             AdminList = con.GetCantBindList;
             AdminMuteList = con.GetMuteList;
+        }
+        {
+            var con = Minecraft_QQ.MainConfig.Message;
+            MessageFix = con.FixText;
+            MessageUnknow = con.UnknowText;
+            MessageBind = con.CantBindText;
+            MessageNo = con.NoneBindID;
+            MessageIsBind = con.AlreadyBindID;
         }
         _isLoad = false;
     }

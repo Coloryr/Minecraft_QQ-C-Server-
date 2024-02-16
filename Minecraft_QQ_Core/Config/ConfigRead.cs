@@ -16,9 +16,14 @@ internal class ConfigRead
         Logs.LogOut("[Config]读取主配置");
         try
         {
-            MainConfig config = JsonConvert.DeserializeObject<MainConfig>
+            var config = JsonConvert.DeserializeObject<MainConfig>
                 (File.ReadAllText(ConfigFile.MainConfig.FullName));
             bool save = false;
+            if (config == null)
+            {
+                config = new();
+                save = true;
+            }
             if (config.Database == null)
             {
                 config.Database = new();
@@ -68,9 +73,14 @@ internal class ConfigRead
         Logs.LogOut("[Config]读取玩家配置");
         try
         {
-            PlayerConfig config = JsonConvert.DeserializeObject<PlayerConfig>
+            var config = JsonConvert.DeserializeObject<PlayerConfig>
                 (File.ReadAllText(ConfigFile.PlayerConfig.FullName));
             bool save = false;
+            if (config == null)
+            {
+                config = new();
+                save = true;
+            }
             if (config.PlayerList == null)
             {
                 config.PlayerList = new();
@@ -105,12 +115,22 @@ internal class ConfigRead
         Logs.LogOut("[Config]读取群设置");
         try
         {
-            GroupConfig config = JsonConvert.DeserializeObject<GroupConfig>
+            var config = JsonConvert.DeserializeObject<GroupConfig>
                 (File.ReadAllText(ConfigFile.GroupConfig.FullName));
+            bool save = false;
+            if (config == null)
+            {
+                config = new();
+                save = true;
+            }
             if (config.Groups == null)
             {
+                config.Groups = [];
+                save = true;
+            }
+            if (save)
+            {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Group.json配置文件读取发送错误，已经重写");
-                config.Groups = new();
                 ConfigWrite.Group();
             }
             foreach (var item in config.Groups)
@@ -135,9 +155,14 @@ internal class ConfigRead
         Logs.LogOut("[Config]读取自定义应答");
         try
         {
-            AskConfig config = JsonConvert.DeserializeObject<AskConfig>
+            var config = JsonConvert.DeserializeObject<AskConfig>
                 (File.ReadAllText(ConfigFile.AskConfig.FullName));
-
+            bool save = false;
+            if (config == null)
+            {
+                config = new();
+                save = true;
+            }
             if (config.AskList == null)
             {
                 config.AskList = new Dictionary<string, string>()
@@ -150,6 +175,10 @@ internal class ConfigRead
                         $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
                         $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                 };
+                save = true;
+            }
+            if (save)
+            {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Ask.json配置文件读取发送错误，已经重写");
                 File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
             }
@@ -167,8 +196,14 @@ internal class ConfigRead
         Logs.LogOut("[Config]读取自定义指令");
         try
         {
-            CommandConfig config = JsonConvert.DeserializeObject<CommandConfig>
+            var config = JsonConvert.DeserializeObject<CommandConfig>
                 (File.ReadAllText(ConfigFile.CommandConfig.FullName));
+            bool save = false;
+            if (config == null)
+            {
+                config = new();
+                save = true;
+            }
             if (config.CommandList == null)
             {
                 config.CommandList = new()
@@ -228,6 +263,10 @@ internal class ConfigRead
                         }
                     }
                 };
+                save = true;
+            }
+            if (save)
+            {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Command.json配置文件读取发送错误，已经重写");
                 File.WriteAllText(ConfigFile.CommandConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
             }

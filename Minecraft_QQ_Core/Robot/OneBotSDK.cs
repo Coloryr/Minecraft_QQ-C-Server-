@@ -7,15 +7,18 @@ using Websocket.Client;
 
 namespace Minecraft_QQ_Core.Robot;
 
-internal class OneBotSDK
+public class OneBotSDK
 {
     private readonly WebsocketClient client;
-    public OneBotSDK(string url, string auth)
+    public OneBotSDK(string url, string? auth)
     {
         client = new WebsocketClient(new Uri(url), () => 
         {
             var temp = new ClientWebSocket();
-            temp.Options.SetRequestHeader("Authorization", auth);
+            if (auth != null)
+            {
+                temp.Options.SetRequestHeader("Authorization", auth);
+            }
             return temp;
         })
         {
@@ -32,11 +35,11 @@ internal class OneBotSDK
     {
         if (msg.MessageType == WebSocketMessageType.Text)
         {
-            var obj = JObject.Parse(msg.Text);
+            var obj = JObject.Parse(msg.Text!);
             if (obj.TryGetValue("message_type", out var value) && value.ToString() == "group")
             {
                 var pack = obj.ToObject<GroupMessagePack>();
-                RobotCore.Message(pack);
+                RobotCore.Message(pack!);
             }
         }
     }

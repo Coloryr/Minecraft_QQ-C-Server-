@@ -13,10 +13,16 @@
     <DebugType>embedded</DebugType>
     <AssemblyVersion>4.2.0</AssemblyVersion>
     <FileVersion>4.2.0</FileVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\build_out\Core\</OutputPath>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
