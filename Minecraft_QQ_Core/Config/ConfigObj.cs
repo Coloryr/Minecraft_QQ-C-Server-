@@ -201,6 +201,10 @@ public record SettingConfig
     /// 发送群消息间隔
     /// </summary>
     public int SendDelay { get; set; }
+    /// <summary>
+    /// 发送绑定信息QQ号
+    /// </summary>
+    public long SendQQ { get; set; }
 
     public SettingConfig()
     {
@@ -227,6 +231,7 @@ public record SettingConfig
             + $"可以绑定名字:{CanBind}{Environment.NewLine}"
             + $"发送日志到群:{SendLog}{Environment.NewLine}"
             + $"不发送指令到服务器:{SendCommand}{Environment.NewLine}"
+            + $"发送绑定信息QQ号:{SendQQ}{Environment.NewLine}"
             + $"发送群消息间隔:{SendDelay}";
     }
 }
@@ -350,10 +355,6 @@ public record AdminConfig
     /// 禁言列表
     /// </summary>
     public string GetMuteList { get; set; }
-    /// <summary>
-    /// 发送绑定信息QQ号
-    /// </summary>
-    public long SendQQ { get; set; }
 
     public bool NoInput { get; set; }
 
@@ -368,7 +369,6 @@ public record AdminConfig
         Nick = "昵称：";
         GetCantBindList = "禁止绑定列表";
         GetMuteList = "禁言列表";
-        SendQQ = 0;
     }
 
     public override string ToString()
@@ -381,8 +381,7 @@ public record AdminConfig
             + $"重读配置:{Reload}{Environment.NewLine}"
             + $"设置昵称:{Nick}{Environment.NewLine}"
             + $"获取禁止绑定列表:{GetCantBindList}{Environment.NewLine}"
-            + $"获取禁言列表:{GetMuteList}{Environment.NewLine}"
-            + $"发送绑定信息QQ号:{SendQQ}";
+            + $"获取禁言列表:{GetMuteList}";
     }
 }
 public record SocketConfig
@@ -390,7 +389,7 @@ public record SocketConfig
     /// <summary>
     /// 端口
     /// </summary>
-    public int Port { get; set; }
+    public ushort Port { get; set; }
     /// <summary>
     /// 检测断开
     /// </summary>
@@ -474,7 +473,7 @@ public record CommandObj
     public string Command { get; set; }
     public bool PlayerUse { get; set; }
     public bool PlayerSend { get; set; }
-    public List<string> Servers { get; set; } = new();
+    public List<string> Servers { get; set; } = [];
 }
 /// <summary>
 /// 群储存格式

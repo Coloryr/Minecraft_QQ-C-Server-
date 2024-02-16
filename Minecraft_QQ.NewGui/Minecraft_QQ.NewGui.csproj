@@ -9,6 +9,7 @@
 	<Platforms>AnyCPU</Platforms>
 	<ApplicationIcon>icon.ico</ApplicationIcon>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<RootNamespace>Minecraft_QQ_NewGui</RootNamespace>
   </PropertyGroup>
 	
   <ItemGroup>

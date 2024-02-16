@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.Gui", "Minecra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.Cmd", "Minecraft_QQ_Cmd\Minecraft_QQ.Cmd.csproj", "{006009D2-0A65-4ABF-B061-2E8ACB104975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft_QQ.NewGui", "Minecraft_QQ.NewGui\Minecraft_QQ.NewGui.csproj", "{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft_QQ.NewGui", "Minecraft_QQ.NewGui\Minecraft_QQ.NewGui.csproj", "{15A32294-02DD-40A9-B7B6-D8A6BEB74C72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3396CEFD-9EFF-4A34-B856-2EE275D55D95}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

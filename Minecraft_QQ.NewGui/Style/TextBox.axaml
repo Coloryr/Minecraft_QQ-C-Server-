@@ -19,11 +19,9 @@
 
     <Style Selector="TextBox">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="BorderBrush" Value="#7cc8da" />
-        <Setter Property="Background" Value="#e0ecf0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="5" />
-        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="CornerRadius" Value="3" />
     </Style>
 
     <Style Selector="TextBox.input1">
@@ -34,7 +32,7 @@
 
     <Style Selector="TextBox:focus.input1 /template/ Border#PART_BorderElement">
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
-        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
     </Style>
 
     <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">

@@ -11,7 +11,7 @@ public class GroupFlyout
         _ = new FlyoutsControl(
         [
             ("添加", true, top.AddGroup),
-            ("删除", model != null, model!.Delete),
+            ("删除", model != null, model!= null ? model.Delete : ()=>{ }),
         ], con);
     }
 }

@@ -1,0 +1,34 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:Minecraft_QQ_NewGui.UISetting">
+    <Design.PreviewWith>
+        <StackPanel>
+            <Border
+                Width="200"
+                Height="200"
+                Margin="5"
+                Classes="t2" />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="Border.t1">
+        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="Border.t2">
+        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Style Selector="^:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+            <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+        </Style>
+    </Style>
+
+</Styles>

@@ -6,7 +6,7 @@ namespace Minecraft_QQ_NewGui;
 
 internal class Program
 {
-    public const string Font = "resm:Minecraft_QQ.NewGui.Resource.MiSans-Normal.ttf#MiSans";
+    public const string Font = "resm:Minecraft_QQ_NewGui.Resource.MiSans-Normal.ttf#MiSans";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized

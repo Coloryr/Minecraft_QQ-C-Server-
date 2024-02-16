@@ -36,5 +36,7 @@
         <Setter Property="Foreground" Value="#ffffff" />
     </Style>
 
-
+    <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="#EEEEEE" />
+    </Style>
 </Styles>

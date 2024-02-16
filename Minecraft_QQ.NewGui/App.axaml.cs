@@ -21,7 +21,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -32,23 +32,5 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-
-        IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage((string data) =>
-        {
-            using var sem = new Semaphore(0, 2);
-            Dispatcher.UIThread.Post(() =>
-            {
-                var window = new Window();
-                window.Show();
-                window.Closed += (a, b) =>
-                {
-                    sem.Release();
-                };
-            });
-            sem.WaitOne();
-        });
-
-        await Minecraft_QQ.Start();
     }
-
 }

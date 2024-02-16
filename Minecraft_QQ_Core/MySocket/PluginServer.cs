@@ -15,8 +15,8 @@ namespace Minecraft_QQ_Core.MySocket;
 public static class PluginServer
 {
 
-    public readonly static ConcurrentDictionary<string, PluginItem> MCServers = new();
-    public readonly static ConcurrentDictionary<IChannel, PluginItem> Contexts = new();
+    public readonly static ConcurrentDictionary<string, PluginItem> MCServers = [];
+    public readonly static ConcurrentDictionary<IChannel, PluginItem> Contexts = [];
 
     private static IEventLoopGroup bossGroup;
     private static IEventLoopGroup workerGroup;

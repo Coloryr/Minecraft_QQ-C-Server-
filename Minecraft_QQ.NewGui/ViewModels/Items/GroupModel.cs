@@ -3,62 +3,58 @@ using Minecraft_QQ_Core.Config;
 
 namespace Minecraft_QQ_NewGui.ViewModels.Items;
 
-public partial class GroupModel : ObservableObject
+public partial class GroupModel(WindowModel top, GroupObj obj) : ObservableObject
 {
-    private GroupObj _obj;
+    public GroupObj Obj { get; init; } = obj;
 
     [ObservableProperty]
-    private long? _group;
+    private long? _group = obj.Group;
     [ObservableProperty]
-    private bool _enableCommand;
+    private bool _enableCommand = obj.EnableCommand;
     [ObservableProperty]
-    private bool _enableSay;
+    private bool _enableSay = obj.EnableSay;
     [ObservableProperty]
-    private bool _isMain;
-
-    public GroupModel(GroupObj obj)
-    {
-        _obj = obj;
-
-        _group = obj.Group;
-        _enableCommand = obj.EnableCommand;
-        _enableSay = obj.EnableSay;
-        _isMain = obj.IsMain;
-    }
+    private bool _isMain = obj.IsMain;
 
     partial void OnGroupChanged(long? value)
     {
         if (value == null || value == 0)
         {
-            Group = _obj.Group;
+            Group = Obj.Group;
         }
         else
         {
-            _obj.Group = (long)value;
+            Obj.Group = (long)value;
             ConfigWrite.Group();
         }
     }
 
     partial void OnEnableSayChanged(bool value)
     {
-        _obj.EnableSay = value;
+        Obj.EnableSay = value;
         ConfigWrite.Group();
+
+        top.ShowNotify("群设置已保存");
     }
 
     partial void OnEnableCommandChanged(bool value)
     {
-        _obj.EnableCommand = value;
+        Obj.EnableCommand = value;
         ConfigWrite.Group();
+
+        top.ShowNotify("群设置已保存");
     }
 
     partial void OnIsMainChanged(bool value)
     {
-        _obj.IsMain = value;
+        Obj.IsMain = value;
         ConfigWrite.Group();
+
+        top.ShowNotify("群设置已保存");
     }
 
     public void Delete()
-    { 
-        
+    {
+        top.Delete(this);
     }
 }

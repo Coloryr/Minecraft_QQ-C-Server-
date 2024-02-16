@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="Minecraft_QQ_NewGui.Controls.AddGroupControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Minecraft_QQ_NewGui.ViewModels"
+    x:DataType="vm:AddGroupModel"
+    mc:Ignorable="d">
+    <StackPanel Margin="5">
+        <TextBox
+            Height="25"
+            Classes="input1"
+            Text="{Binding Group}" />
+        <StackPanel Orientation="Horizontal">
+            <CheckBox
+                Margin="0,0,10,0"
+                Content="主群"
+                IsChecked="{Binding IsMain}" />
+            <CheckBox
+                Margin="0,0,10,0"
+                Content="启用对话"
+                IsChecked="{Binding EnableSay}" />
+            <CheckBox Content="启用命令" IsChecked="{Binding EnableCommand}" />
+        </StackPanel>
+        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="25"
+                Margin="10,0,10,0"
+                Command="{Binding Save}"
+                Content="确定" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="10,0,10,0"
+                Command="{Binding Cancel}"
+                Content="取消" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

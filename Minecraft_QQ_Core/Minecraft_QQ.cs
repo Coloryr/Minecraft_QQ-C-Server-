@@ -150,8 +150,8 @@ public static class Minecraft_QQ
                     Task.Run(() => MyMysql.AddPlayerAsync(player));
                 else
                     ConfigWrite.Player();
-                if (MainConfig.Admin.SendQQ != 0)
-                    RobotCore.SendGroupTempMessage(MainConfig.RobotSetting.QQ, group, MainConfig.Admin.SendQQ,
+                if (MainConfig.Setting.SendQQ != 0)
+                    RobotCore.SendGroupTempMessage(MainConfig.RobotSetting.QQ, group, MainConfig.Setting.SendQQ,
                     [
                         $"玩家[{fromQQ}]绑定了ID：[{name}]"
                     ]);

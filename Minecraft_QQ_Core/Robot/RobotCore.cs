@@ -26,8 +26,25 @@ internal static class RobotCore
     }
 
     public static void SendGroupTempMessage(long qq, long group, long to, List<string> list)
-    { 
-        
+    {
+        var msg = new StringBuilder();
+        foreach (var item in list)
+        {
+            msg.Append(item);
+        }
+        var obj = new JObject()
+        {
+            { "action", "send_private_msg" },
+            { "params", new JObject()
+            {
+                { "user_id", to },
+                { "message", msg.ToString() },
+                { "auto_escape", true }
+            }
+            }
+        };
+
+        Robot.Send(obj.ToString());
     }
 
     public static void SendGroupMessage(long qq, long group, List<string> list)
