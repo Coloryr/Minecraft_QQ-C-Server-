@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace Minecraft_QQ_NewGui.Controls
+namespace Minecraft_QQ_NewGui.Controls;
+
+public partial class AddPlayerControl : UserControl
 {
-    public partial class AddPlayerControl : UserControl
+    public AddPlayerControl()
     {
-        public AddPlayerControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

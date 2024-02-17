@@ -8,6 +8,7 @@
     x:DataType="vm:AddNameModel"
     mc:Ignorable="d">
     <StackPanel Margin="5">
+        <TextBlock Text="{Binding Title}" />
         <TextBox Classes="input1" Text="{Binding Text}" />
         <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
             <Button

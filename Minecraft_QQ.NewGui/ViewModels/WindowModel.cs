@@ -6,6 +6,7 @@ using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_NewGui.ViewModels.Items;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace Minecraft_QQ_NewGui.ViewModels;
 
@@ -16,6 +17,8 @@ public partial class WindowModel : ObservableObject
     public ObservableCollection<PlayerModel> Players { get; init; } = [];
     public ObservableCollection<string> Mutes { get; set; } = [];
     public ObservableCollection<string> NotBinds { get; set; } = [];
+    public ObservableCollection<AskModel> Asks { get; init; } = [];
+    public ObservableCollection<CommandModel> Commands { get; init; } = [];
 
     public ConfigModel Config { get; init; }
     public DatabaseModel Database { get; init; }
@@ -26,6 +29,14 @@ public partial class WindowModel : ObservableObject
     private ServerModel? _serverItem;
     [ObservableProperty]
     private PlayerModel? _playerItem;
+    [ObservableProperty]
+    private string? _muteItem;
+    [ObservableProperty]
+    private string? _notBindItem;
+    [ObservableProperty]
+    private AskModel? _askItem;
+    [ObservableProperty]
+    private CommandModel? _commandItem;
 
     [ObservableProperty]
     private string _state;
@@ -106,6 +117,8 @@ public partial class WindowModel : ObservableObject
         Config.Load();
         Database.Load();
         LoadPlayer();
+        LoadAsk();
+        LoadCommand();
         _isLoad = false;
     }
 
@@ -161,6 +174,26 @@ public partial class WindowModel : ObservableObject
         }
     }
 
+    public void LoadAsk()
+    {
+        Asks.Clear();
+
+        foreach (var item in Minecraft_QQ.AskConfig.AskList)
+        {
+            Asks.Add(new(this, item));
+        }
+    }
+
+    public void LoadCommand()
+    {
+        Commands.Clear();
+
+        foreach (var item in Minecraft_QQ.CommandConfig.CommandList)
+        {
+            Commands.Add(new(item.Key, item.Value));
+        }
+    }
+
     public void LoadPlayer()
     {
         Players.Clear();
@@ -185,9 +218,24 @@ public partial class WindowModel : ObservableObject
         }
     }
 
+    public void AddAsk()
+    {
+        DialogHost.Show(new AddAskModel(this), "Main");
+    }
+
+    public void AddPlayer()
+    {
+        DialogHost.Show(new AddPlayerModel(this), "Main");
+    }
+
     public void AddGroup()
     {
         DialogHost.Show(new AddGroupModel(this), "Main");
+    }
+
+    public void AddCommand()
+    {
+        DialogHost.Show(new CommandSetModel(this), "Main");
     }
 
     public void AddPlayer(AddPlayerModel model)
@@ -201,22 +249,30 @@ public partial class WindowModel : ObservableObject
             return;
         }
 
-        if (!Minecraft_QQ.PlayerConfig.PlayerList.TryAdd(obj.QQ, obj))
-        {
-            Minecraft_QQ.PlayerConfig.PlayerList[obj.QQ] = obj;
-        }
-
-        ConfigWrite.Player();
+        Minecraft_QQ.SetPlayer(obj);
 
         LoadPlayer();
 
         ShowNotify("已添加玩家");
     }
 
-    public void AddPlayer()
+    public void AddAsk(AddAskModel model)
     {
-        DialogHost.Show(new AddPlayerModel(this), "Main");
+        DialogHost.Close("Main");
+
+        if (string.IsNullOrWhiteSpace(model.Check) || string.IsNullOrWhiteSpace(model.Res))
+        {
+            ShowNotify("请输入正确的信息");
+            return;
+        }
+
+        Minecraft_QQ.AddAsk(model.Check, model.Res);
+
+        LoadAsk();
+
+        ShowNotify("已添加自动回复");
     }
+
 
     public void AddGroup(AddGroupModel model)
     {
@@ -229,22 +285,90 @@ public partial class WindowModel : ObservableObject
             return;
         }
 
-        if (!Minecraft_QQ.GroupConfig.Groups.TryAdd(obj.Group, obj))
-        {
-            Minecraft_QQ.GroupConfig.Groups[obj.Group] = obj;
-        }
-
-        ConfigWrite.Group();
+        Minecraft_QQ.AddGroup(obj);
 
         LoadGroup();
 
         ShowNotify("已添加群");
     }
 
+    public async void AddNotBind()
+    {
+        var model = new AddNameModel()
+        { 
+            Title = "输入禁止绑定的名字"
+        };
+        var name = await DialogHost.Show(model, "Main");
+        if (name is true)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+            {
+                ShowNotify("请输入名字");
+            }
+            else
+            {
+                Minecraft_QQ.AddNotBind(model.Text);
+                LoadPlayer();
+            }
+        }
+    }
+
+    public void DeleteNotBind(string? id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return;
+        }
+        DialogHost.Show(new YesNoModel("是否要删除改名字", () =>
+        {
+            Cancel();
+            Minecraft_QQ.RemoveNotBind(id);
+            ShowNotify("已删除禁止绑定的名字");
+            LoadPlayer();
+        }, Cancel), "Main");
+    }
+
+    public void DeleteMute(string? id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return;
+        }
+        DialogHost.Show(new YesNoModel("是否要删除改名字", () =>
+        {
+            Cancel();
+            Minecraft_QQ.UnmutePlayer(id);
+            ShowNotify("已删除禁言的名字");
+            LoadPlayer();
+        }, Cancel), "Main");
+    }
+
+    public async void AddMute()
+    {
+        var model = new AddNameModel()
+        {
+            Title = "输入禁言的名字"
+        };
+        var name = await DialogHost.Show(model, "Main");
+        if (name is true)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+            {
+                ShowNotify("请输入名字");
+            }
+            else
+            {
+                Minecraft_QQ.MutePlayer(model.Text);
+                LoadPlayer();
+            }
+        }
+    }
+
     public void Delete(GroupModel model)
     {
         DialogHost.Show(new YesNoModel("是否要删除群设置", () => 
         {
+            Cancel();
             if (Minecraft_QQ.GroupConfig.Groups.Remove(model.Obj.Group))
             {
                 ConfigWrite.Group();
@@ -266,6 +390,7 @@ public partial class WindowModel : ObservableObject
         }
         DialogHost.Show(new YesNoModel("是否要删除玩家", () =>
         {
+            Cancel();
             if (Minecraft_QQ.PlayerConfig.PlayerList.Remove((long)model.UserQQ))
             {
                 ConfigWrite.Player();
@@ -287,6 +412,51 @@ public partial class WindowModel : ObservableObject
             ShowNotify("已断开链接");
             UpdateServer();
         }, Cancel), "Main");
+    }
+
+    public void Delete(AskModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Check))
+        {
+            return;
+        }
+        DialogHost.Show(new YesNoModel("是否要删除自动应答", () =>
+        {
+            Cancel();
+            if (Minecraft_QQ.AskConfig.AskList.Remove(model.Check))
+            {
+                ConfigWrite.Ask();
+                ShowNotify("已删除自动应答");
+                LoadAsk();
+            }
+            else
+            {
+                ShowNotify("自动应答删除失败");
+            }
+        }, Cancel), "Main");
+    }
+
+    public void Delete(CommandModel model)
+    {
+        DialogHost.Show(new YesNoModel("是否要删除服务器指令", () =>
+        {
+            Cancel();
+            if (Minecraft_QQ.CommandConfig.CommandList.Remove(model.Check))
+            {
+                ConfigWrite.Command();
+                ShowNotify("已删除服务器指令");
+                LoadCommand();
+            }
+            else
+            {
+                ShowNotify("服务器指令删除失败");
+            }
+        }, Cancel), "Main");
+    }
+
+    public void Edit(CommandModel model)
+    {
+        DialogHost.Show(new CommandSetModel(this, model), "Main");
     }
 
     public void Cancel()

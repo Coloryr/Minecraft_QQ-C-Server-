@@ -39,4 +39,15 @@
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
     </Style>
 
+    <Style Selector="TextBox.input2">
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="BorderThickness" Value="0,0,0,0" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <Style Selector="TextBox:focus.input2 /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderThickness" Value="0,0,0,0" />
+    </Style>
+
 </Styles>

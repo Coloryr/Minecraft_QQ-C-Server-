@@ -1,81 +1,78 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Minecraft_QQ_Core;
 using Minecraft_QQ_Core.Config;
-using System;
-using System.Collections.Generic;
+using Minecraft_QQ_NewGui.ViewModels.Items;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using static Minecraft_QQ_Core.MyMysql;
 
 namespace Minecraft_QQ_NewGui.ViewModels;
 
 public partial class CommandSetModel : ObservableObject
 {
-    private readonly Semaphore _semaphore = new(0, 2);
-
     [ObservableProperty]
-    public CommandObj commandObj;
+    public CommandObj _obj;
     [ObservableProperty]
-    public string commandCheck;
+    public string _check;
 
-    public ObservableCollection<string> ServerList { get; init; } = new();
+    public ObservableCollection<string> ServerList { get; init; } = [];
 
-    public CommandSetModel()
+    private readonly WindowModel _top;
+
+    public CommandSetModel(WindowModel top, CommandModel? obj = null)
     {
-        CommandCheck = "";
-        CommandObj = new();
-    }
+        _top = top;
+        Check = obj?.Check ?? "";
+        Obj = obj?.Obj ?? new();
 
-    public void CommandSetDisplay()
-    {
-        OnPropertyChanged("CommandSetDisplay");
-    }
-
-    public void CommandSetHide()
-    {
-        OnPropertyChanged("CommandSetHide");
-    }
-
-    public async Task NewCommand()
-    {
-        CommandCheck = "";
-        CommandObj = new();
         ServerList.Clear();
+        Obj.Servers.ForEach(ServerList.Add);
+        Obj.Servers.Add("修改添加服务器\x01");
 
-        CommandSetDisplay();
-
-        await Task.Run(() =>
-        {
-            _semaphore.WaitOne();
-        });
+        ServerList.CollectionChanged += ServerList_CollectionChanged;
     }
 
-    public async Task SetCommand(string key, CommandObj value)
+    private void ServerList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        CommandCheck = key;
-        CommandObj = value;
-        ServerList.Clear();
-        value.Servers.ForEach(ServerList.Add);
-
-        CommandSetDisplay();
-
-        await Task.Run(() =>
+        foreach (var item in Obj.Servers.ToArray())
         {
-            _semaphore.WaitOne();
-        });
+            if (string.IsNullOrWhiteSpace(item))
+            {
+                ServerList.Remove(item);
+            }
+        }
+        var last = Obj.Servers.Last();
+        if (!last.EndsWith('\x01'))
+        {
+            Obj.Servers.Add("修改添加服务器\x01");
+        }
     }
 
     [RelayCommand]
-    public void CommandSave()
-    { 
-        
+    public void Save()
+    {
+        Obj.Servers.Clear();
+        if (ServerList.Count > 1)
+        {
+            Obj.Servers.AddRange(ServerList.ToArray()[..^1]);
+        }
+        if (!Minecraft_QQ.CommandConfig.CommandList.TryAdd(Check, Obj))
+        {
+            Minecraft_QQ.CommandConfig.CommandList[Check] = Obj;
+        }
+
+        ConfigWrite.Command();
+
+        _top.Cancel();
+        _top.LoadCommand();
+        _top.ShowNotify("指令已修改");
     }
 
     [RelayCommand]
-    public void CommandCancel()
-    { 
-        
+    public void Cancel()
+    {
+        _top.Cancel();
     }
 }

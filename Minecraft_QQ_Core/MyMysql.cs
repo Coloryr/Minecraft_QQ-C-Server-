@@ -210,7 +210,26 @@ public static class MyMysql
         var Conn = new MySqlConnection(ConnectString);
         await Conn.ExecuteAsync($"INSERT INTO {MysqlMuteTable}(Name)VALUES(@name)", new { name});
     }
-    
+
+    public static async Task AddNotBindAsync(string name)
+    {
+        var Conn = new MySqlConnection(ConnectString);
+        await Conn.ExecuteAsync($"INSERT INTO {MysqlNotIDTable}(Name)VALUES(@name)", new { name });
+    }
+
+    public static async Task DeleteNotBindAsync(string name)
+    {
+        try
+        {
+            var Conn = new MySqlConnection(ConnectString);
+            await Conn.ExecuteAsync($"DELETE FROM {MysqlNotIDTable} WHERE Name=@name", new { name });
+        }
+        catch (MySqlException ex)
+        {
+            Logs.LogError("[Mysql]错误ID：" + ex.Number + "\n" + ex.Message);
+        }
+    }
+
     public static async Task DeleteMuteAsync(string name)
     {
         try

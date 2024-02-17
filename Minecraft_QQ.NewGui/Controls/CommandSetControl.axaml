@@ -16,6 +16,7 @@
                     <TextBox
                         Width="200"
                         Margin="5,0,0,0"
+                        Classes="input1"
                         Text="{Binding Check}"
                         Watermark="触发的指令" />
                 </StackPanel>
@@ -26,7 +27,8 @@
                         Height="80"
                         Margin="5,0,0,0"
                         AcceptsReturn="True"
-                        Text="{Binding CommandObj.Command}"
+                        Classes="input1"
+                        Text="{Binding Obj.Command}"
                         TextWrapping="NoWrap"
                         Watermark="执行的指令" />
                 </StackPanel>
@@ -34,21 +36,21 @@
                     Margin="0,5,0,0"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <CheckBox Content="玩家发送" IsChecked="{Binding CommandObj.PlayerSend}" />
+                    <CheckBox Content="玩家发送" IsChecked="{Binding Obj.PlayerSend}" />
                     <CheckBox
                         Margin="20,0,0,0"
                         Content="玩家使用"
-                        IsChecked="{Binding CommandObj.PlayerUse}" />
+                        IsChecked="{Binding Obj.PlayerUse}" />
                 </StackPanel>
             </StackPanel>
             <DataGrid
-                Name="DataGrid1"
                 Width="200"
                 Height="150"
                 Margin="5,0,0,0"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False">
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ServerList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding}"

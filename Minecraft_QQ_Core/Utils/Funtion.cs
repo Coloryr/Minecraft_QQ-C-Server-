@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
@@ -7,6 +8,22 @@ namespace Minecraft_QQ_Core.Utils;
 
 public static class Funtion
 {
+    public static string GetString(this List<string> list)
+    {
+        var str = new StringBuilder();
+        str.Append('[');
+        foreach (var item in list)
+        {
+            str.Append(item).Append(" ,");
+        }
+        if (list.Count > 0)
+        {
+            str.Remove(str.Length - 1, 1);
+        }
+        str.Append(']');
+
+        return str.ToString();
+    }
     public static string RemoveColorCodes(string text)
     {
         if (text.Contains('§') || text.Contains('&'))

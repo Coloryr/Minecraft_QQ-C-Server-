@@ -24,6 +24,15 @@ public partial class MainWindow : Window
         GroupDataGrid.PointerPressed += GroupDataGrid_PointerPressed;
         ServerDataGrid.CellPointerPressed += ServerDataGrid_CellPointerPressed;
         PlayerDataGrid.CellPointerPressed += PlayerDataGrid_CellPointerPressed;
+        PlayerDataGrid.PointerPressed += PlayerDataGrid_PointerPressed;
+        NotBindDataGrid.CellPointerPressed += NotBindDataGrid_CellPointerPressed;
+        NotBindDataGrid.PointerPressed += NotBindDataGrid_PointerPressed;
+        MuteDataGrid.CellPointerPressed += MuteDataGrid_CellPointerPressed;
+        MuteDataGrid.PointerPressed += MuteDataGrid_PointerPressed;
+        AskDataGrid.CellPointerPressed += AskDataGrid_CellPointerPressed;
+        AskDataGrid.PointerPressed += AskDataGrid_PointerPressed;
+        CommandDataGrid.CellPointerPressed += CommandDataGrid_CellPointerPressed;
+        CommandDataGrid.PointerPressed += CommandDataGrid_PointerPressed;
         DataContextChanged += MainWindow_DataContextChanged;
         Closing += MainWindow_Closing;
 
@@ -69,6 +78,159 @@ public partial class MainWindow : Window
                 }
             });
         };
+    }
+
+    private void CommandDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var po = e.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new CommandFlyout((sender as Control)!, model, null);
+            }
+        });
+    }
+
+    private void CommandDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        var po = e.PointerPressedEventArgs.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new CommandFlyout((sender as Control)!, model, model.CommandItem);
+            }
+        });
+    }
+
+    private void AskDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var po = e.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new AskFlyout((sender as Control)!, model, null);
+            }
+        });
+    }
+
+    private void AskDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        var po = e.PointerPressedEventArgs.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new AskFlyout((sender as Control)!, model, model.AskItem);
+            }
+        });
+    }
+
+    private void MuteDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var po = e.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new MuteFlyout((sender as Control)!, model, null);
+            }
+        });
+    }
+
+    private void MuteDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        var po = e.PointerPressedEventArgs.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new MuteFlyout((sender as Control)!, model, model.MuteItem);
+            }
+        });
+    }
+
+    private void NotBindDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var po = e.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new NotBindFlyout((sender as Control)!, model, null);
+            }
+        });
+    }
+
+    private void NotBindDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        var po = e.PointerPressedEventArgs.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new NotBindFlyout((sender as Control)!, model, model.NotBindItem);
+            }
+        });
+    }
+
+    private void PlayerDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var po = e.GetCurrentPoint(this);
+        if (po.Properties.IsRightButtonPressed == false)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is WindowModel model)
+            {
+                new PlayerFlyout((sender as Control)!, model, null);
+            }
+        });
     }
 
     private void PlayerDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)

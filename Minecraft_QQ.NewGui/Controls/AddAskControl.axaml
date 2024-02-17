@@ -1,0 +1,48 @@
+<UserControl
+    x:Class="Minecraft_QQ_NewGui.Controls.AddAskControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Minecraft_QQ_NewGui.ViewModels"
+    x:DataType="vm:AddAskModel"
+    mc:Ignorable="d">
+    <StackPanel Margin="5">
+        <StackPanel HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="40" Text="检测" />
+                <TextBox
+                    Width="300"
+                    Classes="input1"
+                    Text="{Binding Check}" />
+            </StackPanel>
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <TextBlock
+                    Width="40"
+                    VerticalAlignment="Top"
+                    Text="回复" />
+                <TextBox
+                    Width="300"
+                    Height="200"
+                    Text="{Binding Res}" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel
+            Margin="0,5,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="25"
+                Margin="10,0,10,0"
+                Command="{Binding Ok}"
+                Content="确定" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="10,0,10,0"
+                Command="{Binding Cancel}"
+                Content="取消" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

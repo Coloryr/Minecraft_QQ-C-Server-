@@ -16,7 +16,6 @@
     d:DesignWidth="800"
     Icon="/icon.ico"
     mc:Ignorable="d">
-
     <dialog:DialogHost DisableOpeningAnimation="True" Identifier="Main">
         <dialog:DialogHost.DataTemplates>
             <DataTemplate DataType="vm:CommandSetModel">
@@ -34,8 +33,11 @@
             <DataTemplate DataType="vm:YesNoModel">
                 <view:YesNoControl DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="vm:AddAskModel">
+                <view:AddAskControl DataContext="{Binding}" />
+            </DataTemplate>
         </dialog:DialogHost.DataTemplates>
-        <TabControl SelectedIndex="2">
+        <TabControl SelectedIndex="6">
             <TabItem Margin="0,0,0,5" Header="群设置">
                 <DockPanel>
                     <TextBlock
@@ -118,8 +120,8 @@
                             Background="Transparent"
                             CanUserResizeColumns="True"
                             CanUserSortColumns="False"
-                            ItemsSource="{Binding Servers}"
-                            SelectedItem="{Binding ServerItem}">
+                            ItemsSource="{Binding NotBinds}"
+                            SelectedItem="{Binding NotBindItem}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn
                                     Binding="{Binding}"
@@ -133,8 +135,8 @@
                             Background="Transparent"
                             CanUserResizeColumns="True"
                             CanUserSortColumns="False"
-                            ItemsSource="{Binding Servers}"
-                            SelectedItem="{Binding ServerItem}">
+                            ItemsSource="{Binding Mutes}"
+                            SelectedItem="{Binding MuteItem}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn
                                     Binding="{Binding}"
@@ -543,6 +545,68 @@
                         </Border>
                     </StackPanel>
                 </ScrollViewer>
+            </TabItem>
+            <TabItem Header="应答设置">
+                <DataGrid
+                    Name="AskDataGrid"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding Asks}"
+                    SelectedItem="{Binding AskItem}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="触发">
+                            <DataTemplate>
+                                <TextBox
+                                    HorizontalAlignment="Center"
+                                    Classes="input2"
+                                    Text="{Binding Check}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="回复">
+                            <DataTemplate>
+                                <TextBox
+                                    AcceptsReturn="True"
+                                    Classes="input2"
+                                    Text="{Binding Res}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="服务器指令">
+                <DataGrid
+                    Name="CommandDataGrid"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding Commands}"
+                    SelectedItem="{Binding CommandItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Check}"
+                            Header="检测"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Command}"
+                            Header="命令"
+                            IsReadOnly="True" />
+                        <DataGridCheckBoxColumn
+                            Binding="{Binding Player}"
+                            Header="玩家使用"
+                            IsReadOnly="True" />
+                        <DataGridCheckBoxColumn
+                            Binding="{Binding Send}"
+                            Header="玩家发送"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Server}"
+                            Header="执行服务器"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
     </dialog:DialogHost>

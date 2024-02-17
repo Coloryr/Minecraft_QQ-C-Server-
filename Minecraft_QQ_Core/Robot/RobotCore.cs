@@ -12,7 +12,7 @@ public static class RobotCore
     {
         if (data is GroupMessagePack pack)
         {
-            Minecraft_QQ.GroupMessage(pack.group_id, pack.user_id, pack.raw_message, pack.message);
+            MessageHelper.GroupMessage(pack.group_id, pack.user_id, pack.raw_message, pack.message);
         }
     }
 

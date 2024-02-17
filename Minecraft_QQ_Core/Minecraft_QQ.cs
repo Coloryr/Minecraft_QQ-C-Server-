@@ -70,23 +70,7 @@ public static class Minecraft_QQ
             return valueCol.First();
         return null;
     }
-    private static string SetNick(List<GroupMessagePack.Message> msg)
-    {
-        if (msg.Count != 3)
-            return "错误的参数";
-        if (msg[1].type == "at")
-        {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
-            {
-                return "QQ号获取失败";
-            }
-            string nick = msg[2].data.text.Trim();
-            SetNick(qq, nick);
-            return $"已修改玩家[{qq}]的昵称为：{nick}";
-        }
-        else
-            return "找不到玩家";
-    }
+
     /// <summary>
     /// 设置玩家昵称
     /// </summary>
@@ -108,60 +92,15 @@ public static class Minecraft_QQ
         }
 
         if (MysqlOK == true)
-            Task.Run(() => MyMysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
-        else
-            ConfigWrite.Player();
-    }
-    private static string? SetPlayerName(long group, long fromQQ, List<GroupMessagePack.Message> msg)
-    {
-        if (msg.Count != 1)
-            return "错误的参数";
-        string data = msg[1].data.text;
-        if (data.StartsWith(MainConfig.Check.Head))
-            data = data.Replace(MainConfig.Check.Head, null);
-        if (MainConfig.Setting.CanBind == false)
-            return MainConfig.Message.CantBindText;
-        var player = GetPlayer(fromQQ);
-        if (player == null || string.IsNullOrWhiteSpace(player.Name) == true)
         {
-            string name = data.Replace(MainConfig.Check.Bind, "");
-            string check = name.Trim();
-            if (string.IsNullOrWhiteSpace(name) ||
-                check.StartsWith("id:") || check.StartsWith("id：") ||
-                  check.StartsWith("id "))
-                return "ID无效，请检查";
-            else
-            {
-                name = name.Trim();
-
-                if (PlayerConfig.NotBindList.Contains(name.ToLower()) == true)
-                    return $"禁止绑定ID：[{name}]";
-                if (PlayerConfig.PlayerList.ContainsKey(fromQQ) == true)
-                {
-                    player = PlayerConfig.PlayerList[fromQQ];
-                    PlayerConfig.PlayerList.Remove(fromQQ);
-                }
-                else
-                    player = new PlayerObj();
-                player.Name = name;
-                player.QQ = fromQQ;
-                PlayerConfig.PlayerList.Add(fromQQ, player);
-                if (MysqlOK == true)
-                    Task.Run(() => MyMysql.AddPlayerAsync(player));
-                else
-                    ConfigWrite.Player();
-                if (MainConfig.Setting.SendQQ != 0)
-                    RobotCore.SendGroupTempMessage(group, MainConfig.Setting.SendQQ,
-                    [
-                        $"玩家[{fromQQ}]绑定了ID：[{name}]"
-                    ]);
-                IMinecraft_QQ.GuiCall?.Invoke(GuiFun.PlayerList);
-                return $"绑定ID：[{name}]成功！";
-            }
+            Task.Run(() => MyMysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
         }
         else
-            return MainConfig.Message.AlreadyBindID;
+        {
+            ConfigWrite.Player();
+        }
     }
+    
     /// <summary>
     /// 设置玩家ID，如果存在直接修改，不存在创建
     /// </summary>
@@ -173,85 +112,103 @@ public static class Minecraft_QQ
         player.Name = name;
         player.QQ = qq;
         if (!PlayerConfig.PlayerList.TryAdd(qq, player))
+        {
             PlayerConfig.PlayerList[qq] = player;
+        }
         if (MysqlOK == true)
+        {
             Task.Run(() => MyMysql.AddPlayerAsync(player));
+        }
         else
+        {
             ConfigWrite.Player();
+        }
     }
-    private static string MutePlayer(List<GroupMessagePack.Message> msg)
+
+    public static void SetPlayer(PlayerObj player)
     {
-        if (msg.Count > 3)
-            return "错误的参数";
-        string name;
-        if (msg.Count == 3 && msg[1].type == "at")
+        var player1 = GetPlayer(player.QQ) ?? player;
+        player1.Name = player.Name;
+        player1.QQ = player.QQ;
+        player1.Nick = player.Nick;
+        player1.IsAdmin = player1.IsAdmin;
+
+        if (!PlayerConfig.PlayerList.TryAdd(player.QQ, player1))
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
-            {
-                return "错误的文本";
-            }
-            var player = GetPlayer(qq);
-            if (player == null)
-                return $"玩家[{qq}]未绑定ID";
-            name = player.Name;
+            PlayerConfig.PlayerList[player.QQ] = player1;
+        }
+        if (MysqlOK == true)
+        {
+            Task.Run(() => MyMysql.AddPlayerAsync(player1));
         }
         else
         {
-            name = msg[1].data.text.Trim();
-            name = Funtion.ReplaceFirst(name, MainConfig.Check.Head, "");
-        }
-        MutePlayer(name);
-        return $"已禁言：[{name}]";
-    }
-    /// <summary>
-    /// 禁言玩家
-    /// </summary>
-    /// <param name="qq">QQ号</param>
-    public static void MutePlayer(long qq)
-    {
-        var player = GetPlayer(qq);
-        if (player != null && !string.IsNullOrWhiteSpace(player.Name))
-        {
-            MutePlayer(player.Name);
+            ConfigWrite.Player();
         }
     }
+
     /// <summary>
     /// 禁言玩家
     /// </summary>
     /// <param name="name">名字</param>
     public static void MutePlayer(string name)
     {
-        if (PlayerConfig.MuteList.Contains(name.ToLower()) == false)
-            PlayerConfig.MuteList.Add(name.ToLower());
+        name = name.ToLower();
+        if (PlayerConfig.MuteList.Contains(name) == false)
+        {
+            PlayerConfig.MuteList.Add(name);
+        }
         if (MysqlOK == true)
-            Task.Run(() => MyMysql.AddMuteAsync(name.ToLower()));
+        {
+            Task.Run(() => MyMysql.AddMuteAsync(name));
+        }
         else
+        {
             ConfigWrite.Player();
+        }
     }
-    private static string UnmutePlayer(List<GroupMessagePack.Message> msg)
+
+    public static void AddNotBind(string name)
     {
-        if (msg.Count > 3)
-            return "错误的参数";
-        string name;
-        if (msg.Count == 3 && msg[1].type == "at")
+        name = name.ToLower();
+        if (PlayerConfig.NotBindList.Contains(name) == false)
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
-            {
-                return "错误的文本";
-            }
-            var player = GetPlayer(qq);
-            if (player == null)
-                return $"玩家[{qq}]未绑定ID";
-            name = player.Name;
+            PlayerConfig.NotBindList.Add(name);
+        }
+        if (MysqlOK == true)
+        {
+            Task.Run(() => MyMysql.AddNotBindAsync(name));
         }
         else
         {
-            name = msg[1].data.text.Trim();
-            name = Funtion.ReplaceFirst(name, MainConfig.Check.Head, "");
+            ConfigWrite.Player();
         }
-        UnmutePlayer(name);
-        return $"已解禁：[{name}]";
     }
+
+    public static void RemoveNotBind(string name)
+    {
+        name = name.ToLower();
+        PlayerConfig.NotBindList.Remove(name);
+        if (MysqlOK == true)
+        {
+            Task.Run(() => MyMysql.DeleteNotBindAsync(name));
+        }
+        else
+        {
+            ConfigWrite.Player();
+        }
+    }
+
+    public static void AddGroup(GroupObj obj)
+    {
+        if (!GroupConfig.Groups.TryAdd(obj.Group, obj))
+        {
+           GroupConfig.Groups[obj.Group] = obj;
+        }
+
+        ConfigWrite.Group();
+    }
+    
     /// <summary>
     /// 解除禁言
     /// </summary>
@@ -277,85 +234,7 @@ public static class Minecraft_QQ
         else
             ConfigWrite.Player();
     }
-    private static string GetPlayerID(List<GroupMessagePack.Message> msg)
-    {
-        if (msg.Count > 3)
-            return "错误的参数";
-        if (msg.Count == 3 && msg[1].type == "at")
-        {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
-            {
-                return "错误的文本";
-            }
-            var player = GetPlayer(qq);
-            if (player == null)
-                return $"玩家[{qq}]未绑定ID";
-            else
-                return $"玩家[{qq}]绑定的ID为：" + player.Name;
-        }
-        else if (msg.Count == 2)
-        {
-            string data = msg[1].data.text.Replace(MainConfig.Admin.CheckBind, "");
-            if (long.TryParse(data.Remove(0, 1), out long qq) == false)
-            {
-                return "无效的QQ号";
-            }
-            var player = GetPlayer(qq);
-            if (player == null)
-                return $"玩家[{qq}]未绑定ID";
-            else
-                return $"玩家[{qq}]绑定的ID为：" + player.Name;
-        }
-        else
-        {
-            return "你需要@一个人或者输入它的QQ号来查询";
-        }
-    }
-    private static string RenamePlayer(List<GroupMessagePack.Message> msg)
-    {
-        if (msg.Count != 4)
-            return "错误的参数";
-        if (msg[1].type == "at")
-        {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
-            {
-                return "错误的文本";
-            }
-            string name = msg[2].data.text.Trim();
-            SetPlayerName(qq, name);
-            return $"已修改玩家[{qq}]ID为：{name}";
-        }
-        else
-            return "玩家错误，请检查";
-    }
-    private static string GetMuteList()
-    {
-        if (PlayerConfig.MuteList.Count == 0)
-            return "没有禁言的玩家";
-        else
-        {
-            string a = "禁言的玩家：";
-            foreach (string name in PlayerConfig.MuteList)
-            {
-                a += Environment.NewLine + name;
-            }
-            return a;
-        }
-    }
-    private static string GetCantBind()
-    {
-        if (PlayerConfig.NotBindList.Count == 0)
-            return "没有禁止绑定的ID";
-        else
-        {
-            string a = "禁止绑定的ID：";
-            foreach (string name in PlayerConfig.NotBindList)
-            {
-                a += Environment.NewLine + name;
-            }
-            return a;
-        }
-    }
+   
     /// <summary>
     /// 设置维护模式状态
     /// </summary>
@@ -364,221 +243,7 @@ public static class Minecraft_QQ
     {
         MainConfig.Setting.FixMode = open;
     }
-    private static string FixModeChange()
-    {
-        string text;
-        if (MainConfig.Setting.FixMode == false)
-        {
-            MainConfig.Setting.FixMode = true;
-            text = "服务器维护模式已开启";
-        }
-        else
-        {
-            MainConfig.Setting.FixMode = false;
-            text = "服务器维护模式已关闭";
-        }
-        ConfigWrite.Config();
-        Logs.LogOut($"[Minecraft_QQ]{text}");
-        return text;
-    }
-    private static string? GetOnlinePlayer(long fromGroup)
-    {
-        if (MainConfig.Setting.FixMode == false)
-        {
-            if (PluginServer.IsReady() == true)
-            {
-                PluginServer.Send(new()
-                {
-                    group = fromGroup.ToString(),
-                    command = CommderList.ONLINE
-                });
-                return null;
-            }
-            else
-                return "发送失败，服务器未准备好";
-        }
-        else
-            return MainConfig.Message.FixText;
-    }
-    private static string? GetOnlineServer(long fromGroup)
-    {
-        if (MainConfig.Setting.FixMode == false)
-        {
-            if (PluginServer.IsReady() == true)
-            {
-                PluginServer.Send(new()
-                {
-                    group = fromGroup.ToString(),
-                    command = CommderList.SERVER,
-                });
-                return null;
-            }
-            else
-                return "发送失败，服务器未准备好";
-        }
-        else
-            return MainConfig.Message.FixText;
-    }
-    private static bool SendCommand(long fromGroup, List<GroupMessagePack.Message> msg, long fromQQ)
-    {
-        foreach (var item in CommandConfig.CommandList)
-        {
-            string head = msg[0].data.text;
-            head = Funtion.ReplaceFirst(head, MainConfig.Check.Head, "");
-            if (!head.StartsWith(item.Key))
-            {
-                continue;
-            }
-            if (!PluginServer.IsReady())
-            {
-                RobotCore.SendGroupMessage(fromGroup,
-                [
-                    $"[mirai:at:{fromQQ}]",
-                    "发送失败，服务器未准备好"
-                ]);
-                return true;
-            }
-            bool haveserver = false;
-            List<string>? servers = null;
-            if (item.Value.Servers != null && item.Value.Servers.Count != 0)
-            {
-                servers = [];
-                foreach (var item1 in item.Value.Servers)
-                {
-                    if (PluginServer.MCServers.ContainsKey(item1))
-                    {
-                        servers.Add(item1);
-                        haveserver = true;
-                    }
-                }
-            }
-            else
-            {
-                haveserver = true;
-            }
-            if (!haveserver)
-            {
-                RobotCore.SendGroupMessage(fromGroup,
-                [
-                    $"[mirai:at:{fromQQ}]",
-                    "发送失败，对应的服务器未连接"
-                ]);
-                return true;
-            }
-            var player = GetPlayer(fromQQ);
-            if (player == null)
-            {
-                RobotCore.SendGroupMessage(fromGroup,
-                    [
-                         $"[mirai:at:{fromQQ}]",
-                        "你未绑定ID"
-                    ]);
-                return true;
-            }
-            if (!item.Value.PlayerUse && !player.IsAdmin)
-            {
-                return true;
-            }
-            string cmd = item.Value.Command;
-            bool haveAt = false;
-            if (cmd.Contains("{arg:at}") || cmd.Contains("{arg:atqq}"))
-            {
-                if (msg[1].type == "at")
-                {
-                    long qq = long.Parse(msg[1].data.qq);
-                    var player1 = GetPlayer(qq);
-                    if (player1 == null)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                            [
-                                $"[mirai:at:{fromQQ}]",
-                                $"错误，玩家：{qq}没有绑定ID"
-                            ]);
-                        return true;
-                    }
-                    while (cmd.Contains("{arg:at}", StringComparison.CurrentCulture))
-                        cmd = cmd.Replace("{arg:at}", player1.Name);
-                    while (cmd.Contains("{arg:atqq}", StringComparison.CurrentCulture))
-                        cmd = cmd.Replace("{arg:atqq}", $"{qq}");
-                    haveAt = true;
-                }
-                else
-                {
-                    RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[mirai:at:{fromQQ}]",
-                            $"错误，参数错误"
-                        ]);
-                    return true;
-                }
-            }
-            while (cmd.Contains("{arg:name}", StringComparison.CurrentCulture))
-                cmd = cmd.Replace("{arg:name}", player.Name);
-            while (cmd.Contains("{arg:qq}", StringComparison.CurrentCulture))
-                cmd = cmd.Replace("{arg:qq}", $"{player.QQ}");
-            string argStr = "";
-            for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
-            {
-                if (!string.IsNullOrEmpty(msg[a].data.text))
-                {
-                    argStr += msg[a];
-                }
-            }
-            var arg = argStr.Split(" ");
-            int pos = 1;
-            for (int index = 1; ; index++)
-            {
-                string args = "{arg" + index + "}";
-                if (index > arg.Length)
-                {
-                    break;
-                }
-                if (cmd.Contains(args))
-                {
-                    for (; pos < arg.Length; pos++)
-                    {
-                        if (!string.IsNullOrWhiteSpace(arg[pos]))
-                        {
-                            cmd = cmd.Replace(args, arg[pos]);
-                            break;
-                        }
-                    }
-                }
-                else
-                    break;
-            }
-            if (cmd.Contains("{argx}"))
-            {
-                string temp = "";
-                if (pos <= arg.Length)
-                {
-                    for (; pos < arg.Length; pos++)
-                    {
-                        if (!string.IsNullOrWhiteSpace(arg[pos]))
-                        {
-                            temp += $"{arg[pos]} ";
-                        }
-                    }
-                    if (temp.Length > 1)
-                    {
-                        temp = temp[0..^1];
-                    }
-                }
-                cmd = cmd.Replace("{argx}", temp);
-            }
-            PluginServer.Send(new TranObj
-            {
-                group = fromGroup.ToString(),
-                command = cmd,
-                isCommand = true,
-                player = item.Value.PlayerSend ? player.Name : CommderList.COMM
-            }, servers);
-            return true;
-        }
-        return false;
-    }
-
-
+    
     /// <summary>
     /// 重载配置
     /// </summary>
@@ -831,221 +496,14 @@ public static class Minecraft_QQ
         RobotCore.Stop();
         SendGroup.Stop();
     }
-    /// <summary>
-    /// Type=2 群消息。
-    /// </summary>
-    /// <param name="fromGroup">来源群号。</param>
-    /// <param name="fromQQ">来源QQ。</param>
-    /// <param name="msg">消息内容。</param>
-    public static void GroupMessage(long fromGroup, long fromQQ, string raw, List<GroupMessagePack.Message> msglist)
+
+    public static void AddAsk(string check, string res)
     {
-        if (IMinecraft_QQ.IsStart == false)
-            return;
-        Logs.LogOut($"[{fromGroup}][QQ:{fromQQ}]:{raw}");
-        if (GroupConfig.Groups.ContainsKey(fromGroup) == true)
+        if (!AskConfig.AskList.TryAdd(check, res))
         {
-            GroupObj list = GroupConfig.Groups[fromGroup];
-            //始终发送
-            if (MainConfig.Setting.AutoSend == true && MainConfig.Setting.FixMode == false
-                && PluginServer.IsReady() == true && list.EnableSay == true)
-            {
-                string msg_copy = raw;
-                if (MainConfig.Setting.SendCommand || !msg_copy.StartsWith(MainConfig.Check.Head))
-                {
-                    var player = GetPlayer(fromQQ);
-                    if (player != null && !PlayerConfig.MuteList.Contains(player.Name.ToLower())
-                        && !string.IsNullOrWhiteSpace(player.Name))
-                    {
-                        msg_copy = Funtion.GetRich(msg_copy) ?? msg_copy;
-                        if (MainConfig.Setting.ColorEnable == false)
-                            msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                        {
-                            var messagelist = new TranObj()
-                            {
-                                group = fromGroup.ToString(),
-                                message = msg_copy,
-                                player = !MainConfig.Setting.SendNickServer ?
-                                player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
-                                player.Name : player.Nick,
-                                command = CommderList.SPEAK
-                            };
-                            PluginServer.Send(messagelist);
-                        }
-                    }
-                }
-            }
-            if (raw.StartsWith(MainConfig.Check.Head) && list.EnableCommand == true)
-            {
-                //去掉检测头
-                raw = Funtion.ReplaceFirst(raw, MainConfig.Check.Head, "");
-                string msg_low = raw.ToLower();
-                var player = GetPlayer(fromQQ);
-                if (MainConfig.Setting.AutoSend == false && msg_low.StartsWith(MainConfig.Check.Send))
-                {
-                    if (list.EnableSay == false)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, ["该群没有开启聊天功能"]);
-                    }
-                    else if (MainConfig.Setting.FixMode)
-                    {
-                        if (!string.IsNullOrWhiteSpace(MainConfig.Message.FixText))
-                        {
-                            RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", MainConfig.Message.FixText]);
-                        }
-                    }
-                    else if (PluginServer.IsReady() == false)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", "发送失败，没有服务器链接"]);
-                    }
-                    else if (player == null || string.IsNullOrWhiteSpace(player.Name))
-                    {
-                        if (!string.IsNullOrWhiteSpace(MainConfig.Message.NoneBindID))
-                        {
-                            RobotCore.SendGroupMessage(fromGroup, [$"[CQ:at,qq={fromQQ}]", MainConfig.Message.NoneBindID]);
-                        }
-                        return;
-                    }
-                    else if (PlayerConfig.MuteList.Contains(player.Name.ToLower()))
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            "你已被禁言"
-                        ]);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            string msg_copy = raw;
-                            msg_copy = msg_copy.Replace(MainConfig.Check.Send, "");
-                            if (MainConfig.Setting.ColorEnable == false)
-                                msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                            if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                            {
-                                var messagelist = new TranObj()
-                                {
-                                    group = DataType.group,
-                                    message = msg_copy,
-                                    player = !MainConfig.Setting.SendNickServer ?
-                                    player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
-                                    player.Name : player.Nick,
-                                    command = CommderList.SPEAK
-                                };
-                                PluginServer.Send(messagelist);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Logs.LogError(e);
-                        }
-                    }
-                }
-                else if (player != null && player.IsAdmin == true)
-                {
-                    if (msg_low.StartsWith(MainConfig.Admin.Mute))
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            MutePlayer(msglist)
-                        ]);
-                    }
-                    else if (msg_low.StartsWith(MainConfig.Admin.UnMute))
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            UnmutePlayer(msglist)
-                        ]);
-                    }
-                    else if (msg_low.StartsWith(MainConfig.Admin.CheckBind))
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            GetPlayerID(msglist)
-                        ]);
-                    }
-                    else if (msg_low.StartsWith(MainConfig.Admin.Rename))
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            RenamePlayer(msglist)
-                        ]);
-                    }
-                    else if (msg_low == MainConfig.Admin.Fix)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                            FixModeChange()
-                        ]);
-                    }
-                    else if (msg_low == MainConfig.Admin.GetMuteList)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, [GetMuteList()]);
-                    }
-                    else if (msg_low == MainConfig.Admin.GetCantBindList)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, [GetCantBind()]);
-                    }
-                    else if (msg_low == MainConfig.Admin.Reload)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, ["开始重读配置文件"]);
-                        Reload();
-                        RobotCore.SendGroupMessage(fromGroup, ["重读完成"]);
-                    }
-                    else if (msg_low.StartsWith(MainConfig.Admin.Nick))
-                    {
-                        List<string> lists = ["at:" + fromQQ, SetNick(msglist)];
-                        RobotCore.SendGroupMessage(fromGroup, lists);
-                    }
-                }
-                if (msg_low == MainConfig.Check.PlayList)
-                {
-                    var test = GetOnlinePlayer(fromGroup);
-                    if (test != null)
-                        RobotCore.SendGroupMessage(fromGroup, [test]);
-                }
-                else if (msg_low == MainConfig.Check.ServerCheck)
-                {
-                    var test = GetOnlineServer(fromGroup);
-                    if (test != null)
-                        RobotCore.SendGroupMessage(fromGroup, [test]);
-                }
-
-                else if (msg_low.StartsWith(MainConfig.Check.Bind))
-                {
-                    var str = SetPlayerName(fromGroup, fromQQ, msglist);
-                    if (str != null)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup,
-                        [
-                            $"[CQ:at,qq={fromQQ}]",
-                        str
-                        ]);
-                    }
-                }
-                else if (SendCommand(fromGroup, msglist, fromQQ) == true)
-                {
-
-                }
-                else if (MainConfig.Setting.AskEnable && AskConfig.AskList.ContainsKey(msg_low) == true)
-                {
-                    string message = AskConfig.AskList[msg_low];
-                    if (string.IsNullOrWhiteSpace(message) == false)
-                    {
-                        RobotCore.SendGroupMessage(fromGroup, [message]);
-                    }
-                }
-                else if (string.IsNullOrWhiteSpace(MainConfig.Message.UnknowText) == false)
-                {
-                    RobotCore.SendGroupMessage(fromGroup, [MainConfig.Message.UnknowText]);
-                }
-            }
+            AskConfig.AskList[check] = res;
         }
+
+        ConfigWrite.Ask();
     }
 }

@@ -13,6 +13,8 @@ public partial class AddNameModel : ObservableObject
 {
     [ObservableProperty]
     private string? _text;
+    [ObservableProperty]
+    private string _title;
 
     [RelayCommand]
     public void Save()
