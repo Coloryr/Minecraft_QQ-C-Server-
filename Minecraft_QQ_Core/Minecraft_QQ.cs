@@ -125,6 +125,10 @@ public static class Minecraft_QQ
         }
     }
 
+    /// <summary>
+    /// 直接设置一个玩家数据
+    /// </summary>
+    /// <param name="player"></param>
     public static void SetPlayer(PlayerObj player)
     {
         var player1 = GetPlayer(player.QQ) ?? player;
@@ -168,6 +172,10 @@ public static class Minecraft_QQ
         }
     }
 
+    /// <summary>
+    /// 添加禁止绑定
+    /// </summary>
+    /// <param name="name">名字</param>
     public static void AddNotBind(string name)
     {
         name = name.ToLower();
@@ -185,6 +193,10 @@ public static class Minecraft_QQ
         }
     }
 
+    /// <summary>
+    /// 删除禁止绑定
+    /// </summary>
+    /// <param name="name">名字</param>
     public static void RemoveNotBind(string name)
     {
         name = name.ToLower();
@@ -199,6 +211,10 @@ public static class Minecraft_QQ
         }
     }
 
+    /// <summary>
+    /// 添加群设置
+    /// </summary>
+    /// <param name="obj">群信息</param>
     public static void AddGroup(GroupObj obj)
     {
         if (!GroupConfig.Groups.TryAdd(obj.Group, obj))

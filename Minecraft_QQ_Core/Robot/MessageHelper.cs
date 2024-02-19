@@ -60,7 +60,7 @@ public static class MessageHelper
                 }
                 Minecraft_QQ.SetPlayerName(fromQQ, name);
                 if (Minecraft_QQ.MainConfig.Setting.SendQQ != 0)
-                    RobotCore.SendGroupTempMessage(group, Minecraft_QQ.MainConfig.Setting.SendQQ,
+                    RobotCore.SendPrivateMessage(Minecraft_QQ.MainConfig.Setting.SendQQ,
                     [
                         $"玩家[{fromQQ}]绑定了名字：[{name}]"
                     ]);

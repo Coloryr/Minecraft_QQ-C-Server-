@@ -1,59 +1,58 @@
 # Minecraft服务器与QQ群聊天的插件  
-Minecraft_QQ 插件本体(Cmd/Gui)
+Minecraft_QQ 插件本体(Cmd/NewGui)
 
-[机器人使用ColorMirai](https://github.com/Coloryr/ColorMirai)   
+机器人使用[Onebot](https://onebot.dev/)v11协议的机器人即可   
+例如[Lagrange](https://github.com/LagrangeDev/Lagrange.Core)  
+
 [MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)
 
 ## 连接说明
 
 链接顺序不要搞错了  
-Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
-Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
-Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai  
-请不要拿Minecraft_QQ直连ColorMirai，连不上的
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->Onebot  
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->Onebot  
+Minecraft_QQ->Minecraft_QQ_Cmd/Gui->Onebot  
 
 ## 部署教程：
 1. 下载
 
-> [ColorMirai](https://github.com/Coloryr/ColorMirai/actions)   
-> [Minecraft_QQ_Cmd/Gui](https://github.com/HeartAge/Minecraft_QQ-C-Server-/actions)  
-> [Minecraft_QQ插件](https://github.com/HeartAge/Minecraft_QQ/actions)
+> [Minecraft_QQ_Cmd/NewGui](https://github.com/Coloryr/Minecraft_QQ-C-Server-/actions)  
+> [Minecraft_QQ插件](https://github.com/Coloryr/Minecraft_QQ/actions)
 
-2. 安装
+2. 启动
 
-> 安装[.Net 6](https://dotnet.microsoft.com/download/dotnet/6.0)  
-> 安装[Java](https://adoptopenjdk.net/)
-
-3. 启动
-
-> 将`ColorMirai`放到一个文件夹，根据[步骤](https://github.com/Coloryr/ColorMirai/#%E5%90%AF%E5%8A%A8)启动
->
-> 将`Minecraft_QQ_Cmd/Gui`放到一个文件夹，选择启动`Cmd`或者是`Gui`  
+> 启动Onebot机器人，并登录账户
+> 
+> 将`Minecraft_QQ_Cmd/Gui`放到一个文件夹，选择启动`Cmd`或者是`NewGui`  
 > Linux下使用
 > ```
-> dotnet Minecraft_QQ_Cmd.dll
+> chmod a+x ./Minecraft_QQ_Cmd
+> ./Minecraft_QQ_Cmd
 > ```  
+> 或者
+> ```
+> chmod a+x ./Minecraft_QQ_NewGui
+> ./Minecraft_QQ_NewGui
+> ``` 
 > 
 > 启动后进行[第一次使用配置](#第一次使用配置)  
-> 连接`ColorMirai`
 >
 > 将插件放进服务器的插件文件夹
 > 重启服务器  
-> 连接`Minecraft_QQ_Cmd/Gui`
+> 连接`Minecraft_QQ_Cmd/NewGui`
+> 
 
 ## 第一次使用配置
 
-1. 群设置
-> `Gui`下，添加主群即可  
-> 有弹窗一样可以点主界面  
-> `右键`就能修改/添加
+> `NewGui`下，添加主群即可  
+> 没有时会出现一个弹窗，输入群号后需要勾选主群  
 >
 > `Cmd`下，打开`Group.json`调整配置
 > ```json
 > {
 >  "Groups": {
 >    "123456789": {
->      "Group": "123456789",
+>      "Group": 123456789,
 >      "EnableCommand": true,
 >      "EnableSay": true,
 >      "IsMain": true
@@ -61,15 +60,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 >  }
 >}
 > ```
-2. 运行QQ号设置
-> Gui修改`插件配置`下的`机器人账户`  
-> Cmd修改`MainConfig.json`下的`RobotSetting.QQ`  
-> 填写运行的QQ号即可
->
-
-3. 保存重启
-> `Cmd`的配置文件修改后需要重启
-> `Gui`点右上角保存即可
+> 或者根据提示输入群号
 
 ## 配置文件
 
@@ -201,8 +192,7 @@ Minecraft_QQ->Minecraft_QQ_Cmd/Gui->ColorMirai
 
 ## 端口说明
 
-ColorMirai的默认端口为23333  
-Minecraft_QQ_Cmd/Gui的默认端口为25555  
+Minecraft_QQ_Cmd/NewGui的默认端口为25555  
 如果没有必要，请不要随便改这两个端口
 
 ## 不在一台机器上部署
@@ -210,10 +200,9 @@ Minecraft_QQ_Cmd/Gui的默认端口为25555
 如果你有公网IP，直接在防火墙开放端口就行了  
 然后Minecraft_QQ的IP设置填你机器的公网IP
 如果你没有公网IP，那就去用端口映射，能映射出去就行了  
-然后Minecraft_QQ_Cmd/Gui的绑定IP改为0.0.0.0
 
 ## 自己写Minecraft_QQ
-1. 首先确定你的环境是.net6
+1. 首先确定你的环境是.net8
 2. 在你的项目里面导入`Minecraft_QQ_Core.dll`  
 如果你导入的是`ref`文件夹里面的dll，请另外安装[Newtonsoft.Json](https://www.newtonsoft.com/json)
 
@@ -224,66 +213,39 @@ private static void Message(string message)
 {
     Console.WriteLine(message);
 }
-IMinecraft_QQ IMinecraft_QQ = new();
-IMinecraft_QQ.ShowMessageCall = new IMinecraft_QQ.ShowMessage(Message);
-IMinecraft_QQ.LogCall = new IMinecraft_QQ.Log(Message);
-IMinecraft_QQ.Start();
-```
-获取核心
-```C#
-Minecraft_QQ Minecraft_QQ = IMinecraft_QQ.Main;
-```
-获取核心后就获取一些东西
-```C#
-/// <summary>
-/// 配置文件路径
-/// </summary>
-public string Path { get; init; } = AppContext.BaseDirectory + "Minecraft_QQ/";
-/// <summary>
-/// Mysql启用
-/// </summary>
-public bool MysqlOK = false;
-/// <summary>
-/// 主群群号
-/// </summary>
-public long GroupSetMain { get; set; } = 0;
-/// <summary>
-/// 主配置文件
-/// </summary>
-public MainConfig MainConfig { get; set; }
-/// <summary>
-/// 玩家储存配置
-/// </summary>
-public PlayerConfig PlayerConfig { get; set; }
-/// <summary>
-/// 群储存配置
-/// </summary>
-public GroupConfig GroupConfig { get; set; }
-/// <summary>
-/// 自动应答储存
-/// </summary>
-public AskConfig AskConfig { get; set; }
-/// <summary>
-/// 自定义指令
-/// </summary>
-public CommandConfig CommandConfig { get; set; }
 
-/// <summary>
-/// Socket服务器
-/// </summary>
-public readonly MySocketServer Server;
-/// <summary>
-/// Mysql
-/// </summary>
-public readonly MyMysql Mysql;
-/// <summary>
-/// 机器人
-/// </summary>
-public readonly RobotSocket Robot;
-/// <summary>
-/// 发送群消息
-/// </summary>
-public readonly SendGroup SendGroup;
+private static void ConfigInit() 
+{
+    if (Environment.UserInteractive)
+    {
+        Console.WriteLine("进行初始配置");
+        while (true)
+        {
+            Console.Write("请输入主群号：");
+            string a = Console.ReadLine();
+            if (long.TryParse(a, out var group))
+            {
+                group = Math.Abs(group);
+                Minecraft_QQ.AddGroup(new()
+                {
+                    Group = group,
+                    EnableCommand = true,
+                    EnableSay = true,
+                    IsMain = true
+                });
+                break;
+            }
+            Console.WriteLine("非法输入");
+        }
+    }
+}
+
+IMinecraft_QQ.ConfigInitCall = ConfigInit;
+IMinecraft_QQ.ShowMessageCall = Message;
+IMinecraft_QQ.LogCall = Message;
+
+//启动
+await Minecraft_QQ.Start();
 ```
 
 Minecraft_QQ核心方法API
@@ -313,6 +275,11 @@ public void SetNick(long qq, string nick);
 /// <param name="name">玩家ID</param>
 public void SetPlayerName(long qq, string name);
 /// <summary>
+/// 直接设置一个玩家数据
+/// </summary>
+/// <param name="player">玩家</param>
+public static void SetPlayer(PlayerObj player);
+/// <summary>
 /// 禁言玩家
 /// </summary>
 /// <param name="qq">QQ号</param>
@@ -322,6 +289,16 @@ public void MutePlayer(long qq);
 /// </summary>
 /// <param name="name">名字</param>
 public void MutePlayer(string name);
+/// <summary>
+/// 添加禁止绑定
+/// </summary>
+/// <param name="name">名字</param>
+public static void AddNotBind(string name);
+ /// <summary>
+ /// 删除禁止绑定
+ /// </summary>
+ /// <param name="name">名字</param>
+ public static void RemoveNotBind(string name);
 /// <summary>
 /// 解除禁言
 /// </summary>
@@ -342,26 +319,20 @@ public void FixModeChange(bool open);
 /// </summary>
 public bool Reload();
 /// <summary>
-/// 插件启动
+/// 启动
 /// </summary>
 public void Start();
 /// <summary>
-/// 插件停止
+/// 停止
 /// </summary>
 public void Stop();
 ```
-具体内容看代码
 
-如果你要通过Minecraft_QQ发送群消息，可以这样写
+如果你要通过Minecraft_QQ发送消息，可以这样写
 ```C#
-Minecraft_QQ.SendGroup.AddSend(new()
-{
-    Group = 123456,
-    Message = "text"
-});
+RobotCore.SendGroupMessage(123456, ["text"]);
 ```
-又或者
+或者发送私聊消息
 ```C#
-Minecraft_QQ.Robot.SendGroupMessage(123456, "text");
+RobotCore.SendPrivateMessage(123456, ["text"]);
 ```
-推荐使用上面的方法，可以控制发送群消息的数量。

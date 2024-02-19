@@ -23,7 +23,7 @@ public static class RobotCore
         Robot.Start();
     }
 
-    public static void SendGroupTempMessage(long group, long to, List<string> list)
+    public static void SendPrivateMessage(long to, List<string> list)
     {
         var msg = new StringBuilder();
         foreach (var item in list)
