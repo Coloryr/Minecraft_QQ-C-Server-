@@ -64,7 +64,7 @@ public static class MessageHelper
                     [
                         $"玩家[{fromQQ}]绑定了名字：[{name}]"
                     ]);
-                IMinecraft_QQ.GuiCall?.Invoke(GuiFun.PlayerList);
+                IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.PlayerList);
                 return $"绑定名字：[{name}]成功！";
             }
         }

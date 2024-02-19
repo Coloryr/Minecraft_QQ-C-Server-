@@ -41,14 +41,14 @@ public class PluginItem(IChannel client)
                         [$"[Minecraft_QQ]服务器{Name}已连接"]);
                 }
                 Logs.LogOut($"[Socket]服务器{Name}已连接");
-                IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+                IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
                 if (Minecraft_QQ.MainConfig.Setting.SendLog)
                 {
                     RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain,
                         ["[Minecraft_QQ]服务器已连接"]);
                 }
                 PluginServer.AddServer(Name, this);
-                IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+                IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
             }
             else
                 Task.Run(() => Message.MessageDo(Name, pack));
@@ -63,7 +63,7 @@ public class PluginItem(IChannel client)
             if (!IsSameStop)
             {
                 Channel.CloseAsync();
-                IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+                IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
             }
             return;
         }

@@ -15,6 +15,7 @@ namespace Minecraft_QQ_NewGui.Windows;
 public partial class MainWindow : Window
 {
     private WindowNotificationManager notificationManager;
+    private bool isreq;
 
     public MainWindow()
     {
@@ -41,6 +42,7 @@ public partial class MainWindow : Window
             using var sem = new Semaphore(0, 2);
             Dispatcher.UIThread.Post(() =>
             {
+                isreq = true;
                 var model = (DataContext as WindowModel)!;
                 var model1 = new YesNoModel(data, () =>
                 {
@@ -53,9 +55,11 @@ public partial class MainWindow : Window
                 DialogHost.Show(model1, "Main");
             });
             sem.WaitOne();
+            isreq = false;
         };
         IMinecraft_QQ.ConfigInitCall = () =>
         {
+            isreq = true;
             using var sem = new Semaphore(0, 2);
             Dispatcher.UIThread.Post(async () =>
             {
@@ -64,6 +68,7 @@ public partial class MainWindow : Window
                 sem.Release();
             });
             sem.WaitOne();
+            isreq = false;
         };
         IMinecraft_QQ.GuiCall = (state) =>
         {
@@ -72,8 +77,11 @@ public partial class MainWindow : Window
                 var model = (DataContext as WindowModel)!;
                 switch (state)
                 {
-                    case GuiFun.ServerList:
+                    case GuiCallType.ServerList:
                         model.UpdateServer();
+                        break;
+                    case GuiCallType.PlayerList:
+                        model.LoadPlayer();
                         break;
                 }
             });
@@ -252,6 +260,11 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
+        if (isreq)
+        {
+            e.Cancel = true;
+            return;
+        }
         Minecraft_QQ.Stop();
     }
 

@@ -10,7 +10,6 @@ public class DataType
     public const string group = "group";
     public const string start = "start";
     public const string pause = "pause";
-    public const string config = "config";
     public const string message = "message";
     public const string player = "player";
     public const string set = "set";
@@ -108,9 +107,6 @@ internal static class Message
                         });
                     }
                 }
-                break;
-            case DataType.config:
-                IMinecraft_QQ.ServerConfigCall?.Invoke(server, message.message);
                 break;
             default:
                 break;

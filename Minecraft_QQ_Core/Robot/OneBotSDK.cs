@@ -21,7 +21,10 @@ public class OneBotSDK
             return temp;
         })
         {
-            ReconnectTimeout = TimeSpan.FromSeconds(10)
+            ReconnectTimeout = TimeSpan.FromSeconds(10),
+            LostReconnectTimeout = TimeSpan.FromSeconds(10),
+            ErrorReconnectTimeout = TimeSpan.FromSeconds(10),
+            IsReconnectionEnabled = true
         };
         client.ReconnectionHappened.Subscribe(info =>
             Logs.LogOut($"机器人重连, type: {info.Type}"));

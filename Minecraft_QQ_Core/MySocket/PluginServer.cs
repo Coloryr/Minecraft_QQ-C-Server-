@@ -28,7 +28,7 @@ public static class PluginServer
     private static void SetState(bool st)
     {
         Start = st;
-        IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+        IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
     }
 
     public static bool IsReady()
@@ -155,7 +155,7 @@ public static class PluginServer
         {
             Logs.LogError(e);
             Close(Client.Name);
-            IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+            IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
             GC.Collect();
             if (MCServers.IsEmpty)
             {
@@ -212,7 +212,7 @@ public class PluginServerHandler : ChannelHandlerAdapter
         {
             item.Stop();
             PluginServer.MCServers.TryRemove(item.Name, out _);
-            IMinecraft_QQ.GuiCall?.Invoke(GuiFun.ServerList);
+            IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
         }
     }
 }
