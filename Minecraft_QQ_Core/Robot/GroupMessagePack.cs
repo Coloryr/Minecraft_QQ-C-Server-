@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Minecraft_QQ_Core.Robot;
 
@@ -12,7 +7,7 @@ public record GroupMessagePack
     public record Message
     {
         public record Data
-        { 
+        {
             public string text { get; set; }
             public string file { get; set; }
             public string url { get; set; }

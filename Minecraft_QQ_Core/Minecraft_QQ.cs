@@ -64,7 +64,7 @@ public static class Minecraft_QQ
     /// <returns>玩家信息</returns>
     public static PlayerObj? GetPlayer(string id)
     {
-        var valueCol = PlayerConfig.PlayerList.Values.Where(a=> 
+        var valueCol = PlayerConfig.PlayerList.Values.Where(a =>
             a.Name.Equals(id, StringComparison.CurrentCultureIgnoreCase));
         if (valueCol.Any())
             return valueCol.First();
@@ -100,7 +100,7 @@ public static class Minecraft_QQ
             ConfigWrite.Player();
         }
     }
-    
+
     /// <summary>
     /// 设置玩家ID，如果存在直接修改，不存在创建
     /// </summary>
@@ -203,12 +203,12 @@ public static class Minecraft_QQ
     {
         if (!GroupConfig.Groups.TryAdd(obj.Group, obj))
         {
-           GroupConfig.Groups[obj.Group] = obj;
+            GroupConfig.Groups[obj.Group] = obj;
         }
 
         ConfigWrite.Group();
     }
-    
+
     /// <summary>
     /// 解除禁言
     /// </summary>
@@ -234,7 +234,7 @@ public static class Minecraft_QQ
         else
             ConfigWrite.Player();
     }
-   
+
     /// <summary>
     /// 设置维护模式状态
     /// </summary>
@@ -243,7 +243,7 @@ public static class Minecraft_QQ
     {
         MainConfig.Setting.FixMode = open;
     }
-    
+
     /// <summary>
     /// 重载配置
     /// </summary>
@@ -286,7 +286,7 @@ public static class Minecraft_QQ
         if (ConfigFile.GroupConfig.Exists == false)
         {
             Logs.LogOut("[Config]新建群设置配置");
-            
+
             GroupConfig = new GroupConfig()
             {
                 Groups = []

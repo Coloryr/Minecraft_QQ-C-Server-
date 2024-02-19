@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 
 namespace Minecraft_QQ_Core.Config;
 
@@ -365,7 +364,7 @@ public record AdminConfig
     }
 }
 public record SocketConfig
-{ 
+{
     /// <summary>
     /// 端口
     /// </summary>

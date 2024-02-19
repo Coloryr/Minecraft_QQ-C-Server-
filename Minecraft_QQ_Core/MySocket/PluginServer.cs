@@ -36,13 +36,13 @@ public static class PluginServer
         return !MCServers.IsEmpty;
     }
 
-    public static void ReadData(IChannel channel, IByteBuffer pack) 
+    public static void ReadData(IChannel channel, IByteBuffer pack)
     {
         if (Contexts.TryGetValue(channel, out var item))
         {
             item.Read(pack);
         }
-        else 
+        else
         {
             item = new PluginItem(channel);
             Contexts.TryAdd(channel, item);
@@ -73,8 +73,8 @@ public static class PluginServer
                 {
                     IChannelPipeline pipeline = channel.Pipeline;
                     pipeline.AddLast(new LoggingHandler("Minecraft_QQ"));
-                    pipeline.AddLast( new LengthFieldPrepender(4));
-                    pipeline.AddLast( new LengthFieldBasedFrameDecoder(1024* 8, 0, 4, 0, 4));
+                    pipeline.AddLast(new LengthFieldPrepender(4));
+                    pipeline.AddLast(new LengthFieldBasedFrameDecoder(1024 * 8, 0, 4, 0, 4));
 
                     pipeline.AddLast(new PluginServerHandler());
                 }));
@@ -85,7 +85,7 @@ public static class PluginServer
             SetState(true);
             if (Minecraft_QQ.MainConfig.Setting.SendLog)
             {
-                RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain, 
+                RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain,
                 [
                     $"[Minecraft_QQ]端口已启动{Environment.NewLine}",
                     $"已绑定在：{Minecraft_QQ.MainConfig.Socket.Port}"
@@ -96,7 +96,7 @@ public static class PluginServer
         }
         catch (Exception e)
         {
-            RobotCore.SendGroupMessage( Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log"]);
+            RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]启动失败，请看日志/Minecraft_QQ/logs.log"]);
             Logs.LogError(e);
             SetState(false);
             IMinecraft_QQ.ShowMessageCall.Invoke("[Minecraft_QQ]启动失败，请检查设置的端口是否被占用");
@@ -111,7 +111,7 @@ public static class PluginServer
         }
     }
 
-    public static IByteBuffer BuildPack(TranObj info) 
+    public static IByteBuffer BuildPack(TranObj info)
     {
         IByteBuffer buffer = Unpooled.Buffer();
         buffer.WriteString(info.group)
@@ -143,7 +143,7 @@ public static class PluginServer
             }
         }
         else
-            RobotCore.SendGroupMessage( Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]服务器未连接，无法发送"]);
+            RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain, ["[Minecraft_QQ]服务器未连接，无法发送"]);
     }
     private static void SendData(PluginItem Client, IByteBuffer data)
     {
@@ -159,7 +159,7 @@ public static class PluginServer
             GC.Collect();
             if (MCServers.IsEmpty)
             {
-                RobotCore.SendGroupMessage( Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}"]);
+                RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]连接已断开，无法发送{Environment.NewLine}{e}"]);
             }
         }
     }
@@ -167,7 +167,7 @@ public static class PluginServer
     {
         if (MCServers.TryGetValue(name, out var value))
         {
-            RobotCore.SendGroupMessage( Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开"]);
+            RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain, [$"[Minecraft_QQ]同名服务器{name}连接，旧连接已断开"]);
             value.StopSame();
             MCServers[name] = receive;
         }

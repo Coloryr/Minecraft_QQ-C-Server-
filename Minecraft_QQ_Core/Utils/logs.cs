@@ -30,7 +30,7 @@ public static class Logs
 
     public static void LogError(string text, Exception e)
     {
-        LogWrite("[Error]" + text + Environment.NewLine 
+        LogWrite("[Error]" + text + Environment.NewLine
             + e.Message + Environment.NewLine + e.StackTrace);
     }
 

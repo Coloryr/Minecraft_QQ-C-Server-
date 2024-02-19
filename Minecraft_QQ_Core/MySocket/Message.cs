@@ -1,7 +1,5 @@
 ﻿using DotNetty.Buffers;
-using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.Utils;
-using Newtonsoft.Json;
 using System.Text;
 
 namespace Minecraft_QQ_Core.MySocket;
@@ -47,7 +45,7 @@ internal static class Message
 
     public static void MessageDo(string server, IByteBuffer read)
     {
-        ReadObj message = new ()
+        ReadObj message = new()
         {
             group = read.ReadString(),
             message = read.ReadString(),

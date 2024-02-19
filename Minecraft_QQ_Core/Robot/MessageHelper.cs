@@ -3,9 +3,6 @@ using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core.Robot;
 
@@ -640,7 +637,7 @@ public static class MessageHelper
                 {
 
                 }
-                else if (Minecraft_QQ.MainConfig.Setting.AskEnable 
+                else if (Minecraft_QQ.MainConfig.Setting.AskEnable
                     && Minecraft_QQ.AskConfig.AskList.ContainsKey(msg_low) == true)
                 {
                     string message = Minecraft_QQ.AskConfig.AskList[msg_low];

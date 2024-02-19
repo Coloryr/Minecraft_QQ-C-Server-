@@ -1,22 +1,66 @@
-# name: .NET构建
+name: Minecraft_QQ构建
 
-# on: [push]
+on:
+    push:
+      # Sequence of patterns matched against refs/heads
+      branches:    
+        - 'releases/**'
+      # Sequence of patterns matched against refs/tags
+      tags:        
+        - '*'
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: 设置.NET Core
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: 8.0.100
-#     - name: 构建
-#       run: ./build/build-ubuntu.sh
-#       shell: bash
-#       working-directory: ./
-#     - name: 更新构建文件
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: "Minecraft_QQ_All"
-#         path: build_out
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.201
+
+    - name: 构建源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-linux.sh
+        ./build/build-linux.sh
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "minecraft_qq_newgui-linux-x64"
+        path: build_out/newgui/**
+        
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "minecraft_qq_cmd-linux-x64"
+        path: build_out/cmd/**
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.201
+
+    - name: 构建 源码
+      shell: cmd
+      working-directory: ./
+      run: ./build/build-windows.cmd
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "minecraft_qq_newgui-win-x64"
+        path: build_out/newgui/**
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "minecraft_qq_cmd-win-x64"
+        path: build_out/cmd/**

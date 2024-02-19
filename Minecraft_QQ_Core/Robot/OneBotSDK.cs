@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Minecraft_QQ_Core.Utils;
+﻿using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.WebSockets;
@@ -12,7 +11,7 @@ public class OneBotSDK
     private readonly WebsocketClient client;
     public OneBotSDK(string url, string? auth)
     {
-        client = new WebsocketClient(new Uri(url), () => 
+        client = new WebsocketClient(new Uri(url), () =>
         {
             var temp = new ClientWebSocket();
             if (auth != null)

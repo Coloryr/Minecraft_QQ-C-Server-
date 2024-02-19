@@ -14,7 +14,7 @@ public static class Funtion
         str.Append('[');
         foreach (var item in list)
         {
-            str.Append(item).Append(" ,");
+            str.Append(item).Append(',');
         }
         if (list.Count > 0)
         {

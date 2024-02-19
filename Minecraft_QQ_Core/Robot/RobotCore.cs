@@ -58,14 +58,14 @@ public static class RobotCore
             {
                 { "group_id", group },
                 { "message", msg.ToString() }
-            } 
+            }
             }
         };
 
         Robot.Send(obj.ToString());
     }
 
-    public static void Stop() 
+    public static void Stop()
     {
         Robot.Stop();
     }

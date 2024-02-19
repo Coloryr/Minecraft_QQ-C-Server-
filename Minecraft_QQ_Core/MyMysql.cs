@@ -1,10 +1,10 @@
-﻿using Minecraft_QQ_Core.Config;
+﻿using Dapper;
+using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.Utils;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
-using Dapper;
 using MySqlConnector;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core;
 
@@ -208,7 +208,7 @@ public static class MyMysql
     public static async Task AddMuteAsync(string name)
     {
         var Conn = new MySqlConnection(ConnectString);
-        await Conn.ExecuteAsync($"INSERT INTO {MysqlMuteTable}(Name)VALUES(@name)", new { name});
+        await Conn.ExecuteAsync($"INSERT INTO {MysqlMuteTable}(Name)VALUES(@name)", new { name });
     }
 
     public static async Task AddNotBindAsync(string name)
