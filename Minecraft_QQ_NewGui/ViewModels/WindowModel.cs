@@ -113,6 +113,8 @@ public partial class WindowModel : ObservableObject
         _isLoad = true;
         LoadGroup();
         LoadServer();
+        UpdateServer();
+        ServerList();
         Config.Load();
         Database.Load();
         LoadPlayer();
@@ -130,7 +132,6 @@ public partial class WindowModel : ObservableObject
 
     public void UpdateServer()
     {
-        Servers.Clear();
         if (!PluginServer.Start)
         {
             State = "未就绪";
@@ -153,6 +154,12 @@ public partial class WindowModel : ObservableObject
             SocketST = "关闭端口";
             SocketEdit = false;
         }
+    }
+
+    public void ServerList()
+    {
+        Servers.Clear();
+
         foreach (var item in PluginServer.MCServers)
         {
             Servers.Add(new(this)
@@ -160,7 +167,7 @@ public partial class WindowModel : ObservableObject
                 Name = item.Key,
                 Addr = item.Value.Channel.RemoteAddress.ToString() ?? ""
             });
-        }
+        };
     }
 
     public void LoadGroup()
@@ -407,9 +414,10 @@ public partial class WindowModel : ObservableObject
     {
         DialogHost.Show(new YesNoModel("是否要断开链接", () =>
         {
+            Cancel();
             PluginServer.Close(model.Name);
             ShowNotify("已断开链接");
-            UpdateServer();
+            ServerList();
         }, Cancel), "Main");
     }
 

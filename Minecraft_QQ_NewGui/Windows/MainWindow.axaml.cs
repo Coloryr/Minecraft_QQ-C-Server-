@@ -77,8 +77,11 @@ public partial class MainWindow : Window
                 var model = (DataContext as WindowModel)!;
                 switch (state)
                 {
-                    case GuiCallType.ServerList:
+                    case GuiCallType.ServerState:
                         model.UpdateServer();
+                        break;
+                    case GuiCallType.ServerList:
+                        model.ServerList();
                         break;
                     case GuiCallType.PlayerList:
                         model.LoadPlayer();
@@ -280,7 +283,7 @@ public partial class MainWindow : Window
         {
             if (DataContext is WindowModel model)
             {
-                new GroupFlyout((sender as Control)!, model, model.GroupItem);
+                new ServerFlyout((sender as Control)!, model.ServerItem);
             }
         });
     }

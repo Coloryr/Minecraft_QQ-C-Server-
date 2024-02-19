@@ -28,7 +28,7 @@ public static class PluginServer
     private static void SetState(bool st)
     {
         Start = st;
-        IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
+        IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerState);
     }
 
     public static bool IsReady()
